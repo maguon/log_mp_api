@@ -1,0 +1,35 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "The documents for myxxjs save mini program api",
+    "version": "1.0.0",
+    "title": "Logistic mini program api doc",
+    "contact": {
+      "email": "info@myxxjs.com"
+    },
+    "license": {
+      "name": "View source at github",
+      "url": "https://github.com/maguon/log_records"
+    }
+  },
+  "host": "stg.myxxjs.com:9101",
+  "basePath": "/api",
+  "tags": [
+    {
+      "name": "wechat",
+      "description": "wechat open api",
+      "externalDocs": {
+        "url" : "stg.myxxjs.com:9101",
+        "description": " log mini program api"
+      }
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+  },
+  "definitions": {
+  }
+
+}
