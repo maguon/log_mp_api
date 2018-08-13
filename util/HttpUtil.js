@@ -1,7 +1,6 @@
 'use strict'
 const http = require('http');
 const https = require('https');
-const oAuthUtil = require('./OAuthUtil.js');
 const qs = require('querystring');
 
 const httpGet = (host,url,req,params,callback) => {
@@ -44,11 +43,11 @@ const httpRequest = (host,url,req,params,callback,method) => {
     }
 }
 
-const httpsRequest = (host,port,url,req,params,callback,method) => {
+const httpsRequest = (host,port,url,params,callback,method) => {
     let paramStr = JSON.stringify(params);
     let options = {
         host: host,
-        port: port,
+        port : port || 443,
         path: url,
         method: method!=null?method:'post',
         headers: {
@@ -94,11 +93,11 @@ const httpDelete = (host,url,req,params,callback) => {
     httpRequest(host,url,req,params,callback,'delete');
 }
 
-const httpsGet = (host,port,url,req,params,callback) => {
+const httpsGet = (host,port,url,params,callback) => {
     if(params !=null){
         url = url + "?" + qs.stringify(params);
     }
-    httpsRequest(host,port,url,req,{},callback,'get');
+    httpsRequest(host,port,url,{},callback,'get');
 }
 
 module.exports ={ httpGet ,httpPost,httpPut ,httpDelete ,httpsGet }

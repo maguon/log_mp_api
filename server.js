@@ -6,6 +6,8 @@ const sysConfig = require('./config/SystemConfig');
 const serverLogger = require('./util/ServerLogger');
 const logger = serverLogger.createLogger('Server');
 
+const wechatBl = require('./bl/WechatBl');
+
 
 /**
  * Returns a server with all routes defined on it
@@ -74,7 +76,7 @@ function createServer() {
         maxAge: 0
     }));
 
-
+    server.get('/api/wechat/:code/openid',wechatBl.getUserIdByCode);
 
     server.on('NotFound', function (req, res ,next) {
         logger.warn(req.url + " not found");

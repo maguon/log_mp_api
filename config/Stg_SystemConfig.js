@@ -27,5 +27,11 @@ const mongoConfig = {
     connect : 'mongodb://127.0.0.1:27017/log_mp'
 }
 
+const wechatConfig = {
+    mpAppId : "wx8063556bcdab3e2b",
+    mpSecret : "a7c5c6cd22d89a3eea6c739a1a3c74d1",
+    mphost : ""
+}
 
-module.exports = { mysqlConnectOptions ,loggerConfig, logLevel , mongoConfig  }
+
+module.exports = { mysqlConnectOptions ,loggerConfig, logLevel , mongoConfig ,wechatConfig }
