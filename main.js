@@ -49,7 +49,7 @@ const usage = (msg) => {
 (() =>{
     let opt=parseOptions();
     const server = mpServer.createServer();
-    server.listen((opt.port?opt.port:9100), () => {
+    server.listen((opt.port?opt.port:9101), () => {
         server.get('/',(req,res,next)=>{
             res.send(200,{success : true,result:"success"})
             next();

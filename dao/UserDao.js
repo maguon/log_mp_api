@@ -20,6 +20,20 @@ const getUser=(params,callback)=>{
         callback(error,rows);
     });
 }
+const updateUser=(params,callback)=>{
+    var query = "update user_info set user_name=? ,sex=?,phone=? where openid = ? "
+    var paramsArray = [],i=0;
+    paramsArray[i++] = params.userName;
+    paramsArray[i++] = params.sex;
+    paramsArray[i++] = params.phone;
+    paramsArray[i++] = params.openid;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('updateUser');
+        callback(error,rows);
+    });
+
+}
+
 const createUser = (params,callback)=>{
 
     var query = "insert into user_info (user_name,openid,sex,phone) values(?,?,?,?) ";
