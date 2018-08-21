@@ -6,7 +6,9 @@ const sysConfig = require('./config/SystemConfig');
 const serverLogger = require('./util/ServerLogger');
 const logger = serverLogger.createLogger('Server');
 
+
 const wechatBl = require('./bl/WechatBl');
+const user = require('./bl/User.js');
 
 
 /**
@@ -78,6 +80,10 @@ function createServer() {
 
     server.get('/api/wechat/:code/openid',wechatBl.getUserIdByCode);
 
+
+    server.post({path:'/api/userLogin',contentType: 'application/json'},user.userLogin);
+    server.put({path:'/api/userLogin/:userId'},user.updateUser);
+
     server.on('NotFound', function (req, res ,next) {
         logger.warn(req.url + " not found");
         res.send(404,{success:false,msg:" service not found !"});
@@ -92,5 +98,5 @@ function createServer() {
 ///--- Exports
 
 module.exports = {
-    createServer: createServer
+    createServer
 };

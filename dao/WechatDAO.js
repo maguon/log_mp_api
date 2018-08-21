@@ -1,6 +1,6 @@
 
 const serverLogger = require('../util/ServerLogger.js');
-const logger = serverLogger.createLogger('FileDAO.js');
+const logger = serverLogger.createLogger('WechatDAO.js');
 const sysConfig = require("../config/SystemConfig");
 const httpUtil = require('../util/HttpUtil');
 

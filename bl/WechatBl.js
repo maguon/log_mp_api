@@ -12,7 +12,7 @@ const getUserIdByCode = (req,res,next) =>{
             resUtil.resInternalError(error, res, next);
         }else{
 
-            logger.info(' getUserIdByCode ' + 'success')
+            logger.info(' getUserIdByCode ' + 'success');
             resUtil.resetQueryRes(res, result);
 
         }
