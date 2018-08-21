@@ -82,7 +82,8 @@ function createServer() {
 
 
     server.post({path:'/api/userLogin',contentType: 'application/json'},user.userLogin);
-    server.put({path:'/api/userLogin/:userId'},user.updateUser);
+    server.put({path:'/api/user/:userId',contentType: 'application/json'},user.updateUser);
+    server.put({path:'/api/user/:userId/password',contentType: 'application/json'},user.updatePassword);
 
     server.on('NotFound', function (req, res ,next) {
         logger.warn(req.url + " not found");
