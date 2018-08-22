@@ -1,3 +1,4 @@
+'use strict'
 const wechatBl = require('../bl/wechatBl.js');
 const serverLogger = require('../util/ServerLogger.js');
 const resUtil = require('../util/ResponseUtil.js');
@@ -8,7 +9,7 @@ const userDao = require('../dao/UserDAO.js');
 const encrypt = require('../util/Encrypt.js');
 
 const updateUser = (req,res,next)=>{
-    var params = req.params;
+    let params = req.params;
      userDao.updateUser(params,(error,result)=>{
          if(error){
              logger.error('updateUser' + error.message);
@@ -22,7 +23,7 @@ const updateUser = (req,res,next)=>{
 }
 const updatePassword=(req,res,next)=>{
     let params = req.params;
-    userDao.getUser(params,(error,rows)=>{
+    userDao.queryUser(params,(error,rows)=>{
         if(error){
             logger.error('updatePassword' + error.message);
             throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
@@ -33,8 +34,9 @@ const updatePassword=(req,res,next)=>{
                 return next();
             }else
                 var md5Password = encrypt.encryptByMd5(params.oldPassword);
-                console.log(md5Password);
+                //console.log(md5Password);
                 if(md5Password != rows[0].password){
+                    console.log(rows[0].password);
                 logger.warn('updatePassword' + "原密码错");
                 resUtil.resetFailedRes(res,"原密码错误");
                 return next();
@@ -68,14 +70,14 @@ const queryUser = (req,res,next)=>{
     });
 }
 const userLogin = (req,res,next)=>{
-    var params = req.params;
-     userDao.getUser(params,(error,result)=>{
+    let params = req.params;
+     userDao.getUser({wechatId:params.wechatId},(error,rows)=>{
         if(error){
             logger.error('userLogin'+error.message);
             throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
         }else{
-            if(result && result==""){
-                userDao.createUser(params,function(error,result){
+            if(rows && rows.length < 1){
+                userDao.createUser(params,(error,result)=>{
                     if(error) {
                         logger.error('createUser' + error.message);
                         throw sysError.InternalError(error.message, sysMsg.SYS_INTERNAL_ERROR_MSG);
@@ -85,18 +87,23 @@ const userLogin = (req,res,next)=>{
                             logger.info('create' + 'success');
                             let user = {
                                     userId : result.insertId,
-                                    openid : result.openid
+                                    wechatId : result.wechatId
                             };
-                            //logger.warn('createUser' + 'false');
-                            //resUtil.resetFailedRes(res, sysMsg.SYS_INTERNAL_ERROR_MSG);
                             resUtil.resetCreateRes(res, result, null);
                             return next();
                             }
-
-
                 });
-            }   else{
-                resUtil.resetQueryRes(res,result,null);
+            } else{
+                const resObj ={
+                    userId: rows[0].id,
+                    wechatId : rows[0].wechat_id,
+                    phone : rows[0].phone
+                }
+                resUtil.resetQueryRes(res,resObj,null);
+                var myDate = new Date();
+                params.lastLoginOn = myDate;
+                userDao.lastLoginOn({wechatId:params.wechatId,lastLoginOn:params.lastLoginOn},(error,rows));
+                return next();
             }
         }
     });

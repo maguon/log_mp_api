@@ -82,9 +82,10 @@ function createServer() {
 
 
     server.get('/api/user',user.queryUser);
+    //server.post({path:'/api/wechatLogin',contentType: 'application/json'},user.userLogin);
     server.post({path:'/api/userLogin',contentType: 'application/json'},user.userLogin);
-    server.put({path:'/api/user/:userId',contentType: 'application/json'},user.updateUser);
-    server.put({path:'/api/user/:userId/password',contentType: 'application/json'},user.updatePassword);
+    server.put({path:'/api/user/:id',contentType: 'application/json'},user.updateUser);
+    server.put({path:'/api/user/:id/password',contentType: 'application/json'},user.updatePassword);
 
     server.on('NotFound', function (req, res ,next) {
         logger.warn(req.url + " not found");
