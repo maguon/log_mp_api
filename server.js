@@ -81,6 +81,7 @@ function createServer() {
     server.get('/api/wechat/:code/openid',wechatBl.getUserIdByCode);
 
 
+    server.get('/api/user',user.queryUser);
     server.post({path:'/api/userLogin',contentType: 'application/json'},user.userLogin);
     server.put({path:'/api/user/:userId',contentType: 'application/json'},user.updateUser);
     server.put({path:'/api/user/:userId/password',contentType: 'application/json'},user.updatePassword);

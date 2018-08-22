@@ -8,7 +8,7 @@ const userDao = require('../dao/UserDAO.js');
 const encrypt = require('../util/Encrypt.js');
 
 const updateUser = (req,res,next)=>{
-     var params = req.params;
+    var params = req.params;
      userDao.updateUser(params,(error,result)=>{
          if(error){
              logger.error('updateUser' + error.message);
@@ -21,8 +21,7 @@ const updateUser = (req,res,next)=>{
 
 }
 const updatePassword=(req,res,next)=>{
-    var params = req.params;
-
+    let params = req.params;
     userDao.getUser(params,(error,rows)=>{
         if(error){
             logger.error('updatePassword' + error.message);
@@ -55,9 +54,21 @@ const updatePassword=(req,res,next)=>{
         }
     });
 }
-
+const queryUser = (req,res,next)=>{
+    var params = req.params;
+    userDao.queryUser(params,(error,result)=>{
+        if(error){
+            logger.error('queryUser' + error.message);
+            throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
+        }else{
+            logger.info('queryUser' + 'success');
+            resUtil.resetQueryRes(res,result,null);
+            return next();
+        }
+    });
+}
 const userLogin = (req,res,next)=>{
-     var params = req.params;
+    var params = req.params;
      userDao.getUser(params,(error,result)=>{
         if(error){
             logger.error('userLogin'+error.message);
@@ -72,7 +83,7 @@ const userLogin = (req,res,next)=>{
                     else
                         if (result && result.insertId > 0) {
                             logger.info('create' + 'success');
-                            var user = {
+                            let user = {
                                     userId : result.insertId,
                                     openid : result.openid
                             };
@@ -93,6 +104,7 @@ const userLogin = (req,res,next)=>{
 }
 
 module.exports ={
+    queryUser,
     userLogin,
     updateUser,
     updatePassword
