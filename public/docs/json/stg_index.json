@@ -33,6 +33,90 @@
   ],
 
   "paths": {
+    "/user": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "query user",
+        "description": "query user",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "user id",
+            "required": false,
+            "type":"integer"
+          },
+          {
+            "name": "userName",
+            "in": "query",
+            "description": "user name",
+            "required": false,
+            "type":"string"
+          },
+          {
+            "name": "gender",
+            "in": "query",
+            "description": "user gender",
+            "required": false,
+            "type":"integer"
+          },
+          {
+            "name": "phone",
+            "in": "query",
+            "description": "user phone",
+            "required": false,
+            "type":"string"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "user status",
+            "required": false,
+            "type":"integer"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "user type",
+            "required": false,
+            "type":"integer"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "user start",
+            "required": false,
+            "type":"integer"
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "description": "user end",
+            "required": false,
+            "type":"integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/password"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
     "/userLogin": {
       "post": {
         "tags": [
@@ -70,7 +154,7 @@
         }
       }
     },
-    "/userLogin/{userId}": {
+    "/user/{userId}": {
       "put": {
         "tags": [
           "user"
@@ -89,12 +173,56 @@
             "type": "integer"
           },
           {
-            "name": "user",
+            "name": "updateUser",
             "in": "body",
             "description": "user info",
             "required": true,
             "schema": {
               "$ref": "#/definitions/updateUser"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/updateUser"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/password": {
+      "put": {
+        "tags": [
+          "user"
+        ],
+        "summary": "user update password",
+        "description": "user update password",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "user info",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "password",
+            "in": "body",
+            "description": "user info",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/password"
             }
           }
         ],
@@ -129,7 +257,7 @@
         "openid": {
           "type": "string"
         },
-        "sex": {
+        "gender": {
           "type": "string"
         },
         "phone": {
@@ -146,17 +274,39 @@
         "userName": {
           "type": "string"
         },
-        "sex": {
+        "gender": {
           "type": "string"
         },
         "phone": {
+          "type": "string"
+        },
+        "type": {
+          "type": "integer"
+        },
+        "status": {
+          "type": "integer"
+        },
+        "openid": {
           "type": "string"
         }
       },
       "xml": {
         "name": "updateUser"
       }
+    },
+    "password": {
+      "type": "object",
+      "properties": {
+        "oldPassword": {
+          "type": "string"
+        },
+        "newPassword": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "password"
+      }
     }
   }
-
 }
