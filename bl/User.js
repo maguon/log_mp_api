@@ -56,6 +56,32 @@ const updatePassword=(req,res,next)=>{
         }
     });
 }
+const updateStatus=(req,res,next)=>{
+    var params = req.params;
+    userDao.updateStatus(params,(error,result)=>{
+        if(error){
+            logger.error('updateStatus' + error.message);
+            throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
+        }else{
+            logger.info('updateStatus' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    });
+}
+const updatePhone=(req,res,next)=>{
+    var params = req.params;
+    userDao.updatePhone(params,(error,result)=>{
+        if(error){
+            logger.error('updatePhone' + error.message);
+            throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
+        }else{
+            logger.info('updatePhone' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    });
+}
 const queryUser = (req,res,next)=>{
     var params = req.params;
     userDao.queryUser(params,(error,result)=>{
@@ -114,5 +140,7 @@ module.exports ={
     queryUser,
     userLogin,
     updateUser,
-    updatePassword
+    updatePassword,
+    updateStatus,
+    updatePhone
 }

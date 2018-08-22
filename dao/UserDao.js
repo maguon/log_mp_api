@@ -5,7 +5,7 @@ const logger = serverLogger.createLogger('UserDAO.js');
 const sysConfig = require("../config/SystemConfig");
 const httpUtil = require('../util/HttpUtil');
 const db = require('../db/connection/MysqlDb.js');
-const encrypt = require('../util/Encrypt');
+const encrypt = require('../util/Encrypt.js');
 
 const getUser=(params,callback)=>{
     let query  = " select * from user_info where id is not null ";
@@ -75,14 +75,14 @@ const updateUser=(params,callback)=>{
     });
 }
 const lastLoginOn=(params,callback)=>{
-    let query = "update user_info set last_login_on = to_date(?,'yyyy-MM-dd HH:mm:ss') where wechat_id = ? ";
+    let query = "update user_info set last_login_on = ? where wechat_id = ? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.lastLoginOn;
     paramsArray[i++] = params.wechatId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('lastLoginOn');
         callback(error,rows);
-    })
+    });
 }
 const updatePassword=(params,callback)=>{
     var query = "update user_info set password = ? where id = ? ";
