@@ -1,6 +1,6 @@
 const mysqlConnectOptions ={
-    user: 'log',
-    password: 'log_mp',
+    user: 'mp_db_user',
+    password: 'log_mp_2018',
     database:'log_mp',
     host: '127.0.0.1' ,
     charset : 'utf8mb4',
