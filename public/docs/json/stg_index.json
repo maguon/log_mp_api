@@ -342,6 +342,9 @@
         },
         "password": {
           "type": "string"
+        },
+        "status": {
+          "type": "integer"
         }
       },
       "xml": {

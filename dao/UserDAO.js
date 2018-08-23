@@ -39,7 +39,11 @@ const queryUser = (params,callback) => {
     }
     if(params.status){
         paramsArray[i++] = params.status;
-        query = query + "and password = ? "
+        query = query + " and password = ? "
+    }
+    if(params.status){
+        paramsArray[i++] = params.status;
+        query = query + " and status = ? "
     }
     if(params.start && params.end){
         paramsArray[i++] = params.start;
