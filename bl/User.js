@@ -1,5 +1,5 @@
-'use strict'
-const wechatBl = require('../bl/wechatBl.js');
+'use strict';
+
 const serverLogger = require('../util/ServerLogger.js');
 const resUtil = require('../util/ResponseUtil.js');
 const sysMsg = require('../util/SystemMsg.js');
@@ -17,10 +17,11 @@ const updateUser = (req,res,next)=>{
          }else{
              logger.info('updateUser' + 'success');
              resUtil.resetUpdateRes(res,result,null);
+             return next();
          }
      });
 
-}
+};
 const updatePassword=(req,res,next)=>{
     let params = req.params;
     userDao.queryUser(params,(error,rows)=>{
@@ -36,7 +37,7 @@ const updatePassword=(req,res,next)=>{
                 var md5Password = encrypt.encryptByMd5(params.oldPassword);
                 //console.log(md5Password);
                 if(md5Password != rows[0].password){
-                    console.log(rows[0].password);
+                    //console.log(rows[0].password);
                 logger.warn('updatePassword' + "原密码错");
                 resUtil.resetFailedRes(res,"原密码错误");
                 return next();
@@ -55,7 +56,7 @@ const updatePassword=(req,res,next)=>{
             }
         }
     });
-}
+};
 const updateStatus=(req,res,next)=>{
     var params = req.params;
     userDao.updateStatus(params,(error,result)=>{
@@ -68,7 +69,7 @@ const updateStatus=(req,res,next)=>{
             return next();
         }
     });
-}
+};
 const updatePhone=(req,res,next)=>{
     var params = req.params;
     userDao.updatePhone(params,(error,result)=>{
@@ -81,7 +82,7 @@ const updatePhone=(req,res,next)=>{
             return next();
         }
     });
-}
+};
 const queryUser = (req,res,next)=>{
     var params = req.params;
     userDao.queryUser(params,(error,result)=>{
@@ -94,7 +95,7 @@ const queryUser = (req,res,next)=>{
             return next();
         }
     });
-}
+};
 const userLogin = (req,res,next)=>{
     let params = req.params;
      userDao.getUser({wechatId:params.wechatId},(error,rows)=>{
@@ -103,6 +104,7 @@ const userLogin = (req,res,next)=>{
             throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
         }else{
             if(rows && rows.length < 1){
+                params.password = encrypt.encryptByMd5(params.password)
                 userDao.createUser(params,(error,result)=>{
                     if(error) {
                         logger.error('createUser' + error.message);
@@ -133,8 +135,7 @@ const userLogin = (req,res,next)=>{
             }
         }
     });
-
-}
+};
 
 module.exports ={
     queryUser,
@@ -143,4 +144,4 @@ module.exports ={
     updatePassword,
     updateStatus,
     updatePhone
-}
+};
