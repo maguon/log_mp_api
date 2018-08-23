@@ -96,7 +96,7 @@ const updatePassword=(params,callback)=>{
     });
 }
 const updatePhone=(params,callback)=>{
-    var query = "update user_info set phone = ? where id = ? "
+    var query = "update user_info set phone = ? where id = ? ";
     var paramsArray = [],i=0;
     paramsArray[i++] = params.phone;
     paramsArray[i++] = params.id;
