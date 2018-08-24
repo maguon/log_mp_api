@@ -39,7 +39,11 @@ const queryUser = (params,callback) => {
     }
     if(params.status){
         paramsArray[i++] = params.status;
-        query = query + "and password = ? "
+        query = query + " and password = ? "
+    }
+    if(params.status){
+        paramsArray[i++] = params.status;
+        query = query + " and status = ? "
     }
     if(params.start && params.end){
         paramsArray[i++] = params.start;
@@ -96,7 +100,7 @@ const updatePassword=(params,callback)=>{
     });
 }
 const updatePhone=(params,callback)=>{
-    var query = "update user_info set phone = ? where id = ? "
+    var query = "update user_info set phone = ? where id = ? ";
     var paramsArray = [],i=0;
     paramsArray[i++] = params.phone;
     paramsArray[i++] = params.id;
