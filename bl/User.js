@@ -117,7 +117,7 @@ const userLogin = (req,res,next)=>{
                                     userId : result.insertId,
                                     wechatId : result.wechatId
                             };
-                            resUtil.resetCreateRes(res, result, null);
+                            resUtil.resetCreateRes(res, user, null);
                             return next();
                             }
                 });
