@@ -32,6 +32,7 @@ const sendAccountConfirmEmail = (req,res,next) => {
         html: mailTemplate.processTemplate(mailTemplate.accountWelcomeTemplate.html)
     };
     mailConnection.accountTransport.sendMail(mailOptions,(error,info)=>{
+        console.log(info.messageId);
         if (error) {
             logger.error('sendAccountConfirmEmail ' + error.message);
             //添加邮件发送失败记录
