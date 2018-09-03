@@ -18,7 +18,7 @@ const addMailRecord = (params,callback)=>{
     });
 };
 const queryMailRecord = (params,callback) =>{
-    let query = "select user,created_on,type from email_history where id is not null ";
+    let query = "select id,status,type,created_on from email_history where 1=1 ";
     let paramsArray = [],i=0;
     if(params.id){
         paramsArray[i++] = params.id;
@@ -44,8 +44,10 @@ const queryMailRecord = (params,callback) =>{
         paramsArray[i++] = params.accountConfirmEmailEnd + " 23:59:59 ";
         query = query + " and created_on <= ? ";
     }
+    query = query + " order by created_on desc ";
     if(params.start && params.size){
-        paramsArray[i++] = params.start;
+        paramsArray[i++] = parseInt(params.start);
+        paramsArray[i++] = parseInt(params.size);
         query = query + " limit ? , ? ";
     }
     db.dbQuery(query,paramsArray,(error,rows)=>{

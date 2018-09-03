@@ -9,6 +9,7 @@ const logger = serverLogger.createLogger('Server');
 
 const wechatBl = require('./bl/WechatBl');
 const user = require('./bl/User.js');
+const email = require('./bl/Email.js');
 
 
 /**
@@ -80,7 +81,9 @@ function createServer() {
 
     server.get('/api/wechat/:code/openid',wechatBl.getUserIdByCode);
 
-
+    /**
+     user
+     */
     server.get('/api/user',user.queryUser);
     //server.post({path:'/api/wechatLogin',contentType: 'application/json'},user.userLogin);
     server.post({path:'/api/userLogin',contentType: 'application/json'},user.userLogin);
@@ -88,6 +91,12 @@ function createServer() {
     server.put({path:'/api/user/:id/password',contentType: 'application/json'},user.updatePassword);
     server.put({path:'/api/user/:id/status/:status',contentType: 'application/json'},user.updateStatus);
     server.put({path:'/api/user/:id/phone/:phone',contentType: 'application/json'},user.updatePhone);
+    /**
+     emil
+     */
+    server.post({path:'/api/accountConfirmEmail',contentType: 'application/json'},email.sendAccountConfirmEmail);
+    server.get('/api/queryMailRecord',email.queryMailRecord);
+
 
     server.on('NotFound', function (req, res ,next) {
         logger.warn(req.url + " not found");

@@ -5,43 +5,63 @@ const sysMsg = require('../util/SystemMsg.js');
 const sysError = require('../util/SystemError.js');
 const logger = serverLogger.createLogger('Email.js');
 const mailConnection = require('../db/connection/mail/MailConnection.js');
-const emailDao = require('../dao/EmailDAO.js');
-const mailTemplate = require('../db/connection/mail/template/MailTemplate.js');
+const emailHistoryDao = require('../dao/EmailHistoryDAO.js');
+const mailTemplate = require('../db/connection/mail/MailTemplate.js');
+const sysConfig = require('../config/SystemConfig')
 
+const queryMailRecord = (req,res,next) => {
+     let params = req.params;
+    emailHistoryDao.queryMailRecord(params,(error,result)=>{
+        if(error){
+            logger.error('queryMailRecord' + error.message);
+            throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
+        }else{
+            logger.info('queryMailRecord' + 'success');
+            resUtil.resetQueryRes(res,result,null);
+            return next();
+        }
+    })
+}
 const sendAccountConfirmEmail = (req,res,next) => {
-    //1.从文件中读取模板转成字符串
-    //<div><h1>欢迎%username%</h1></div>
-    //2.把变量替换到模板内容中
-    //3.把邮箱地址作为变量放到options中，完成发送
     let params = req.params;
     let mailOptions = {
-        from: mailTemplate.user163,
-        to: params.toUser,//从文件中读取模板转成字符串<div><h1>欢迎%username%</h1></div>
-        subject: mailTemplate.subject,
-        text: mailTemplate.text,
-        //html: '<meta http-equiv="refresh" content="10; 这里加入要跳转的页面的地址 ">'
-        //html: '<div><h1>欢迎光临'+'<img src="file:///d:\\ws\\log_mp_api\\public\\docs\\images\\timg.jpg" />'+'<a href="file:///d:\\ws\\log_mp_api\\db\\connection\\mail\\template\\WelcomTemplate.html">'+'</h1><h2>'+params.toUser+'</h2><h3>'+mailTemplate.html+'</h3></div>'
-        html: '<div><h1>欢迎光临'+'<img src="file:///d:\\ws\\log_mp_api\\public\\docs\\images\\timg.jpg" /></h1><h2>'+params.toUser+'</h2><a  href="file:///d:\\\\ws\\\\log_mp_api\\\\db\\\\connection\\\\mail\\\\template\\\\WelcomTemplate.html">'+mailTemplate.html+'</a><a>点击查看订单详情</a></div>'
+        from: sysConfig.accountMailConfig.mail,
+        to: params.email,
+        subject: sysConfig.accountMailConfig.name,
+        text: sysConfig.accountMailConfig.name,
+        html: mailTemplate.processTemplate(mailTemplate.accountWelcomeTemplate.html)
     };
     mailConnection.accountTransport.sendMail(mailOptions,(error,info)=>{
         if (error) {
-            return console.log(error);
+            logger.error('sendAccountConfirmEmail ' + error.message);
+            //添加邮件发送失败记录
+            params.status = 0;
+            emailHistoryDao.addMailRecord(params,(error,result)=>{
+                if(error){
+                    logger.error('sendAccountConfirmEmail addMailRecord' + error.message);
+                }else{
+                    logger.info('sendAccountConfirmEmail addMailRecord'  + params.email);
+                }
+            });
+            throw sysError.InternalError(error.message,sysError.InternalError);
+        }else{
+            logger.info('sendAccountConfirmEmail '  + params.email);
+            //添加邮件发送成功记录
+            params.status = 1;
+            emailHistoryDao.addMailRecord(params,(error,result)=>{
+                if(error){
+                    logger.error('sendAccountConfirmEmail addMailRecord' + error.message);
+                }else{
+                    logger.info('sendAccountConfirmEmail addMailRecord'  + params.email);
+                    resUtil.resetCreateRes(res,result,null);
+                }
+            });
         }
-
-        emailDao.createMail(mailOptions.from,(error,result)=>{
-            if(error){
-                logger.error('createMail' + error.message);
-                throw sysError.InternalError(error.message,sysError.InternalError);
-            }else{
-                logger.info('createMail' + 'success');
-                resUtil.resetCreateRes(res,result,null);
-            }
-        });
-        console.log('Message sent: %s',info.messageId);
-        console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
         return next();
     });
+
 };
 module.exports = {
-    sendAccountConfirmEmail
+    sendAccountConfirmEmail,
+    queryMailRecord
 };

@@ -1,4 +1,4 @@
-
+'use strict'
 const serverLogger = require('../util/ServerLogger.js');
 const logger = serverLogger.createLogger('WechatDAO.js');
 const sysConfig = require("../config/SystemConfig");
