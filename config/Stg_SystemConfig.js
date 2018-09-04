@@ -1,6 +1,6 @@
 const mysqlConnectOptions ={
-    user: 'mp_db_user',
-    password: 'log_mp_2018',
+    user: 'root',
+    password: 'myxxjs',
     database:'log_mp',
     host: '127.0.0.1' ,
     charset : 'utf8mb4',
@@ -32,6 +32,19 @@ const wechatConfig = {
     mpSecret : "a7c5c6cd22d89a3eea6c739a1a3c74d1",
     mphost : ""
 }
-
-
-module.exports = { mysqlConnectOptions ,loggerConfig, logLevel , mongoConfig ,wechatConfig }
+const accountMailConfig = {
+    host : 'smtp.163.com',
+    port : 25,
+    secureConnection : false,
+    mail : 'yangguoquan511@163.com',
+    password : '18941161738YANG',
+    name : '订单邮件'
+}
+module.exports = {
+    mysqlConnectOptions ,
+    loggerConfig,
+    logLevel ,
+    mongoConfig ,
+    wechatConfig ,
+    accountMailConfig
+}

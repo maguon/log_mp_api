@@ -12,7 +12,7 @@
       "url": "https://github.com/maguon/log_records"
     }
   },
-  "host": "stg.myxxjs.com:9101",
+  "host": "stg.myxxjs.com:910",
   "basePath": "/api",
   "tags": [
     {
@@ -26,6 +26,14 @@
     {
       "name": "user",
       "description": "User of log api"
+    },
+    {
+      "name": "pay",
+      "description":"pay of log api"
+    },
+    {
+      "name": "accountConfirmEmail",
+      "description":"accountConfirmEmail of log api"
     }
   ],
   "schemes": [
@@ -318,6 +326,155 @@
           }
         }
       }
+    },
+    "/pay/{commodityCode}": {
+      "get": {
+        "tags": [
+          "pay"
+        ],
+        "summary": "choice commodity",
+        "description": "choice commodity",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "commodityCode",
+            "in": "path",
+            "description": "commodity code",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/commodityCode"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/accountConfirmEmail": {
+      "post": {
+        "tags": [
+          "accountConfirmEmail"
+        ],
+        "summary": "accountConfirmEmail",
+        "description": "accountConfirmEmail",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "accountConfirmEmail",
+            "in": "body",
+            "description": "accountConfirmEmail",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/accountConfirmEmail"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/email"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/queryMailRecord": {
+      "get": {
+        "tags": [
+          "accountConfirmEmail"
+        ],
+        "summary": "accountConfirmEmail queryMailRecord",
+        "description": "accountConfirmEmail queryMailRecord",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "id",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "type",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "type",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "size",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "accountConfirmEmailStart",
+            "in": "query",
+            "description": "accountConfirmEmailStart",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "accountConfirmEmailEnd",
+            "in": "query",
+            "description": "accountConfirmEmailEnd",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/queryMailRecord"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
     }
   },
 
@@ -389,6 +546,20 @@
       },
       "xml": {
         "name": "password"
+      }
+    },
+    "accountConfirmEmail": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "type": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "accountConfirmEmail"
       }
     }
   }
