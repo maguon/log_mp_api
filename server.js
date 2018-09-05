@@ -10,6 +10,8 @@ const logger = serverLogger.createLogger('Server');
 const wechatBl = require('./bl/WechatBl');
 const user = require('./bl/User.js');
 const email = require('./bl/Email.js');
+const city = require('./bl/City.js');
+const route = require('./bl/Route.js');
 
 
 /**
@@ -96,6 +98,18 @@ function createServer() {
      */
     server.post({path:'/api/accountConfirmEmail',contentType: 'application/json'},email.sendAccountConfirmEmail);
     server.get('/api/queryMailRecord',email.queryMailRecord);
+    /**
+     city_info
+     */
+    server.post({path:'/api/user/:userId/city',contentType: 'application/json'},city.addCity);
+    server.get('/api/city',city.queryCity);
+    server.put({path:'/api/user/:userId/city/:cityId',contentType: 'application/json'},city.updateCity);
+    /**
+     city_route_info
+     */
+    server.post({path:'/api/user/:userId/route',contentType: 'application/json'},route.addRoute);
+    server.get('/api/route',route.queryRoute);
+    server.put({path:'/api/user/:userId/route/:routeId',contentType: 'application/json'},route.updateRoute);
 
 
     server.on('NotFound', function (req, res ,next) {
