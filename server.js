@@ -12,6 +12,7 @@ const user = require('./bl/User.js');
 const email = require('./bl/Email.js');
 const city = require('./bl/City.js');
 const route = require('./bl/Route.js');
+const inquiry = require('./bl/Inquiry.js');
 
 
 /**
@@ -110,7 +111,11 @@ function createServer() {
     server.post({path:'/api/user/:userId/route',contentType: 'application/json'},route.addRoute);
     server.get('/api/route',route.queryRoute);
     server.put({path:'/api/user/:userId/route/:routeId',contentType: 'application/json'},route.updateRoute);
-
+    /**
+     inquiry_info
+     */
+    server.post({path:'/api/user/:userId/inquiry',contentType: 'application/json'},inquiry.addRouteInquiry);
+    server.get('/api/inquiry',inquiry.queryRouteInquiry);
 
     server.on('NotFound', function (req, res ,next) {
         logger.warn(req.url + " not found");

@@ -34,9 +34,12 @@ const getRoute = (params,callback) =>{
         query = "select * from city_route_info where route_start_id = " + params.routeStartId  +
             " union select * from city_route_info where route_end_id = " + params.routeStartId ;
     }
-    if(params.routeStartId  == null&& params.routeEndId){
+    if(params.routeStartId  == null && params.routeEndId){
         query = "select * from city_route_info where route_start_id = " + params.routeEndId  +
             " union select * from city_route_info where route_end_id = " + params.routeEndId ;
+    }
+    if(params.routeStartId  == null && params.routeEndId == null){
+        query = "select * from city_route_info where 1=1 ";
     }
     let paramsArray = [],i=0;
     if(params.routeId){
