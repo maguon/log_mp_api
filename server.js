@@ -125,6 +125,10 @@ function createServer() {
     server.post({path:'/api/user/:userId/supplierBank',contentType: 'application/json'},supplier.addSupplierBank);
     server.get('/api/supplierBank',supplier.querySupplierBank);
     server.del({path:'/api/user/:userId/supplierBank/:supplierId/bank/:bankId',contentType: 'application/json'},supplier.delSupplierBank);
+    server.post({path:'/api/user/:userId/supplierContact',contentType: 'application/json'},supplier.addSupplierContact);
+    server.get('/api/supplierContact',supplier.querySupplierContact);
+    server.del({path:'/api/user/:userId/supplierContact/:supplierId/contact/:contactId',contentType: 'application/json'},supplier.delSupplierContact);
+
 
     server.on('NotFound', function (req, res ,next) {
         logger.warn(req.url + " not found");

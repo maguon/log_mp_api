@@ -82,10 +82,57 @@ const delSupplierBank = (req,res,next) => {
         }
     })
 }
+const addSupplierContact = (req,res,next) => {
+    let params = req.params;
+    supplierDAO.addSupplierBank(params,(error,result)=>{
+        if(error){
+            logger.error('addSupplierContact' + error.message);
+            throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
+        }else{
+            logger.info('addSupplierContact' + 'success');
+            resUtil.resetCreateRes(res,result,null);
+            return next();
+        }
+    })
+}
+const querySupplierContact = (req,res,next) => {
+    let params = req.params;
+    supplierDAO.querySupplierBank(params,(error,rows)=>{
+        if(error){
+            logger.error('querySupplierContact' + error.message);
+            throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
+        }else{
+            let BankInfo = {
+                supplierBank: rows[0].bank,
+                supplierBankCode: rows[0].bank_code,
+                mark: rows[0].name
+            }
+            logger.info('querySupplierContact' + 'success');
+            resUtil.resetQueryRes(res,BankInfo,null);
+            return next();
+        }
+    })
+}
+const delSupplierContact = (req,res,next) => {
+    let params = req.params;
+    supplierDAO.delSupplierBank(params,(error,result)=>{
+        if(error){
+            logger.error('delSupplierContact' + error.message);
+            throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
+        }else{
+            logger.info('delSupplierContact' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
+}
 module.exports = {
     addSupplier,
     querySupplier,
     addSupplierBank,
     querySupplierBank,
-    delSupplierBank
+    delSupplierBank,
+    addSupplierContact,
+    querySupplierContact,
+    delSupplierContact
 }

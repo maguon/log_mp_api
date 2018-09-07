@@ -1133,6 +1133,150 @@
           }
         }
       }
+    },
+    "/user/{userId}/supplierContact": {
+      "post": {
+        "tags": [
+          "supplier"
+        ],
+        "summary": "supplierContact add",
+        "description": "supplierContact add",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "supplierContact",
+            "in": "body",
+            "description": "supplierContact",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/supplierContact"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/supplierContact"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/supplierContact": {
+      "get": {
+        "tags": [
+          "supplier"
+        ],
+        "summary": "supplierContact query",
+        "description": "supplierContact query",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "supplierId",
+            "in": "query",
+            "description": "supplierId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "name",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "position",
+            "in": "query",
+            "description": "position",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "phone",
+            "in": "query",
+            "description": "phone",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/supplierContact"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/supplierContact/{supplierId}/contact/{ContactId}": {
+      "post": {
+        "tags": [
+          "supplier"
+        ],
+        "summary": "supplierContact del",
+        "description": "supplierContact del",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "supplierContactDel",
+            "in": "body",
+            "description": "supplierContactDel",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/supplierContactDel"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/supplierContactDel"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -1337,6 +1481,40 @@
       },
       "xml": {
         "name": "supplierBankDel"
+      }
+    },
+    "supplierContact": {
+      "type": "object",
+      "properties": {
+        "supplierId": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "position": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "supplierContact"
+      }
+    },
+    "supplierContactDel": {
+      "type": "object",
+      "properties": {
+        "supplierId": {
+          "type": "integer"
+        },
+        "contactId": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "supplierContactDel"
       }
     }
   }
