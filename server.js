@@ -13,6 +13,7 @@ const email = require('./bl/Email.js');
 const city = require('./bl/City.js');
 const route = require('./bl/Route.js');
 const inquiry = require('./bl/Inquiry.js');
+const supplier = require('./bl/Supplier.js');
 
 
 /**
@@ -116,6 +117,14 @@ function createServer() {
      */
     server.post({path:'/api/user/:userId/inquiry',contentType: 'application/json'},inquiry.addRouteInquiry);
     server.get('/api/inquiry',inquiry.queryRouteInquiry);
+    /**
+     supplier_info
+     */
+    server.post({path:'/api/user/:userId/supplier',contentType: 'application/json'},supplier.addSupplier);
+    server.get('/api/supplier',supplier.querySupplier);
+    server.post({path:'/api/user/:userId/supplierBank',contentType: 'application/json'},supplier.addSupplierBank);
+    server.get('/api/supplierBank',supplier.querySupplierBank);
+    server.del({path:'/api/user/:userId/supplierBank/:supplierId/bank/:bankId',contentType: 'application/json'},supplier.delSupplierBank);
 
     server.on('NotFound', function (req, res ,next) {
         logger.warn(req.url + " not found");

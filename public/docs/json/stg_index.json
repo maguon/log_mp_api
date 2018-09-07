@@ -12,7 +12,7 @@
       "url": "https://github.com/maguon/log_records"
     }
   },
-  "host": "stg.myxxjs.com:910",
+  "host": "localhost:9101",
   "basePath": "/api",
   "tags": [
     {
@@ -28,8 +28,20 @@
       "description": "User of log api"
     },
     {
-      "name": "pay",
-      "description":"pay of log api"
+      "name": "city",
+      "description":"city of log api"
+    },
+    {
+      "name": "route",
+      "description":"route of log api"
+    },
+    {
+      "name": "inquiry",
+      "description":"inquiry of log api"
+    },
+    {
+      "name": "supplier",
+      "description":"supplier of log api"
     },
     {
       "name": "accountConfirmEmail",
@@ -60,18 +72,18 @@
             "type":"integer"
           },
           {
+            "name": "wechatAccount",
+            "in": "query",
+            "description": "wechatAccount",
+            "required": false,
+            "type":"string"
+          },
+          {
             "name": "userName",
             "in": "query",
             "description": "user name",
             "required": false,
             "type":"string"
-          },
-          {
-            "name": "gender",
-            "in": "query",
-            "description": "user gender",
-            "required": false,
-            "type":"integer"
           },
           {
             "name": "phone",
@@ -81,23 +93,58 @@
             "type":"string"
           },
           {
-            "name": "status",
+            "name": "wechatStatus",
             "in": "query",
-            "description": "user status",
+            "description": "user wechatStatus",
+            "required": false,
+            "type":"integer"
+          },
+          {
+            "name": "authzaStartTime",
+            "in": "query",
+            "description": "user authzaStartTime",
+            "required": false,
+            "type":"integer"
+          },
+          {
+            "name": "authzaEndTime",
+            "in": "query",
+            "description": "user authzaEndTime",
+            "required": false,
+            "type":"integer"
+          },
+          {
+            "name": "authStartTime",
+            "in": "query",
+            "description": "user authStartTime",
+            "required": false,
+            "type":"integer"
+          },
+          {
+            "name": "authEndTime",
+            "in": "query",
+            "description": "user authEndTime",
+            "required": false,
+            "type":"integer"
+          },
+          {
+            "name": "authStatus",
+            "in": "query",
+            "description": "authStatus",
             "required": false,
             "type":"integer"
           },
           {
             "name": "start",
             "in": "query",
-            "description": "user start",
+            "description": "start",
             "required": false,
             "type":"integer"
           },
           {
-            "name": "end",
+            "name": "size",
             "in": "query",
-            "description": "user end",
+            "description": "size",
             "required": false,
             "type":"integer"
           }
@@ -327,41 +374,6 @@
         }
       }
     },
-    "/pay/{commodityCode}": {
-      "get": {
-        "tags": [
-          "pay"
-        ],
-        "summary": "choice commodity",
-        "description": "choice commodity",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "commodityCode",
-            "in": "path",
-            "description": "commodity code",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/commodityCode"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
     "/accountConfirmEmail": {
       "post": {
         "tags": [
@@ -475,9 +487,654 @@
           }
         }
       }
+    },
+    "/user/{userId}/inquiry": {
+      "post": {
+        "tags": [
+          "inquiry"
+        ],
+        "summary": "inquiry add",
+        "description": "inquiry add",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "inquiry",
+            "in": "body",
+            "description": "inquiry info",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/inquiry"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiry"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/inquiry": {
+      "get": {
+        "tags": [
+          "inquiry"
+        ],
+        "summary": "inquiry query",
+        "description": "inquiry query",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "routeId",
+            "in": "query",
+            "description": "routeId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "serviceType",
+            "in": "query",
+            "description": "serviceType",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "modelId",
+            "in": "query",
+            "description": "modelId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "carFlag",
+            "in": "query",
+            "description": "carFlag",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "vacationMoney",
+            "in": "query",
+            "description": "vacationMoney",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiry"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/city": {
+      "post": {
+        "tags": [
+          "city"
+        ],
+        "summary": "city add",
+        "description": "city add",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "city",
+            "in": "body",
+            "description": "city info",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/city"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/city"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/city": {
+      "get": {
+        "tags": [
+          "city"
+        ],
+        "summary": "city query",
+        "description": "city query",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "cityId",
+            "in": "query",
+            "description": "cityId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "cityName",
+            "in": "query",
+            "description": "city info",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "city info",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "city info",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/city"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/city/{cityId}": {
+      "put": {
+        "tags": [
+          "city"
+        ],
+        "summary": "city update",
+        "description": "city update",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "cityId",
+            "in": "path",
+            "description": "cityId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "city",
+            "in": "body",
+            "description": "city info",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/city"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/city"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/route": {
+      "get": {
+        "tags": [
+          "city"
+        ],
+        "summary": "route query",
+        "description": "route query",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "routeId",
+            "in": "query",
+            "description": "routeId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "routeStartId",
+            "in": "query",
+            "description": "routeStartId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "routeEndId",
+            "in": "query",
+            "description": "routeEndId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/route"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/route": {
+      "post": {
+        "tags": [
+          "city"
+        ],
+        "summary": "route add",
+        "description": "route add",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "route",
+            "in": "body",
+            "description": "route",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/route"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/route"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/route/{routeId}": {
+      "put": {
+        "tags": [
+          "city"
+        ],
+        "summary": "route update",
+        "description": "route update",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "routeId",
+            "in": "path",
+            "description": "routeId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "route",
+            "in": "body",
+            "description": "route",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/route"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/route"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/supplier": {
+      "post": {
+        "tags": [
+          "supplier"
+        ],
+        "summary": "supplier add",
+        "description": "supplier add",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "supplier",
+            "in": "body",
+            "description": "supplier",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/supplier"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/supplier"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/supplier": {
+      "get": {
+        "tags": [
+          "supplier"
+        ],
+        "summary": "supplier query",
+        "description": "supplier query",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "supplierId",
+            "in": "query",
+            "description": "supplierId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "supplierAdd",
+            "in": "query",
+            "description": "supplierAdd",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "supplierName",
+            "in": "query",
+            "description": "supplierName",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/supplier"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/supplierBank": {
+      "post": {
+        "tags": [
+          "supplier"
+        ],
+        "summary": "supplierBank add",
+        "description": "supplierBank add",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "supplierBank",
+            "in": "body",
+            "description": "supplierBank",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/supplierBank"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/supplierBank"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/supplierBank": {
+      "get": {
+        "tags": [
+          "supplier"
+        ],
+        "summary": "supplierBank query",
+        "description": "supplierBank query",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "supplierId",
+            "in": "query",
+            "description": "supplierId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "bank",
+            "in": "query",
+            "description": "bank",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "bankCode",
+            "in": "query",
+            "description": "bankCode",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "name",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/supplierBank"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/supplierBank/{supplierId}/bank/{bankId}": {
+      "post": {
+        "tags": [
+          "supplier"
+        ],
+        "summary": "supplierBank del",
+        "description": "supplierBank del",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "supplierBankDel",
+            "in": "body",
+            "description": "supplierBankDel",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/supplierBankDel"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/supplierBankDel"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
     }
   },
-
   "definitions": {
     "userLogin": {
       "type": "object",
@@ -488,19 +1145,28 @@
         "userName": {
           "type": "string"
         },
+        "wechatAccount": {
+          "type": "string"
+        },
         "wechatId": {
           "type": "string"
         },
-        "phone": {
+        "password": {
           "type": "string"
         },
         "gender": {
           "type": "integer"
         },
-        "password": {
+        "phone": {
           "type": "string"
         },
-        "status": {
+        "avatar": {
+          "type": "string"
+        },
+        "wechatStatus": {
+          "type": "integer"
+        },
+        "authStatus": {
           "type": "integer"
         }
       },
@@ -560,6 +1226,117 @@
       },
       "xml": {
         "name": "accountConfirmEmail"
+      }
+    },
+    "city": {
+      "type": "object",
+      "properties": {
+        "cityName": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "city"
+      }
+    },
+    "route": {
+      "type": "object",
+      "properties": {
+        "routeStartId": {
+          "type": "integer"
+        },
+        "routeStart": {
+          "type": "string"
+        },
+        "routeEndId": {
+          "type": "integer"
+        },
+        "routeEnd": {
+          "type": "string"
+        },
+        "distance": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "route"
+      }
+    },
+    "inquiry": {
+      "type": "object",
+      "properties": {
+        "routeId": {
+          "type": "integer"
+        },
+        "serviceType": {
+          "type": "integer"
+        },
+        "modelId": {
+          "type": "integer"
+        },
+        "carFlag": {
+          "type": "integer"
+        },
+        "vacationMoney": {
+          "type": "integer"
+        },
+        "fee": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "inquiry"
+      }
+    },
+    "supplier": {
+      "type": "object",
+      "properties": {
+        "supplierAbb": {
+          "type": "string"
+        },
+        "supplierName": {
+          "type": "string"
+        },
+        "mark": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "supplier"
+      }
+    },
+    "supplierBank": {
+      "type": "object",
+      "properties": {
+        "supplierId": {
+          "type": "integer"
+        },
+        "bank": {
+          "type": "string"
+        },
+        "bankCode": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "supplierBank"
+      }
+    },
+    "supplierBankDel": {
+      "type": "object",
+      "properties": {
+        "supplierId": {
+          "type": "integer"
+        },
+        "bankId": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "supplierBankDel"
       }
     }
   }
