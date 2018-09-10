@@ -12,7 +12,7 @@
       "url": "https://github.com/maguon/log_records"
     }
   },
-  "host": "localhost:9101",
+  "host": "stg.myxxjs.com:9101",
   "basePath": "/api",
   "tags": [
     {
@@ -960,9 +960,9 @@
             "type": "integer"
           },
           {
-            "name": "supplierAdd",
+            "name": "supplierAbb",
             "in": "query",
-            "description": "supplierAdd",
+            "description": "supplierAbb",
             "required": false,
             "type": "string"
           },
@@ -972,6 +972,71 @@
             "description": "supplierName",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/supplier"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/supplier/{supplierId}": {
+      "put": {
+        "tags": [
+          "supplier"
+        ],
+        "summary": "supplier update",
+        "description": "supplier update",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "supplierId",
+            "in": "path",
+            "description": "supplierId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "supplier",
+            "in": "body",
+            "description": "supplier",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/supplier"
+            }
           }
         ],
         "responses": {
@@ -1091,7 +1156,7 @@
       }
     },
     "/user/{userId}/supplierBank/{supplierId}/bank/{bankId}": {
-      "post": {
+      "delete": {
         "tags": [
           "supplier"
         ],
@@ -1109,13 +1174,18 @@
             "type": "integer"
           },
           {
-            "name": "supplierBankDel",
-            "in": "body",
+            "name": "supplierId",
+            "in": "path",
             "description": "supplierBankDel",
             "required": true,
-            "schema": {
-              "$ref": "#/definitions/supplierBankDel"
-            }
+            "type": "integer"
+          },
+          {
+            "name": "bankId",
+            "in": "path",
+            "description": "bankId",
+            "required": true,
+            "type": "integer"
           }
         ],
         "responses": {
@@ -1235,7 +1305,7 @@
       }
     },
     "/user/{userId}/supplierContact/{supplierId}/contact/{ContactId}": {
-      "post": {
+      "delete": {
         "tags": [
           "supplier"
         ],
@@ -1253,13 +1323,18 @@
             "type": "integer"
           },
           {
-            "name": "supplierContactDel",
-            "in": "body",
-            "description": "supplierContactDel",
+            "name": "supplierId",
+            "in": "path",
+            "description": "supplierId",
             "required": true,
-            "schema": {
-              "$ref": "#/definitions/supplierContactDel"
-            }
+            "type": "integer"
+          },
+          {
+            "name": "contactId",
+            "in": "path",
+            "description": "contactId",
+            "required": true,
+            "type": "integer"
           }
         ],
         "responses": {
@@ -1469,20 +1544,6 @@
         "name": "supplierBank"
       }
     },
-    "supplierBankDel": {
-      "type": "object",
-      "properties": {
-        "supplierId": {
-          "type": "integer"
-        },
-        "bankId": {
-          "type": "integer"
-        }
-      },
-      "xml": {
-        "name": "supplierBankDel"
-      }
-    },
     "supplierContact": {
       "type": "object",
       "properties": {
@@ -1501,20 +1562,6 @@
       },
       "xml": {
         "name": "supplierContact"
-      }
-    },
-    "supplierContactDel": {
-      "type": "object",
-      "properties": {
-        "supplierId": {
-          "type": "integer"
-        },
-        "contactId": {
-          "type": "integer"
-        }
-      },
-      "xml": {
-        "name": "supplierContactDel"
       }
     }
   }
