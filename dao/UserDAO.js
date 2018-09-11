@@ -118,7 +118,7 @@ const updatePassword=(params,callback)=>{
         logger.debug('updatePassword');
         callback(error,rows);
     });
-}
+};
 const updatePhone=(params,callback)=>{
     var query = "update user_info set phone = ? where id = ? ";
     var paramsArray = [],i=0;
