@@ -12,26 +12,30 @@ const addSupplierBank = (params,callback) => {
     paramsArray[i++] = params.supplierId;
     paramsArray[i++] = params.bank;
     paramsArray[i++] = params.bankCode;
-    paramsArray[i] = params.name;
+    paramsArray[i] = params.accountName;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('addSupplierBank');
         callback(error,rows);
     })
 }
 const querySupplierBank = (params,callback) => {
-    let query = "select sbi.* from supplier_bank sbi left join supplier_info si on si.id=sbi.supplier_id where sbi.id is not null ";
+    let query = "select sb.* from supplier_bank sb left join supplier_info si on si.id=sb.supplier_id where sb.id is not null ";
     let paramsArray = [],i=0;
+    if(params.supplierId){
+        paramsArray[i++] = params.supplierId;
+        query = query + " and sb.supplier_id = ? ";
+    }
     if(params.bank){
         paramsArray[i++] = params.bank;
-        query = query + " and sbi.bank = ? ";
+        query = query + " and sb.bank = ? ";
     }
     if(params.bankCode){
         paramsArray[i++] = params.bankCode;
-        query = query + " and sbi.bank_code = ? ";
+        query = query + " and sb.bank_code = ? ";
     }
-    if(params.name){
-        paramsArray[i++] = params.name;
-        query = query + " and sbi.name = ? ";
+    if(params.accountName){
+        paramsArray[i++] = params.accountName;
+        query = query + " and sb.account_name = ? ";
     }
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('querySupplierBank');

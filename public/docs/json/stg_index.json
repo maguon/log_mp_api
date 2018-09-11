@@ -941,7 +941,7 @@
         }
       }
     },
-    "/supplier": {
+    "/user/{userId}/querySupplier": {
       "get": {
         "tags": [
           "supplier"
@@ -953,6 +953,13 @@
         ],
         "parameters": [
           {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
             "name": "supplierId",
             "in": "query",
             "description": "supplierId",
@@ -960,16 +967,16 @@
             "type": "integer"
           },
           {
-            "name": "supplierAbb",
+            "name": "supplierShort",
             "in": "query",
-            "description": "supplierAbb",
+            "description": "supplierShort",
             "required": false,
             "type": "string"
           },
           {
-            "name": "supplierName",
+            "name": "supplierFull",
             "in": "query",
-            "description": "supplierName",
+            "description": "supplierFull",
             "required": false,
             "type": "string"
           },
@@ -1055,7 +1062,7 @@
         }
       }
     },
-    "/user/{userId}/supplierBank": {
+    "/user/{userId}/supplier/{supplierId}/bank": {
       "post": {
         "tags": [
           "supplier"
@@ -1070,6 +1077,13 @@
             "name": "userId",
             "in": "path",
             "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "supplierId",
+            "in": "path",
+            "description": "supplierId",
             "required": true,
             "type": "integer"
           },
@@ -1099,7 +1113,7 @@
         }
       }
     },
-    "/supplierBank": {
+    "/user/{userId}/supplier/{supplierId}queryBank": {
       "get": {
         "tags": [
           "supplier"
@@ -1110,6 +1124,13 @@
           "application/json"
         ],
         "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
           {
             "name": "supplierId",
             "in": "query",
@@ -1132,9 +1153,9 @@
             "type": "string"
           },
           {
-            "name": "name",
+            "name": "accountName",
             "in": "query",
-            "description": "name",
+            "description": "accountName",
             "required": false,
             "type": "string"
           }
@@ -1155,7 +1176,7 @@
         }
       }
     },
-    "/user/{userId}/supplierBank/{supplierId}/bank/{bankId}": {
+    "/user/{userId}/supplier/{supplierId}/bank/{bankId}": {
       "delete": {
         "tags": [
           "supplier"
@@ -1204,7 +1225,7 @@
         }
       }
     },
-    "/user/{userId}/supplierContact": {
+    "/user/{userId}/supplier/{supplierId}/contact": {
       "post": {
         "tags": [
           "supplier"
@@ -1219,6 +1240,13 @@
             "name": "userId",
             "in": "path",
             "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "supplierId",
+            "in": "path",
+            "description": "supplierId",
             "required": true,
             "type": "integer"
           },
@@ -1248,7 +1276,7 @@
         }
       }
     },
-    "/supplierContact": {
+    "/user/{userId}/supplier/{supplierId}/queryContact": {
       "get": {
         "tags": [
           "supplier"
@@ -1304,7 +1332,7 @@
         }
       }
     },
-    "/user/{userId}/supplierContact/{supplierId}/contact/{ContactId}": {
+    "/user/{userId}/supplier/{supplierId}/contact/{ContactId}": {
       "delete": {
         "tags": [
           "supplier"
@@ -1510,10 +1538,10 @@
     "supplier": {
       "type": "object",
       "properties": {
-        "supplierAbb": {
+        "supplierShort": {
           "type": "string"
         },
-        "supplierName": {
+        "supplierFull": {
           "type": "string"
         },
         "mark": {
@@ -1527,9 +1555,6 @@
     "supplierBank": {
       "type": "object",
       "properties": {
-        "supplierId": {
-          "type": "integer"
-        },
         "bank": {
           "type": "string"
         },
@@ -1547,9 +1572,6 @@
     "supplierContact": {
       "type": "object",
       "properties": {
-        "supplierId": {
-          "type": "integer"
-        },
         "name": {
           "type": "string"
         },

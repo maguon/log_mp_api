@@ -5,11 +5,11 @@ const resUtil = require('../util/ResponseUtil.js');
 const sysMsg = require('../util/SystemMsg.js');
 const sysError = require('../util/SystemError.js');
 const logger = serverLogger.createLogger('City.js');
-const cityDAO = require('../dao/CityDAO.js');
+const cityInfoDAO = require('../dao/CityInfoDAO.js');
 
 const addCity = (req,res,next) =>{
     let params = req.params;
-    cityDAO.addCity(params,(error,result)=>{
+    cityInfoDAO.addCity(params,(error,result)=>{
         if(error){
             logger.error('addCity' + error.message);
             throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
@@ -22,7 +22,7 @@ const addCity = (req,res,next) =>{
 }
 const queryCity = (req,res,next) => {
     let params = req.params;
-    cityDAO.queryCity(params,(error,result)=>{
+    cityInfoDAO.queryCity(params,(error,result)=>{
         if(error){
             logger.error('queryCity' + error.message);
             throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
@@ -35,7 +35,7 @@ const queryCity = (req,res,next) => {
 }
 const updateCity = (req,res,next) =>{
     let params = req.params;
-    cityDAO.updateCity(params,(error,result)=>{
+    cityInfoDAO.updateCity(params,(error,result)=>{
         if(error){
             logger.error('updateCity' + error.message);
             throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
