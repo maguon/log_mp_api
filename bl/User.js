@@ -85,23 +85,13 @@ const updatePhone=(req,res,next)=>{
 };
 const queryUser = (req,res,next)=>{
     let params = req.params;
-    userDao.queryUser(params,(error,rows)=>{
+    userDao.queryUser(params,(error,result)=>{
         if(error){
             logger.error('queryUser' + error.message);
             throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
         }else{
-            let user = {
-                id:rows[0].id,
-                userName:rows[0].user_name,
-                gender:rows[0].gender,
-                phone:rows[0].phone,
-                authzaTime:rows[0].authza_time,
-                authTime:rows[0].auth_time,
-                lastLoginOn:rows[0].last_login_on,
-                wechatId:rows[0].wechat_id
-            }
             logger.info('queryUser' + 'success');
-            resUtil.resetQueryRes(res,user,null);
+            resUtil.resetQueryRes(res,result,null);
             return next();
         }
     });
