@@ -7,7 +7,7 @@ const httpUtil = require('../util/HttpUtil');
 const db = require('../db/connection/MysqlDb.js');
 
 const addSupplier = (params,callback) => {
-    let query = "insert into supplier_info(supplier_abb,supplier_name,mark) values(?,?,?)";
+    let query = "insert into supplier_info(supplier_short,supplier_full,mark) values(?,?,?)";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.supplierAbb;
     paramsArray[i++] = params.supplierName;

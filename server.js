@@ -95,7 +95,7 @@ function createServer() {
     server.post({path:'/api/userLogin',contentType: 'application/json'},user.userLogin);
     server.put({path:'/api/user/:id',contentType: 'application/json'},user.updateUser);
     server.put({path:'/api/user/:id/password',contentType: 'application/json'},user.updatePassword);
-    server.put({path:'/api/user/:id/status/:status',contentType: 'application/json'},user.updateStatus);
+    server.put({path:'/api/admin/:adminId/user/:id/status/:status',contentType: 'application/json'},user.updateStatus);
     server.put({path:'/api/user/:id/phone/:phone',contentType: 'application/json'},user.updatePhone);
     /**
      emil
@@ -123,14 +123,14 @@ function createServer() {
      supplier_info
      */
     server.post({path:'/api/user/:userId/supplier',contentType: 'application/json'},supplier.addSupplier);
-    server.get('/api/supplier',supplier.querySupplier);
+    server.get('/api/user/:userId/supplier',supplier.querySupplier);
     server.put({path:'/api/user/:userId/supplier/:supplierId',contentType: 'application/json'},supplier.updateSupplier);
-    server.post({path:'/api/user/:userId/supplierBank',contentType: 'application/json'},supplierBank.addSupplierBank);
-    server.get('/api/supplierBank',supplierBank.querySupplierBank);
-    server.del({path:'/api/user/:userId/supplierBank/:supplierId/bank/:bankId',contentType: 'application/json'},supplierBank.delSupplierBank);
-    server.post({path:'/api/user/:userId/supplierContact',contentType: 'application/json'},supplierContact.addSupplierContact);
-    server.get('/api/supplierContact',supplierContact.querySupplierContact);
-    server.del({path:'/api/user/:userId/supplierContact/:supplierId/contact/:contactId',contentType: 'application/json'},supplierContact.delSupplierContact);
+    server.post({path:'/api/user/:userId/supplier/:supplierId/bank',contentType: 'application/json'},supplierBank.addSupplierBank);
+    server.get('/api/user/userId/supplierBank',supplierBank.querySupplierBank);
+    server.del({path:'/api/user/:userId/supplier/:supplierId/bank/:bankId',contentType: 'application/json'},supplierBank.delSupplierBank);
+    server.post({path:'/api/user/:userId/supplier/:supplierId/contact',contentType: 'application/json'},supplierContact.addSupplierContact);
+    server.get('/api/user/:userId/supplier/:supplierId/contact',supplierContact.querySupplierContact);
+    server.del({path:'/api/user/:userId/supplier/:supplierId/contact/:contactId',contentType: 'application/json'},supplierContact.delSupplierContact);
 
 
     server.on('NotFound', function (req, res ,next) {
