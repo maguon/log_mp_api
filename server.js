@@ -9,7 +9,7 @@ const logger = serverLogger.createLogger('Server');
 
 const wechatBl = require('./bl/WechatBl');
 const user = require('./bl/User.js');
-const email = require('./bl/Email.js');
+//const email = require('./bl/Email.js');
 const city = require('./bl/City.js');
 const route = require('./bl/Route.js');
 const inquiry = require('./bl/Inquiry.js');
@@ -100,8 +100,8 @@ function createServer() {
     /**
      emil
      */
-    server.post({path:'/api/accountConfirmEmail',contentType: 'application/json'},email.sendAccountConfirmEmail);
-    server.get('/api/queryMailRecord',email.queryMailRecord);
+    //server.post({path:'/api/accountConfirmEmail',contentType: 'application/json'},email.sendAccountConfirmEmail);
+    //server.get('/api/queryMailRecord',email.queryMailRecord);
     /**
      city_info
      */
