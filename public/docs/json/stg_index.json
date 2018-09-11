@@ -749,7 +749,7 @@
     "/route": {
       "get": {
         "tags": [
-          "city"
+          "route"
         ],
         "summary": "route query",
         "description": "route query",
@@ -812,7 +812,7 @@
     "/user/{userId}/route": {
       "post": {
         "tags": [
-          "city"
+          "route"
         ],
         "summary": "route add",
         "description": "route add",
@@ -856,7 +856,7 @@
     "/user/{userId}/route/{routeId}": {
       "put": {
         "tags": [
-          "city"
+          "route"
         ],
         "summary": "route update",
         "description": "route update",
