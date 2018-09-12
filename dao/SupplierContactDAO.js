@@ -19,19 +19,23 @@ const addSupplierContact = (params,callback) => {
     })
 }
 const querySupplierContact = (params,callback) => {
-    let query = "select sci.* from supplier_contact sci left join supplier_info si on si.id=sci.supplier_id where 1=1 ";
+    let query = "select sc.* from supplier_contact sc left join supplier_info si on si.id=sc.supplier_id where 1=1 ";
     let paramsArray = [],i=0;
+    if(params.supplierId){
+        paramsArray[i++] = params.supplierId;
+        query = query + " and sc.supplier_id = ? ";
+    }
     if(params.name){
         paramsArray[i++] = params.name;
-        query = query + " and sci.name = ? ";
+        query = query + " and sc.name = ? ";
     }
     if(params.position){
         paramsArray[i++] = params.position;
-        query = query + " and sci.position = ? ";
+        query = query + " and sc.position = ? ";
     }
     if(params.phone){
         paramsArray[i++] = params.phone;
-        query = query + " and sci.phone = ? ";
+        query = query + " and sc.phone = ? ";
     }
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('querySupplierContact');

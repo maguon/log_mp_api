@@ -6,6 +6,8 @@ const sysMsg = require('../util/SystemMsg.js');
 const sysError = require('../util/SystemError.js');
 const logger = serverLogger.createLogger('Supplier.js');
 const supplierDAO = require('../dao/SupplierDAO.js');
+const supplierBankDAO = require('../dao/SupplierBankDAO.js');
+const supplierContactDAO = require('../dao/SupplierContactDAO.js')
 
 const addSupplier = (req,res,next) => {
     let params = req.params;
@@ -48,23 +50,45 @@ const updateSupplier = (req,res,next) => {
 }
 const delSupplier = (req,res,next) => {
     let params = req.params;
-    supplierDAO.delBank(params,(error,result)=>{
+    supplierBankDAO.querySupplierBank(params,(error,rows)=>{
         if(error){
             logger.error('delBank' + error.message);
             throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
+        }else if(rows && rows.length > 0){
+            supplierDAO.delBank(params,(error,result)=>{
+                if(error){
+                    logger.error('delBank' + error.message);
+                    throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
+                }else{
+                    logger.info('delBank' + 'success');
+                    resUtil.resetUpdateRes(res,result,null);
+                    return next();
+                }
+            })
         }else{
-            logger.info('delBank' + 'success');
-            resUtil.resetUpdateRes(res,result,null);
+            logger.warn('delBank' + '已经清空');
+            resUtil.resetQueryRes(res,'已经清空');
             return next();
         }
     })
-    supplierDAO.delContact(params,(error,result)=>{
+    supplierContactDAO.querySupplierContact(params,(error,rows)=>{
         if(error){
             logger.error('delContact' + error.message);
             throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
+        }else if(rows && rows.length > 0){
+            supplierDAO.delContact(params,(error,result)=>{
+                if(error){
+                    logger.error('delContact' + error.message);
+                    throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
+                }else{
+                    logger.info('delContact' + 'success');
+                    resUtil.resetUpdateRes(res,result,null);
+                    return next();
+                }
+            })
         }else{
-            logger.info('delContact' + 'success');
-            resUtil.resetUpdateRes(res,result,null);
+            logger.warn('delContact' + '已经清空');
+            resUtil.resetQueryRes(res,'已经清空');
             return next();
         }
     })
