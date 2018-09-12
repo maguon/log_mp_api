@@ -18,8 +18,8 @@ const addCity = (params,callback) =>{
 const queryCity = (params,callback) =>{
     let query = "select * from city_info where id is not null ";
     let paramsArray = [],i=0;
-    if(params.Cityid){
-        paramsArray[i++] = params.Cityid;
+    if(params.cityid){
+        paramsArray[i++] = params.cityid;
         query = query + " and id = ? "
     }
     if(params.cityName){
