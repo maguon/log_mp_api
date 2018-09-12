@@ -65,7 +65,7 @@
         ],
         "parameters": [
           {
-            "name": "id",
+            "name": "userId",
             "in": "query",
             "description": "user id",
             "required": false,
@@ -100,16 +100,16 @@
             "type":"integer"
           },
           {
-            "name": "authzaStartTime",
+            "name": "createdOnStart",
             "in": "query",
-            "description": "user authzaStartTime",
+            "description": "user createdOnStart",
             "required": false,
             "type":"integer"
           },
           {
-            "name": "authzaEndTime",
+            "name": "createdOnEnd",
             "in": "query",
-            "description": "user authzaEndTime",
+            "description": "user createdOnEnd",
             "required": false,
             "type":"integer"
           },
@@ -1044,6 +1044,48 @@
             "schema": {
               "$ref": "#/definitions/supplier"
             }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/supplier"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/delSupplier/{supplierId}": {
+      "delete": {
+        "tags": [
+          "supplier"
+        ],
+        "summary": "supplier del",
+        "description": "supplier del",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "supplierId",
+            "in": "path",
+            "description": "supplierId",
+            "required": true,
+            "type": "integer"
           }
         ],
         "responses": {
