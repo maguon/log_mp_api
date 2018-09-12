@@ -290,7 +290,7 @@
         }
       }
     },
-    "/admin/{admin}/user/{id}/status/{status}": {
+    "/admin/{admin}/user/{id}/wechatStatus/{wechatStatus}": {
       "put": {
         "tags": [
           "user"
@@ -316,9 +316,9 @@
             "type": "integer"
           },
           {
-            "name": "status",
+            "name": "wechatStatus",
             "in": "path",
-            "description": "user info",
+            "description": "wechatStatus",
             "required": true,
             "type": "integer"
           }

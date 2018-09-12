@@ -95,7 +95,7 @@ function createServer() {
     server.post({path:'/api/userLogin',contentType: 'application/json'},user.userLogin);
     server.put({path:'/api/user/:id',contentType: 'application/json'},user.updateUser);
     server.put({path:'/api/user/:id/password',contentType: 'application/json'},user.updatePassword);
-    server.put({path:'/api/admin/:adminId/user/:id/status/:status',contentType: 'application/json'},user.updateStatus);
+    server.put({path:'/api/admin/:adminId/user/:id/wechatStatus/:wechatStatus',contentType: 'application/json'},user.updateStatus);
     server.put({path:'/api/user/:id/phone/:phone',contentType: 'application/json'},user.updatePhone);
     /**
      emil

@@ -130,9 +130,9 @@ const updatePhone=(params,callback)=>{
     });
 }
 const updateStatus=(params,callback)=>{
-    var query = "update user_info set status = ? where id = ? ";
+    var query = "update user_info set wechat_status = ? where id = ? ";
     var paramsArray =[],i=0;
-    paramsArray[i++] = params.status;
+    paramsArray[i++] = params.wechatStatus;
     paramsArray[i++] = params.id;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('updateStatus');
