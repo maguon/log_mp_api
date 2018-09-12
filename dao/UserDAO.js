@@ -41,13 +41,13 @@ const queryUser = (params,callback) => {
         paramsArray[i++] = params.wechatStatus;
         query = query + " and wechat_status = ? "
     }
-    if(params.authzaStartTime){
-        paramsArray[i++] = params.authzaStartTime;
-        query = query + " and authza_time >= ? "
+    if(params.createdOnStart){
+        paramsArray[i++] = params.createdOnStart;
+        query = query + " and created_on >= ? "
     }
-    if(params.authzaEndTime){
-        paramsArray[i++] = params.authzaEndTime;
-        query = query + " and authza_time <= ? "
+    if(params.createdOnEnd){
+        paramsArray[i++] = params.createdOnEnd;
+        query = query + " and created_on <= ? "
     }
     if(params.authStartTime){
         paramsArray[i++] = params.authStartTime;

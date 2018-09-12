@@ -125,6 +125,7 @@ function createServer() {
     server.post({path:'/api/user/:userId/supplier',contentType: 'application/json'},supplier.addSupplier);
     server.get('/api/user/:userId/querySupplier',supplier.querySupplier);
     server.put({path:'/api/user/:userId/supplier/:supplierId',contentType: 'application/json'},supplier.updateSupplier);
+    server.del({path:'/api/user/:userId/delSupplier/:supplierId',contentType: 'application/json'},supplier.delSupplier);
     server.post({path:'/api/user/:userId/supplier/:supplierId/bank',contentType: 'application/json'},supplierBank.addSupplierBank);
     server.get('/api/user/:userId/supplier/:supplierId/queryBank',supplierBank.querySupplierBank);
     server.del({path:'/api/user/:userId/supplier/:supplierId/bank/:bankId',contentType: 'application/json'},supplierBank.delSupplierBank);

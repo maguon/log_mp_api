@@ -54,8 +54,38 @@ const updateSupplier = (params,callback) => {
         callback(error,rows);
     })
 }
+const delBank = (params,callback) => {
+    let query = "delete from supplier_bank where supplier_id = ?";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.supplierId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('delBank');
+        callback(error,rows);
+    })
+}
+const delContact = (params,callback) => {
+    let query = "delete from supplier_contact where supplier_id = ?";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.supplierId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('delContact');
+        callback(error,rows);
+    })
+}
+const delSupplier = (params,callback) => {
+    let query = "delete from supplier_info where id = ?";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.supplierId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('delSupplier');
+        callback(error,rows);
+    })
+}
 module.exports = {
     addSupplier,
     querySupplier,
-    updateSupplier
+    updateSupplier,
+    delBank,
+    delContact,
+    delSupplier
 }

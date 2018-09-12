@@ -46,9 +46,42 @@ const updateSupplier = (req,res,next) => {
         }
     })
 }
-
+const delSupplier = (req,res,next) => {
+    let params = req.params;
+    supplierDAO.delBank(params,(error,result)=>{
+        if(error){
+            logger.error('delBank' + error.message);
+            throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
+        }else{
+            logger.info('delBank' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
+    supplierDAO.delContact(params,(error,result)=>{
+        if(error){
+            logger.error('delContact' + error.message);
+            throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
+        }else{
+            logger.info('delContact' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
+    supplierDAO.delSupplier(params,(error,result)=>{
+        if(error){
+            logger.error('delSupplier' + error.message);
+            throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
+        }else{
+            logger.info('delSupplier' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
+}
 module.exports = {
     addSupplier,
     querySupplier,
-    updateSupplier
+    updateSupplier,
+    delSupplier,
 }
