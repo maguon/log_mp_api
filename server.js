@@ -66,7 +66,7 @@ function createServer() {
     restify.CORS.ALLOW_HEADERS.push("Access-Control-Allow-Methods","PUT");
     restify.CORS.ALLOW_HEADERS.push("Access-Control-Allow-Methods","DELETE");
     restify.CORS.ALLOW_HEADERS.push("Access-Control-Allow-Headers","accept,api-version, content-length, content-md5,x-requested-with,content-type, date, request-id, response-time");
-
+    server.use(restify.CORS());
     var STATIS_FILE_RE = /\.(css|js|jpe?g|png|gif|less|eot|svg|bmp|tiff|ttf|otf|woff|pdf|ico|json|wav|ogg|mp3?|xml|woff2|map)$/i;
     server.get(STATIS_FILE_RE, restify.serveStatic({ directory: './public/docs', default: 'index.html', maxAge: 0 }));
 
