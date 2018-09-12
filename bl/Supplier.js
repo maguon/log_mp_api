@@ -66,7 +66,7 @@ const delSupplier = (req,res,next) => {
                 }
             })
         }else{
-            logger.warn('delBank' + '已经清空');
+            logger.info('delBank' + '已经清空');
             resUtil.resetQueryRes(res,'已经清空');
             return next();
         }
@@ -87,7 +87,7 @@ const delSupplier = (req,res,next) => {
                 }
             })
         }else{
-            logger.warn('delContact' + '已经清空');
+            logger.info('delContact' + '已经清空');
             resUtil.resetQueryRes(res,'已经清空');
             return next();
         }

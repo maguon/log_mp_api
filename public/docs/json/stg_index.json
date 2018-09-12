@@ -290,7 +290,7 @@
         }
       }
     },
-    "/user/{id}/status/{status}": {
+    "/admin/{admin}/user/{id}/status/{status}": {
       "put": {
         "tags": [
           "user"
@@ -301,6 +301,13 @@
           "application/json"
         ],
         "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
           {
             "name": "id",
             "in": "path",
@@ -1470,19 +1477,7 @@
           "type": "string"
         },
         "gender": {
-          "type": "string"
-        },
-        "phone": {
-          "type": "string"
-        },
-        "type": {
           "type": "integer"
-        },
-        "status": {
-          "type": "integer"
-        },
-        "wechatId": {
-          "type": "string"
         }
       },
       "xml": {
@@ -1603,7 +1598,7 @@
         "bankCode": {
           "type": "string"
         },
-        "name": {
+        "accountName": {
           "type": "string"
         }
       },
