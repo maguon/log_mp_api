@@ -1337,10 +1337,17 @@
         ],
         "parameters": [
           {
+            "name": "userId",
+            "in": "query",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
             "name": "supplierId",
             "in": "query",
             "description": "supplierId",
-            "required": false,
+            "required": true,
             "type": "integer"
           },
           {
