@@ -1182,7 +1182,7 @@
           },
           {
             "name": "supplierId",
-            "in": "query",
+            "in": "path",
             "description": "supplierId",
             "required": true,
             "type": "integer"
@@ -1338,14 +1338,14 @@
         "parameters": [
           {
             "name": "userId",
-            "in": "query",
+            "in": "path",
             "description": "userId",
             "required": true,
             "type": "integer"
           },
           {
             "name": "supplierId",
-            "in": "query",
+            "in": "path",
             "description": "supplierId",
             "required": true,
             "type": "integer"
