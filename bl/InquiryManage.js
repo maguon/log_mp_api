@@ -90,12 +90,27 @@ const getInquiryManageOrder = (req,res,next) => {
             throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
         }else{
             let inquiryManageOrder = {
+                inquiryManageOrderId: rows[0].id,
                 estimatedTotalFreight: rows[0].estimated_total_freight,
                 negotiatingTotalFreight: rows[0].negotiating_total_freight,
-                mark: rows[0].mark
+                mark: rows[0].mark,
+                createdOn: rows[0].created_on + '00:00:00'
             }
             logger.info('getInquiryManageOrder' + 'success');
             resUtil.resetQueryRes(res,inquiryManageOrder,null);
+            return next();
+        }
+    })
+}
+const updateInquiryManageOrderStatus = (req,res,next) => {
+    let params = req.params;
+    inquiryManageDAO.updateInquiryManageOrderStatus(params,(error,result)=>{
+        if(error){
+            logger.error('updateInquiryManageOrderStatus' + error.message);
+            throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
+        }else{
+            logger.info('updateInquiryManageOrderStatus' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
             return next();
         }
     })
@@ -106,5 +121,6 @@ module.exports = {
     updateInquiryManageStatus,
     getInquiryManageCar,
     addInquiryManageOrder,
-    getInquiryManageOrder
+    getInquiryManageOrder,
+    updateInquiryManageOrderStatus
 }

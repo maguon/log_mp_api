@@ -107,11 +107,23 @@ const getInquiryManageOrder = (params,callback) => {
         callback(error,rows);
     })
 }
+const updateInquiryManageOrderStatus = (params,callback) => {
+    let query = "update inquiry_manage_order set status = ?,mark = ? where id = ? ";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.status;
+    paramsArray[i++] = params.mark;
+    paramsArray[i] = params.inquiryManageOrderId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('updateInquiryManageOrderStatus');
+        callback(error,rows);
+    })
+}
 module.exports = {
     getInquiryManage,
     getInquiryManageId,
     updateInquiryManageStatus,
     getInquiryManageCar,
     addInquiryManageOrder,
-    getInquiryManageOrder
+    getInquiryManageOrder,
+    updateInquiryManageOrderStatus
 }

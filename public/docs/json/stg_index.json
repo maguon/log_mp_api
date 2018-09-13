@@ -40,6 +40,10 @@
       "description":"inquiry of log api"
     },
     {
+      "name": "inquiryManage",
+      "description":"inquiryManage of log api"
+    },
+    {
       "name": "supplier",
       "description":"supplier of log api"
     },
@@ -593,6 +597,388 @@
               "type": "object",
               "items": {
                 "$ref": "#/definitions/inquiry"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/inquiryManage": {
+      "get": {
+        "tags": [
+          "inquiryManage"
+        ],
+        "summary": "inquiryManage query",
+        "description": "inquiryManage query",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "customerId",
+            "in": "query",
+            "description": "customerId",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "phone",
+            "in": "query",
+            "description": "phone",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "routeStart",
+            "in": "query",
+            "description": "routeStart",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "routeEnd",
+            "in": "query",
+            "description": "routeEnd",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "serviceModule",
+            "in": "query",
+            "description": "serviceModule",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "inquiryTimeStart",
+            "in": "query",
+            "description": "inquiryTimeStart",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "inquiryTimeEnd",
+            "in": "query",
+            "description": "inquiryTimeEnd",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "status",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryManage"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/inquiryManage/{inquiryManageId}": {
+      "get": {
+        "tags": [
+          "inquiryManage"
+        ],
+        "summary": "inquiryManage query by id",
+        "description": "inquiryManage query by id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "inquiryManageId",
+            "in": "path",
+            "description": "inquiryManageId",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryManage"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/inquiryManage/{inquiryManageId}/status/{status}": {
+      "put": {
+        "tags": [
+          "inquiryManage"
+        ],
+        "summary": "inquiryManage update",
+        "description": "inquiryManage update",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "inquiryManageId",
+            "in": "path",
+            "description": "inquiryManageId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "path",
+            "description": "status",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryManage"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/inquiryManage/{inquiryManageId}/inquiryManageCar": {
+      "get": {
+        "tags": [
+          "inquiryManage"
+        ],
+        "summary": "inquiryManageCar query by inquiryManageId",
+        "description": "inquiryManageCar query by inquiryManageId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "inquiryManageId",
+            "in": "path",
+            "description": "inquiryManageId",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryManage"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/inquiryManage/{inquiryManageId}/inquiryManageOrder": {
+      "post": {
+        "tags": [
+          "inquiryManage"
+        ],
+        "summary": "inquiryManageOrder query by inquiryManageId",
+        "description": "inquiryManageOrder query by inquiryManageId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "inquiryManageId",
+            "in": "path",
+            "description": "inquiryManageId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "inquiryManageOrder",
+            "in": "body",
+            "description": "inquiryManageOrder",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/inquiryManageOrder"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryManage"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/inquiryManage/{inquiryManageId}/inquiryManageOrderQuery": {
+      "get": {
+        "tags": [
+          "inquiryManage"
+        ],
+        "summary": "inquiryManageOrderQuery",
+        "description": "inquiryManageOrderQuery",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "inquiryManageId",
+            "in": "path",
+            "description": "inquiryManageId",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryManage"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/inquiryManageOrder/{inquiryManageOrderId}/inquiryManageOrderUpdate": {
+      "put": {
+        "tags": [
+          "inquiryManage"
+        ],
+        "summary": "inquiryManageOrderUpdate",
+        "description": "inquiryManageOrderUpdate",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "inquiryManageOrderId",
+            "in": "path",
+            "description": "inquiryManageOrderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "inquiryManageOrderUpdate",
+            "in": "body",
+            "description": "inquiryManageOrderUpdate",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/inquiryManageOrderUpdate"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryManage"
               }
             }
           },
@@ -1570,9 +1956,37 @@
         },
         "vacationMoney": {
           "type": "integer"
-        },
-        "fee": {
+        }
+      },
+      "xml": {
+        "name": "inquiry"
+      }
+    },
+    "inquiryManageOrder": {
+      "type": "object",
+      "properties": {
+        "estimatedTotalFreight": {
           "type": "integer"
+        },
+        "negotiatingTotalFreight": {
+          "type": "integer"
+        },
+        "mark": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "inquiry"
+      }
+    },
+    "inquiryManageOrderUpdate": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "integer"
+        },
+        "mark": {
+          "type": "string"
         }
       },
       "xml": {

@@ -16,6 +16,7 @@ const inquiry = require('./bl/Inquiry.js');
 const supplier = require('./bl/Supplier.js');
 const supplierBank = require('./bl/SupplierBank.js');
 const supplierContact = require('./bl/SupplierContact.js');
+const inquiryManage = require('./bl/InquiryManage.js');
 
 
 /**
@@ -119,6 +120,17 @@ function createServer() {
      */
     server.post({path:'/api/user/:userId/inquiry',contentType: 'application/json'},inquiry.addRouteInquiry);
     server.get('/api/inquiry',inquiry.queryRouteInquiry);
+    /**
+     inquiry_manage_info
+     */
+    server.get('/api/user/:userId/inquiryManage',inquiryManage.getInquiryManage);
+    server.get('/api/user/:userId/inquiryManage/:inquiryManageId',inquiryManage.getInquiryManageId);
+    server.put({path:'/api/user/:userId/inquiryManage/:inquiryManageId/status/:status',contentType: 'application/json'},inquiryManage.updateInquiryManageStatus);
+    server.get('/api/user/:userId/inquiryManage/:inquiryManageId/inquiryManageCar',inquiryManage.getInquiryManageCar);
+    server.post('/api/user/:userId/inquiryManage/:inquiryManageId/inquiryManageOrder',inquiryManage.addInquiryManageOrder);
+    server.get('/api/user/:userId/inquiryManage/:inquiryManageId/inquiryManageOrderQuery',inquiryManage.getInquiryManageOrder);
+    server.put({path:'/api/user/:userId/inquiryManageOrder/:inquiryManageOrderId/inquiryManageOrderUpdate',contentType: 'application/json'},inquiryManage.updateInquiryManageOrderStatus);
+
     /**
      supplier_info
      */
