@@ -37,7 +37,7 @@ const updatePassword=(req,res,next)=>{
                 resUtil.resetFailedRes(res,"原密码错误");
                 return next();
             }else{
-                resolve(encrypt.encryptByMd5(params.newPassword));
+                resolve();
             }
         })
     }).then(() => {
@@ -55,7 +55,8 @@ const updatePassword=(req,res,next)=>{
     })
 }
 const updateStatus=(req,res,next)=>{
-    var params = req.params;
+    let params = req.params;
+    new Promise.all(params)
     userDao.updateStatus(params,(error,result)=>{
         if(error){
             logger.error('updateStatus' + error.message);
