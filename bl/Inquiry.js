@@ -27,15 +27,14 @@ const queryRouteInquiry = (req,res,next) => {
             logger.error('addRouteInquiry' + error.message);
             throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
         }else{
-            let inquiry = {
+            let inquiry = [{
                 routeId: rows[0].route_id,
                 distance:rows[0].distance,
                 serviceType: rows[0].service_type,
                 modelId: rows[0].model_id,
                 carFlag: rows[0].car_flag,
-                vacationMoney: rows[0].vacation_money,
-                fee: rows[0].distance * rows[0].car_flag
-            }
+                vacationMoney: rows[0].vacation_money
+            }]
             logger.info('queryRouteInquiry' + 'success');
             resUtil.resetQueryRes(res,inquiry,null);
             return next();
