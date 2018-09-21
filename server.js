@@ -87,6 +87,7 @@ function createServer() {
     }));
 
     server.get('/api/wechat/:code/openid',wechatBl.getUserIdByCode);
+    server.post({path:'/api/user/:userId/wechat',contentType: 'application/json'},wechatBl.unifiedOrder);
 
     /**
      user

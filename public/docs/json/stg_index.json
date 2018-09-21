@@ -57,6 +57,50 @@
   ],
 
   "paths": {
+    "/user/{userId}/wechat": {
+      "post": {
+        "tags": [
+          "wechat"
+        ],
+        "summary": "wechat unifiedOrder",
+        "description": "wechat unifiedOrder",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "wechat unifiedOrder",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "user",
+            "in": "body",
+            "description": "user info",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/wechat"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/password"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
     "/user": {
       "get": {
         "tags": [
@@ -2042,6 +2086,17 @@
       },
       "xml": {
         "name": "supplierContact"
+      }
+    },
+    "wechat": {
+      "type": "object",
+      "properties": {
+        "totalFee": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "wechat"
       }
     }
   }
