@@ -40,7 +40,7 @@ const getInquiryManageId = (req,res,next) => {
             logger.error('getInquiryManageId' + error.message);
             throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
         }else{
-            let inquiryManage = {
+            let inquiryManage = [{
                 routeStart: rows[0].route_start,
                 routeEnd: rows[0].route_end,
                 inquiryName: rows[0].inquiry_name,
@@ -49,7 +49,7 @@ const getInquiryManageId = (req,res,next) => {
                 inquiryManageId: rows[0].id,
                 status: rows[0].status,
                 inquiryTime: rows[0].created_on
-            }
+            }]
             logger.info('getInquiryManageId' + 'success');
             resUtil.resetQueryRes(res,inquiryManage,null);
             return next();
@@ -89,13 +89,13 @@ const getInquiryManageOrder = (req,res,next) => {
             logger.error('getInquiryManageOrder' + error.message);
             throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
         }else{
-            let inquiryManageOrder = {
+            let inquiryManageOrder = [{
                 inquiryManageOrderId: rows[0].id,
                 estimatedTotalFreight: rows[0].estimated_total_freight,
                 negotiatingTotalFreight: rows[0].negotiating_total_freight,
                 mark: rows[0].mark,
                 createdOn: rows[0].created_on + '00:00:00'
-            }
+            }]
             logger.info('getInquiryManageOrder' + 'success');
             resUtil.resetQueryRes(res,inquiryManageOrder,null);
             return next();
