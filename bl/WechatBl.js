@@ -1,3 +1,4 @@
+'use strict'
 const wechatDAO = require('../dao/WechatDAO.js');
 const serverLogger = require('../util/ServerLogger.js');
 const resUtil = require('../util/ResponseUtil.js');
