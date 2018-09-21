@@ -23,6 +23,7 @@ const addRoute = (req,res,next) =>{
 
 const queryRoute = (req,res,next) =>{
     let params = req.params;
+    let paramsNull = [];
     routeDAO.getRoute(params,(error,rows)=>{
         if(error){
             logger.error('addRoute' + error.message);
@@ -30,7 +31,7 @@ const queryRoute = (req,res,next) =>{
         }
         else if(rows && rows.length < 1){
             logger.warn('queryRouteInquiry' + sysMsg.SYS_INQUIRY_ERROR_MSG);
-            resUtil.resetFailedRes(res,sysMsg.SYS_INQUIRY_ERROR_MSG);
+            resUtil.resetQueryRes(res,paramsNull);
             return next();
         }else{
             let route = {
