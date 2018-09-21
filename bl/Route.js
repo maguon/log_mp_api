@@ -23,7 +23,7 @@ const addRoute = (req,res,next) =>{
 
 const queryRoute = (req,res,next) =>{
     let params = req.params;
-    let paramsNull = {};
+    let paramsNull = [{}];
     routeDAO.getRoute(params,(error,rows)=>{
         if(error){
             logger.error('addRoute' + error.message);
