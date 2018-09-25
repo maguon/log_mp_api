@@ -9,13 +9,24 @@ const cityInfoDAO = require('../dao/CityInfoDAO.js');
 
 const addCity = (req,res,next) =>{
     let params = req.params;
-    cityInfoDAO.addCity(params,(error,result)=>{
+    cityInfoDAO.queryCity(params,(error,rows)=>{
         if(error){
-            logger.error('addCity' + error.message);
+            logger.error('queryCity' + error.message);
             throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
+        }else if(rows && rows.length < 1){
+            cityInfoDAO.addCity(params,(error,result)=>{
+                if(error){
+                    logger.error('addCity' + error.message);
+                    throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
+                }else{
+                    logger.info('addCity' + 'success');
+                    resUtil.resetCreateRes(res,result,null);
+                    return next();
+                }
+            })
         }else{
-            logger.info('addCity' + 'success');
-            resUtil.resetCreateRes(res,result,null);
+            logger.warn('queryCity' + '已经添加该城市');
+            resUtil.resetFailedRes(res,'已经添加该城市');
             return next();
         }
     })
