@@ -78,9 +78,9 @@ const getAdminUserByIdInquiry = (params,callback) => {
 }
 const getAdminByRouteId = (params,callback) => {
     let query = " select im.service_module,im.created_on,im.status,cri.route_start,cri.route_end from inquiry_manage im " +
-        " left join city_route_info cri on cri.route_id=im.route_id " +
-        " left join city_info ci on ci.id=im.user_id " +
-        " where im.user_id = ? and im.id = ?";
+                " left join city_route_info cri on cri.route_id=im.route_id " +
+                " left join city_info ci on ci.id=im.user_id " +
+                " where im.user_id = ? and im.id = ?";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.userId;
     paramsArray[i] = params.inquiryManageId;
@@ -91,10 +91,10 @@ const getAdminByRouteId = (params,callback) => {
 }
 const getAdminUserIdRouteId = (params,callback) => {
     let query = "select count(*) as 'count',imc.* from inquiry_manage im " +
-        "left join city_info ci on ci.id=im.user_id " +
-        "left join inquiry_manage_car imc on imc.route_id = im.route_id " +
-        "left join city_route_info cri on cri.route_id=im.route_id " +
-        "where im.user_id = ? and im.id = ? and im.route_id = ? ";
+                "left join city_info ci on ci.id=im.user_id " +
+                "left join inquiry_manage_car imc on imc.route_id = im.route_id " +
+                "left join city_route_info cri on cri.route_id=im.route_id " +
+                "where im.user_id = ? and im.id = ? and im.route_id = ? ";
     let paramsArray = [],i=0;
         paramsArray[i++] = params.userId;
         paramsArray[i++] = params.inquiryManageId;
@@ -106,10 +106,10 @@ const getAdminUserIdRouteId = (params,callback) => {
 }
 const getAdminUserIdRouteIdOrder = (params,callback) => {
     let query = "select imo.* from inquiry_manage im " +
-        "left join city_info ci on ci.id=im.user_id " +
-        "left join inquiry_manage_order imo on imo.route_id = im.route_id " +
-        "left join city_route_info cri on cri.route_id=im.route_id " +
-        "where im.user_id = ? and im.id = ? and im.route_id = ? ";
+                "left join city_info ci on ci.id=im.user_id " +
+                "left join inquiry_manage_order imo on imo.route_id = im.route_id " +
+                "left join city_route_info cri on cri.route_id=im.route_id " +
+                "where im.user_id = ? and im.id = ? and im.route_id = ? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.userId;
     paramsArray[i++] = params.inquiryManageId;
@@ -132,8 +132,8 @@ const getAdminUserContact = (params,callback) => {
 }
 const getAdminUserBank = (params,callback) => {
     let query = "select imb.bank,imb.bank_code,imb.account_name from inquiry_manage_bank imb " +
-        "left join user_info ui on imb.user_id=ui.id " +
-        "where ui.id = ? ";
+                "left join user_info ui on imb.user_id=ui.id " +
+                "where ui.id = ? ";
     let paramsArray = [],i=0;
     paramsArray[i] = params.userId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
@@ -143,8 +143,8 @@ const getAdminUserBank = (params,callback) => {
 }
 const getAdminUserInvoice = (params,callback) => {
     let query = "select imi.company_name,imi.tax_number,imi.company_address,imi.bank,imi.bank_code,imi.company_phone from inquiry_manage_invoice imi " +
-        "left join user_info ui on imi.user_id=ui.id " +
-        "where ui.id = ? ";
+                "left join user_info ui on imi.user_id=ui.id " +
+                "where ui.id = ? ";
     let paramsArray = [],i=0;
     paramsArray[i] = params.userId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
