@@ -65,9 +65,9 @@ const getAdminUserById = (params,callback) => {
     })
 }
 const getAdminUserByIdInquiry = (params,callback) => {
-    let query = " select im.*,cri.route_start,cri.route_end from inquiry_manage im " +
+    let query = " select count(*) as 'count',im.*,cri.route_start,cri.route_end from inquiry_manage im " +
                 " left join city_route_info cri on cri.route_id=im.route_id " +
-                " left join city_info ci on ci.id=im.user_id " +
+                " left join user_info ui on ui.id=im.user_id " +
                 " where im.user_id = ? ";
     let paramsArray = [],i=0;
         paramsArray[i] = params.userId;
@@ -76,16 +76,79 @@ const getAdminUserByIdInquiry = (params,callback) => {
         callback(error,rows)
     })
 }
+const getAdminByRouteId = (params,callback) => {
+    let query = " select im.service_module,im.created_on,im.status,cri.route_start,cri.route_end from inquiry_manage im " +
+        " left join city_route_info cri on cri.route_id=im.route_id " +
+        " left join city_info ci on ci.id=im.user_id " +
+        " where im.user_id = ? and im.id = ?";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.userId;
+    paramsArray[i] = params.inquiryManageId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('getAdminUserById');
+        callback(error,rows)
+    })
+}
 const getAdminUserIdRouteId = (params,callback) => {
-    let query = "select im.*,cri.route_start,cri.route_end from inquiry_manage im " +
-        "left join city_route_info cri on cri.route_id=im.route_id " +
+    let query = "select count(*) as 'count',imc.* from inquiry_manage im " +
         "left join city_info ci on ci.id=im.user_id " +
-        "where im.user_id = ? and im.route_id = ?  ";
+        "left join inquiry_manage_car imc on imc.route_id = im.route_id " +
+        "left join city_route_info cri on cri.route_id=im.route_id " +
+        "where im.user_id = ? and im.id = ? and im.route_id = ? ";
     let paramsArray = [],i=0;
         paramsArray[i++] = params.userId;
-        paramsArray[i] = params.userId;
+        paramsArray[i++] = params.inquiryManageId;
+        paramsArray[i] = params.routeId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('getAdminUserIdRouteId');
+        callback(error,rows)
+    })
+}
+const getAdminUserIdRouteIdOrder = (params,callback) => {
+    let query = "select imo.* from inquiry_manage im " +
+        "left join city_info ci on ci.id=im.user_id " +
+        "left join inquiry_manage_order imo on imo.route_id = im.route_id " +
+        "left join city_route_info cri on cri.route_id=im.route_id " +
+        "where im.user_id = ? and im.id = ? and im.route_id = ? ";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.userId;
+    paramsArray[i++] = params.inquiryManageId;
+    paramsArray[i] = params.routeId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('getAdminUserIdRouteIdOrder');
+        callback(error,rows)
+    })
+}
+const getAdminUserContact = (params,callback) => {
+    let query = "select imc.name,imc.phone,imc.address from inquiry_manage_contact imc " +
+                "left join user_info ui on imc.user_id=ui.id " +
+                "where ui.id = ? ";
+    let paramsArray = [],i=0;
+    paramsArray[i] = params.userId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('getAdminUserConst');
+        callback(error,rows)
+    })
+}
+const getAdminUserBank = (params,callback) => {
+    let query = "select imb.bank,imb.bank_code,imb.account_name from inquiry_manage_bank imb " +
+        "left join user_info ui on imb.user_id=ui.id " +
+        "where ui.id = ? ";
+    let paramsArray = [],i=0;
+    paramsArray[i] = params.userId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('getAdminUserBank');
+        callback(error,rows)
+    })
+}
+const getAdminUserInvoice = (params,callback) => {
+    let query = "select imi.company_name,imi.tax_number,imi.company_address,imi.bank,imi.bank_code,imi.company_phone from inquiry_manage_invoice imi " +
+        "left join user_info ui on imi.user_id=ui.id " +
+        "where ui.id = ? ";
+    let paramsArray = [],i=0;
+    paramsArray[i] = params.userId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('getAdminUserInvoice');
         callback(error,rows)
     })
 }
@@ -93,5 +156,10 @@ module.exports = {
     getAdminUser,
     getAdminUserById,
     getAdminUserByIdInquiry,
-    getAdminUserIdRouteId
+    getAdminUserIdRouteId,
+    getAdminByRouteId,
+    getAdminUserIdRouteIdOrder,
+    getAdminUserContact,
+    getAdminUserBank,
+    getAdminUserInvoice
 }

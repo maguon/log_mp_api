@@ -17,6 +17,7 @@ const supplier = require('./bl/Supplier.js');
 const supplierBank = require('./bl/SupplierBank.js');
 const supplierContact = require('./bl/SupplierContact.js');
 const inquiryManage = require('./bl/InquiryManage.js');
+const adminUser = require('./bl/AdminUser.js');
 
 
 /**
@@ -89,6 +90,18 @@ function createServer() {
     server.get('/api/wechat/:code/openid',wechatBl.getUserIdByCode);
     server.post({path:'/api/user/:userId/wechat',contentType: 'application/json'},wechatBl.unifiedOrder);
 
+    /**
+     用户管理
+     */
+    server.get('/api/admin/:adminId/user',adminUser.getAdminUser);
+    server.get('/api/admin/:adminId/wechatUser/:userId',adminUser.getAdminUserById);
+    server.get('/api/admin/:adminId/wechatUser/:userId/inquiry',adminUser.getAdminUserByIdInquiry);
+    server.get('/api/admin/:adminId/wechatUser/:userId/inquiry/:inquiryManageId/route/:routeId',adminUser.getAdminUserIdRouteId);
+    server.get('/api/admin/:adminId/wechatUser/:userId/inquiryOrder/:inquiryManageId/route/:routeId',adminUser.getAdminUserIdRouteIdOrder);
+    server.get('/api/admin/:adminId/wechatUser/:userId/inquiryManage/:inquiryManageId',adminUser.getAdminByRouteId);
+    server.get('/api/admin/:adminId/wechatUser/:userId/contact',adminUser.getAdminUserContact);
+    server.get('/api/admin/:adminId/wechatUser/:userId/bank',adminUser.getAdminUserBank);
+    server.get('/api/admin/:adminId/wechatUser/:userId/invoice',adminUser.getAdminUserInvoice);
     /**
      user
      */

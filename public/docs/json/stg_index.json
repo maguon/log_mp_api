@@ -429,6 +429,489 @@
         }
       }
     },
+    "/admin/{adminId}/user": {
+      "get": {
+        "tags": [
+          "adminUser"
+        ],
+        "summary": "adminUser query",
+        "description": "adminUser query",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "userId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "userName",
+            "in": "query",
+            "description": "userName",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "phone",
+            "in": "query",
+            "description": "phone",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "wechatStatus",
+            "in": "query",
+            "description": "wechatStatus",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "createdOnStart",
+            "in": "query",
+            "description": "createdOnStart",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "createdOnEnd",
+            "in": "query",
+            "description": "createdOnEnd",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "authTimeStart",
+            "in": "query",
+            "description": "authTimeStart",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "authTimeEnd",
+            "in": "query",
+            "description": "authTimeEnd",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "authStatus",
+            "in": "query",
+            "description": "authStatus",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/adminUser"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/wechatUser/{userId}": {
+      "get": {
+        "tags": [
+          "adminUser"
+        ],
+        "summary": "adminUser query by user id",
+        "description": "adminUser query by user id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/adminUser"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/wechatUser/{userId}/inquiry": {
+      "get": {
+        "tags": [
+          "adminUser"
+        ],
+        "summary": "adminUser query by user id look route",
+        "description": "adminUser query by user id look route",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/adminUser"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/wechatUser/{userId}/inquiryManage/{inquiryManageId}": {
+      "get": {
+        "tags": [
+          "adminUser"
+        ],
+        "summary": "adminUser query by user id look route",
+        "description": "adminUser query by user id look route",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "inquiryManageId",
+            "in": "path",
+            "description": "inquiryManageId",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/adminUser"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/wechatUser/{userId}/inquiry/{inquiryManageId}/route/{routeId}": {
+      "get": {
+        "tags": [
+          "adminUser"
+        ],
+        "summary": "adminUser query by routeId look route",
+        "description": "adminUser query routeId id look route",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "inquiryManageId",
+            "in": "path",
+            "description": "inquiryManageId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "routeId",
+            "in": "path",
+            "description": "routeId",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/adminUser"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/wechatUser/{userId}/inquiryOrder/{inquiryManageId}/route/{routeId}": {
+      "get": {
+        "tags": [
+          "adminUser"
+        ],
+        "summary": "adminUser query by routeId look route",
+        "description": "adminUser query routeId id look route",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "inquiryManageId",
+            "in": "path",
+            "description": "inquiryManageId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "routeId",
+            "in": "path",
+            "description": "routeId",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/adminUser"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/wechatUser/{userId}/contact": {
+      "get": {
+        "tags": [
+          "adminUser"
+        ],
+        "summary": "adminUser query by user id look contact",
+        "description": "adminUser query by user id look contact",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/adminUser"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/wechatUser/{userId}/bank": {
+      "get": {
+        "tags": [
+          "adminUser"
+        ],
+        "summary": "adminUser query by user id look bank",
+        "description": "adminUser query by user id look bank",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/adminUser"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/wechatUser/{userId}/invoice": {
+      "get": {
+        "tags": [
+          "adminUser"
+        ],
+        "summary": "adminUser query by user id look invoice",
+        "description": "adminUser query by user id look invoice",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/adminUser"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
     "/accountConfirmEmail": {
       "post": {
         "tags": [
@@ -665,7 +1148,7 @@
             "name": "userId",
             "in": "path",
             "description": "userId",
-            "required": true,
+            "required": false,
             "type": "integer"
           },
           {
