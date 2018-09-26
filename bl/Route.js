@@ -24,24 +24,13 @@ const addRoute = (req,res,next) =>{
 const queryRoute = (req,res,next) =>{
     let params = req.params;
     let paramsNull = [];
-    routeDAO.getRoute(params,(error,rows)=>{
+    routeDAO.getRoute(params,(error,result)=>{
         if(error){
             logger.error('addRoute' + error.message);
             throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
-        }
-        else if(rows && rows.length < 1){
-            logger.warn('queryRouteInquiry' + sysMsg.SYS_INQUIRY_ERROR_MSG);
-            resUtil.resetQueryRes(res,paramsNull);
-            return next();
         }else{
-            let route = [{
-                routeId: rows[0].route_id,
-                routeStartId: rows[0].route_start_id,
-                routeEndId: rows[0].route_end_id,
-                distance: rows[0].distance
-        }]
             logger.info('queryRoute' + 'success');
-            resUtil.resetQueryRes(res,route,null);
+            resUtil.resetQueryRes(res,result,null);
             return next();
         }
     })
