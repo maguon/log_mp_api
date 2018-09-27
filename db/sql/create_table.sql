@@ -96,3 +96,111 @@ CREATE TABLE `user_info` (
   `updated_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ----------------------------
+-- Table structure for inquiry_bank
+-- ----------------------------
+DROP TABLE IF EXISTS `inquiry_bank`;
+CREATE TABLE `inquiry_bank` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL DEFAULT '1' COMMENT '用户id',
+  `bank` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '银行名称',
+  `bank_code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '卡号',
+  `account_name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '姓名',
+  `status` tinyint(1) NOT NULL DEFAULT '1',
+  `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ----------------------------
+-- Table structure for inquiry_car
+-- ----------------------------
+DROP TABLE IF EXISTS `inquiry_car`;
+CREATE TABLE `inquiry_car` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `inquiry_id` int(11) NOT NULL,
+  `model_id` int(10) NOT NULL COMMENT '车型ID',
+  `old_car` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否新车(1-是,2-否)',
+  `plan` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '估值',
+  `fee` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '预计运费',
+  `car_num` int(10) NOT NULL DEFAULT '0',
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '状态',
+  `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ----------------------------
+-- Table structure for inquiry_contact
+-- ----------------------------
+DROP TABLE IF EXISTS `inquiry_contact`;
+CREATE TABLE `inquiry_contact` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL DEFAULT '1' COMMENT '用户id',
+  `name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '姓名',
+  `phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '电话号码',
+  `city` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `address` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '地址',
+  `status` tinyint(1) NOT NULL DEFAULT '1',
+  `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ----------------------------
+-- Table structure for inquiry_info
+-- ----------------------------
+DROP TABLE IF EXISTS `inquiry_info`;
+CREATE TABLE `inquiry_info` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `route_id` int(10) NOT NULL COMMENT '路线id',
+  `service_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '服务方式',
+  `model_id` int(10) NOT NULL DEFAULT '1' COMMENT '车型ID',
+  `old_car` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否新车(1-是,2-否)',
+  `car_num` int(10) NOT NULL DEFAULT '0' COMMENT '车数量',
+  `fee` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '预计费用',
+  `plan` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '估值',
+  `phone` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '电话',
+  `inquiry_name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'name',
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1：询价中2：已询价3：生成订单4：取消订单',
+  `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ----------------------------
+-- Table structure for inquiry_invoice
+-- ----------------------------
+DROP TABLE IF EXISTS `inquiry_invoice`;
+CREATE TABLE `inquiry_invoice` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `company_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '企业名称',
+  `tax_number` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '企业税号',
+  `company_address` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '公司地址',
+  `bank` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '开户行',
+  `bank_code` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '银行账号',
+  `company_phone` varchar(11) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '企业电话',
+  `status` tinyint(1) NOT NULL DEFAULT '1',
+  `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ----------------------------
+-- Table structure for inquiry_order
+-- ----------------------------
+DROP TABLE IF EXISTS `inquiry_order`;
+CREATE TABLE `inquiry_order` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `inquiry_id` int(11) NOT NULL,
+  `fee_price` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '预计总运费',
+  `freight_price` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '协商总运费',
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1:启用2:停用',
+  `mark` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '描述',
+  `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
