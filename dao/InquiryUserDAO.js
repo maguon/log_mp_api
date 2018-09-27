@@ -92,7 +92,7 @@ const getUserInquiryById = (params,callback) => {
 const getUserByIdInquiryIdRoute = (params,callback) => {
     let query = "select uc.model_id,uc.old_car,uc.plan,uc.fee,uc.car_num,uc.plan*uc.car_num as plan_sum,uc.car_num*uc.fee as fee_sum from inquiry_info ii " +
                 "left join user_info ui on ui.id=ii.user_id " +
-                "left join user_car uc on uc.inquiry_id = ii.id " +
+                "left join inquiry_car uc on uc.inquiry_id = ii.id " +
                 "where ii.user_id = ? and ii.id = ? ";
     let paramsArray = [],i=0;
         paramsArray[i++] = params.userId;
@@ -105,7 +105,7 @@ const getUserByIdInquiryIdRoute = (params,callback) => {
 const getUserIdRouteIdOrder = (params,callback) => {
     let query = "select uo.* from inquiry_info ii " +
                 "left join user_info ui on ui.id=ii.user_id " +
-                "left join user_order uo on uo.inquiry_id = ii.id " +
+                "left join inquiry_order uo on uo.inquiry_id = ii.id " +
                 "where ii.user_id = ? and ii.id = ? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.userId;
@@ -116,7 +116,7 @@ const getUserIdRouteIdOrder = (params,callback) => {
     })
 }
 const getUserContact = (params,callback) => {
-    let query = "select c.name,c.phone,c.city,c.address from contact c " +
+    let query = "select c.name,c.phone,c.city,c.address from inquiry_contact c " +
                 "left join user_info ui on c.user_id=ui.id " +
                 "where ui.id = ? ";
     let paramsArray = [],i=0;
@@ -127,7 +127,7 @@ const getUserContact = (params,callback) => {
     })
 }
 const getUserBank = (params,callback) => {
-    let query = "select ub.bank,ub.bank_code,ub.account_name from user_bank ub " +
+    let query = "select ub.bank,ub.bank_code,ub.account_name from inquiry_bank ub " +
                 "left join user_info ui on ub.user_id=ui.id " +
                 "where ui.id = ? ";
     let paramsArray = [],i=0;
@@ -138,7 +138,7 @@ const getUserBank = (params,callback) => {
     })
 }
 const getUserInvoice = (params,callback) => {
-    let query = "select uii.company_name,uii.tax_number,uii.company_address,uii.bank,uii.bank_code,uii.company_phone from user_invoice uii " +
+    let query = "select uii.company_name,uii.tax_number,uii.company_address,uii.bank,uii.bank_code,uii.company_phone from inquiry_invoice uii " +
                 "left join user_info ui on uii.user_id=ui.id " +
                 "where ui.id = ? ";
     let paramsArray = [],i=0;
