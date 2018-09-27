@@ -1785,6 +1785,13 @@
         ],
         "parameters": [
           {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
             "name": "routeId",
             "in": "path",
             "description": "routeId",
