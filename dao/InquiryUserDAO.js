@@ -11,7 +11,7 @@ const getAdminUser = (params,callback) => {
     let paramsArray = [],i=0;
     if(params.userId){
         paramsArray[i++] = params.userId;
-        query = query + " and is = ? ";
+        query = query + " and id = ? ";
     }
     if(params.userName){
         paramsArray[i++] = params.userName;

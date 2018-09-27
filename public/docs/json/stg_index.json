@@ -846,6 +846,125 @@
         }
       }
     },
+    "/admin/{adminId}/userInfo": {
+      "get": {
+        "tags": [
+          "inquiry"
+        ],
+        "summary": "adminUser query",
+        "description": "adminUser query",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "userId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "userName",
+            "in": "query",
+            "description": "userName",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "wechatAccount",
+            "in": "query",
+            "description": "wechatAccount",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "phone",
+            "in": "query",
+            "description": "phone",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "wechatStatus",
+            "in": "query",
+            "description": "wechatStatus",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "createdOnStart",
+            "in": "query",
+            "description": "createdOnStart",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "createdOnEnd",
+            "in": "query",
+            "description": "createdOnEnd",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "authTimeStart",
+            "in": "query",
+            "description": "authTimeStart",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "authTimeEnd",
+            "in": "query",
+            "description": "authTimeEnd",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "authStatus",
+            "in": "query",
+            "description": "authStatus",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiry"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
     "/user/{userId}/inquiry": {
       "post": {
         "tags": [
@@ -872,69 +991,6 @@
             "schema": {
               "$ref": "#/definitions/inquiry"
             }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/inquiry"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/inquiry": {
-      "get": {
-        "tags": [
-          "inquiry"
-        ],
-        "summary": "inquiry query",
-        "description": "inquiry query",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "routeId",
-            "in": "query",
-            "description": "routeId",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "serviceType",
-            "in": "query",
-            "description": "serviceType",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "modelId",
-            "in": "query",
-            "description": "modelId",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "carFlag",
-            "in": "query",
-            "description": "carFlag",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "vacationMoney",
-            "in": "query",
-            "description": "vacationMoney",
-            "required": false,
-            "type": "integer"
           }
         ],
         "responses": {
@@ -2368,10 +2424,19 @@
         "modelId": {
           "type": "integer"
         },
-        "carFlag": {
+        "oldCar": {
           "type": "integer"
         },
-        "vacationMoney": {
+        "phone": {
+          "type": "string"
+        },
+        "inquiryName": {
+          "type": "string"
+        },
+        "plan": {
+          "type": "integer"
+        },
+        "fee": {
           "type": "integer"
         }
       },

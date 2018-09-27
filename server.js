@@ -132,8 +132,8 @@ function createServer() {
     /**
      inquiry_info
      */
+    server.get('/api/admin/:adminId/userInfo',inquiry.getAdminUserInfo);
     server.post({path:'/api/user/:userId/inquiry',contentType: 'application/json'},inquiry.addRouteInquiry);
-    server.get('/api/inquiry',inquiry.queryRouteInquiry);
     /**
      inquiry_manage
      */
