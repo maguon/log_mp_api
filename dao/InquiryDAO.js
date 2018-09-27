@@ -7,7 +7,7 @@ const httpUtil = require('../util/HttpUtil');
 const db = require('../db/connection/MysqlDb.js');
 
 const addRouteInquiry = (params,callback) => {
-    let query = "insert into inquiry_info(route_id,service_type,model_id,car_flag,vacation_money)values(?,?,?,?,?)";
+    let query = "insert into inquiry_info(route_id,service_type,model_id,car_flag,vacation_money) values(?,?,?,?,?)";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.routeId;
     paramsArray[i++] = params.serviceType;

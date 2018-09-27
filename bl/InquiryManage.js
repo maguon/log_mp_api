@@ -35,23 +35,13 @@ const getInquiryManage = (req,res,next) => {
 }
 const getInquiryManageId = (req,res,next) => {
     let params = req.params;
-    inquiryManageDAO.getInquiryManageId(params,(error,rows)=>{
+    inquiryManageDAO.getInquiryManageId(params,(error,result)=>{
         if(error){
             logger.error('getInquiryManageId' + error.message);
             throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
         }else{
-            let inquiryManage = [{
-                routeStart: rows[0].route_start,
-                routeEnd: rows[0].route_end,
-                inquiryName: rows[0].inquiry_name,
-                customerId: rows[0].customer_id,
-                phone: rows[0].phone,
-                inquiryManageId: rows[0].id,
-                status: rows[0].status,
-                inquiryTime: rows[0].created_on
-            }]
             logger.info('getInquiryManageId' + 'success');
-            resUtil.resetQueryRes(res,inquiryManage,null);
+            resUtil.resetQueryRes(res,result,null);
             return next();
         }
     })
@@ -91,26 +81,13 @@ const getInquiryManageOrder = (req,res,next) => {
         }else{
             let inquiryManageOrder = [{
                 inquiryManageOrderId: rows[0].id,
-                estimatedTotalFreight: rows[0].estimated_total_freight,
-                negotiatingTotalFreight: rows[0].negotiating_total_freight,
+                estimatedTotalFreight: rows[0].fee_price,
+                negotiatingTotalFreight: rows[0].freight_price,
                 mark: rows[0].mark,
                 createdOn: rows[0].created_on + '00:00:00'
             }]
             logger.info('getInquiryManageOrder' + 'success');
             resUtil.resetQueryRes(res,inquiryManageOrder,null);
-            return next();
-        }
-    })
-}
-const updateInquiryManageOrderStatus = (req,res,next) => {
-    let params = req.params;
-    inquiryManageDAO.updateInquiryManageOrderStatus(params,(error,result)=>{
-        if(error){
-            logger.error('updateInquiryManageOrderStatus' + error.message);
-            throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
-        }else{
-            logger.info('updateInquiryManageOrderStatus' + 'success');
-            resUtil.resetUpdateRes(res,result,null);
             return next();
         }
     })
@@ -121,6 +98,5 @@ module.exports = {
     updateInquiryManageStatus,
     getInquiryManageCar,
     addInquiryManageOrder,
-    getInquiryManageOrder,
-    updateInquiryManageOrderStatus
+    getInquiryManageOrder
 }

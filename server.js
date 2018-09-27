@@ -91,7 +91,7 @@ function createServer() {
     server.post({path:'/api/user/:userId/wechat',contentType: 'application/json'},wechatBl.unifiedOrder);
 
     /**
-     用户管理
+     inquiry_user用户管理
      */
     server.get('/api/admin/:adminId/user',inquiryUser.getAdminUser);
     server.get('/api/inquiryUser/:userId',inquiryUser.getUserById);
@@ -135,15 +135,14 @@ function createServer() {
     server.post({path:'/api/user/:userId/inquiry',contentType: 'application/json'},inquiry.addRouteInquiry);
     server.get('/api/inquiry',inquiry.queryRouteInquiry);
     /**
-     inquiry_manage_info
+     inquiry_manage
      */
-    server.get('/api/user/:userId/inquiryManage',inquiryManage.getInquiryManage);
+    server.get('/api/admin/:adminId/inquiryManage',inquiryManage.getInquiryManage);
     server.get('/api/user/:userId/inquiryManage/:inquiryManageId',inquiryManage.getInquiryManageId);
     server.put({path:'/api/user/:userId/inquiryManage/:inquiryManageId/status/:status',contentType: 'application/json'},inquiryManage.updateInquiryManageStatus);
     server.get('/api/user/:userId/inquiryManage/:inquiryManageId/inquiryManageCar',inquiryManage.getInquiryManageCar);
     server.post('/api/user/:userId/inquiryManage/:inquiryManageId/inquiryManageOrder',inquiryManage.addInquiryManageOrder);
     server.get('/api/user/:userId/inquiryManage/:inquiryManageId/inquiryManageOrderQuery',inquiryManage.getInquiryManageOrder);
-    server.put({path:'/api/user/:userId/inquiryManageOrder/:inquiryManageOrderId/inquiryManageOrderUpdate',contentType: 'application/json'},inquiryManage.updateInquiryManageOrderStatus);
 
     /**
      supplier_info

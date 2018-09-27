@@ -40,6 +40,10 @@
       "description":"inquiry of log api"
     },
     {
+      "name": "inquiryUser",
+      "description":"inquiryUser of log api"
+    },
+    {
       "name": "inquiryManage",
       "description":"inquiryManage of log api"
     },
@@ -432,7 +436,7 @@
     "/admin/{adminId}/user": {
       "get": {
         "tags": [
-          "adminUser"
+          "inquiryUser"
         ],
         "summary": "adminUser query",
         "description": "adminUser query",
@@ -531,7 +535,7 @@
             "schema": {
               "type": "object",
               "items": {
-                "$ref": "#/definitions/adminUser"
+                "$ref": "#/definitions/inquiryUser"
               }
             }
           },
@@ -544,7 +548,7 @@
     "/inquiryUser/{userId}": {
       "get": {
         "tags": [
-          "adminUser"
+          "inquiryUser"
         ],
         "summary": "query by user id",
         "description": "query by user id",
@@ -566,7 +570,7 @@
             "schema": {
               "type": "object",
               "items": {
-                "$ref": "#/definitions/adminUser"
+                "$ref": "#/definitions/inquiryUser"
               }
             }
           },
@@ -579,7 +583,7 @@
     "/inquiryUser/{userId}/inquiry": {
       "get": {
         "tags": [
-          "adminUser"
+          "inquiryUser"
         ],
         "summary": "query by user id look inquiry",
         "description": "query by user id look inquiry",
@@ -601,7 +605,7 @@
             "schema": {
               "type": "object",
               "items": {
-                "$ref": "#/definitions/adminUser"
+                "$ref": "#/definitions/inquiryUser"
               }
             }
           },
@@ -614,7 +618,7 @@
     "/inquiryUser/{userId}/inquiry/{inquiryId}/": {
       "get": {
         "tags": [
-          "adminUser"
+          "inquiryUser"
         ],
         "summary": "query by user id and inquiryId look inquiry",
         "description": "query by user id look and inquiryId inquiry",
@@ -643,7 +647,7 @@
             "schema": {
               "type": "object",
               "items": {
-                "$ref": "#/definitions/adminUser"
+                "$ref": "#/definitions/inquiryUser"
               }
             }
           },
@@ -656,10 +660,10 @@
     "/inquiryUser/{userId}/inquiry/{inquiryId}/route": {
       "get": {
         "tags": [
-          "adminUser"
+          "inquiryUser"
         ],
-        "summary": "adminUser query by routeId look car",
-        "description": "adminUser query routeId id look car",
+        "summary": " query by routeId look car",
+        "description": " query routeId id look car",
         "produces": [
           "application/json"
         ],
@@ -685,7 +689,7 @@
             "schema": {
               "type": "object",
               "items": {
-                "$ref": "#/definitions/adminUser"
+                "$ref": "#/definitions/inquiryUser"
               }
             }
           },
@@ -698,10 +702,10 @@
     "/inquiryUser/{userId}/inquiry/{inquiryId}/order": {
       "get": {
         "tags": [
-          "adminUser"
+          "inquiryUser"
         ],
-        "summary": "adminUser query by routeId look order",
-        "description": "adminUser query by routeId id look order",
+        "summary": " query by routeId look order",
+        "description": " query by routeId id look order",
         "produces": [
           "application/json"
         ],
@@ -727,7 +731,7 @@
             "schema": {
               "type": "object",
               "items": {
-                "$ref": "#/definitions/adminUser"
+                "$ref": "#/definitions/inquiryUser"
               }
             }
           },
@@ -740,10 +744,10 @@
     "/inquiryUser/{userId}/contact": {
       "get": {
         "tags": [
-          "adminUser"
+          "inquiryUser"
         ],
-        "summary": "adminUser query by user id look contact",
-        "description": "adminUser query by user id look contact",
+        "summary": " query by user id look contact",
+        "description": " query by user id look contact",
         "produces": [
           "application/json"
         ],
@@ -762,7 +766,7 @@
             "schema": {
               "type": "object",
               "items": {
-                "$ref": "#/definitions/adminUser"
+                "$ref": "#/definitions/inquiryUser"
               }
             }
           },
@@ -775,10 +779,10 @@
     "/inquiryUser/{userId}/bank": {
       "get": {
         "tags": [
-          "adminUser"
+          "inquiryUser"
         ],
-        "summary": "adminUser query by user id look bank",
-        "description": "adminUser query by user id look bank",
+        "summary": " query by user id look bank",
+        "description": " query by user id look bank",
         "produces": [
           "application/json"
         ],
@@ -797,7 +801,7 @@
             "schema": {
               "type": "object",
               "items": {
-                "$ref": "#/definitions/adminUser"
+                "$ref": "#/definitions/inquiryUser"
               }
             }
           },
@@ -810,10 +814,10 @@
     "/inquiryUser/{userId}/invoice": {
       "get": {
         "tags": [
-          "adminUser"
+          "inquiryUser"
         ],
-        "summary": "adminUser query by user id look invoice",
-        "description": "adminUser query by user id look invoice",
+        "summary": " query by user id look invoice",
+        "description": " query by user id look invoice",
         "produces": [
           "application/json"
         ],
@@ -832,121 +836,7 @@
             "schema": {
               "type": "object",
               "items": {
-                "$ref": "#/definitions/adminUser"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/accountConfirmEmail": {
-      "post": {
-        "tags": [
-          "accountConfirmEmail"
-        ],
-        "summary": "accountConfirmEmail",
-        "description": "accountConfirmEmail",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "accountConfirmEmail",
-            "in": "body",
-            "description": "accountConfirmEmail",
-            "required": false,
-            "schema": {
-              "$ref": "#/definitions/accountConfirmEmail"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/email"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/queryMailRecord": {
-      "get": {
-        "tags": [
-          "accountConfirmEmail"
-        ],
-        "summary": "accountConfirmEmail queryMailRecord",
-        "description": "accountConfirmEmail queryMailRecord",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "query",
-            "description": "id",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "type",
-            "in": "query",
-            "description": "type",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "status",
-            "in": "query",
-            "description": "type",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "start",
-            "in": "query",
-            "description": "start",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "size",
-            "in": "query",
-            "description": "size",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "accountConfirmEmailStart",
-            "in": "query",
-            "description": "accountConfirmEmailStart",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "accountConfirmEmailEnd",
-            "in": "query",
-            "description": "accountConfirmEmailEnd",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/queryMailRecord"
+                "$ref": "#/definitions/inquiryUser"
               }
             }
           },
@@ -1063,7 +953,7 @@
         }
       }
     },
-    "/user/{userId}/inquiryManage": {
+    "/admin/{adminId}/inquiryManage": {
       "get": {
         "tags": [
           "inquiryManage"
@@ -1075,18 +965,18 @@
         ],
         "parameters": [
           {
+            "name": "adminId",
+            "in": "query",
+            "description": "adminId",
+            "required": true,
+            "type": "string"
+          },
+          {
             "name": "userId",
-            "in": "path",
+            "in": "query",
             "description": "userId",
             "required": false,
             "type": "integer"
-          },
-          {
-            "name": "customerId",
-            "in": "query",
-            "description": "customerId",
-            "required": false,
-            "type": "string"
           },
           {
             "name": "phone",
@@ -1110,9 +1000,9 @@
             "type": "string"
           },
           {
-            "name": "serviceModule",
+            "name": "serviceType",
             "in": "query",
-            "description": "serviceModule",
+            "description": "serviceType",
             "required": false,
             "type": "integer"
           },
@@ -1376,57 +1266,6 @@
             "description": "inquiryManageId",
             "required": true,
             "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/inquiryManage"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/user/{userId}/inquiryManageOrder/{inquiryManageOrderId}/inquiryManageOrderUpdate": {
-      "put": {
-        "tags": [
-          "inquiryManage"
-        ],
-        "summary": "inquiryManageOrderUpdate",
-        "description": "inquiryManageOrderUpdate",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "userId",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "inquiryManageOrderId",
-            "in": "path",
-            "description": "inquiryManageOrderId",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "inquiryManageOrderUpdate",
-            "in": "body",
-            "description": "inquiryManageOrderUpdate",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/inquiryManageOrderUpdate"
-            }
           }
         ],
         "responses": {
@@ -2286,6 +2125,120 @@
           }
         }
       }
+    },
+    "/accountConfirmEmail": {
+      "post": {
+        "tags": [
+          "accountConfirmEmail"
+        ],
+        "summary": "accountConfirmEmail",
+        "description": "accountConfirmEmail",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "accountConfirmEmail",
+            "in": "body",
+            "description": "accountConfirmEmail",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/accountConfirmEmail"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/email"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/queryMailRecord": {
+      "get": {
+        "tags": [
+          "accountConfirmEmail"
+        ],
+        "summary": "accountConfirmEmail queryMailRecord",
+        "description": "accountConfirmEmail queryMailRecord",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "id",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "type",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "type",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "size",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "accountConfirmEmailStart",
+            "in": "query",
+            "description": "accountConfirmEmailStart",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "accountConfirmEmailEnd",
+            "in": "query",
+            "description": "accountConfirmEmailEnd",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/queryMailRecord"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -2429,24 +2382,10 @@
     "inquiryManageOrder": {
       "type": "object",
       "properties": {
-        "estimatedTotalFreight": {
+        "feePrice": {
           "type": "integer"
         },
-        "negotiatingTotalFreight": {
-          "type": "integer"
-        },
-        "mark": {
-          "type": "string"
-        }
-      },
-      "xml": {
-        "name": "inquiry"
-      }
-    },
-    "inquiryManageOrderUpdate": {
-      "type": "object",
-      "properties": {
-        "status": {
+        "freightPrice": {
           "type": "integer"
         },
         "mark": {
