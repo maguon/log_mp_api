@@ -541,24 +541,17 @@
         }
       }
     },
-    "/admin/{adminId}/wechatUser/{userId}": {
+    "/inquiryUser/{userId}": {
       "get": {
         "tags": [
           "adminUser"
         ],
-        "summary": "adminUser query by user id",
-        "description": "adminUser query by user id",
+        "summary": "query by user id",
+        "description": "query by user id",
         "produces": [
           "application/json"
         ],
         "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "integer"
-          },
           {
             "name": "userId",
             "in": "path",
@@ -583,24 +576,17 @@
         }
       }
     },
-    "/admin/{adminId}/wechatUser/{userId}/inquiry": {
+    "/inquiryUser/{userId}/inquiry": {
       "get": {
         "tags": [
           "adminUser"
         ],
-        "summary": "adminUser query by user id look route",
-        "description": "adminUser query by user id look route",
+        "summary": "query by user id look inquiry",
+        "description": "query by user id look inquiry",
         "produces": [
           "application/json"
         ],
         "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "integer"
-          },
           {
             "name": "userId",
             "in": "path",
@@ -625,24 +611,17 @@
         }
       }
     },
-    "/admin/{adminId}/wechatUser/{userId}/inquiryManage/{inquiryManageId}": {
+    "/inquiryUser/{userId}/inquiry/{inquiryId}/": {
       "get": {
         "tags": [
           "adminUser"
         ],
-        "summary": "adminUser query by user id look route",
-        "description": "adminUser query by user id look route",
+        "summary": "query by user id and inquiryId look inquiry",
+        "description": "query by user id look and inquiryId inquiry",
         "produces": [
           "application/json"
         ],
         "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "integer"
-          },
           {
             "name": "userId",
             "in": "path",
@@ -651,9 +630,9 @@
             "type": "integer"
           },
           {
-            "name": "inquiryManageId",
+            "name": "inquiryId",
             "in": "path",
-            "description": "inquiryManageId",
+            "description": "inquiryId",
             "required": true,
             "type": "integer"
           }
@@ -674,24 +653,17 @@
         }
       }
     },
-    "/admin/{adminId}/wechatUser/{userId}/inquiry/{inquiryManageId}/route/{routeId}": {
+    "/inquiryUser/{userId}/inquiry/{inquiryId}/route": {
       "get": {
         "tags": [
           "adminUser"
         ],
-        "summary": "adminUser query by routeId look route",
-        "description": "adminUser query routeId id look route",
+        "summary": "adminUser query by routeId look car",
+        "description": "adminUser query routeId id look car",
         "produces": [
           "application/json"
         ],
         "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "integer"
-          },
           {
             "name": "userId",
             "in": "path",
@@ -700,16 +672,9 @@
             "type": "integer"
           },
           {
-            "name": "inquiryManageId",
+            "name": "inquiryId",
             "in": "path",
-            "description": "inquiryManageId",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "routeId",
-            "in": "path",
-            "description": "routeId",
+            "description": "inquiryId",
             "required": true,
             "type": "integer"
           }
@@ -730,24 +695,17 @@
         }
       }
     },
-    "/admin/{adminId}/wechatUser/{userId}/inquiryOrder/{inquiryManageId}/route/{routeId}": {
+    "/inquiryUser/{userId}/inquiry/{inquiryId}/order": {
       "get": {
         "tags": [
           "adminUser"
         ],
-        "summary": "adminUser query by routeId look route",
-        "description": "adminUser query routeId id look route",
+        "summary": "adminUser query by routeId look order",
+        "description": "adminUser query by routeId id look order",
         "produces": [
           "application/json"
         ],
         "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "integer"
-          },
           {
             "name": "userId",
             "in": "path",
@@ -756,16 +714,9 @@
             "type": "integer"
           },
           {
-            "name": "inquiryManageId",
+            "name": "inquiryId",
             "in": "path",
-            "description": "inquiryManageId",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "routeId",
-            "in": "path",
-            "description": "routeId",
+            "description": "inquiryId",
             "required": true,
             "type": "integer"
           }
@@ -786,7 +737,7 @@
         }
       }
     },
-    "/admin/{adminId}/wechatUser/{userId}/contact": {
+    "/inquiryUser/{userId}/contact": {
       "get": {
         "tags": [
           "adminUser"
@@ -798,13 +749,6 @@
         ],
         "parameters": [
           {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "integer"
-          },
-          {
             "name": "userId",
             "in": "path",
             "description": "userId",
@@ -828,7 +772,7 @@
         }
       }
     },
-    "/admin/{adminId}/wechatUser/{userId}/bank": {
+    "/inquiryUser/{userId}/bank": {
       "get": {
         "tags": [
           "adminUser"
@@ -840,13 +784,6 @@
         ],
         "parameters": [
           {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "integer"
-          },
-          {
             "name": "userId",
             "in": "path",
             "description": "userId",
@@ -870,7 +807,7 @@
         }
       }
     },
-    "/admin/{adminId}/wechatUser/{userId}/invoice": {
+    "/inquiryUser/{userId}/invoice": {
       "get": {
         "tags": [
           "adminUser"
@@ -881,13 +818,6 @@
           "application/json"
         ],
         "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "integer"
-          },
           {
             "name": "userId",
             "in": "path",
