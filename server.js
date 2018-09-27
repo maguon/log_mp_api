@@ -17,7 +17,7 @@ const supplier = require('./bl/Supplier.js');
 const supplierBank = require('./bl/SupplierBank.js');
 const supplierContact = require('./bl/SupplierContact.js');
 const inquiryManage = require('./bl/InquiryManage.js');
-const adminUser = require('./bl/AdminUser.js');
+const inquiryUser = require('./bl/InquiryUser.js');
 
 
 /**
@@ -93,15 +93,15 @@ function createServer() {
     /**
      用户管理
      */
-    server.get('/api/admin/:adminId/user',adminUser.getAdminUser);
-    server.get('/api/admin/:adminId/wechatUser/:userId',adminUser.getAdminUserById);
-    server.get('/api/admin/:adminId/wechatUser/:userId/inquiry',adminUser.getAdminUserByIdInquiry);
-    server.get('/api/admin/:adminId/wechatUser/:userId/inquiry/:inquiryManageId/route/:routeId',adminUser.getAdminUserIdRouteId);
-    server.get('/api/admin/:adminId/wechatUser/:userId/inquiryOrder/:inquiryManageId/route/:routeId',adminUser.getAdminUserIdRouteIdOrder);
-    server.get('/api/admin/:adminId/wechatUser/:userId/inquiryManage/:inquiryManageId',adminUser.getAdminByRouteId);
-    server.get('/api/admin/:adminId/wechatUser/:userId/contact',adminUser.getAdminUserContact);
-    server.get('/api/admin/:adminId/wechatUser/:userId/bank',adminUser.getAdminUserBank);
-    server.get('/api/admin/:adminId/wechatUser/:userId/invoice',adminUser.getAdminUserInvoice);
+    server.get('/api/admin/:adminId/user',inquiryUser.getAdminUser);
+    server.get('/api/inquiryUser/:userId',inquiryUser.getUserById);
+    server.get('/api/inquiryUser/:userId/inquiry',inquiryUser.getUserByIdInquiry);
+    server.get('/api/inquiryUser/:userId/inquiry/:inquiryId',inquiryUser.getUserInquiryById);
+    server.get('/api/inquiryUser/:userId/inquiry/:inquiryId/route',inquiryUser.getUserByIdInquiryIdRoute);
+    server.get('/api/inquiryUser/:userId/inquiry/:inquiryId/order',inquiryUser.getUserIdRouteIdOrder);
+    server.get('/api/inquiryUser/:userId/contact',inquiryUser.getUserContact);
+    server.get('/api/inquiryUser/:userId/bank',inquiryUser.getUserBank);
+    server.get('/api/inquiryUser/:userId/invoice',inquiryUser.getUserInvoice);
     /**
      user
      */
