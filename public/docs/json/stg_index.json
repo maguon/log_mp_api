@@ -1712,13 +1712,6 @@
             "type": "integer"
           },
           {
-            "name": "supplierId",
-            "in": "query",
-            "description": "supplierId",
-            "required": false,
-            "type": "integer"
-          },
-          {
             "name": "supplierShort",
             "in": "query",
             "description": "supplierShort",
@@ -1731,6 +1724,20 @@
             "description": "supplierFull",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "setType",
+            "in": "query",
+            "description": "setType",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "transType",
+            "in": "query",
+            "description": "transType",
+            "required": false,
+            "type": "integer"
           },
           {
             "name": "start",
@@ -2469,6 +2476,12 @@
         },
         "supplierFull": {
           "type": "string"
+        },
+        "setType": {
+          "type": "integer"
+        },
+        "transType": {
+          "type": "integer"
         },
         "mark": {
           "type": "string"

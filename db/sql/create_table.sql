@@ -36,7 +36,7 @@ CREATE TABLE `supplier_bank` (
   `supplier_id` int(11) NOT NULL COMMENT '供应商id',
   `bank` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '银行名称',
   `bank_code` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '卡号',
-  `account_name` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '姓名',
+  `account_name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '姓名',
   `status` tinyint(1) NOT NULL DEFAULT '1',
   `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -65,8 +65,10 @@ CREATE TABLE `supplier_contact` (
 DROP TABLE IF EXISTS `supplier_info`;
 CREATE TABLE `supplier_info` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `supplier_short` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '供应商简称',
-  `supplier_full` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '供应商全称',
+  `supplier_short` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '供应商简称',
+  `supplier_full` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '供应商全称',
+  `set_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '结算方式',
+  `trans_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '运输方式',
   `mark` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `status` tinyint(1) NOT NULL DEFAULT '1',
   `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
