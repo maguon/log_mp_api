@@ -25,6 +25,19 @@ const getInquiryOrderByInquiryId = (params,callback) => {
         callback(error,rows)
     })
 }
+const addInquiryOrder = (params,callback) => {
+    let query = "insert into inquiry_order(inquiry_id,fee_price,freight_price,mark) values(?,?,?,?) ";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.inquiryId;
+    paramsArray[i++] = params.feePrice;
+    paramsArray[i++] = params.freightPrice;
+    paramsArray[i] = params.mark;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('addInquiryOrder');
+        callback(error,rows);
+    })
+}
 module.exports = {
-    getInquiryOrderByInquiryId
+    getInquiryOrderByInquiryId,
+    addInquiryOrder
 }

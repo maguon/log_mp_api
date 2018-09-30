@@ -37,12 +37,70 @@ const getInquiryByUserId = (params,callback) => {
         paramsArray[i] = params.inquiryId;
         query = query + " and ii.id = ? "
     }
+    if(params.phone){
+        paramsArray[i++] = params.phone;
+        query = query + " and ii.phone = ? ";
+    }
+    if(params.routeStart){
+        paramsArray[i++] = params.routeStart;
+        query = query + " and cri.route_start = ? ";
+    }
+    if(params.routeEnd){
+        paramsArray[i++] = params.routeEnd;
+        query = query + " and cri.route_end = ? ";
+    }
+    if(params.serviceType){
+        paramsArray[i++] = params.serviceType;
+        query = query + " and ii.service_type = ? ";
+    }
+    if(params.inquiryTimeStart){
+        paramsArray[i++] = params.inquiryTimeStart;
+        query = query + " and ii.created_on >= ? ";
+    }
+    if(params.inquiryTimeEnd){
+        paramsArray[i++] = params.inquiryTimeEnd;
+        query = query + " and ii.created_on <= ? ";
+    }
+    if(params.status){
+        paramsArray[i++] = params.status;
+        query = query + " and ii.status = ? ";
+    }
+    if(params.start&&params.size){
+        paramsArray[i++] = parseInt(params.start);
+        paramsArray[i++] = parseInt(params.size);
+        query = query + " limit ? , ? ";
+    }
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('getInquiryByUserId');
         callback(error,rows)
     })
 }
+const updateInquiryStatus = (params,callback) => {
+    let query = "update inquiry_info set status = ? where id = ? and user_id = ? ";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.status;
+    paramsArray[i++] = params.inquiryId;
+    paramsArray[i] = params.userId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('updateInquiryStatus');
+        callback(error,rows);
+    })
+}
+const addInquiryOrder = (params,callback) => {
+    let query = "insert into inquiry_order(inquiry_id,fee_price,freight_price,mark) values(?,?,?,?) ";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.inquiryId;
+    paramsArray[i++] = params.feePrice;
+    paramsArray[i++] = params.freightPrice;
+    paramsArray[i] = params.mark;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('addInquiryOrder');
+        callback(error,rows);
+    })
+}
 module.exports = {
     addRouteInquiry,
-    getInquiryByUserId
+    getInquiryByUserId,
+    updateInquiryStatus,
+    addInquiryOrder
 }

@@ -429,7 +429,7 @@
         }
       }
     },
-    "/user/{userId}/inquiry/{inquiryId}/": {
+    "/user/{userId}/queryInquiry": {
       "get": {
         "tags": [
           "inquiry"
@@ -449,9 +449,9 @@
           },
           {
             "name": "inquiryId",
-            "in": "path",
+            "in": "query",
             "description": "inquiryId",
-            "required": true,
+            "required": false,
             "type": "integer"
           }
         ],
@@ -704,10 +704,10 @@
         }
       }
     },
-    "/admin/{adminId}/inquiryManage": {
+    "/user/{userId}/inquiryManage": {
       "get": {
         "tags": [
-          "inquiryManage"
+          "inquiry"
         ],
         "summary": "inquiryManage query",
         "description": "inquiryManage query",
@@ -716,16 +716,16 @@
         ],
         "parameters": [
           {
-            "name": "adminId",
-            "in": "query",
-            "description": "adminId",
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
             "required": true,
-            "type": "string"
+            "type": "integer"
           },
           {
-            "name": "userId",
+            "name": "inquiryId",
             "in": "query",
-            "description": "userId",
+            "description": "inquiryId",
             "required": false,
             "type": "integer"
           },
@@ -809,52 +809,10 @@
         }
       }
     },
-    "/user/{userId}/inquiryManage/{inquiryManageId}": {
-      "get": {
-        "tags": [
-          "inquiryManage"
-        ],
-        "summary": "inquiryManage query by id",
-        "description": "inquiryManage query by id",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "userId",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "inquiryManageId",
-            "in": "path",
-            "description": "inquiryManageId",
-            "required": true,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/inquiryManage"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/user/{userId}/inquiryManage/{inquiryManageId}/status/{status}": {
+    "/user/{userId}/inquiry/{inquiryId}/status/{status}": {
       "put": {
         "tags": [
-          "inquiryManage"
+          "inquiry"
         ],
         "summary": "inquiryManage update",
         "description": "inquiryManage update",
@@ -870,9 +828,9 @@
             "type": "integer"
           },
           {
-            "name": "inquiryManageId",
+            "name": "inquiryId",
             "in": "path",
-            "description": "inquiryManageId",
+            "description": "inquiryId",
             "required": true,
             "type": "integer"
           },
@@ -900,52 +858,10 @@
         }
       }
     },
-    "/user/{userId}/inquiryManage/{inquiryManageId}/inquiryManageCar": {
-      "get": {
-        "tags": [
-          "inquiryManage"
-        ],
-        "summary": "inquiryManageCar query by inquiryManageId",
-        "description": "inquiryManageCar query by inquiryManageId",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "userId",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "inquiryManageId",
-            "in": "path",
-            "description": "inquiryManageId",
-            "required": true,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/inquiryManage"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/user/{userId}/inquiryManage/{inquiryManageId}/inquiryManageOrder": {
+    "/user/{userId}/inquiry/{inquiryId}/addOrder": {
       "post": {
         "tags": [
-          "inquiryManage"
+          "inquiry"
         ],
         "summary": "inquiryManageOrder query by inquiryManageId",
         "description": "inquiryManageOrder query by inquiryManageId",
@@ -961,9 +877,9 @@
             "type": "integer"
           },
           {
-            "name": "inquiryManageId",
+            "name": "inquiryId",
             "in": "path",
-            "description": "inquiryManageId",
+            "description": "inquiryId",
             "required": true,
             "type": "integer"
           },
@@ -975,48 +891,6 @@
             "schema": {
               "$ref": "#/definitions/inquiryManageOrder"
             }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/inquiryManage"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/user/{userId}/inquiryManage/{inquiryManageId}/inquiryManageOrderQuery": {
-      "get": {
-        "tags": [
-          "inquiryManage"
-        ],
-        "summary": "inquiryManageOrderQuery",
-        "description": "inquiryManageOrderQuery",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "userId",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "inquiryManageId",
-            "in": "path",
-            "description": "inquiryManageId",
-            "required": true,
-            "type": "integer"
           }
         ],
         "responses": {

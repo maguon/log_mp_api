@@ -103,6 +103,32 @@ const getInquiryInvoiceByInquiryId = (req,res,next) => {
         }
     })
 }
+const updateInquiryStatus = (req,res,next) => {
+    let params = req.params;
+    inquiryDAO.updateInquiryStatus(params,(error,result)=>{
+        if(error){
+            logger.error('updateInquiryStatus' + error.message);
+            throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
+        }else{
+            logger.info('updateInquiryStatus' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
+}
+const addInquiryOrder = (req,res,next) => {
+    let params = req.params;
+    inquiryDAO.addInquiryOrder(params,(error,result)=>{
+        if(error){
+            logger.error('addInquiryOrder' + error.message);
+            throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
+        }else{
+            logger.info('addInquiryOrder' + 'success');
+            resUtil.resetCreateRes(res,result,null);
+            return next();
+        }
+    })
+}
 module.exports = {
     addRouteInquiry,
     getInquiryByUserId,
@@ -110,5 +136,7 @@ module.exports = {
     getInquiryOrderByInquiryId,
     getInquiryContactByInquiryId,
     getInquiryBankByInquiryId,
-    getInquiryInvoiceByInquiryId
+    getInquiryInvoiceByInquiryId,
+    updateInquiryStatus,
+    addInquiryOrder
 }
