@@ -39,7 +39,7 @@ var CUST_CREATE_EXISTING = "已经存在";
 /**
  * The module for admin
  */
-let ADMIN_LOGIN_USER_UNREGISTERED = "用户不存在"; //Customer use a email that not exist in system to login.
+var ADMIN_LOGIN_USER_UNREGISTERED = "用户不存在"; //Customer use a email that not exist in system to login.
 
 module.exports = {
     SYS_AUTH_TOKEN_ERROR,
