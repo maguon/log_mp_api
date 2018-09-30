@@ -1,20 +1,20 @@
-'use strict';
+
 /**
  * Created by ibm on 14-3-25.
  */
 
-let serializer = require('serializer');
-let serverLogger = require('./ServerLogger.js');
-let logger = serverLogger.createLogger('OAuthUtil.js');
+var serializer = require('serializer');
+var serverLogger = require('./ServerLogger.js');
+var logger = serverLogger.createLogger('OAuthUtil.js');
 //var userDao = require('../dao/UserDAO.js')
-let options ={
+var options ={
     crypt_key: 'mp',
     sign_key: 'bizwise'
 };
 
 
 
-let clientType = {
+var clientType = {
     temp : 'temp',
     user : 'user' ,
     admin : 'admin'
