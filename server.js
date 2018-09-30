@@ -8,6 +8,7 @@ const logger = serverLogger.createLogger('Server');
 
 
 const wechatBl = require('./bl/WechatBl');
+const adminUser = require('./bl/AdminUser.js');
 const user = require('./bl/User.js');
 //const email = require('./bl/Email.js');
 const city = require('./bl/City.js');
@@ -104,7 +105,14 @@ function createServer() {
     server.get('/api/user/:userId/inquiryManage',inquiry.getInquiryByUserId);
     server.put({path:'/api/user/:userId/inquiry/:inquiryId/status/:status',contentType: 'application/json'},inquiry.updateInquiryStatus);
     server.post('/api/user/:userId/inquiry/:inquiryId/addOrder',inquiry.addInquiryOrder);
-
+    /**
+     * Admin User Module
+     */
+    server.post({path:'/api/createAdmin',contentType: 'application/json'},adminUser.createAdminUser);
+    server.get('/api/admin/:adminId' ,adminUser.getAdminUserInfo);
+    server.post({path:'/api/admin/do/login',contentType: 'application/json'},adminUser.adminUserLogin);
+    server.put({path:'/api/admin/:adminId',contentType: 'application/json'} ,adminUser.updateAdminInfo);
+    server.put({path:'/api/admin/:adminId/password',contentType: 'application/json'} ,adminUser.changeAdminPassword);
     /**
      user
      */

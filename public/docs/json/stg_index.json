@@ -24,6 +24,10 @@
       }
     },
     {
+      "name": "admin",
+      "description": "admin of log api"
+    },
+    {
       "name": "user",
       "description": "User of log api"
     },
@@ -83,6 +87,202 @@
             "schema": {
               "$ref": "#/definitions/wechat"
             }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/password"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/createAdmin": {
+      "post": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "createAdmin",
+        "description": "createAdmin",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "createAdmin",
+            "in": "body",
+            "description": "createAdmin",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/createAdmin"
+            }
+
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/createAdmin"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/do/login": {
+      "post": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "Admin user do login",
+        "description": "",
+        "operationId": "admin login",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Admin base info ",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin"
+            }
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}": {
+      "get": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "query admin user info",
+        "description": "Get admin user info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "admin Id",
+            "required": true,
+            "type": "integer"
+
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/admin"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "update admin user info",
+        "description": "update admin user info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "admin Id",
+            "required": true,
+            "type": "integer"
+
+          },
+          {
+            "name": "admin",
+            "in": "body",
+            "description": "admin base info:name,phone and remark is needed .",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin"
+            }
+
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/admin"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/password": {
+      "put": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "update admin user password",
+        "description": "update admin user password",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "admin Id",
+            "required": true,
+            "type": "integer"
+
+          },
+          {
+            "name": "password",
+            "in": "body",
+            "description": "admin base info:origin and new password is needed .",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/adminPassword"
+            }
+
           }
         ],
         "responses": {
@@ -1874,6 +2074,84 @@
     }
   },
   "definitions": {
+    "createAdmin": {
+      "type": "object",
+      "properties": {
+        "userName": {
+          "type": "string"
+        },
+        "realName": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "status": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "createAdmin"
+      }
+    },
+    "admin": {
+      "type": "object",
+      "required": [
+        "id",
+        "userName",
+        "password"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "userName": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "realName": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "status": {
+          "type": "integer",
+          "description": "admin status",
+          "enum": [
+            "0",
+            "1"
+          ]
+        }
+      },
+      "xml": {
+        "name": "admin"
+      }
+    },
+    "adminPassword": {
+      "type": "object",
+      "required": [
+        "originPassword",
+        "newPassword"
+      ],
+      "properties": {
+        "originPassword": {
+          "type": "string"
+        },
+        "newPassword": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "adminPassword"
+      }
+    },
     "userLogin": {
       "type": "object",
       "properties": {

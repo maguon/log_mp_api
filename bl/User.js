@@ -97,7 +97,7 @@ const queryUser = (req,res,next)=>{
 const userLogin = (req,res,next)=>{
     let params = req.params;
     new Promise((resolve)=>{
-        userDao.getUser({wechatId:params.wechatId},(error,rows)=>{
+        userDao.queryUser(params,(error,rows)=>{
             if(error){
                 logger.error('userLogin'+error.message);
                 throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
