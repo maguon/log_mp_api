@@ -474,7 +474,7 @@
     "/user/{userId}/inquiry/{inquiryId}/car": {
       "get": {
         "tags": [
-          "inquiryUser"
+          "inquiry"
         ],
         "summary": " query by routeId look car",
         "description": " query routeId id look car",
@@ -516,7 +516,7 @@
     "/user/{userId}/inquiry/{inquiryId}/order": {
       "get": {
         "tags": [
-          "inquiryUser"
+          "inquiry"
         ],
         "summary": " query by routeId look order",
         "description": " query by routeId id look order",
@@ -558,7 +558,7 @@
     "/user/{userId}/contact": {
       "get": {
         "tags": [
-          "inquiryUser"
+          "inquiry"
         ],
         "summary": " query by user id look contact",
         "description": " query by user id look contact",
@@ -593,7 +593,7 @@
     "/user/{userId}/bank": {
       "get": {
         "tags": [
-          "inquiryUser"
+          "inquiry"
         ],
         "summary": " query by user id look bank",
         "description": " query by user id look bank",
@@ -628,7 +628,7 @@
     "/user/{userId}/invoice": {
       "get": {
         "tags": [
-          "inquiryUser"
+          "inquiry"
         ],
         "summary": " query by user id look invoice",
         "description": " query by user id look invoice",
