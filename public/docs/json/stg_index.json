@@ -44,10 +44,6 @@
       "description":"inquiry of log api"
     },
     {
-      "name": "inquiryManage",
-      "description":"inquiryManage of log api"
-    },
-    {
       "name": "supplier",
       "description":"supplier of log api"
     },
