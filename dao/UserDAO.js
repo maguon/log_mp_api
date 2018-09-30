@@ -7,23 +7,11 @@ const httpUtil = require('../util/HttpUtil');
 const db = require('../db/connection/MysqlDb.js');
 const encrypt = require('../util/Encrypt.js');
 
-const getUser=(params,callback)=>{
-    let query  = " select * from user_info where id is not null ";
-    let paramsArray = [],i=0;
-    if(params.wechatId){
-        paramsArray[i++] = params.wechatId;
-        query = query + " and wechat_id = ? ";
-    }
-    db.dbQuery(query,paramsArray,(error,rows)=>{
-        logger.debug('getUser');
-        callback(error,rows);
-    });
-}
 const queryUser = (params,callback) => {
     var query = "select * from user_info where id is not null ";
     var paramsArray = [],i=0;
-    if(params.id){
-        paramsArray[i++] = params.id;
+    if(params.userId){
+        paramsArray[i++] = params.userId;
         query = query + " and id = ? ";
     }
     if(params.wechatAccount){
@@ -141,7 +129,6 @@ const updateStatus=(params,callback)=>{
 }
 module.exports = {
     queryUser,
-    getUser,
     createUser,
     lastLoginOn,
     updateUser,

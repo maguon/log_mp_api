@@ -17,7 +17,6 @@ const supplier = require('./bl/Supplier.js');
 const supplierBank = require('./bl/SupplierBank.js');
 const supplierContact = require('./bl/SupplierContact.js');
 const inquiryManage = require('./bl/InquiryManage.js');
-const inquiryUser = require('./bl/InquiryUser.js');
 
 
 /**
@@ -91,17 +90,15 @@ function createServer() {
     server.post({path:'/api/user/:userId/wechat',contentType: 'application/json'},wechatBl.unifiedOrder);
 
     /**
-     inquiry_user用户管理
+     inquiry_info
      */
-    server.get('/api/admin/:adminId/user',inquiryUser.getAdminUser);
-    server.get('/api/inquiryUser/:userId',inquiryUser.getUserById);
-    server.get('/api/inquiryUser/:userId/inquiry',inquiryUser.getUserByIdInquiry);
-    server.get('/api/inquiryUser/:userId/inquiry/:inquiryId',inquiryUser.getUserInquiryById);
-    server.get('/api/inquiryUser/:userId/inquiry/:inquiryId/route',inquiryUser.getUserByIdInquiryIdRoute);
-    server.get('/api/inquiryUser/:userId/inquiry/:inquiryId/order',inquiryUser.getUserIdRouteIdOrder);
-    server.get('/api/inquiryUser/:userId/contact',inquiryUser.getUserContact);
-    server.get('/api/inquiryUser/:userId/bank',inquiryUser.getUserBank);
-    server.get('/api/inquiryUser/:userId/invoice',inquiryUser.getUserInvoice);
+    server.post({path:'/api/user/:userId/inquiry',contentType: 'application/json'},inquiry.addRouteInquiry);
+    server.get('/api/User/:userId/inquiry/:inquiryId',inquiry.getInquiryByUserId);
+    server.get('/api/User/:userId/inquiry/:inquiryId/car',inquiry.getInquiryCarByInquiryId);
+    server.get('/api/User/:userId/inquiry/:inquiryId/order',inquiry.getInquiryOrderByInquiryId);
+    server.get('/api/User/:userId/contact',inquiry.getInquiryContactByInquiryId);
+    server.get('/api/User/:userId/bank',inquiry.getInquiryBankByInquiryId);
+    server.get('/api/User/:userId/invoice',inquiry.getInquiryInvoiceByInquiryId);
     /**
      user
      */
@@ -129,11 +126,7 @@ function createServer() {
     server.post({path:'/api/user/:userId/route',contentType: 'application/json'},route.addRoute);
     server.get('/api/route',route.queryRoute);
     server.put({path:'/api/user/:userId/route/:routeId',contentType: 'application/json'},route.updateRoute);
-    /**
-     inquiry_info
-     */
-    server.get('/api/admin/:adminId/userInfo',inquiry.getAdminUserInfo);
-    server.post({path:'/api/user/:userId/inquiry',contentType: 'application/json'},inquiry.addRouteInquiry);
+
     /**
      inquiry_manage
      */
