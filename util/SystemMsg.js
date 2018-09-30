@@ -1,12 +1,3 @@
-
-
-/**
- * Created by ling xue on 14-4-29.
- * The file is include all the client message of system.
- * The message used to be a tip on the client.
- * EX. module_api_logic_result
- */
-
 /**
  * The module of system basic module
  * @type {string}
