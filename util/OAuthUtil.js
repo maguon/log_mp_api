@@ -1,3 +1,4 @@
+'use strict';
 /**
  * Created by ibm on 14-3-25.
  */
