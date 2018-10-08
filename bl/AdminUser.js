@@ -8,7 +8,7 @@ const listOfValue = require('../util/ListOfValue.js');
 const oAuthUtil = require('../util/OAuthUtil.js');
 const adminUserDao = require('../dao/AdminUserDAO.js');
 const serverLogger = require('../util/ServerLogger.js');
-const logger = serverLogger.createLogger('Admin.js');
+const logger = serverLogger.createLogger('AdminUser.js');
 
 const createAdminUser = (req,res,next) => {
     let params = req.params;
