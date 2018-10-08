@@ -28,6 +28,10 @@ const queryAdminUser = (params,callback) => {
         paramsArray[i++] = params.userName;
         query = query + " and user_name = ? ";
     }
+    if(params.phone){
+        paramsArray[i++] = params.phone;
+        query = query + " and phone = ? ";
+    }
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug(' queryAdminUser ');
         return callback(error,rows);
