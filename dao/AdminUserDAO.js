@@ -24,10 +24,6 @@ const queryAdminUser = (params,callback) => {
         paramsArray[i++] = params.adminId;
         query = query + " and id = ? ";
     }
-    if(params.userName){
-        paramsArray[i++] = params.userName;
-        query = query + " and user_name = ? ";
-    }
     if(params.phone){
         paramsArray[i++] = params.phone;
         query = query + " and phone = ? ";
