@@ -81,7 +81,8 @@ const adminUserLogin = (req,res,next) =>{
                     }else{
                         let user = {
                             userId : rows[0].id,
-                            userStatus : rows[0].status
+                            userStatus : rows[0].status,
+                            type: rows[0].type
                         }
                         user.accessToken = oAuthUtil.createAccessToken(oAuthUtil.clientType.admin,user.userId,user.userStatus);
                         logger.info('adminUserLogin' +params.userName+ " success");
