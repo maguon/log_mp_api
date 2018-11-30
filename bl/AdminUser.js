@@ -16,7 +16,7 @@ const createAdminUser = (req,res,next) => {
         adminUserDao.queryAdminUser({phone:params.phone},(error,rows)=>{
             if (error) {
                 logger.error(' queryAdminUser ' + error.message);
-                resUtil.resetFailedRes(res,sysMsg.SYS_INTERNAL_ERROR_MSG) ;
+                resUtil.resInternalError(error,res,next);
                 return next();
             } else {
                 if(rows && rows.length>0){
@@ -33,7 +33,7 @@ const createAdminUser = (req,res,next) => {
         adminUserDao.createAdminUser(params,(error,result)=>{
             if (error) {
                 logger.error(' createAdminUser ' + error.message);
-                throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
+                resUtil.resInternalError(error,res,next);
             } else {
                 if(result && result.insertId>0){
                     logger.info(' createAdminUser ' + 'success');
@@ -52,14 +52,14 @@ const createAdminUser = (req,res,next) => {
         })
     })
 }
-const adminUserLogin = (req,res,next) =>{
+const adminUserLogin = (req,res,next) => {
     let params = req.params;
     adminUserDao.queryAdminUser(params,(error,rows)=>{
-        if (error) {
+        if(error){
             logger.error(' adminUserLogin ' + error.message);
-            throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
-        } else {
-            if(rows && rows.length<1){
+            resUtil.resInternalError(error,res,next);
+        }else{
+            if(rows && rows.length < 1){
                 logger.warn(' adminUserLogin ' +params.userName+ sysMsg.ADMIN_LOGIN_USER_UNREGISTERED);
                 resUtil.resetFailedRes(res,sysMsg.ADMIN_LOGIN_USER_UNREGISTERED) ;
                 return next();
@@ -97,10 +97,10 @@ const adminUserLogin = (req,res,next) =>{
 const getAdminUserInfo = (req,res,next) => {
     let params = req.params;
     adminUserDao.queryAdminInfo(params,(error,rows)=>{
-        if (error) {
+        if(error){
             logger.error(' getAdminUserInfo ' + error.message);
-            throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
-        } else {
+            resUtil.resInternalError(error,res,next);
+        }else{
             logger.info(' getAdminUserInfo ' + 'success');
             resUtil.resetQueryRes(res,rows,null);
             return next();
@@ -110,10 +110,10 @@ const getAdminUserInfo = (req,res,next) => {
 const updateAdminInfo = (req,res,next) => {
     let params = req.params;
     adminUserDao.updateInfo(params,(error,result)=>{
-        if (error) {
+        if(error){
             logger.error(' updateAdminInfo ' + error.message);
-            throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
-        } else {
+            resUtil.resInternalError(error,res,next);
+        }else{
             logger.info(' updateAdminInfo ' + 'success');
             resUtil.resetUpdateRes(res,result,null);
             return next();
@@ -124,10 +124,10 @@ const changeAdminPassword = (req,res,next) => {
     let params = req.params;
     new Promise((resolve,reject) => {
         adminUserDao.queryAdminUser(params,(error,rows)=>{
-            if (error) {
+            if(error){
                 logger.error(' changeAdminPassword ' + error.message);
-                throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
-            } else {
+                resUtil.resInternalError(error,res,next);
+            }else{
                 if(rows && rows.length<1){
                     logger.warn(' changeAdminPassword ' + sysMsg.ADMIN_LOGIN_USER_UNREGISTERED);
                     resUtil.resetFailedRes(res,sysMsg.ADMIN_LOGIN_USER_UNREGISTERED);
@@ -144,10 +144,10 @@ const changeAdminPassword = (req,res,next) => {
     }).then(() => {
         params.password = encrypt.encryptByMd5(params.newPassword);
         adminUserDao.updatePassword(params,(error,result)=>{
-            if (error) {
+            if(error){
                 logger.error(' changeAdminPassword ' + error.message);
-                throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
-            } else {
+                resUtil.resInternalError(error,res,next);
+            }else{
                 logger.info(' changeAdminPassword ' + 'success');
                 resUtil.resetUpdateRes(res,result,null);
                 return next();
