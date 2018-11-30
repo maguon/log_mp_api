@@ -150,7 +150,6 @@ module.exports = {
     parseAccessToken,
     clientType,
     parseAdminToken,
-    parseUserToken,
     saveUserPhoneCode,
     sendCaptcha,
     getUserPhoneCode

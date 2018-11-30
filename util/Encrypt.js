@@ -235,8 +235,6 @@ const getSmsRandomKey=()=>{
 module.exports = {
     encryptByMd5,
     encryptByMd5Key,
-    encryptByACE,
-    decryptByACE,
     createActiveCode,
     resolveActiveCode,
     base64Decode,

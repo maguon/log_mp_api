@@ -5,11 +5,8 @@ let oauthUtil = require('../util/OAuthUtil.js');
 let encrypt = require('../util/Encrypt.js');
 let resUtil = require('../util/ResponseUtil.js');
 let listOfValue = require('../util/ListOfValue.js');
-let smsConfig = require('../config/SmsConfig.js');
-let smsDAO = require('../dao/SmsDAO.js');
 let serverLogger = require('../util/ServerLogger.js');
 let logger = serverLogger.createLogger('Sms.js');
-let superviseDAO = require('../dao/SuperviseDAO.js');
 let userDAO = require('../dao/UserDAO.js');
 
 
