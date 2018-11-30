@@ -8,15 +8,11 @@ const db = require('../db/connection/MysqlDb.js');
 const encrypt = require('../util/Encrypt.js');
 
 const queryUser = (params,callback) => {
-    var query = "select * from user_info where id is not null ";
-    var paramsArray = [],i=0;
+    let query = "select * from user_info where id is not null ";
+    let paramsArray = [],i=0;
     if(params.userId){
         paramsArray[i++] = params.userId;
         query = query + " and id = ? ";
-    }
-    if(params.wechatAccount){
-        paramsArray[i++] = params.wechatAccount;
-        query = query + " and wechat_account = ? ";
     }
     if(params.userName){
         query = query + " and user_name like '%"+params.userName+"%'";
@@ -24,6 +20,10 @@ const queryUser = (params,callback) => {
     if(params.phone){
         paramsArray[i++] = params.phone;
         query = query + " and password = ? "
+    }
+    if(params.wechatId){
+        paramsArray[i++] = params.wechatId;
+        query = query + " and wechat_id = ? "
     }
     if(params.wechatStatus){
         paramsArray[i++] = params.wechatStatus;
@@ -60,17 +60,13 @@ const queryUser = (params,callback) => {
     })
 }
 const createUser = (params,callback)=>{
-    var query = "insert into user_info (user_name,wechat_account,wechat_id,password,gender,phone,avatar,wechat_status,auth_status) values(?,?,?,?,?,?,?,?,?) ";
-    var paramsArray = [],i=0;
-    paramsArray[i++]=params.userName;
-    paramsArray[i++]=params.wechatAccount;
+    let query = "insert into user_info (user_name,wechat_name,wechat_id,gender,avatar) values(?,?,?,?,?) ";
+    let paramsArray = [],i=0;
+    paramsArray[i++]=params.wechatName;
+    paramsArray[i++]=params.wechatName;
     paramsArray[i++]=params.wechatId;
-    paramsArray[i++]=params.password;
     paramsArray[i++]=params.gender;
-    paramsArray[i++]=params.phone;
-    paramsArray[i++]=params.avatar;
-    paramsArray[i++]=params.wechatStatus;
-    paramsArray[i]=params.authStatus;
+    paramsArray[i]=params.avatar;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('createUser');
         callback(error,rows);
@@ -98,8 +94,8 @@ const lastLoginOn=(params,callback)=>{
     });
 }
 const updatePassword=(params,callback)=>{
-    var query = "update user_info set password = ? where id = ? ";
-    var paramsArray = [],i=0;
+    let query = "update user_info set password = ? where id = ? ";
+    let paramsArray = [],i=0;
     paramsArray[i++] = params.newPassword;
     paramsArray[i++] = params.id;
     db.dbQuery(query,paramsArray,(error,rows)=>{
@@ -108,8 +104,8 @@ const updatePassword=(params,callback)=>{
     });
 };
 const updatePhone=(params,callback)=>{
-    var query = "update user_info set phone = ? where id = ? ";
-    var paramsArray = [],i=0;
+    let query = "update user_info set phone = ? where id = ? ";
+    let paramsArray = [],i=0;
     paramsArray[i++] = params.phone;
     paramsArray[i++] = params.id;
     db.dbQuery(query,paramsArray,(error,rows)=>{
@@ -118,8 +114,8 @@ const updatePhone=(params,callback)=>{
     });
 }
 const updateStatus=(params,callback)=>{
-    var query = "update user_info set wechat_status = ? where id = ? ";
-    var paramsArray =[],i=0;
+    let query = "update user_info set wechat_status = ? where id = ? ";
+    let paramsArray =[],i=0;
     paramsArray[i++] = params.wechatStatus;
     paramsArray[i++] = params.id;
     db.dbQuery(query,paramsArray,(error,rows)=>{

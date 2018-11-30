@@ -12,7 +12,7 @@
       "url": "https://github.com/maguon/log_records"
     }
   },
-  "host": "localhost:9101",
+  "host": "stg.myxxjs.com:9101",
   "basePath": "/api",
   "tags": [
     {
@@ -2137,32 +2137,17 @@
     "userLogin": {
       "type": "object",
       "properties": {
-        "userName": {
-          "type": "string"
-        },
-        "wechatAccount": {
+        "wechatName": {
           "type": "string"
         },
         "wechatId": {
           "type": "string"
         },
-        "password": {
-          "type": "string"
-        },
         "gender": {
           "type": "integer"
         },
-        "phone": {
-          "type": "string"
-        },
         "avatar": {
           "type": "string"
-        },
-        "wechatStatus": {
-          "type": "integer"
-        },
-        "authStatus": {
-          "type": "integer"
         }
       },
       "xml": {

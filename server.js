@@ -116,10 +116,9 @@ const createServer=()=>{
     server.put({path:'/api/admin/:adminId',contentType: 'application/json'} ,adminUser.updateAdminInfo);
     server.put({path:'/api/admin/:adminId/password',contentType: 'application/json'} ,adminUser.changeAdminPassword);
     /**
-     user
+     user_info
      */
     server.get('/api/user',user.queryUser);
-    //server.post({path:'/api/wechatLogin',contentType: 'application/json'},user.userLogin);
     server.post({path:'/api/userLogin',contentType: 'application/json'},user.userLogin);
     server.put({path:'/api/user/:id',contentType: 'application/json'},user.updateUser);
     server.put({path:'/api/user/:id/password',contentType: 'application/json'},user.updatePassword);
