@@ -54,7 +54,7 @@ const createAdminUser = (req,res,next) => {
 }
 const adminUserLogin = (req,res,next) => {
     let params = req.params;
-    adminUserDao.queryAdminUser({user_name:params.userName},(error,rows)=>{
+    adminUserDao.queryAdminUser({userName:params.userName},(error,rows)=>{
         if(error){
             logger.error(' adminUserLogin ' + error.message);
             resUtil.resInternalError(error,res,next);
