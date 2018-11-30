@@ -197,7 +197,8 @@ const utf8Decode=(encodeText)=>{
 }
 
 const createGiftCode=(custId,giftId,giftCode,orderId)=>{
-    let c1 = 0; plaintext = custId + "|" +giftId +"|"+giftCode+"|"+orderId;
+    let c1 = 0;
+    let plaintext = custId + "|" +giftId +"|"+giftCode+"|"+orderId;
     return encryptByAES(plaintext);
 }
 
