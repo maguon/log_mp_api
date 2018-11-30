@@ -17,12 +17,13 @@ const inquiry = require('./bl/Inquiry.js');
 const supplier = require('./bl/Supplier.js');
 const supplierBank = require('./bl/SupplierBank.js');
 const supplierContact = require('./bl/SupplierContact.js');
+const sms = require('./bl/Sms.js');
 
 
 /**
  * Returns a server with all routes defined on it
  */
-function createServer() {
+const createServer=()=>{
 
 
 
@@ -85,9 +86,10 @@ function createServer() {
         default: 'index.html',
         maxAge: 0
     }));
-
+    /**
+     wechat
+     */
     server.get('/api/wechat/:code/openid',wechatBl.getUserIdByCode);
-    server.post({path:'/api/user/:userId/wechat',contentType: 'application/json'},wechatBl.unifiedOrder);
 
     /**
      inquiry_info
@@ -154,7 +156,10 @@ function createServer() {
     server.post({path:'/api/user/:userId/supplier/:supplierId/contact',contentType: 'application/json'},supplierContact.addSupplierContact);
     server.get('/api/user/:userId/supplier/:supplierId/queryContact',supplierContact.querySupplierContact);
     server.del({path:'/api/user/:userId/supplier/:supplierId/contact/:contactId',contentType: 'application/json'},supplierContact.delSupplierContact);
-
+    /**
+     * sendPswdSms
+     */
+    server.post({path:'/api/user/:userId/phone/:phone/userPhoneSms',contentType: 'application/json'},sms.sendUserSms);
 
     server.on('NotFound', function (req, res ,next) {
         logger.warn(req.url + " not found");

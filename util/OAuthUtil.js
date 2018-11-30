@@ -2,65 +2,56 @@
 /**
  * Created by ibm on 14-3-25.
  */
+'use strict';
+let serializer = require('serializer');
+let serverLogger = require('./ServerLogger.js');
+let logger = serverLogger.createLogger('OAuthUtil.js');
+let systemConfig = require('../config/SystemConfig.js');
 
-var serializer = require('serializer');
-var serverLogger = require('./ServerLogger.js');
-var logger = serverLogger.createLogger('OAuthUtil.js');
-//var userDao = require('../dao/UserDAO.js')
-var options ={
+let options ={
     crypt_key: 'mp',
     sign_key: 'bizwise'
 };
 
-
-
-var clientType = {
+let clientType = {
     temp : 'temp',
     user : 'user' ,
     admin : 'admin'
 };
 
+let clientId ="mp";
 
-
-var clientId ="mp";
-
-var headerTokenMeta = "auth-token";
+let headerTokenMeta = "auth-token";
 
 //The expired time 30 days
-var expiredTime = 30*24*60*60*1000;
+let expiredTime = 30*24*60*60*1000;
 serializer = serializer.createSecureSerializer(options.crypt_key, options.sign_key);
 
+const _extend=(dst,src)=>{
 
-
-function _extend(dst,src) {
-
-    var srcs = [];
+    let srcs = [];
     if ( typeof(src) == 'object' ) {
         srcs.push(src);
     } else if ( typeof(src) == 'array' ) {
-        for (var i = src.length - 1; i >= 0; i--) {
+        for (let i = src.length - 1; i >= 0; i--) {
             srcs.push(this._extend({},src[i]))
         };
     } else {
         throw new Error("Invalid argument")
     }
 
-    for (var i = srcs.length - 1; i >= 0; i--) {
-        for (var key in srcs[i]) {
+    for (let i = srcs.length - 1; i >= 0; i--) {
+        for (let key in srcs[i]) {
             dst[key] = srcs[i][key];
         }
     };
-
     return dst;
 }
 
-
-
-
-function createAccessToken(clientType,userId ,status){
-    var out ;
+const createAccessToken=(clientType,userId,status)=>{
+    let out ;
     out = _extend({}, {
-        access_token: serializer.stringify([clientType,  userId ,+new Date,status ]),
+        access_token: serializer.stringify([clientType,userId,+new Date,status ]),
         refresh_token: null
     });
    /* userDao.updateUserLoginDate({userId:userId},function(error,result){
@@ -73,12 +64,10 @@ function createAccessToken(clientType,userId ,status){
     return out.access_token;
 }
 
-
-
-function parseAccessToken(accessToken){
+const parseAccessToken=(accessToken)=>{
     try{
-        var data = serializer.parse(accessToken);
-        var tokenInfo ={};
+        let data = serializer.parse(accessToken);
+        let tokenInfo ={};
         tokenInfo.clientType = data[0];
         tokenInfo.userId = data[1];
         tokenInfo.grantDate = data[2];
@@ -90,66 +79,79 @@ function parseAccessToken(accessToken){
     }
 }
 
-
-function parseUserToken(req){
+const parseUserToke=(req)=>{
     //var cookiesToken = getCookie(req.headers.cookie,cookieTruckMeta);
-    var cookiesToken = req.headers[headerTokenMeta];
+    let cookiesToken = req.headers[headerTokenMeta];
     if(cookiesToken == undefined){
         return null;
     }
-    var tokenInfo = parseAccessToken(cookiesToken);
+    let tokenInfo = parseAccessToken(cookiesToken);
     if(tokenInfo == undefined){
         return null;
     }
-
     if(tokenInfo.clientType == undefined || tokenInfo.clientType != clientType.user){
         return null;
     }else if((tokenInfo.grantDate == undefined) || ((tokenInfo.grantDate + expiredTime)<(new Date().getTime()))){
         return null;
     }
-    var resultObj = {};
+    let resultObj = {};
     resultObj ={userId:tokenInfo.userId,userType:clientType.user,status:tokenInfo.status};
     return resultObj;
 }
 
-
-function parseAdminToken(req){
-    var cookiesToken = req.headers[headerTokenMeta];
+const parseAdminToken=(req)=>{
+    let cookiesToken = req.headers[headerTokenMeta];
     if(cookiesToken == undefined){
         return null;
     }
-    var tokenInfo = parseAccessToken(cookiesToken);
+    let tokenInfo = parseAccessToken(cookiesToken);
     if(tokenInfo == undefined){
         return null;
     }
-
     if(tokenInfo.clientType == undefined || tokenInfo.clientType != clientType.admin){
         return null;
     }else if((tokenInfo.grantDate == undefined) || ((tokenInfo.grantDate + expiredTime)<(new Date().getTime()))){
         return null;
     }
-    var resultObj = {};
+    let resultObj = {};
     resultObj ={userId:tokenInfo.userId,userType:clientType.admin,status:tokenInfo.status};
     return resultObj;
 }
 
-
-
-
-
-function getCookie(cookie ,name)
+const getCookie=(cookie ,name)=>
 {
-    var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+    let arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
     if(arr=cookie.match(reg))
         return (unescape(arr[2]));
     else
         return null;
 }
 
+const saveUserPhoneCode=(params,callback)=>{
+    httpUtil.httpPost(systemConfig.hosts.auth,'/api/'+params.phone+"/signCode",{},params,(error,result)=>{
+        callback(error,result)
+    })
+}
+
+const getUserPhoneCode=(params,callback)=>{
+    httpUtil.httpGet(systemConfig.hosts.auth,'/api/'+params.phone+"/signCode",{},{},(error,result)=>{
+        callback(error,result)
+    })
+}
+
+const sendCaptcha=(params,callback)=>{
+    httpUtil.httpPost(systemConfig.hosts.mq,'/api/captcha',{},params,(error,result)=>{
+        callback(error,result)
+    })
+}
+
 module.exports = {
-    createAccessToken: createAccessToken,
-    parseAccessToken : parseAccessToken,
-    clientType : clientType,
-    parseAdminToken:parseAdminToken,
-    parseUserToken : parseUserToken
+    createAccessToken,
+    parseAccessToken,
+    clientType,
+    parseAdminToken,
+    parseUserToken,
+    saveUserPhoneCode,
+    sendCaptcha,
+    getUserPhoneCode
 };

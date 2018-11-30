@@ -2,7 +2,7 @@ const mysqlConnectOptions ={
     user: 'mp_db_user',
     password: 'log_mp_2018',
     database:'log_mp',
-    host: '127.0.0.1' ,
+    host: '47.93.121.1' ,
     charset : 'utf8mb4',
     //,dateStrings : 'DATETIME'
 };

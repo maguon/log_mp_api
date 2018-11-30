@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 const restify = require('restify');
 const sysMsg = require('./SystemMsg.js');
