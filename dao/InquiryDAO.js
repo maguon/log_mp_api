@@ -7,17 +7,18 @@ const httpUtil = require('../util/HttpUtil');
 const db = require('../db/connection/MysqlDb.js');
 
 const addRouteInquiry = (params,callback) => {
-    let query = "insert into inquiry_info(user_id,route_id,service_type,model_id,old_car,phone,inquiry_name,plan,fee) values(?,?,?,?,?,?,?,?,?)";
+    let query = "insert into inquiry_info(user_id,order_id,route_id,service_type,model_id,old_car,inquiry_name,plan,fee,car_num) values(?,?,?,?,?,?,?,?,?,?)";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.userId;
+    paramsArray[i++] = params.orderId;
     paramsArray[i++] = params.routeId;
     paramsArray[i++] = params.serviceType;
     paramsArray[i++] = params.modelId;
     paramsArray[i++] = params.oldCar;
-    paramsArray[i++] = params.phone;
     paramsArray[i++] = params.inquiryName;
     paramsArray[i++] = params.plan;
-    paramsArray[i] = params.fee;
+    paramsArray[i++] = params.fee;
+    paramsArray[i] = params.carNum;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('addRouteInquiry');
         callback(error,rows);
@@ -27,19 +28,31 @@ const getInquiryByUserId = (params,callback) => {
     let query = " select ii.*,cri.route_start,cri.route_end from inquiry_info ii " +
                 " left join city_route_info cri on cri.route_id=ii.route_id " +
                 " left join user_info ui on ui.id=ii.user_id " +
-                " where 1=1 ";
+                " where ii.id is not null ";
     let paramsArray = [],i=0;
     if(params.userId){
         paramsArray[i++] = params.userId;
         query = query + " and ii.user_id = ? "
     }
     if(params.inquiryId){
-        paramsArray[i] = params.inquiryId;
+        paramsArray[i++] = params.inquiryId;
         query = query + " and ii.id = ? "
+    }
+    if(params.serviceType){
+        paramsArray[i++] = params.serviceType;
+        query = query + " and ii.service_type = ? "
+    }
+    if(params.modelId){
+        paramsArray[i++] = params.modelId;
+        query = query + " and ii.model_id = ? ";
+    }
+    if(params.oldCar){
+        paramsArray[i++] = params.oldCar;
+        query = query + " and ii.old_car = ? ";
     }
     if(params.phone){
         paramsArray[i++] = params.phone;
-        query = query + " and ii.phone = ? ";
+        query = query + " and ui.phone = ? ";
     }
     if(params.routeStart){
         paramsArray[i++] = params.routeStart;
@@ -67,7 +80,7 @@ const getInquiryByUserId = (params,callback) => {
     }
     if(params.start&&params.size){
         paramsArray[i++] = parseInt(params.start);
-        paramsArray[i++] = parseInt(params.size);
+        paramsArray[i] = parseInt(params.size);
         query = query + " limit ? , ? ";
     }
     db.dbQuery(query,paramsArray,(error,rows)=>{
@@ -86,21 +99,8 @@ const updateInquiryStatus = (params,callback) => {
         callback(error,rows);
     })
 }
-const addInquiryOrder = (params,callback) => {
-    let query = "insert into inquiry_order(inquiry_id,fee_price,freight_price,mark) values(?,?,?,?) ";
-    let paramsArray = [],i=0;
-    paramsArray[i++] = params.inquiryId;
-    paramsArray[i++] = params.feePrice;
-    paramsArray[i++] = params.freightPrice;
-    paramsArray[i] = params.mark;
-    db.dbQuery(query,paramsArray,(error,rows)=>{
-        logger.debug('addInquiryOrder');
-        callback(error,rows);
-    })
-}
 module.exports = {
     addRouteInquiry,
     getInquiryByUserId,
-    updateInquiryStatus,
-    addInquiryOrder
+    updateInquiryStatus
 }

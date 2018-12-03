@@ -17,7 +17,7 @@ const addRouteInquiry = (req,res,next) => {
     inquiryDAO.addRouteInquiry(params,(error,result)=>{
         if(error){
             logger.error('addRouteInquiry' + error.message);
-            throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
+            resUtil.resInternalError(error,res,next);
         }else{
             logger.info('addRouteInquiry' + 'success');
             resUtil.resetCreateRes(res,result,null);
@@ -116,19 +116,6 @@ const updateInquiryStatus = (req,res,next) => {
         }
     })
 }
-const addInquiryOrder = (req,res,next) => {
-    let params = req.params;
-    inquiryDAO.addInquiryOrder(params,(error,result)=>{
-        if(error){
-            logger.error('addInquiryOrder' + error.message);
-            throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
-        }else{
-            logger.info('addInquiryOrder' + 'success');
-            resUtil.resetCreateRes(res,result,null);
-            return next();
-        }
-    })
-}
 module.exports = {
     addRouteInquiry,
     getInquiryByUserId,
@@ -137,6 +124,5 @@ module.exports = {
     getInquiryContactByInquiryId,
     getInquiryBankByInquiryId,
     getInquiryInvoiceByInquiryId,
-    updateInquiryStatus,
-    addInquiryOrder
+    updateInquiryStatus
 }

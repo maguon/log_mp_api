@@ -18,6 +18,7 @@ const supplier = require('./bl/Supplier.js');
 const supplierBank = require('./bl/SupplierBank.js');
 const supplierContact = require('./bl/SupplierContact.js');
 const sms = require('./bl/Sms.js');
+const inquiryOrder = require('./bl/InquiryOrder.js');
 
 
 /**
@@ -94,7 +95,7 @@ const createServer=()=>{
     /**
      inquiry_info
      */
-    server.post({path:'/api/user/:userId/inquiry',contentType: 'application/json'},inquiry.addRouteInquiry);
+    server.post({path:'/api/user/:userId/order/:orderId/inquiry',contentType: 'application/json'},inquiry.addRouteInquiry);
     server.get('/api/user/:userId/queryInquiry',inquiry.getInquiryByUserId);
     server.get('/api/user/:userId/inquiry/:inquiryId/car',inquiry.getInquiryCarByInquiryId);
     server.get('/api/user/:userId/inquiry/:inquiryId/order',inquiry.getInquiryOrderByInquiryId);
@@ -106,7 +107,17 @@ const createServer=()=>{
      */
     server.get('/api/user/:userId/inquiryManage',inquiry.getInquiryByUserId);
     server.put({path:'/api/user/:userId/inquiry/:inquiryId/status/:status',contentType: 'application/json'},inquiry.updateInquiryStatus);
-    server.post('/api/user/:userId/inquiry/:inquiryId/addOrder',inquiry.addInquiryOrder);
+    /**
+     inquiry_order
+     */
+    server.post({path:'/api/user/:userId/order',contentType: 'application/json'},inquiryOrder.addInquiryOrder);
+    server.put({path:'/api/user/:userId/order/:orderId/inquiryManageOrder',contentType: 'application/json'},inquiryOrder.putInquiryOrder);
+    server.put({path:'/api/user/:userId/order/:orderId/receiveInfo',contentType: 'application/json'},inquiryOrder.putReceiveInfo);
+    server.put({path:'/api/user/:userId/order/:orderId/freightPrice/:freightPrice',contentType: 'application/json'},inquiryOrder.putFreightPrice);
+    server.put({path:'/api/user/:userId/order/:orderId/status/:status',contentType: 'application/json'},inquiryOrder.putStatus);
+    server.get('/api/user/:userId/orderInfo',inquiryOrder.getOrder);
+    server.post({path:'/api/user/:userId/car',contentType: 'application/json'},inquiryOrder.addOrderCar);
+    server.put({path:'/api/user/:userId/order/:orderId/orderMark',contentType: 'application/json'},inquiryOrder.putMark);
     /**
      * Admin User Module
      */
@@ -134,7 +145,8 @@ const createServer=()=>{
      city_info
      */
     server.post({path:'/api/user/:userId/city',contentType: 'application/json'},city.addCity);
-    server.get('/api/city',city.queryCity);
+    server.get('/api/user/:userId/city',city.queryCity);
+    server.get('/api/admin/:adminId/city',city.queryCity);
     server.put({path:'/api/user/:userId/city/:cityId',contentType: 'application/json'},city.updateCity);
     /**
      city_route_info

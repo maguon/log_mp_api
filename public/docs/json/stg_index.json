@@ -28,6 +28,10 @@
       "description": "admin of log api"
     },
     {
+      "name": "order",
+      "description": "order of log api"
+    },
+    {
       "name": "user",
       "description": "User of log api"
     },
@@ -728,6 +732,27 @@
             "description": "inquiryId",
             "required": false,
             "type": "integer"
+          },
+          {
+            "name": "serviceType",
+            "in": "query",
+            "description": "serviceType",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "modelId",
+            "in": "query",
+            "description": "modelId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "oldCar",
+            "in": "query",
+            "description": "oldCar",
+            "required": false,
+            "type": "integer"
           }
         ],
         "responses": {
@@ -935,7 +960,7 @@
         }
       }
     },
-    "/user/{userId}/inquiry": {
+    "/user/{userId}/order/{orderId}/inquiry": {
       "post": {
         "tags": [
           "inquiry"
@@ -950,6 +975,13 @@
             "name": "userId",
             "in": "path",
             "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
             "required": true,
             "type": "integer"
           },
@@ -1133,10 +1165,45 @@
         }
       }
     },
-    "/user/{userId}/inquiry/{inquiryId}/addOrder": {
+    "/user/{userId}/order": {
       "post": {
         "tags": [
-          "inquiry"
+          "order"
+        ],
+        "summary": "inquiryManageOrder query by inquiryManageId",
+        "description": "inquiryManageOrder query by inquiryManageId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryManage"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/order/{orderId}/inquiryManageOrder": {
+      "put": {
+        "tags": [
+          "order"
         ],
         "summary": "inquiryManageOrder query by inquiryManageId",
         "description": "inquiryManageOrder query by inquiryManageId",
@@ -1152,9 +1219,9 @@
             "type": "integer"
           },
           {
-            "name": "inquiryId",
+            "name": "orderId",
             "in": "path",
-            "description": "inquiryId",
+            "description": "orderId",
             "required": true,
             "type": "integer"
           },
@@ -1179,7 +1246,300 @@
             }
           },
           "400": {
-            "description": "Invalid token value or invalid admin id"
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/order/{orderId}/receiveInfo": {
+      "put": {
+        "tags": [
+          "order"
+        ],
+        "summary": "inquiryManageOrder query by inquiryManageId",
+        "description": "inquiryManageOrder query by inquiryManageId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "receiveInfo",
+            "in": "body",
+            "description": "receiveInfo",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/receiveInfo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/receiveInfo"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/order/{orderId}/freightPrice/{freightPrice}": {
+      "put": {
+        "tags": [
+          "order"
+        ],
+        "summary": "inquiryManageOrder query by inquiryManageId",
+        "description": "inquiryManageOrder query by inquiryManageId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "freightPrice",
+            "in": "path",
+            "description": "freightPrice",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/receiveInfo"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/order/{orderId}/status/{status}": {
+      "put": {
+        "tags": [
+          "order"
+        ],
+        "summary": "inquiryManageOrder query by inquiryManageId",
+        "description": "inquiryManageOrder query by inquiryManageId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "path",
+            "description": "status",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/receiveInfo"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/orderInfo": {
+      "get": {
+        "tags": [
+          "order"
+        ],
+        "summary": "inquiryManageOrder query by inquiryManageId",
+        "description": "inquiryManageOrder query by inquiryManageId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "query",
+            "description": "orderId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "status",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/orderInfo"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/car": {
+      "post": {
+        "tags": [
+          "order"
+        ],
+        "summary": "inquiryManageOrder query by inquiryManageId",
+        "description": "inquiryManageOrder query by inquiryManageId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "carInfo",
+            "in": "body",
+            "description": "carInfo",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/carInfo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/carInfo"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/order/{orderId}/orderMark": {
+      "put": {
+        "tags": [
+          "order"
+        ],
+        "summary": "inquiryManageOrder query by inquiryManageId",
+        "description": "inquiryManageOrder query by inquiryManageId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderMark",
+            "in": "body",
+            "description": "orderMark",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/orderMark"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/orderMark"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
           }
         }
       }
@@ -1226,9 +1586,7 @@
             "description": "Invalid token value or invalid admin id"
           }
         }
-      }
-    },
-    "/city": {
+      },
       "get": {
         "tags": [
           "city"
@@ -1239,6 +1597,76 @@
           "application/json"
         ],
         "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "cityId",
+            "in": "query",
+            "description": "cityId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "cityName",
+            "in": "query",
+            "description": "city info",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "city info",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "city info",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/city"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/city": {
+      "get": {
+        "tags": [
+          "city"
+        ],
+        "summary": "city query",
+        "description": "city query",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
           {
             "name": "cityId",
             "in": "query",
@@ -2338,8 +2766,8 @@
         "oldCar": {
           "type": "integer"
         },
-        "phone": {
-          "type": "string"
+        "carNum": {
+          "type": "integer"
         },
         "inquiryName": {
           "type": "string"
@@ -2358,18 +2786,12 @@
     "inquiryManageOrder": {
       "type": "object",
       "properties": {
-        "feePrice": {
-          "type": "integer"
-        },
-        "freightPrice": {
-          "type": "integer"
-        },
         "mark": {
           "type": "string"
         }
       },
       "xml": {
-        "name": "inquiry"
+        "name": "inquiryManageOrder"
       }
     },
     "supplier": {
@@ -2455,6 +2877,57 @@
       },
       "xml": {
         "name": "userInfo"
+      }
+    },
+    "receiveInfo": {
+      "type": "object",
+      "properties": {
+        "recvName": {
+          "type": "string"
+        },
+        "recvPhone": {
+          "type": "string"
+        },
+        "recvAddress": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "receiveInfo"
+      }
+    },
+    "carInfo": {
+      "type": "object",
+      "properties": {
+        "orderId": {
+          "type": "integer"
+        },
+        "vin": {
+          "type": "string"
+        },
+        "modelId": {
+          "type": "integer"
+        },
+        "oldCar": {
+          "type": "integer"
+        },
+        "plan": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "carInfo"
+      }
+    },
+    "orderMark": {
+      "type": "object",
+      "properties": {
+        "mark": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "orderMark"
       }
     }
   }
