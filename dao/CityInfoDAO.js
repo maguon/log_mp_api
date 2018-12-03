@@ -28,7 +28,7 @@ const queryCity = (params,callback) =>{
     }
     if(params.start && params.size){
         paramsArray[i++] = parseInt(params.start);
-        paramsArray[i++] = parseInt(params.size);
+        paramsArray[i] = parseInt(params.size);
         query = query + " limit ? , ? ";
     }
     db.dbQuery(query,paramsArray,(error,rows)=>{

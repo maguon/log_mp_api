@@ -123,7 +123,8 @@ const createServer=()=>{
     server.put({path:'/api/user/:id',contentType: 'application/json'},user.updateUser);
     server.put({path:'/api/user/:id/password',contentType: 'application/json'},user.updatePassword);
     server.put({path:'/api/admin/:adminId/user/:id/wechatStatus/:wechatStatus',contentType: 'application/json'},user.updateStatus);
-    server.put({path:'/api/user/:id/phone/:phone',contentType: 'application/json'},user.updatePhone);
+    server.put({path:'/api/user/:userId/phone/:phone/code/:code',contentType: 'application/json'},user.updatePhone);
+    server.put({path:'/api/user/:userId/userInfo',contentType: 'application/json'},user.updateUserInfo);
     /**
      emil
      */

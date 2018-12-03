@@ -19,7 +19,7 @@ const queryUser = (params,callback) => {
     }
     if(params.phone){
         paramsArray[i++] = params.phone;
-        query = query + " and password = ? "
+        query = query + " and phone = ? "
     }
     if(params.wechatId){
         paramsArray[i++] = params.wechatId;
@@ -30,19 +30,19 @@ const queryUser = (params,callback) => {
         query = query + " and wechat_status = ? "
     }
     if(params.createdOnStart){
-        paramsArray[i++] = params.createdOnStart;
+        paramsArray[i++] = params.createdOnStart +' 00:00:00';
         query = query + " and created_on >= ? "
     }
     if(params.createdOnEnd){
-        paramsArray[i++] = params.createdOnEnd;
+        paramsArray[i++] = params.createdOnEnd + ' 23:59:59';
         query = query + " and created_on <= ? "
     }
     if(params.authStartTime){
-        paramsArray[i++] = params.authStartTime;
+        paramsArray[i++] = params.authStartTime+' 00:00:00';
         query = query + " and auth_time >= ? "
     }
     if(params.authEndTime){
-        paramsArray[i++] = params.authEndTime;
+        paramsArray[i++] = params.authEndTime+ ' 23:59:59';
         query = query + " and auth_time >= ? "
     }
     if(params.authStatus){
@@ -51,7 +51,7 @@ const queryUser = (params,callback) => {
     }
     if(params.start && params.size){
         paramsArray[i++] = parseInt(params.start);
-        paramsArray[i++] = parseInt(params.size);
+        paramsArray[i] = parseInt(params.size);
         query = query + " limit ? , ? ";
     }
     db.dbQuery(query,paramsArray,(error,rows)=>{
@@ -107,7 +107,7 @@ const updatePhone=(params,callback)=>{
     let query = "update user_info set phone = ? where id = ? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.phone;
-    paramsArray[i++] = params.id;
+    paramsArray[i++] = params.userId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('updatePhone');
         callback(error,rows);
@@ -123,6 +123,29 @@ const updateStatus=(params,callback)=>{
         callback(error,rows);
     });
 }
+const updateUserInfo=(params,callback)=>{
+    let query = "update user_info set user_name = ?,gender=?,birth=? where id = ? ";
+    let paramsArray =[],i=0;
+    paramsArray[i++] = params.userName;
+    paramsArray[i++] = params.gender;
+    paramsArray[i++] = params.birth;
+    paramsArray[i] = params.userId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('updateUserInfo');
+        callback(error,rows);
+    });
+}
+const updateAuthStatus=(params,callback)=>{
+    let query = "update user_info set auth_status = ?,auth_time=? where id = ? ";
+    let paramsArray =[],i=0;
+    paramsArray[i++] = params.authStatus;
+    paramsArray[i++] = params.authTime;
+    paramsArray[i] = params.userId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('updateAuthStatus');
+        callback(error,rows);
+    });
+}
 module.exports = {
     queryUser,
     createUser,
@@ -130,5 +153,7 @@ module.exports = {
     updateUser,
     updatePassword,
     updatePhone,
-    updateStatus
+    updateStatus,
+    updateUserInfo,
+    updateAuthStatus
 }

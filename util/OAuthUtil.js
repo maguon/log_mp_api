@@ -7,6 +7,7 @@ let serializer = require('serializer');
 let serverLogger = require('./ServerLogger.js');
 let logger = serverLogger.createLogger('OAuthUtil.js');
 let systemConfig = require('../config/SystemConfig.js');
+let httpUtil = require('./HttpUtil.js');
 
 let options ={
     crypt_key: 'mp',

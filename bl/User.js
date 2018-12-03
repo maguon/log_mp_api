@@ -71,16 +71,48 @@ const updateStatus=(req,res,next)=>{
 };
 const updatePhone=(req,res,next)=>{
     let params = req.params;
-    userDao.updatePhone(params,(error,result)=>{
-        if(error){
-            logger.error('updatePhone' + error.message);
-            resUtil.resetFailedRes(error,res,next);
-        }else{
-            logger.info('updatePhone' + 'success');
-            resUtil.resetUpdateRes(res,result,null);
-            return next();
-        }
-    });
+    params.myDate = new Date();
+    new Promise((resolve,reject)=>{
+        oAuthUtil.getUserPhoneCode({phone:params.phone},(error,rows)=>{
+            if(error){
+                logger.error('getUserPhoneCode' + error.message);
+                reject(error);
+            }else if(rows && rows.result.code !=params.code ){
+                logger.warn('getUserPhoneCode' + '验证码错误');
+                resUtil.resetFailedRes(res,'验证码错误',null);
+            }else{
+                logger.info('getUserPhoneCode'+'success');
+                resolve();
+            }
+        })
+    }).then(()=>{
+        new Promise((resolve,reject)=>{
+            userDao.updatePhone(params,(error,result)=>{
+                if(error){
+                    logger.error('updatePhone' + error.message);
+                    reject();
+                }else{
+                    logger.info('updatePhone' + 'success');
+                    resolve();
+                }
+            });
+        }).then(()=>{
+            new Promise((resolve,reject)=>{
+                userDao.updateAuthStatus({authStatus:1,authTime:params.myDate,userId:params.userId},(error,result)=>{
+                    if(error){
+                        logger.error('updateAuthStatus' + error.message);
+                        reject();
+                    }else{
+                        logger.info('updateAuthStatus'+'success');
+                        resUtil.resetUpdateRes(res,result,null);
+                        return next();
+                    }
+                })
+            })
+        })
+    }).catch((error)=>{
+        resUtil.resInternalError(error,res,next);
+    })
 };
 const queryUser = (req,res,next)=>{
     let params = req.params;
@@ -153,11 +185,25 @@ const userLogin = (req,res,next)=>{
         resUtil.resetFailedRes(error,res,next);
     })
 };
+const updateUserInfo=(req,res,next)=>{
+    let params = req.params;
+    userDao.updateUserInfo(params,(error,result)=>{
+        if(error){
+            logger.error('updateUserInfo' + error.message);
+            resUtil.resetFailedRes(error,res,next);
+        }else{
+            logger.info('updateUserInfo' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    });
+};
 module.exports ={
     queryUser,
     userLogin,
     updateUser,
     updatePassword,
     updateStatus,
-    updatePhone
+    updatePhone,
+    updateUserInfo
 };
