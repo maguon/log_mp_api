@@ -102,7 +102,7 @@ const createServer=()=>{
     server.get('/api/user/:userId/contact',inquiry.getInquiryContactByInquiryId);
     server.get('/api/user/:userId/bank',inquiry.getInquiryBankByInquiryId);
     server.get('/api/user/:userId/invoice',inquiry.getInquiryInvoiceByInquiryId);
-    server.put({path:'/api/admin/:adminId/user/:userId/inquiry/:inquiryId/feePrice/:feePrice',contentType: 'application/json'},inquiry.updateFeePrice);
+    server.put({path:'/api/admin/:adminId/user/:userId/inquiry/:inquiryId/feePrice',contentType: 'application/json'},inquiry.updateFeePrice);
     /**
      inquiry_manage
      */
@@ -113,6 +113,7 @@ const createServer=()=>{
      */
     server.post({path:'/api/user/:userId/inquiryCar',contentType: 'application/json'},inquiryCar.addCar);
     server.get('/api/user/:userId/inquiryCar',inquiryCar.getInquiryCarByInquiryId);
+    server.get('/api/admin/:adminId/user/:userId/inquiryCar',inquiryCar.getInquiryCarByInquiryId);
     /**
      inquiry_order
      */

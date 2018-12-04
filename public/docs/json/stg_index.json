@@ -1044,6 +1044,55 @@
         }
       }
     },
+    "/admin/{adminId}/user/{userId}/inquiryCar": {
+      "get": {
+        "tags": [
+          "inquiryCar"
+        ],
+        "summary": " query by routeId look car",
+        "description": " query routeId id look car",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "inquiryId",
+            "in": "query",
+            "description": "inquiryId",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryUser"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
     "/user/{userId}/inquiry/{inquiryId}/order": {
       "get": {
         "tags": [
@@ -1389,7 +1438,7 @@
         }
       }
     },
-    "/admin/{adminId}/user/{userId}/inquiry/{inquiryId}/feePrice/{feePrice}": {
+    "/admin/{adminId}/user/{userId}/inquiry/{inquiryId}/feePrice": {
       "put": {
         "tags": [
           "inquiry"
@@ -1423,10 +1472,12 @@
           },
           {
             "name": "feePrice",
-            "in": "path",
+            "in": "body",
             "description": "feePrice",
             "required": true,
-            "type": "integer"
+            "schema": {
+              "$ref": "#/definitions/feePrice"
+            }
           }
         ],
         "responses": {
@@ -3237,6 +3288,20 @@
       },
       "xml": {
         "name": "inquiryCar"
+      }
+    },
+    "feePrice": {
+      "type": "object",
+      "properties": {
+        "feePrice": {
+          "type": "integer"
+        },
+        "mark": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "feePrice"
       }
     }
   }
