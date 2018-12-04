@@ -7,18 +7,12 @@ const httpUtil = require('../util/HttpUtil');
 const db = require('../db/connection/MysqlDb.js');
 
 const addRouteInquiry = (params,callback) => {
-    let query = "insert into inquiry_info(user_id,order_id,route_id,service_type,model_id,old_car,inquiry_name,plan,fee,car_num) values(?,?,?,?,?,?,?,?,?,?)";
+    let query = "insert into inquiry_info(user_id,route_id,service_type,inquiry_name) values(?,?,?,?)";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.userId;
-    paramsArray[i++] = params.orderId;
     paramsArray[i++] = params.routeId;
     paramsArray[i++] = params.serviceType;
-    paramsArray[i++] = params.modelId;
-    paramsArray[i++] = params.oldCar;
-    paramsArray[i++] = params.inquiryName;
-    paramsArray[i++] = params.plan;
-    paramsArray[i++] = params.fee;
-    paramsArray[i] = params.carNum;
+    paramsArray[i] = params.inquiryName;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('addRouteInquiry');
         callback(error,rows);
@@ -89,18 +83,51 @@ const getInquiryByUserId = (params,callback) => {
     })
 }
 const updateInquiryStatus = (params,callback) => {
-    let query = "update inquiry_info set status = ? where id = ? and user_id = ? ";
+    let query = "update inquiry_info set status = ? where id = ? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.status;
-    paramsArray[i++] = params.inquiryId;
-    paramsArray[i] = params.userId;
+    paramsArray[i] = params.inquiryId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('updateInquiryStatus');
+        callback(error,rows);
+    })
+}
+const updateFeePrice = (params,callback) => {
+    let query = "update inquiry_info set fee_price = ? where id = ? ";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.feePrice;
+    paramsArray[i] = params.inquiryId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('updateFeePrice');
+        callback(error,rows);
+    })
+}
+const updateFee = (params,callback) => {
+    let query = "update inquiry_info set fee = ? where id = ? ";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.fee;
+    paramsArray[i] = params.inquiryId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('updateFee');
+        callback(error,rows);
+    })
+}
+const updateFeeByCar = (params,callback) => {
+    let query = "update inquiry_info set fee = ?,car_num=? where id = ? ";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.fee;
+    paramsArray[i++] = params.carNum;
+    paramsArray[i] = params.inquiryId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('updateFee');
         callback(error,rows);
     })
 }
 module.exports = {
     addRouteInquiry,
     getInquiryByUserId,
-    updateInquiryStatus
+    updateInquiryStatus,
+    updateFeePrice,
+    updateFee,
+    updateFeeByCar
 }

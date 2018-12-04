@@ -19,6 +19,7 @@ const supplierBank = require('./bl/SupplierBank.js');
 const supplierContact = require('./bl/SupplierContact.js');
 const sms = require('./bl/Sms.js');
 const inquiryOrder = require('./bl/InquiryOrder.js');
+const inquiryCar = require('./bl/InquiryCar.js');
 
 
 /**
@@ -95,18 +96,23 @@ const createServer=()=>{
     /**
      inquiry_info
      */
-    server.post({path:'/api/user/:userId/order/:orderId/inquiry',contentType: 'application/json'},inquiry.addRouteInquiry);
+    server.post({path:'/api/user/:userId/inquiry',contentType: 'application/json'},inquiry.addRouteInquiry);
     server.get('/api/user/:userId/queryInquiry',inquiry.getInquiryByUserId);
-    server.get('/api/user/:userId/inquiry/:inquiryId/car',inquiry.getInquiryCarByInquiryId);
-    server.get('/api/user/:userId/inquiry/:inquiryId/order',inquiry.getInquiryOrderByInquiryId);
+    server.get('/api/admin/:adminId/queryInquiry',inquiry.getInquiryByUserId);
     server.get('/api/user/:userId/contact',inquiry.getInquiryContactByInquiryId);
     server.get('/api/user/:userId/bank',inquiry.getInquiryBankByInquiryId);
     server.get('/api/user/:userId/invoice',inquiry.getInquiryInvoiceByInquiryId);
+    server.put({path:'/api/admin/:adminId/user/:userId/inquiry/:inquiryId/feePrice/:feePrice',contentType: 'application/json'},inquiry.updateFeePrice);
     /**
      inquiry_manage
      */
     server.get('/api/user/:userId/inquiryManage',inquiry.getInquiryByUserId);
     server.put({path:'/api/user/:userId/inquiry/:inquiryId/status/:status',contentType: 'application/json'},inquiry.updateInquiryStatus);
+    /**
+     inquiry_car
+     */
+    server.post({path:'/api/user/:userId/inquiryCar',contentType: 'application/json'},inquiryCar.addCar);
+    server.get('/api/user/:userId/inquiryCar',inquiryCar.getInquiryCarByInquiryId);
     /**
      inquiry_order
      */
@@ -130,6 +136,7 @@ const createServer=()=>{
      user_info
      */
     server.get('/api/user',user.queryUser);
+    server.get('/api/admin/:adminId/user',user.queryUser);
     server.post({path:'/api/userLogin',contentType: 'application/json'},user.userLogin);
     server.put({path:'/api/user/:id',contentType: 'application/json'},user.updateUser);
     server.put({path:'/api/user/:id/password',contentType: 'application/json'},user.updatePassword);

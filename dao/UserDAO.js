@@ -21,6 +21,10 @@ const queryUser = (params,callback) => {
         paramsArray[i++] = params.phone;
         query = query + " and phone = ? "
     }
+    if(params.wechatName){
+        paramsArray[i++] = params.wechatName;
+        query = query + " and wechat_name = ? "
+    }
     if(params.wechatId){
         paramsArray[i++] = params.wechatId;
         query = query + " and wechat_id = ? "
