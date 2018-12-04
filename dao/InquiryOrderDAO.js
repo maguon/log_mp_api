@@ -87,8 +87,12 @@ const getOrder = (params,callback) => {
         paramsArray[i++] = params.orderId;
         query = query + " and id = ? ";
     }
+    if(params.inquiryId){
+        paramsArray[i++] = params.inquiryId;
+        query = query + " and inquiry_id = ? ";
+    }
     if(params.status){
-        paramsArray[i++] = params.status;
+        paramsArray[i] = params.status;
         query = query + " and status = ? ";
     }
     db.dbQuery(query,paramsArray,(error,rows)=>{

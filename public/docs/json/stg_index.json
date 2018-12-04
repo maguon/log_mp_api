@@ -114,7 +114,6 @@
             "schema": {
               "$ref": "#/definitions/createAdmin"
             }
-
           }
         ],
         "responses": {
@@ -182,7 +181,6 @@
             "description": "admin Id",
             "required": true,
             "type": "integer"
-
           }
         ],
         "responses": {
@@ -216,7 +214,6 @@
             "description": "admin Id",
             "required": true,
             "type": "integer"
-
           },
           {
             "name": "admin",
@@ -226,7 +223,6 @@
             "schema": {
               "$ref": "#/definitions/admin"
             }
-
           }
         ],
         "responses": {
@@ -262,7 +258,6 @@
             "description": "admin Id",
             "required": true,
             "type": "integer"
-
           },
           {
             "name": "password",
@@ -272,7 +267,6 @@
             "schema": {
               "$ref": "#/definitions/adminPassword"
             }
-
           }
         ],
         "responses": {
@@ -307,84 +301,84 @@
             "in": "query",
             "description": "user id",
             "required": false,
-            "type":"integer"
+            "type": "integer"
           },
           {
             "name": "wechatAccount",
             "in": "query",
             "description": "wechatAccount",
             "required": false,
-            "type":"string"
+            "type": "string"
           },
           {
             "name": "userName",
             "in": "query",
             "description": "user name",
             "required": false,
-            "type":"string"
+            "type": "string"
           },
           {
             "name": "phone",
             "in": "query",
             "description": "user phone",
             "required": false,
-            "type":"string"
+            "type": "string"
           },
           {
             "name": "wechatStatus",
             "in": "query",
             "description": "user wechatStatus",
             "required": false,
-            "type":"integer"
+            "type": "integer"
           },
           {
             "name": "createdOnStart",
             "in": "query",
             "description": "user createdOnStart",
             "required": false,
-            "type":"integer"
+            "type": "integer"
           },
           {
             "name": "createdOnEnd",
             "in": "query",
             "description": "user createdOnEnd",
             "required": false,
-            "type":"integer"
+            "type": "integer"
           },
           {
             "name": "authStartTime",
             "in": "query",
             "description": "user authStartTime",
             "required": false,
-            "type":"integer"
+            "type": "integer"
           },
           {
             "name": "authEndTime",
             "in": "query",
             "description": "user authEndTime",
             "required": false,
-            "type":"integer"
+            "type": "integer"
           },
           {
             "name": "authStatus",
             "in": "query",
             "description": "authStatus",
             "required": false,
-            "type":"integer"
+            "type": "integer"
           },
           {
             "name": "start",
             "in": "query",
             "description": "start",
             "required": false,
-            "type":"integer"
+            "type": "integer"
           },
           {
             "name": "size",
             "in": "query",
             "description": "size",
             "required": false,
-            "type":"integer"
+            "type": "integer"
           }
         ],
         "responses": {
@@ -419,91 +413,91 @@
             "in": "path",
             "description": "admin id",
             "required": true,
-            "type":"integer"
+            "type": "integer"
           },
           {
             "name": "userId",
             "in": "query",
             "description": "user id",
             "required": false,
-            "type":"integer"
+            "type": "integer"
           },
           {
             "name": "wechatName",
             "in": "query",
             "description": "wechatName",
             "required": false,
-            "type":"string"
+            "type": "string"
           },
           {
             "name": "userName",
             "in": "query",
             "description": "user name",
             "required": false,
-            "type":"string"
+            "type": "string"
           },
           {
             "name": "phone",
             "in": "query",
             "description": "user phone",
             "required": false,
-            "type":"string"
+            "type": "string"
           },
           {
             "name": "wechatStatus",
             "in": "query",
             "description": "user wechatStatus",
             "required": false,
-            "type":"integer"
+            "type": "integer"
           },
           {
             "name": "createdOnStart",
             "in": "query",
             "description": "user createdOnStart",
             "required": false,
-            "type":"integer"
+            "type": "integer"
           },
           {
             "name": "createdOnEnd",
             "in": "query",
             "description": "user createdOnEnd",
             "required": false,
-            "type":"integer"
+            "type": "integer"
           },
           {
             "name": "authStartTime",
             "in": "query",
             "description": "user authStartTime",
             "required": false,
-            "type":"integer"
+            "type": "integer"
           },
           {
             "name": "authEndTime",
             "in": "query",
             "description": "user authEndTime",
             "required": false,
-            "type":"integer"
+            "type": "integer"
           },
           {
             "name": "authStatus",
             "in": "query",
             "description": "authStatus",
             "required": false,
-            "type":"integer"
+            "type": "integer"
           },
           {
             "name": "start",
             "in": "query",
             "description": "start",
             "required": false,
-            "type":"integer"
+            "type": "integer"
           },
           {
             "name": "size",
             "in": "query",
             "description": "size",
             "required": false,
-            "type":"integer"
+            "type": "integer"
           }
         ],
         "responses": {
@@ -1155,7 +1149,7 @@
         }
       }
     },
-    "/admin/{adminId}/user/{userId}/inquiryCar": {
+    "/admin/{adminId}/inquiryCar": {
       "get": {
         "tags": [
           "inquiryCar"
@@ -1175,9 +1169,9 @@
           },
           {
             "name": "userId",
-            "in": "path",
+            "in": "query",
             "description": "userId",
-            "required": true,
+            "required": false,
             "type": "integer"
           },
           {
@@ -1204,7 +1198,7 @@
         }
       }
     },
-    "/user/{userId}/inquiry/{inquiryId}/order": {
+    "/user/{userId}/order": {
       "get": {
         "tags": [
           "order"
@@ -1224,9 +1218,65 @@
           },
           {
             "name": "inquiryId",
-            "in": "path",
+            "in": "query",
             "description": "inquiryId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "query",
+            "description": "orderId",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryUser"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/order": {
+      "get": {
+        "tags": [
+          "order"
+        ],
+        "summary": " query by routeId look order",
+        "description": " query by routeId id look order",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
             "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "inquiryId",
+            "in": "query",
+            "description": "inquiryId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "query",
+            "description": "orderId",
+            "required": false,
             "type": "integer"
           }
         ],
@@ -1244,7 +1294,9 @@
             "description": "Invalid token value or invalid admin id"
           }
         }
-      },
+      }
+    },
+    "/user/{userId}/inquiry/{inquiryId}/order": {
       "post": {
         "tags": [
           "order"

@@ -114,7 +114,7 @@ const createServer=()=>{
     server.post({path:'/api/user/:userId/inquiryCar',contentType: 'application/json'},inquiryCar.addCar);
     server.post({path:'/api/user/:userId/inquiryCarByOrder',contentType: 'application/json'},inquiryCar.addCarByOrder);
     server.get('/api/user/:userId/inquiryCar',inquiryCar.getInquiryCarByInquiryId);
-    server.get('/api/admin/:adminId/user/:userId/inquiryCar',inquiryCar.getInquiryCarByInquiryId);
+    server.get('/api/admin/:adminId/inquiryCar',inquiryCar.getInquiryCarByInquiryId);
     server.put({path:'/api/user/:userId/inquiryCar/:inquiryCarId/status/:status',contentType: 'application/json'},inquiryCar.updateStatus);
     /**
      inquiry_order
@@ -126,6 +126,8 @@ const createServer=()=>{
     server.put({path:'/api/user/:userId/order/:orderId/status/:status',contentType: 'application/json'},inquiryOrder.putStatus);
     server.put({path:'/api/admin/:adminId/order/:orderId/status/:status',contentType: 'application/json'},inquiryOrder.putStatus);
     server.get('/api/user/:userId/orderInfo',inquiryOrder.getOrder);
+    server.get('/api/user/:userId/order',inquiryOrder.getOrder);
+    server.get('/api/admin/:adminId/order',inquiryOrder.getOrder);
     server.post({path:'/api/user/:userId/car',contentType: 'application/json'},inquiryOrder.addOrderCar);
     server.put({path:'/api/user/:userId/order/:orderId/orderMark',contentType: 'application/json'},inquiryOrder.putMark);
     /**
