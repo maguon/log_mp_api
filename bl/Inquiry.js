@@ -42,7 +42,7 @@ const addRouteInquiry = (req,res,next) => {
             })
         }).then(()=>{
             new Promise((resolve,reject)=>{
-                inquiryCarDAO.getInquiryCarByInquiryId({inquiryId:params.inquiryId},(error,rows)=>{
+                inquiryCarDAO.getInquiryCarByInquiryId({inquiryId:params.inquiryId,type:0},(error,rows)=>{
                     if(error){
                         logger.error('getInquiryCarByInquiryId' + error.message);
                         reject(error);

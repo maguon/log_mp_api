@@ -24,6 +24,10 @@
       }
     },
     {
+      "name": "inquiryCar",
+      "description": "inquiryCar of log api"
+    },
+    {
       "name": "admin",
       "description": "admin of log api"
     },
@@ -984,6 +988,20 @@
             "description": "inquiryId",
             "required": false,
             "type": "integer"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "type",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "status",
+            "required": false,
+            "type": "integer"
           }
         ],
         "responses": {
@@ -1026,6 +1044,99 @@
             "schema": {
               "$ref": "#/definitions/inquiryCar"
             }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryCar"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/inquiryCarByOrder": {
+      "post": {
+        "tags": [
+          "inquiryCar"
+        ],
+        "summary": " query by routeId look car",
+        "description": " query routeId id look car",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "inquiryCar",
+            "in": "body",
+            "description": "inquiryCar",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/inquiryCar"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryCar"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/inquiryCar/{inquiryCarId}/status/{status}": {
+      "put": {
+        "tags": [
+          "inquiryCar"
+        ],
+        "summary": " query by routeId look car",
+        "description": " query routeId id look car",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "inquiryCarId",
+            "in": "path",
+            "description": "inquiryCarId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "path",
+            "description": "status",
+            "required": true,
+            "type": "integer"
           }
         ],
         "responses": {
@@ -1096,7 +1207,7 @@
     "/user/{userId}/inquiry/{inquiryId}/order": {
       "get": {
         "tags": [
-          "inquiry"
+          "order"
         ],
         "summary": " query by routeId look order",
         "description": " query by routeId id look order",
@@ -1131,6 +1242,46 @@
           },
           "400": {
             "description": "Invalid token value or invalid admin id"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "order"
+        ],
+        "summary": "inquiryManageOrder query by inquiryManageId",
+        "description": "inquiryManageOrder query by inquiryManageId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "inquiryId",
+            "in": "path",
+            "description": "inquiryId",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryManage"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
           }
         }
       }
@@ -1496,41 +1647,6 @@
         }
       }
     },
-    "/user/{userId}/order": {
-      "post": {
-        "tags": [
-          "order"
-        ],
-        "summary": "inquiryManageOrder query by inquiryManageId",
-        "description": "inquiryManageOrder query by inquiryManageId",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "userId",
-            "required": true,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/inquiryManage"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid user id"
-          }
-        }
-      }
-    },
     "/user/{userId}/order/{orderId}/inquiryManageOrder": {
       "put": {
         "tags": [
@@ -1633,7 +1749,7 @@
         }
       }
     },
-    "/user/{userId}/order/{orderId}/freightPrice/{freightPrice}": {
+    "/admin/{adminId}/order/{orderId}/feePrice/{feePrice}": {
       "put": {
         "tags": [
           "order"
@@ -1645,9 +1761,9 @@
         ],
         "parameters": [
           {
-            "name": "userId",
+            "name": "adminId",
             "in": "path",
-            "description": "userId",
+            "description": "adminId",
             "required": true,
             "type": "integer"
           },
@@ -1659,9 +1775,9 @@
             "type": "integer"
           },
           {
-            "name": "freightPrice",
+            "name": "feePrice",
             "in": "path",
-            "description": "freightPrice",
+            "description": "feePrice",
             "required": true,
             "type": "integer"
           }
@@ -1697,6 +1813,55 @@
             "name": "userId",
             "in": "path",
             "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "path",
+            "description": "status",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/receiveInfo"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/order/{orderId}/status/{status}": {
+      "put": {
+        "tags": [
+          "order"
+        ],
+        "summary": "inquiryManageOrder query by inquiryManageId",
+        "description": "inquiryManageOrder query by inquiryManageId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
             "required": true,
             "type": "integer"
           },

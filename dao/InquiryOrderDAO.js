@@ -7,10 +7,10 @@ const httpUtil = require('../util/HttpUtil');
 const db = require('../db/connection/MysqlDb.js');
 
 const getInquiryOrder = (params,callback) => {
-    let query = "select uo.* from inquiry_info ii " +
-                "left join user_info ui on ui.id=ii.user_id " +
-                "left join inquiry_order uo on uo.inquiry_id = ii.id " +
-                "where  1=1 ";
+    let query = " select uo.* from inquiry_info ii " +
+                " left join user_info ui on ui.id=ii.user_id " +
+                " left join inquiry_order uo on uo.inquiry_id = ii.id " +
+                " where  ii.id is not null ";
     let paramsArray = [],i=0;
     if(params.userId){
         paramsArray[i++] = params.userId;
@@ -22,16 +22,19 @@ const getInquiryOrder = (params,callback) => {
     })
 }
 const addInquiryOrder = (params,callback) => {
-    let query = "insert into inquiry_order(user_id) values(?) ";
+    let query = " insert into inquiry_order(user_id,inquiry_id,fee_price,count) values(?,?,?,?) ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.userId;
+    paramsArray[i++] = params.inquiryId;
+    paramsArray[i++] = params.feePrice;
+    paramsArray[i] = params.count;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('addInquiryOrder');
         callback(error,rows);
     })
 }
 const putInquiryOrder = (params,callback) => {
-    let query = "update inquiry_order set fee_price=?,count=? where id = ? ";
+    let query = " update inquiry_order set fee_price=?,count=? where id = ? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.feePrice;
     paramsArray[i++] = params.count;
@@ -42,7 +45,7 @@ const putInquiryOrder = (params,callback) => {
     })
 }
 const putReceiveInfo = (params,callback) => {
-    let query = "update inquiry_order set recv_name=?,recv_phone=?,recv_address=? where id = ? ";
+    let query = " update inquiry_order set recv_name=?,recv_phone=?,recv_address=? where id = ? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.recvName;
     paramsArray[i++] = params.recvPhone;
@@ -54,9 +57,9 @@ const putReceiveInfo = (params,callback) => {
     })
 }
 const putFreightPrice = (params,callback) => {
-    let query = "update inquiry_order set freight_price=? where id = ? ";
+    let query = " update inquiry_order set fee_price=? where id = ? ";
     let paramsArray = [],i=0;
-    paramsArray[i++] = params.freightPrice;
+    paramsArray[i++] = params.feePrice;
     paramsArray[i] = params.orderId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('putFreightPrice');
@@ -64,7 +67,7 @@ const putFreightPrice = (params,callback) => {
     })
 }
 const putStatus = (params,callback) => {
-    let query = "update inquiry_order set status=? where id = ? ";
+    let query = " update inquiry_order set status=? where id = ? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.status;
     paramsArray[i] = params.orderId;
@@ -74,7 +77,7 @@ const putStatus = (params,callback) => {
     })
 }
 const getOrder = (params,callback) => {
-    let query = "select * from inquiry_order where id is not null ";
+    let query = " select * from inquiry_order where id is not null ";
     let paramsArray = [],i=0;
     if(params.userId){
         paramsArray[i++] = params.userId;
@@ -94,7 +97,7 @@ const getOrder = (params,callback) => {
     })
 }
 const addOrderCar = (params,callback) => {
-    let query = "insert into car_info(order_id,vin,model_id,old_car,plan) values(?,?,?,?,?) ";
+    let query = " insert into car_info(order_id,vin,model_id,old_car,plan) values(?,?,?,?,?) ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.orderId;
     paramsArray[i++] = params.vin;
@@ -107,7 +110,7 @@ const addOrderCar = (params,callback) => {
     })
 }
 const putMark = (params,callback) => {
-    let query = "update inquiry_order set mark=? where id = ? ";
+    let query = " update inquiry_order set mark=? where id = ? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.mark;
     paramsArray[i] = params.orderId;

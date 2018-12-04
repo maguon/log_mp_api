@@ -28,6 +28,9 @@ const addCar = (req,res,next) => {
             if(error){
                 logger.error('addRouteInquiry' + error.message);
                 reject(error);
+            }else if(result && result.insertId < 1){
+                logger.warn('addRouteInquiry'+'创建车辆估值失败');
+                resUtil.resetFailedRes(res,'创建车辆估值失败',null);
             }else{
                 logger.info('addRouteInquiry' + 'success');
                 resolve();
@@ -73,7 +76,39 @@ const addCar = (req,res,next) => {
         resUtil.resInternalError(error,res,next);
     })
 }
+const addCarByOrder = (req,res,next) => {
+    let params = req.params;
+    params.type = 1;
+    inquiryCarDAO.addCarByOrder(params,(error,result)=>{
+        if(error){
+            logger.error('addCarByOrder' + error.message);
+            resUtil.resInternalError(error,res,next);
+        }else if(result && result.insertId < 1){
+            logger.warn('addCarByOrder'+'创建车辆估值失败');
+            resUtil.resetFailedRes(res,'创建车辆估值失败',null);
+        }else{
+            logger.info('addCarByOrder' + 'success');
+            resUtil.resetCreateRes(res,result,null);
+            return next();
+        }
+    })
+}
+const updateStatus = (req,res,next) => {
+    let params = req.params;
+    inquiryCarDAO.updateStatus(params,(error,result)=>{
+        if(error){
+            logger.error('updateStatus' + error.message);
+            resUtil.resInternalError(error,res,next);
+        }else{
+            logger.info('updateStatus' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
+}
 module.exports = {
     getInquiryCarByInquiryId,
-    addCar
+    addCar,
+    addCarByOrder,
+    updateStatus
 }

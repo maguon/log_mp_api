@@ -10,15 +10,38 @@ const inquiryDAO = require('../dao/InquiryDAO.js');
 
 const addInquiryOrder = (req,res,next) => {
     let params = req.params;
-    inquiryOrderDAO.addInquiryOrder(params,(error,result)=>{
-        if(error){
-            logger.error('addInquiryOrder' + error.message);
-            resUtil.resInternalError(error,res,next);
-        }else{
-            logger.info('addInquiryOrder' + 'success');
-            resUtil.resetCreateRes(res,result,null);
-            return next();
-        }
+    new Promise((resolve,reject)=>{
+        inquiryDAO.getInquiryByUserId(params,(error,rows)=>{
+            if(error){
+                logger.error('getInquiryByUserId' + error.message);
+                reject(error);
+            }else if(rows && rows.length < 1){
+                logger.warn('getInquiryByUserId'+'查无此询价信息');
+                resUtil.resetFailedRes(res,'查无此询价信息',null);
+            }else{
+                logger.info('getInquiryByUserId'+'success');
+                let feePrice = 0;
+                let count = 0;
+                feePrice = feePrice + rows[0].fee * rows[0].car_num;
+                count = count +rows[0].car_num;
+                params.feePrice = feePrice;
+                params.count = count;
+                resolve();
+            }
+        })
+    }).then(()=>{
+        new Promise((resolve,reject)=>{
+            inquiryOrderDAO.addInquiryOrder(params,(error,result)=>{
+                if(error){
+                    logger.error('addInquiryOrder' + error.message);
+                    reject(error);
+                }else{
+                    logger.info('addInquiryOrder'+'success');
+                    resUtil.resetCreateRes(res,result,null);
+                    return next();
+                }
+            })
+        })
     })
 }
 const putInquiryOrder = (req,res,next) => {
