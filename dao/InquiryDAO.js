@@ -93,7 +93,7 @@ const updateInquiryStatus = (params,callback) => {
     })
 }
 const updateFeePrice = (params,callback) => {
-    let query = "update inquiry_info set fee_price = ?,mark=? where id = ? ";
+    let query = "update inquiry_info set fee_price = ?,mark=?,status=1 where id = ? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.feePrice;
     paramsArray[i++] = params.mark;

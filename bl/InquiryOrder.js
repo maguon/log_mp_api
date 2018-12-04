@@ -22,7 +22,7 @@ const addInquiryOrder = (req,res,next) => {
                 logger.info('getInquiryByUserId'+'success');
                 let feePrice = 0;
                 let count = 0;
-                feePrice = feePrice + rows[0].fee * rows[0].car_num;
+                feePrice = feePrice + rows[0].fee_price;
                 count = count +rows[0].car_num;
                 params.feePrice = feePrice;
                 params.count = count;
@@ -37,11 +37,25 @@ const addInquiryOrder = (req,res,next) => {
                     reject(error);
                 }else{
                     logger.info('addInquiryOrder'+'success');
-                    resUtil.resetCreateRes(res,result,null);
-                    return next();
+                    resolve();
                 }
             })
+        }).then(()=>{
+            new Promise((resolve,reject)=>{
+                inquiryDAO.updateInquiryStatus({status:2,inquiryId:params.inquiryId},(error,result)=>{
+                    if(error){
+                        logger.error('updateInquiryStatus' + error.message);
+                        reject(error);
+                    }else{
+                        logger.info('updateInquiryStatus'+'success');
+                        resUtil.resetUpdateRes(res,result,null);
+                        return next();
+                    }
+                })
+            })
         })
+    }).catch((error)=>{
+        resUtil.resInternalError(error,res,next);
     })
 }
 const putInquiryOrder = (req,res,next) => {
