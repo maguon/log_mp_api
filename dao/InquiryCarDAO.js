@@ -7,7 +7,7 @@ const httpUtil = require('../util/HttpUtil');
 const db = require('../db/connection/MysqlDb.js');
 
 const getInquiryCarByInquiryId = (params,callback) => {
-    let query = " select * from inquiry_car where id is not null ";
+    let query = " select id,inquiry_id,model_id,old_car,plan,fee,car_num,vin,status,created_on,updated_on,fee/car_num as fee_solo,plan/car_num as plan_solo from inquiry_car where id is not null ";
     let paramsArray = [],i=0;
     if(params.inquiryId){
         paramsArray[i] = params.inquiryId;
