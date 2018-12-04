@@ -61,11 +61,11 @@ const getInquiryByUserId = (params,callback) => {
         query = query + " and ii.service_type = ? ";
     }
     if(params.inquiryTimeStart){
-        paramsArray[i++] = params.inquiryTimeStart;
+        paramsArray[i++] = params.inquiryTimeStart + " 00:00:00";
         query = query + " and ii.created_on >= ? ";
     }
     if(params.inquiryTimeEnd){
-        paramsArray[i++] = params.inquiryTimeEnd;
+        paramsArray[i++] = params.inquiryTimeEnd + " 23:59:59";
         query = query + " and ii.created_on <= ? ";
     }
     if(params.status){

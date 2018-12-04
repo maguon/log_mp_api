@@ -103,11 +103,11 @@ const createServer=()=>{
     server.get('/api/user/:userId/bank',inquiry.getInquiryBankByInquiryId);
     server.get('/api/user/:userId/invoice',inquiry.getInquiryInvoiceByInquiryId);
     server.put({path:'/api/admin/:adminId/user/:userId/inquiry/:inquiryId/feePrice',contentType: 'application/json'},inquiry.updateFeePrice);
+    server.put({path:'/api/user/:userId/inquiry/:inquiryId/status/:status',contentType: 'application/json'},inquiry.updateInquiryStatus);
     /**
      inquiry_manage
      */
     server.get('/api/user/:userId/inquiryManage',inquiry.getInquiryByUserId);
-    server.put({path:'/api/user/:userId/inquiry/:inquiryId/status/:status',contentType: 'application/json'},inquiry.updateInquiryStatus);
     /**
      inquiry_car
      */
@@ -130,6 +130,12 @@ const createServer=()=>{
     server.get('/api/admin/:adminId/order',inquiryOrder.getOrder);
     server.post({path:'/api/user/:userId/car',contentType: 'application/json'},inquiryOrder.addOrderCar);
     server.put({path:'/api/user/:userId/order/:orderId/orderMark',contentType: 'application/json'},inquiryOrder.putMark);
+    /**
+     address_info
+     */
+    // server.get('/api/admin/:adminId/address',address.getAddress);
+    // server.get('/api/user/:userId/address',address.getAddress);
+    // server.post({path:'/api/user/:userId/address',contentType: 'application/json'},address.addAddress);
     /**
      * Admin User Module
      */
