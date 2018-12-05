@@ -104,7 +104,8 @@ const createServer=()=>{
     server.get('/api/user/:userId/bank',inquiry.getInquiryBankByInquiryId);
     server.get('/api/user/:userId/invoice',inquiry.getInquiryInvoiceByInquiryId);
     server.put({path:'/api/admin/:adminId/user/:userId/inquiry/:inquiryId/feePrice',contentType: 'application/json'},inquiry.updateFeePrice);
-    server.put({path:'/api/user/:userId/inquiry/:inquiryId/status/:status',contentType: 'application/json'},inquiry.updateInquiryStatus);
+    server.put({path:'/api/user/:userId/inquiry/:inquiryId/inquiryStatus',contentType: 'application/json'},inquiry.updateInquiryStatus);
+    server.put({path:'/api/admin/:adminId/inquiry/:inquiryId/inquiryStatus',contentType: 'application/json'},inquiry.updateInquiryStatus);
     /**
      inquiry_manage
      */

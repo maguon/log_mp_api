@@ -19,7 +19,7 @@ const addRouteInquiry = (params,callback) => {
     })
 }
 const getInquiryByUserId = (params,callback) => {
-    let query = " select ii.*,cri.route_start,cri.route_end from inquiry_info ii " +
+    let query = " select ii.*,cri.route_start,cri.route_end,ui.user_name,ui.phone from inquiry_info ii " +
                 " left join city_route_info cri on cri.route_id=ii.route_id " +
                 " left join user_info ui on ui.id=ii.user_id " +
                 " where ii.id is not null ";
@@ -83,9 +83,10 @@ const getInquiryByUserId = (params,callback) => {
     })
 }
 const updateInquiryStatus = (params,callback) => {
-    let query = "update inquiry_info set status = ? where id = ? ";
+    let query = "update inquiry_info set status = ?,mark_reason=? where id = ? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.status;
+    paramsArray[i++] = params.markReason;
     paramsArray[i] = params.inquiryId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('updateInquiryStatus');
@@ -93,10 +94,11 @@ const updateInquiryStatus = (params,callback) => {
     })
 }
 const updateFeePrice = (params,callback) => {
-    let query = "update inquiry_info set fee_price = ?,mark=?,status=1 where id = ? ";
+    let query = "update inquiry_info set fee_price = ?,mark=?,inquiry_time=?,status=1 where id = ? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.feePrice;
     paramsArray[i++] = params.mark;
+    paramsArray[i++] = params.myDate;
     paramsArray[i] = params.inquiryId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('updateFeePrice');

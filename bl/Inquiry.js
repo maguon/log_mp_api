@@ -11,6 +11,7 @@ const inquiryOrderDAO = require('../dao/InquiryOrderDAO.js');
 const inquiryContactDAO = require('../dao/InquiryContactDAO.js');
 const inquiryBankDAO = require('../dao/InquiryBankDAO.js');
 const inquiryInvoiceDAO = require('../dao/InquiryInvoiceDAO.js');
+const moment = require('moment/moment.js');
 
 const addRouteInquiry = (req,res,next) => {
     let params = req.params;
@@ -145,6 +146,7 @@ const updateInquiryStatus = (req,res,next) => {
 }
 const updateFeePrice = (req,res,next) => {
     let params = req.params;
+    params.myDate = new Date();
     inquiryDAO.updateFeePrice(params,(error,result)=>{
         if(error){
             logger.error('updateFeePrice' + error.message);
