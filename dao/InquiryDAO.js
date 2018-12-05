@@ -72,7 +72,7 @@ const getInquiryByUserId = (params,callback) => {
         paramsArray[i++] = params.status;
         query = query + " and ii.status = ? ";
     }
-    if(params.start&&params.size){
+    if(params.start && params.size){
         paramsArray[i++] = parseInt(params.start);
         paramsArray[i] = parseInt(params.size);
         query = query + " limit ? , ? ";

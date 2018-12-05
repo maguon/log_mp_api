@@ -903,6 +903,20 @@
             "description": "status",
             "required": false,
             "type": "integer"
+          },
+          {
+            "name": "inquiryTimeStart",
+            "in": "query",
+            "description": "inquiryTimeStart",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "inquiryTimeEnd",
+            "in": "query",
+            "description": "inquiryTimeEnd",
+            "required": false,
+            "type": "integer"
           }
         ],
         "responses": {
@@ -992,6 +1006,20 @@
             "name": "status",
             "in": "query",
             "description": "status",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "inquiryTimeStart",
+            "in": "query",
+            "description": "inquiryTimeStart",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "inquiryTimeEnd",
+            "in": "query",
+            "description": "inquiryTimeEnd",
             "required": false,
             "type": "integer"
           },
@@ -2643,6 +2671,48 @@
             "description": "city info",
             "required": false,
             "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/city"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "city"
+        ],
+        "summary": "city add",
+        "description": "city add",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "city",
+            "in": "body",
+            "description": "city info",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/city"
+            }
           }
         ],
         "responses": {
