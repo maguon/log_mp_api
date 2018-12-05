@@ -7,10 +7,7 @@ const sysError = require('../util/SystemError.js');
 const logger = serverLogger.createLogger('Inquiry.js');
 const inquiryDAO = require('../dao/InquiryDAO.js');
 const inquiryCarDAO = require('../dao/InquiryCarDAO.js');
-const inquiryOrderDAO = require('../dao/InquiryOrderDAO.js');
 const inquiryContactDAO = require('../dao/InquiryContactDAO.js');
-const inquiryBankDAO = require('../dao/InquiryBankDAO.js');
-const inquiryInvoiceDAO = require('../dao/InquiryInvoiceDAO.js');
 const moment = require('moment/moment.js');
 
 const addRouteInquiry = (req,res,next) => {
@@ -105,19 +102,6 @@ const getInquiryContactByInquiryId = (req,res,next) => {
         }
     })
 }
-const getInquiryBankByInquiryId = (req,res,next) => {
-    let params = req.params;
-    inquiryBankDAO.getInquiryBankByInquiryId(params,(error,result)=>{
-        if(error){
-            logger.error('getInquiryBankByInquiryId' + error.message);
-            throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
-        }else{
-            logger.info('getInquiryBankByInquiryId' + 'success');
-            resUtil.resetQueryRes(res,result,null);
-            return next();
-        }
-    })
-}
 const getInquiryInvoiceByInquiryId = (req,res,next) => {
     let params = req.params;
     inquiryInvoiceDAO.getInquiryInvoiceByInquiryId(params, (error, result) => {
@@ -162,8 +146,6 @@ module.exports = {
     addRouteInquiry,
     getInquiryByUserId,
     getInquiryContactByInquiryId,
-    getInquiryBankByInquiryId,
-    getInquiryInvoiceByInquiryId,
     updateInquiryStatus,
     updateFeePrice
 }

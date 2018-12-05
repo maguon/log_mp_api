@@ -28,12 +28,20 @@
       "description": "inquiryCar of log api"
     },
     {
+      "name": "inquiryBank",
+      "description": "inquiryBank of log api"
+    },
+    {
       "name": "admin",
       "description": "admin of log api"
     },
     {
       "name": "order",
       "description": "order of log api"
+    },
+    {
+      "name": "inquiryInvoice",
+      "description": "inquiryInvoice of log api"
     },
     {
       "name": "user",
@@ -1433,10 +1441,52 @@
         }
       }
     },
-    "/user/{userId}/bank": {
+    "/admin/{adminId}/inquiryBank": {
       "get": {
         "tags": [
-          "inquiry"
+          "inquiryBank"
+        ],
+        "summary": " query by user id look bank",
+        "description": " query by user id look bank",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "userId",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryBank"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/inquiryBank": {
+      "get": {
+        "tags": [
+          "inquiryBank"
         ],
         "summary": " query by user id look bank",
         "description": " query by user id look bank",
@@ -1463,15 +1513,155 @@
             }
           },
           "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "inquiryBank"
+        ],
+        "summary": " add by user id look bank",
+        "description": " add by user id look bank",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "inquiryBank",
+            "in": "body",
+            "description": "inquiryBank",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/inquiryBank"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryBank"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/inquiryBank/{inquiryBankId}/status/{status}": {
+      "put": {
+        "tags": [
+          "inquiryBank"
+        ],
+        "summary": " query by user id look bank",
+        "description": " query by user id look bank",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "inquiryBankId",
+            "in": "path",
+            "description": "inquiryBankId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "path",
+            "description": "status",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryBank"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/inquiryInvoice": {
+      "get": {
+        "tags": [
+          "inquiryInvoice"
+        ],
+        "summary": " query by user id look invoice",
+        "description": " query by user id look invoice",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "userId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "inquiryInvoiceId",
+            "in": "query",
+            "description": "inquiryInvoiceId",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryInvoice"
+              }
+            }
+          },
+          "400": {
             "description": "Invalid token value or invalid admin id"
           }
         }
       }
     },
-    "/user/{userId}/invoice": {
+    "/user/{userId}/inquiryInvoice": {
       "get": {
         "tags": [
-          "inquiry"
+          "inquiryInvoice"
         ],
         "summary": " query by user id look invoice",
         "description": " query by user id look invoice",
@@ -1485,6 +1675,13 @@
             "description": "userId",
             "required": true,
             "type": "integer"
+          },
+          {
+            "name": "inquiryInvoiceId",
+            "in": "query",
+            "description": "inquiryInvoiceId",
+            "required": false,
+            "type": "integer"
           }
         ],
         "responses": {
@@ -1493,7 +1690,98 @@
             "schema": {
               "type": "object",
               "items": {
-                "$ref": "#/definitions/inquiryUser"
+                "$ref": "#/definitions/inquiryInvoice"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "inquiryInvoice"
+        ],
+        "summary": " add by user id look invoice",
+        "description": " add by user id look invoice",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "inquiryInvoice",
+            "in": "body",
+            "description": "inquiryInvoice",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/inquiryInvoice"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryInvoice"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/inquiryInvoice/{inquiryInvoiceId}/status/{status}": {
+      "put": {
+        "tags": [
+          "inquiryInvoice"
+        ],
+        "summary": " put by user id look invoice",
+        "description": " put by user id look invoice",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "inquiryInvoiceId",
+            "in": "path",
+            "description": "inquiryInvoiceId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "path",
+            "description": "status",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryInvoice"
               }
             }
           },
@@ -3953,6 +4241,49 @@
       },
       "xml": {
         "name": "inquiryStatus"
+      }
+    },
+    "inquiryBank": {
+      "type": "object",
+      "properties": {
+        "bank": {
+          "type": "string"
+        },
+        "bankCode": {
+          "type": "string"
+        },
+        "accountName": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "inquiryBank"
+      }
+    },
+    "inquiryInvoice": {
+      "type": "object",
+      "properties": {
+        "companyName": {
+          "type": "string"
+        },
+        "taxNumber": {
+          "type": "string"
+        },
+        "companyAddress": {
+          "type": "string"
+        },
+        "bank": {
+          "type": "string"
+        },
+        "bankCode": {
+          "type": "string"
+        },
+        "companyPhone": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "inquiryInvoice"
       }
     }
   }
