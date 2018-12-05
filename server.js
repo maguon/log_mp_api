@@ -10,7 +10,6 @@ const logger = serverLogger.createLogger('Server');
 const wechatBl = require('./bl/WechatBl');
 const adminUser = require('./bl/AdminUser.js');
 const user = require('./bl/User.js');
-//const email = require('./bl/Email.js');
 const city = require('./bl/City.js');
 const route = require('./bl/Route.js');
 const inquiry = require('./bl/Inquiry.js');
@@ -20,6 +19,8 @@ const supplierContact = require('./bl/SupplierContact.js');
 const sms = require('./bl/Sms.js');
 const inquiryOrder = require('./bl/InquiryOrder.js');
 const inquiryCar = require('./bl/InquiryCar.js');
+const address = require('./bl/Address.js');
+//const email = require('./bl/Email.js');
 
 
 /**
@@ -133,9 +134,11 @@ const createServer=()=>{
     /**
      address_info
      */
-    // server.get('/api/admin/:adminId/address',address.getAddress);
-    // server.get('/api/user/:userId/address',address.getAddress);
-    // server.post({path:'/api/user/:userId/address',contentType: 'application/json'},address.addAddress);
+    server.get('/api/admin/:adminId/address',address.getAddress);
+    server.get('/api/user/:userId/address',address.getAddress);
+    server.post({path:'/api/user/:userId/address',contentType: 'application/json'},address.addAddress);
+    server.put({path:'/api/user/:userId/address/:addressId/status/:status/',contentType: 'application/json'},address.updateStatus);
+    server.put({path:'/api/user/:userId/address/:addressId/addressInfo',contentType: 'application/json'},address.updateAddress);
     /**
      * Admin User Module
      */

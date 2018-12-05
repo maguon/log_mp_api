@@ -14,7 +14,7 @@ const getInquiryCarByInquiryId = (params,callback) => {
         query = query + " and inquiry_id = ? "
     }
     if(params.type){
-        paramsArray[i] = params.type;
+        paramsArray[i++] = params.type;
         query = query + " and type = ? "
     }
     if(params.status){

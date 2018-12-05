@@ -52,6 +52,10 @@
       "description":"inquiry of log api"
     },
     {
+      "name": "address",
+      "description":"address of log api"
+    },
+    {
       "name": "supplier",
       "description":"supplier of log api"
     },
@@ -3065,6 +3069,267 @@
         }
       }
     },
+    "/admin/{adminId}/address": {
+      "get": {
+        "tags": [
+          "address"
+        ],
+        "summary": "get address",
+        "description": "get address",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "userId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "addressId",
+            "in": "query",
+            "description": "addressId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "status",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "type",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/supplierContactDel"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/address": {
+      "get": {
+        "tags": [
+          "address"
+        ],
+        "summary": "get address",
+        "description": "get address",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "addressId",
+            "in": "query",
+            "description": "addressId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "status",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "type",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/supplierContactDel"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "address"
+        ],
+        "summary": "add address",
+        "description": "add address",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "address",
+            "in": "body",
+            "description": "address",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/address"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/supplierContactDel"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/address/{addressId}/status/{status}": {
+      "put": {
+        "tags": [
+          "address"
+        ],
+        "summary": "put address",
+        "description": "put address",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "addressId",
+            "in": "path",
+            "description": "addressId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "path",
+            "description": "status",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/address"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/address/{addressId}/addressInfo": {
+      "put": {
+        "tags": [
+          "address"
+        ],
+        "summary": "put address",
+        "description": "put address",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "addressId",
+            "in": "path",
+            "description": "addressId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "addressInfo",
+            "in": "body",
+            "description": "addressInfo",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/addressInfo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/addressInfo"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
     "/accountConfirmEmail": {
       "post": {
         "tags": [
@@ -3575,6 +3840,52 @@
       },
       "xml": {
         "name": "feePrice"
+      }
+    },
+    "address": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "mark": {
+          "type": "string"
+        },
+        "type": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "address"
+      }
+    },
+    "addressInfo": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "mark": {
+          "type": "string"
+        },
+        "type": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "addressInfo"
       }
     }
   }
