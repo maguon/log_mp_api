@@ -7,11 +7,10 @@ const httpUtil = require('../util/HttpUtil');
 const db = require('../db/connection/MysqlDb.js');
 
 const addSupplier = (params,callback) => {
-    let query = "insert into supplier_info(supplier_short,supplier_full,set_type,trans_type,mark) values(?,?,?,?,?)";
+    let query = "insert into supplier_info(supplier_short,supplier_full,trans_type,mark) values(?,?,?,?)";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.supplierShort;
     paramsArray[i++] = params.supplierFull;
-    paramsArray[i++] = params.setType;
     paramsArray[i++] = params.transType;
     paramsArray[i] = params.mark;
     db.dbQuery(query,paramsArray,(error,rows)=>{
@@ -22,6 +21,10 @@ const addSupplier = (params,callback) => {
 const querySupplier = (params,callback) => {
     let query = "select * from supplier_info where id is not null";
     let paramsArray = [],i=0;
+    if(params.supplierId){
+        paramsArray[i++] = params.supplierId;
+        query = query + " and id = ? ";
+    }
     if(params.supplierShort){
         paramsArray[i++] = params.supplierShort;
         query = query + " and supplier_short = ? ";
@@ -30,17 +33,13 @@ const querySupplier = (params,callback) => {
         paramsArray[i++] = params.supplierFull;
         query = query + " and supplier_full = ? ";
     }
-    if(params.setType){
-        paramsArray[i++] = params.setType;
-        query = query + " and set_type = ? ";
-    }
     if(params.transType){
         paramsArray[i++] = params.transType;
         query = query + " and trans_type = ? ";
     }
     if(params.start && params.size){
         paramsArray[i++] = parseInt(params.start);
-        paramsArray[i++] = parseInt(params.size);
+        paramsArray[i] = parseInt(params.size);
         query = query + " limit ? , ? ";
     }
     db.dbQuery(query,paramsArray,(error,rows)=>{
@@ -49,11 +48,10 @@ const querySupplier = (params,callback) => {
     })
 }
 const updateSupplier = (params,callback) => {
-    let query = "update supplier_info set supplier_short=?,supplier_full=?,set_type=?,trans_type=?,mark=? where id=? ";
+    let query = "update supplier_info set supplier_short=?,supplier_full=?,trans_type=?,mark=? where id=? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.supplierShort;
     paramsArray[i++] = params.supplierFull;
-    paramsArray[i++] = params.setType;
     paramsArray[i++] = params.transType;
     paramsArray[i++] = params.mark;
     paramsArray[i] = params.supplierId;

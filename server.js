@@ -151,7 +151,7 @@ const createServer=()=>{
     server.put({path:'/api/user/:userId/address/:addressId/status/:status/',contentType: 'application/json'},address.updateStatus);
     server.put({path:'/api/user/:userId/address/:addressId/addressInfo',contentType: 'application/json'},address.updateAddress);
     /**
-     * Admin User Module
+     admin_user
      */
     server.post({path:'/api/createAdmin',contentType: 'application/json'},adminUser.createAdminUser);
     server.get('/api/admin/:adminId' ,adminUser.getAdminUserInfo);
@@ -192,16 +192,22 @@ const createServer=()=>{
     /**
      supplier_info
      */
-    server.post({path:'/api/user/:userId/supplier',contentType: 'application/json'},supplier.addSupplier);
-    server.get('/api/user/:userId/querySupplier',supplier.querySupplier);
-    server.put({path:'/api/user/:userId/supplier/:supplierId',contentType: 'application/json'},supplier.updateSupplier);
-    server.del({path:'/api/user/:userId/delSupplier/:supplierId',contentType: 'application/json'},supplier.delSupplier);
-    server.post({path:'/api/user/:userId/supplier/:supplierId/bank',contentType: 'application/json'},supplierBank.addSupplierBank);
-    server.get('/api/user/:userId/supplier/:supplierId/queryBank',supplierBank.querySupplierBank);
-    server.del({path:'/api/user/:userId/supplier/:supplierId/bank/:bankId',contentType: 'application/json'},supplierBank.delSupplierBank);
-    server.post({path:'/api/user/:userId/supplier/:supplierId/contact',contentType: 'application/json'},supplierContact.addSupplierContact);
-    server.get('/api/user/:userId/supplier/:supplierId/queryContact',supplierContact.querySupplierContact);
-    server.del({path:'/api/user/:userId/supplier/:supplierId/contact/:contactId',contentType: 'application/json'},supplierContact.delSupplierContact);
+    server.post({path:'/api/admin/:adminId/supplier',contentType: 'application/json'},supplier.addSupplier);
+    server.get('/api/admin/:adminId/supplier',supplier.querySupplier);
+    server.put({path:'/api/admin/:adminId/supplier/:supplierId/supplierInfo',contentType: 'application/json'},supplier.updateSupplier);
+    /**
+     supplier_bank
+     */
+    server.post({path:'/api/admin/:adminId/supplier/:supplierId/bank',contentType: 'application/json'},supplierBank.addSupplierBank);
+    server.get('/api/admin/:adminId/supplier/:supplierId/bank',supplierBank.querySupplierBank);
+    server.del({path:'/api/admin/:adminId/supplier/:supplierId/bank/:bankId',contentType: 'application/json'},supplierBank.delSupplierBank);
+    /**
+     supplier_contact
+     */
+    server.post({path:'/api/admin/:adminId/supplier/:supplierId/contact',contentType: 'application/json'},supplierContact.addSupplierContact);
+    server.get('/api/admin/:adminId/supplier/:supplierId/contact',supplierContact.querySupplierContact);
+    server.del({path:'/api/admin/:adminId/supplier/:supplierId/contact/:contactId',contentType: 'application/json'},supplierContact.delSupplierContact);
+
     /**
      * sendPswdSms
      */

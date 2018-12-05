@@ -68,6 +68,14 @@
       "description":"supplier of log api"
     },
     {
+      "name": "supplierBank",
+      "description":"supplierBank of log api"
+    },
+    {
+      "name": "supplierContact",
+      "description":"supplierContact of log api"
+    },
+    {
       "name": "accountConfirmEmail",
       "description":"accountConfirmEmail of log api"
     }
@@ -2940,7 +2948,7 @@
         }
       }
     },
-    "/user/{userId}/supplier": {
+    "/admin/{adminId}/supplier": {
       "post": {
         "tags": [
           "supplier"
@@ -2952,9 +2960,9 @@
         ],
         "parameters": [
           {
-            "name": "userId",
+            "name": "adminId",
             "in": "path",
-            "description": "userId",
+            "description": "adminId",
             "required": true,
             "type": "integer"
           },
@@ -2982,9 +2990,7 @@
             "description": "Invalid token value or invalid admin id"
           }
         }
-      }
-    },
-    "/user/{userId}/querySupplier": {
+      },
       "get": {
         "tags": [
           "supplier"
@@ -2996,10 +3002,17 @@
         ],
         "parameters": [
           {
-            "name": "userId",
+            "name": "adminId",
             "in": "path",
-            "description": "userId",
+            "description": "adminId",
             "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "supplierId",
+            "in": "query",
+            "description": "supplierId",
+            "required": false,
             "type": "integer"
           },
           {
@@ -3015,13 +3028,6 @@
             "description": "supplierFull",
             "required": false,
             "type": "string"
-          },
-          {
-            "name": "setType",
-            "in": "query",
-            "description": "setType",
-            "required": false,
-            "type": "integer"
           },
           {
             "name": "transType",
@@ -3061,7 +3067,7 @@
         }
       }
     },
-    "/user/{userId}/supplier/{supplierId}": {
+    "/admin/{adminId}/supplier/{supplierId}/supplierInfo": {
       "put": {
         "tags": [
           "supplier"
@@ -3073,9 +3079,9 @@
         ],
         "parameters": [
           {
-            "name": "userId",
+            "name": "adminId",
             "in": "path",
-            "description": "userId",
+            "description": "adminId",
             "required": true,
             "type": "integer"
           },
@@ -3112,52 +3118,10 @@
         }
       }
     },
-    "/user/{userId}/delSupplier/{supplierId}": {
-      "delete": {
-        "tags": [
-          "supplier"
-        ],
-        "summary": "supplier del",
-        "description": "supplier del",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "userId",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "supplierId",
-            "in": "path",
-            "description": "supplierId",
-            "required": true,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/supplier"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/user/{userId}/supplier/{supplierId}/bank": {
+    "/admin/{adminId}/supplier/{supplierId}/bank": {
       "post": {
         "tags": [
-          "supplier"
+          "supplierBank"
         ],
         "summary": "supplierBank add",
         "description": "supplierBank add",
@@ -3166,9 +3130,9 @@
         ],
         "parameters": [
           {
-            "name": "userId",
+            "name": "adminId",
             "in": "path",
-            "description": "userId",
+            "description": "adminId",
             "required": true,
             "type": "integer"
           },
@@ -3203,12 +3167,10 @@
             "description": "Invalid token value or invalid admin id"
           }
         }
-      }
-    },
-    "/user/{userId}/supplier/{supplierId}/queryBank": {
+      },
       "get": {
         "tags": [
-          "supplier"
+          "supplierBank"
         ],
         "summary": "supplierBank query",
         "description": "supplierBank query",
@@ -3217,9 +3179,9 @@
         ],
         "parameters": [
           {
-            "name": "userId",
+            "name": "adminId",
             "in": "path",
-            "description": "userId",
+            "description": "adminId",
             "required": true,
             "type": "integer"
           },
@@ -3268,10 +3230,10 @@
         }
       }
     },
-    "/user/{userId}/supplier/{supplierId}/bank/{bankId}": {
+    "/admin/{adminId}/supplier/{supplierId}/bank/{bankId}": {
       "delete": {
         "tags": [
-          "supplier"
+          "supplierBank"
         ],
         "summary": "supplierBank del",
         "description": "supplierBank del",
@@ -3280,9 +3242,9 @@
         ],
         "parameters": [
           {
-            "name": "userId",
+            "name": "adminId",
             "in": "path",
-            "description": "userId",
+            "description": "adminId",
             "required": true,
             "type": "integer"
           },
@@ -3317,10 +3279,10 @@
         }
       }
     },
-    "/user/{userId}/supplier/{supplierId}/contact": {
+    "/admin/{adminId}/supplier/{supplierId}/contact": {
       "post": {
         "tags": [
-          "supplier"
+          "supplierContact"
         ],
         "summary": "supplierContact add",
         "description": "supplierContact add",
@@ -3329,9 +3291,9 @@
         ],
         "parameters": [
           {
-            "name": "userId",
+            "name": "adminId",
             "in": "path",
-            "description": "userId",
+            "description": "adminId",
             "required": true,
             "type": "integer"
           },
@@ -3366,12 +3328,10 @@
             "description": "Invalid token value or invalid admin id"
           }
         }
-      }
-    },
-    "/user/{userId}/supplier/{supplierId}/queryContact": {
+      },
       "get": {
         "tags": [
-          "supplier"
+          "supplierContact"
         ],
         "summary": "supplierContact query",
         "description": "supplierContact query",
@@ -3380,9 +3340,9 @@
         ],
         "parameters": [
           {
-            "name": "userId",
+            "name": "adminId",
             "in": "path",
-            "description": "userId",
+            "description": "adminId",
             "required": true,
             "type": "integer"
           },
@@ -3431,10 +3391,10 @@
         }
       }
     },
-    "/user/{userId}/supplier/{supplierId}/contact/{ContactId}": {
+    "/admin/{adminId}/supplier/{supplierId}/contact/{ContactId}": {
       "delete": {
         "tags": [
-          "supplier"
+          "supplierContact"
         ],
         "summary": "supplierContact del",
         "description": "supplierContact del",
@@ -3443,9 +3403,9 @@
         ],
         "parameters": [
           {
-            "name": "userId",
+            "name": "adminId",
             "in": "path",
-            "description": "userId",
+            "description": "adminId",
             "required": true,
             "type": "integer"
           },
@@ -4082,9 +4042,6 @@
         },
         "supplierFull": {
           "type": "string"
-        },
-        "setType": {
-          "type": "integer"
         },
         "transType": {
           "type": "integer"
