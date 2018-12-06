@@ -123,6 +123,16 @@ const putMark = (params,callback) => {
         callback(error,rows);
     })
 }
+const updateOrderPaymengStatusByOrderId = (params,callback) => {
+    let query = "update order_info set payment_status = ? where id=? ";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.paymentStatus;
+    paramsArray[i] = params.orderId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('updateOrderPaymengStatusByOrderId');
+        callback(error,rows);
+    })
+}
 module.exports = {
     getInquiryOrder,
     addInquiryOrder,
@@ -132,5 +142,6 @@ module.exports = {
     putStatus,
     getOrder,
     addOrderCar,
-    putMark
+    putMark,
+    updateOrderPaymengStatusByOrderId
 }

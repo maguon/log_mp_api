@@ -7,7 +7,7 @@ const sysError = require('../util/SystemError.js');
 const logger = serverLogger.createLogger('Inquiry.js');
 const inquiryDAO = require('../dao/InquiryDAO.js');
 const inquiryCarDAO = require('../dao/InquiryCarDAO.js');
-const inquiryContactDAO = require('../dao/InquiryContactDAO.js');
+const inquiryContactDAO = require('../dao/PaymentDAO.js');
 const moment = require('moment/moment.js');
 
 const addRouteInquiry = (req,res,next) => {

@@ -32,6 +32,10 @@
       "description": "inquiryBank of log api"
     },
     {
+      "name": "payment",
+      "description": "payment of log api"
+    },
+    {
       "name": "admin",
       "description": "admin of log api"
     },
@@ -3701,6 +3705,374 @@
         }
       }
     },
+    "/user/{userId}/payment": {
+      "get": {
+        "tags": [
+          "payment"
+        ],
+        "summary": "get payment",
+        "description": "get payment",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "user Id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "query",
+            "description": "order Id",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "phone",
+            "in": "query",
+            "description": "phone",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "userName",
+            "in": "query",
+            "description": "userName",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "type 0退款1支付",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "status 0未完成1已完成",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "paymentType",
+            "in": "query",
+            "description": "payment_type 1微信支付2··",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "createdOnStart",
+            "in": "query",
+            "description": "createdOnStart",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "createdOnEnd",
+            "in": "query",
+            "description": "createdOnEnd",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "paymentId",
+            "in": "query",
+            "description": "paymentId",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/payment"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/payment": {
+      "get": {
+        "tags": [
+          "payment"
+        ],
+        "summary": "get payment",
+        "description": "get payment",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "admin Id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "user Id",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "query",
+            "description": "order Id",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "phone",
+            "in": "query",
+            "description": "phone",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "userName",
+            "in": "query",
+            "description": "userName",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "type 0退款1支付",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "status 0未完成1已完成",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "paymentType",
+            "in": "query",
+            "description": "payment_type 1微信支付2··",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "createdOnStart",
+            "in": "query",
+            "description": "createdOnStart",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "createdOnEnd",
+            "in": "query",
+            "description": "createdOnEnd",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "paymentId",
+            "in": "query",
+            "description": "paymentId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/payment"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/paymentRefund": {
+      "get": {
+        "tags": [
+          "payment"
+        ],
+        "summary": "get payment",
+        "description": "get payment",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "admin Id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "paymentId",
+            "in": "query",
+            "description": "paymentId",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/payment"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/order/{orderId}/wechatPayment": {
+      "post": {
+        "tags": [
+          "apyment"
+        ],
+        "summary": "put address",
+        "description": "put address",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "wechatPayment",
+            "in": "body",
+            "description": "wechatPayment",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/wechatPayment"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/wechatPayment"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/user/{userId}/order/{orderId}/wechatRefund": {
+      "post": {
+        "tags": [
+          "payment"
+        ],
+        "summary": "refund",
+        "description": "refund",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "admin Id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "order Id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "user Id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "refund",
+            "in": "body",
+            "description": "refund",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/refund"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/refund"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
     "/accountConfirmEmail": {
       "post": {
         "tags": [
@@ -4311,6 +4683,20 @@
       },
       "xml": {
         "name": "inquiryInvoice"
+      }
+    },
+    "refund": {
+      "type": "object",
+      "properties": {
+        "refundFee": {
+          "type": "integer"
+        },
+        "remark": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "refund"
       }
     }
   }

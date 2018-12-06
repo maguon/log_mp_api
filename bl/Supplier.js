@@ -6,8 +6,6 @@ const sysMsg = require('../util/SystemMsg.js');
 const sysError = require('../util/SystemError.js');
 const logger = serverLogger.createLogger('Supplier.js');
 const supplierDAO = require('../dao/SupplierDAO.js');
-const supplierBankDAO = require('../dao/SupplierBankDAO.js');
-const supplierContactDAO = require('../dao/SupplierContactDAO.js');
 
 const addSupplier = (req,res,next) => {
     let params = req.params;

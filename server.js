@@ -22,6 +22,7 @@ const inquiryCar = require('./bl/InquiryCar.js');
 const address = require('./bl/Address.js');
 const inquiryBank = require('./bl/InquiryBank.js');
 const inquiryInvoice = require('./bl/InquiryInvoice.js');
+const payment = require('./bl/Payment.js');
 //const email = require('./bl/Email.js');
 
 
@@ -95,7 +96,6 @@ const createServer=()=>{
      wechat
      */
     server.get('/api/wechat/:code/openid',wechatBl.getUserIdByCode);
-
     /**
      inquiry_info
      */
@@ -170,11 +170,6 @@ const createServer=()=>{
     server.put({path:'/api/user/:userId/phone/:phone/code/:code',contentType: 'application/json'},user.updatePhone);
     server.put({path:'/api/user/:userId/userInfo',contentType: 'application/json'},user.updateUserInfo);
     /**
-     emil
-     */
-    //server.post({path:'/api/accountConfirmEmail',contentType: 'application/json'},email.sendAccountConfirmEmail);
-    //server.get('/api/queryMailRecord',email.queryMailRecord);
-    /**
      city_info
      */
     server.post({path:'/api/user/:userId/city',contentType: 'application/json'},city.addCity);
@@ -188,7 +183,6 @@ const createServer=()=>{
     server.post({path:'/api/user/:userId/route',contentType: 'application/json'},route.addRoute);
     server.get('/api/route',route.queryRoute);
     server.put({path:'/api/user/:userId/route/:routeId',contentType: 'application/json'},route.updateRoute);
-
     /**
      supplier_info
      */
@@ -207,12 +201,26 @@ const createServer=()=>{
     server.post({path:'/api/admin/:adminId/supplier/:supplierId/contact',contentType: 'application/json'},supplierContact.addSupplierContact);
     server.get('/api/admin/:adminId/supplier/:supplierId/contact',supplierContact.querySupplierContact);
     server.del({path:'/api/admin/:adminId/supplier/:supplierId/contact/:contactId',contentType: 'application/json'},supplierContact.delSupplierContact);
+    /**
+     * payment_info
+     */
+    server.get('/api/user/:userId/payment' ,payment.getPayment);
+    server.get('/api/admin/:adminId/payment' ,payment.getPayment);
+    server.get('/api/admin/:adminId/paymentRefund' ,payment.getRefundByPaymentId);
+    server.post({path:'/api/user/:userId/order/:orderId/wechatPayment',contentType: 'application/json'},payment.addWechatPayment);
+    server.post({path:'/api/wechatPayment',contentType: 'text/xml'},payment.updateWechatPayment);
+    server.post({path:'/api/admin/:adminId/user/:userId/order/:orderId/wechatRefund',contentType: 'application/json'},payment.wechatRefund);
+    server.post({path:'/api/wechatRefund',contentType: 'text/xml'},payment.addWechatRefund);
 
     /**
      * sendPswdSms
      */
     server.post({path:'/api/user/:userId/phone/:phone/userPhoneSms',contentType: 'application/json'},sms.sendUserSms);
-
+    /**
+     emil
+     */
+    //server.post({path:'/api/accountConfirmEmail',contentType: 'application/json'},email.sendAccountConfirmEmail);
+    //server.get('/api/queryMailRecord',email.queryMailRecord);
     server.on('NotFound', function (req, res ,next) {
         logger.warn(req.url + " not found");
         res.send(404,{success:false,msg:" service not found !"});
