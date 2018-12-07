@@ -4698,6 +4698,23 @@
       "xml": {
         "name": "refund"
       }
+    },
+    "wechatPayment": {
+      "type": "object",
+      "properties": {
+        "totalFee": {
+          "type": "integer"
+        },
+        "status": {
+          "type": "integer"
+        },
+        "openid": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "wechatPayment"
+      }
     }
   }
 }
