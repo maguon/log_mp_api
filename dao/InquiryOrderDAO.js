@@ -7,10 +7,10 @@ const httpUtil = require('../util/HttpUtil');
 const db = require('../db/connection/MysqlDb.js');
 
 const getInquiryOrder = (params,callback) => {
-    let query = " select uo.* from inquiry_info ii " +
+    let query = " select uo.*,ii.service_type from inquiry_info ii " +
                 " left join user_info ui on ui.id=ii.user_id " +
                 " left join inquiry_order uo on uo.inquiry_id = ii.id " +
-                " where  ii.id is not null ";
+                " where ii.id is not null ";
     let paramsArray = [],i=0;
     if(params.userId){
         paramsArray[i++] = params.userId;
@@ -22,8 +22,9 @@ const getInquiryOrder = (params,callback) => {
     })
 }
 const addInquiryOrder = (params,callback) => {
-    let query = " insert into inquiry_order(user_id,inquiry_id,fee_price,count) values(?,?,?,?) ";
+    let query = " insert into inquiry_order(service_type,user_id,inquiry_id,fee_price,count) values(?,?,?,?,?) ";
     let paramsArray = [],i=0;
+    paramsArray[i++] = params.serviceType;
     paramsArray[i++] = params.userId;
     paramsArray[i++] = params.inquiryId;
     paramsArray[i++] = params.feePrice;

@@ -26,6 +26,7 @@ const addInquiryOrder = (req,res,next) => {
                 count = count +rows[0].car_num;
                 params.feePrice = feePrice;
                 params.count = count;
+                params.serviceType = rows[0].service_type;
                 resolve();
             }
         })
