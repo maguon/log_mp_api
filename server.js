@@ -106,6 +106,8 @@ const createServer=()=>{
     server.put({path:'/api/admin/:adminId/user/:userId/inquiry/:inquiryId/feePrice',contentType: 'application/json'},inquiry.updateFeePrice);
     server.put({path:'/api/user/:userId/inquiry/:inquiryId/inquiryStatus',contentType: 'application/json'},inquiry.updateInquiryStatus);
     server.put({path:'/api/admin/:adminId/inquiry/:inquiryId/inquiryStatus',contentType: 'application/json'},inquiry.updateInquiryStatus);
+    server.put({path:'/api/user/:userId/inquiry/:inquiryId/cancel',contentType: 'application/json'},inquiry.cancelInquiry);
+    server.put({path:'/api/admin/:adminId/inquiry/:inquiryId/cancel',contentType: 'application/json'},inquiry.cancelInquiry);
     /**
      inquiry_invoice
      */

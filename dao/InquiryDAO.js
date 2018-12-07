@@ -122,7 +122,17 @@ const updateFeeByCar = (params,callback) => {
     paramsArray[i++] = params.carNum;
     paramsArray[i] = params.inquiryId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
-        logger.debug('updateFee');
+        logger.debug('updateFeeByCar');
+        callback(error,rows);
+    })
+}
+const cancelInquiry = (params,callback) => {
+    let query = "update inquiry_info set status = 3,cancel_time=? where id = ? ";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.myDate;
+    paramsArray[i] = params.inquiryId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('cancelInquiry');
         callback(error,rows);
     })
 }
@@ -132,5 +142,6 @@ module.exports = {
     updateInquiryStatus,
     updateFeePrice,
     updateFee,
-    updateFeeByCar
+    updateFeeByCar,
+    cancelInquiry
 }
