@@ -917,6 +917,13 @@
             "type": "integer"
           },
           {
+            "name": "phone",
+            "in": "query",
+            "description": "phone",
+            "required": false,
+            "type": "string"
+          },
+          {
             "name": "inquiryTimeStart",
             "in": "query",
             "description": "inquiryTimeStart",
@@ -1020,6 +1027,13 @@
             "description": "status",
             "required": false,
             "type": "integer"
+          },
+          {
+            "name": "phone",
+            "in": "query",
+            "description": "phone",
+            "required": false,
+            "type": "string"
           },
           {
             "name": "inquiryTimeStart",
