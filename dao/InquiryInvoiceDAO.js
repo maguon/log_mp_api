@@ -7,11 +7,26 @@ const httpUtil = require('../util/HttpUtil');
 const db = require('../db/connection/MysqlDb.js');
 
 const getInquiryInvoice = (params,callback) => {
-    let query = " select uii.* from inquiry_invoice uii " +
+    let query = " select ui.user_name,uii.* from inquiry_invoice uii " +
                 " left join user_info ui on uii.user_id=ui.id " +
                 " where uii.id is not null ";
     let paramsArray = [],i=0;
-    paramsArray[i] = params.userId;
+    if(params.inquiryInvoiceId){
+        paramsArray[i++] = params.inquiryInvoiceId;
+        query = query + " and uii.id = ?";
+    }
+    if(params.companyName){
+        paramsArray[i++] = params.companyName;
+        query = query + " and uii.company_name = ?";
+    }
+    if(params.taxNumber){
+        paramsArray[i++] = params.taxNumber;
+        query = query + " and uii.tax_number = ?";
+    }
+    if(params.userName){
+        paramsArray[i] = params.userName;
+        query = query + " and ui.user_name = ?";
+    }
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('getInquiryInvoice');
         callback(error,rows)

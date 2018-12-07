@@ -1680,6 +1680,27 @@
             "description": "inquiryInvoiceId",
             "required": false,
             "type": "integer"
+          },
+          {
+            "name": "companyName",
+            "in": "query",
+            "description": "companyName",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "taxNumber",
+            "in": "query",
+            "description": "taxNumber",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "userName",
+            "in": "query",
+            "description": "userName",
+            "required": false,
+            "type": "string"
           }
         ],
         "responses": {
@@ -1722,6 +1743,27 @@
             "description": "inquiryInvoiceId",
             "required": false,
             "type": "integer"
+          },
+          {
+            "name": "companyName",
+            "in": "query",
+            "description": "companyName",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "taxNumber",
+            "in": "query",
+            "description": "taxNumber",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "userName",
+            "in": "query",
+            "description": "userName",
+            "required": false,
+            "type": "string"
           }
         ],
         "responses": {
