@@ -3967,7 +3967,7 @@
     "/user/{userId}/order/{orderId}/wechatPayment": {
       "post": {
         "tags": [
-          "apyment"
+          "payment"
         ],
         "summary": "put address",
         "description": "put address",
