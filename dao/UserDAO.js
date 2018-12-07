@@ -47,7 +47,7 @@ const queryUser = (params,callback) => {
     }
     if(params.authEndTime){
         paramsArray[i++] = params.authEndTime+ ' 23:59:59';
-        query = query + " and auth_time >= ? "
+        query = query + " and auth_time <= ? "
     }
     if(params.authStatus){
         paramsArray[i++] = params.authStatus;
