@@ -7,7 +7,7 @@ const httpUtil = require('../util/HttpUtil');
 const db = require('../db/connection/MysqlDb.js');
 
 const getInquiryBank = (params,callback) => {
-    let query = " select ub.bank,ub.bank_code,ub.account_name from inquiry_bank ub " +
+    let query = " select ub.* from inquiry_bank ub " +
                 " left join user_info ui on ub.user_id=ui.id " +
                 " where ub.id is not null ";
     let paramsArray = [],i=0;
