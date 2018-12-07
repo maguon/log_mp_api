@@ -27,6 +27,10 @@ const getInquiryInvoice = (params,callback) => {
         paramsArray[i++] = params.taxNumber;
         query = query + " and uii.tax_number = ?";
     }
+    if(params.status){
+        paramsArray[i++] = params.status;
+        query = query + " and uii.status = ?";
+    }
     if(params.userName){
         paramsArray[i] = params.userName;
         query = query + " and ui.user_name = ?";

@@ -1505,6 +1505,20 @@
             "description": "userId",
             "required": false,
             "type": "integer"
+          },
+          {
+            "name": "inquiryBankId",
+            "in": "query",
+            "description": "inquiryBankId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "status",
+            "required": false,
+            "type": "integer"
           }
         ],
         "responses": {
@@ -1539,6 +1553,20 @@
             "in": "path",
             "description": "userId",
             "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "inquiryBankId",
+            "in": "query",
+            "description": "inquiryBankId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "status",
+            "required": false,
             "type": "integer"
           }
         ],
@@ -1701,6 +1729,13 @@
             "description": "userName",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "status",
+            "required": false,
+            "type": "integer"
           }
         ],
         "responses": {
@@ -1764,6 +1799,13 @@
             "description": "userName",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "status",
+            "required": false,
+            "type": "integer"
           }
         ],
         "responses": {
