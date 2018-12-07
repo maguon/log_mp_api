@@ -4744,9 +4744,6 @@
     "wechatPayment": {
       "type": "object",
       "properties": {
-        "totalFee": {
-          "type": "integer"
-        },
         "status": {
           "type": "integer"
         },
