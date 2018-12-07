@@ -11,6 +11,10 @@ const getInquiryInvoice = (params,callback) => {
                 " left join user_info ui on uii.user_id=ui.id " +
                 " where uii.id is not null ";
     let paramsArray = [],i=0;
+    if(params.userId){
+        paramsArray[i++] = params.userId;
+        query = query + " and uii.user_id = ?";
+    }
     if(params.inquiryInvoiceId){
         paramsArray[i++] = params.inquiryInvoiceId;
         query = query + " and uii.id = ?";
