@@ -4636,6 +4636,9 @@
         "address": {
           "type": "string"
         },
+        "city": {
+          "type": "string"
+        },
         "mark": {
           "type": "string"
         },
@@ -4657,6 +4660,9 @@
           "type": "string"
         },
         "address": {
+          "type": "string"
+        },
+        "city": {
           "type": "string"
         },
         "mark": {

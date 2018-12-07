@@ -31,8 +31,9 @@ const getAddress = (params,callback) => {
     })
 }
 const addAddress = (params,callback) => {
-    let query = " insert into address_info(user_id,name,phone,address,type,mark) values(?,?,?,?,?,?)";
+    let query = " insert into address_info(city,user_id,name,phone,address,type,mark) values(?,?,?,?,?,?,?)";
     let paramsArray = [],i=0;
+    paramsArray[i++] = params.city;
     paramsArray[i++] = params.userId;
     paramsArray[i++] = params.name;
     paramsArray[i++] = params.phone;
@@ -55,8 +56,9 @@ const updateStatus = (params,callback) => {
     })
 }
 const updateAddress = (params,callback) => {
-    let query = " update address_info set name=?,phone=?,address=?, mark=?,type=? where id = ?";
+    let query = " update address_info set city=?,name=?,phone=?,address=?, mark=?,type=? where id = ?";
     let paramsArray = [],i=0;
+    paramsArray[i++] = params.city;
     paramsArray[i++] = params.name;
     paramsArray[i++] = params.phone;
     paramsArray[i++] = params.address;
