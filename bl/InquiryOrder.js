@@ -177,6 +177,20 @@ const putMark = (req,res,next) => {
         }
     })
 }
+const cancelOrder = (req,res,next) => {
+    let params = req.params;
+    params.myDate = new Date();
+    inquiryOrderDAO.cancelOrder(params,(error,result)=>{
+        if(error){
+            logger.error('cancelOrder' + error.message);
+            resUtil.resInternalError(error,res,next);
+        }else{
+            logger.info('cancelOrder' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
+}
 module.exports = {
     addInquiryOrder,
     putInquiryOrder,
@@ -185,6 +199,7 @@ module.exports = {
     putStatus,
     getOrder,
     addOrderCar,
-    putMark
+    putMark,
+    cancelOrder
 }
 

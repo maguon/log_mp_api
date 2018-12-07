@@ -92,9 +92,30 @@ const getOrder = (params,callback) => {
         paramsArray[i++] = params.inquiryId;
         query = query + " and inquiry_id = ? ";
     }
+    if(params.paymentStatus){
+        paramsArray[i++] = params.paymentStatus;
+        query = query + " and payment_status = ? ";
+    }
+    if(params.logStatus){
+        paramsArray[i++] = params.logStatus;
+        query = query + " and log_status = ? ";
+    }
     if(params.status){
-        paramsArray[i] = params.status;
+        paramsArray[i++] = params.status;
         query = query + " and status = ? ";
+    }
+    if(params.createdOnStart){
+        paramsArray[i++] = params.createdOnStart + " 00:00:00";
+        query = query + " and created_on >= ? ";
+    }
+    if(params.createdOnEnd){
+        paramsArray[i++] = params.createdOnEnd + " 23:59:59";
+        query = query + " and created_on <= ? ";
+    }
+    if(params.start && params.size){
+        paramsArray[i++] = parseInt(params.start);
+        paramsArray[i] = parseInt(params.size);
+        query = query + " limit ?, ? ";
     }
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('getOrder');
@@ -102,7 +123,7 @@ const getOrder = (params,callback) => {
     })
 }
 const addOrderCar = (params,callback) => {
-    let query = " insert into car_info(order_id,vin,model_id,old_car,plan) values(?,?,?,?,?) ";
+    let query = " insert into inquiry_car(order_id,vin,model_id,old_car,plan) values(?,?,?,?,?) ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.orderId;
     paramsArray[i++] = params.vin;
@@ -125,12 +146,22 @@ const putMark = (params,callback) => {
     })
 }
 const updateOrderPaymengStatusByOrderId = (params,callback) => {
-    let query = "update order_info set payment_status = ? where id=? ";
+    let query = "update inquiry_order set payment_status = ? where id=? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.paymentStatus;
     paramsArray[i] = params.orderId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('updateOrderPaymengStatusByOrderId');
+        callback(error,rows);
+    })
+}
+const cancelOrder = (params,callback) => {
+    let query = "update inquiry_order set status = 0,cancel_time=? where id=? ";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.myDate;
+    paramsArray[i] = params.orderId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('cancelOrder');
         callback(error,rows);
     })
 }
@@ -144,5 +175,6 @@ module.exports = {
     getOrder,
     addOrderCar,
     putMark,
-    updateOrderPaymengStatusByOrderId
+    updateOrderPaymengStatusByOrderId,
+    cancelOrder
 }
