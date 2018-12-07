@@ -13,6 +13,14 @@ const getInquiryCarByInquiryId = (params,callback) => {
         paramsArray[i++] = params.inquiryId;
         query = query + " and inquiry_id = ? "
     }
+    if(params.userId){
+        paramsArray[i++] = params.userId;
+        query = query + " and user_id = ? "
+    }
+    if(params.inquiryCarId){
+        paramsArray[i++] = params.inquiryCarId;
+        query = query + " and id = ? "
+    }
     if(params.type){
         paramsArray[i++] = params.type;
         query = query + " and type = ? "
@@ -27,8 +35,9 @@ const getInquiryCarByInquiryId = (params,callback) => {
     })
 }
 const addCar = (params,callback) => {
-    let query = " insert into inquiry_car(inquiry_id,model_id,old_car,plan,fee,car_num) values(?,?,?,?,?,?)";
+    let query = " insert into inquiry_car(user_id,inquiry_id,model_id,old_car,plan,fee,car_num) values(?,?,?,?,?,?,?)";
     let paramsArray = [],i=0;
+    paramsArray[i++] = params.userId;
     paramsArray[i++] = params.inquiryId;
     paramsArray[i++] = params.modelId;
     paramsArray[i++] = params.oldCar;
@@ -41,8 +50,9 @@ const addCar = (params,callback) => {
     })
 }
 const addCarByOrder = (params,callback) => {
-    let query = " insert into inquiry_car(inquiry_id,model_id,old_car,plan,fee,type,vin,car_num) values(?,?,?,?,?,?,?,?)";
+    let query = " insert into inquiry_car(user_id,inquiry_id,model_id,old_car,plan,fee,type,vin,car_num) values(?,?,?,?,?,?,?,?,?)";
     let paramsArray = [],i=0;
+    paramsArray[i++] = params.userId;
     paramsArray[i++] = params.inquiryId;
     paramsArray[i++] = params.modelId;
     paramsArray[i++] = params.oldCar;

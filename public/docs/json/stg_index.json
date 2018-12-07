@@ -1092,6 +1092,13 @@
             "type": "integer"
           },
           {
+            "name": "inquiryCarId",
+            "in": "query",
+            "description": "inquiryCarId",
+            "required": false,
+            "type": "integer"
+          },
+          {
             "name": "type",
             "in": "query",
             "description": "type",
@@ -1286,6 +1293,27 @@
             "name": "inquiryId",
             "in": "query",
             "description": "inquiryId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "inquiryCarId",
+            "in": "query",
+            "description": "inquiryCarId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "status",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "type",
             "required": false,
             "type": "integer"
           }
