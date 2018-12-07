@@ -123,9 +123,10 @@ const getOrder = (params,callback) => {
     })
 }
 const addOrderCar = (params,callback) => {
-    let query = " insert into inquiry_car(order_id,vin,model_id,old_car,plan) values(?,?,?,?,?) ";
+    let query = " insert into inquiry_car(user_id,inquiry_id,vin,model_id,old_car,plan,type) values(?,?,?,?,?,?,1) ";
     let paramsArray = [],i=0;
-    paramsArray[i++] = params.orderId;
+    paramsArray[i++] = params.userId;
+    paramsArray[i++] = params.inquiryId;
     paramsArray[i++] = params.vin;
     paramsArray[i++] = params.modelId;
     paramsArray[i++] = params.oldCar;

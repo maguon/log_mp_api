@@ -4956,7 +4956,7 @@
     "carInfo": {
       "type": "object",
       "properties": {
-        "orderId": {
+        "inquiryId": {
           "type": "integer"
         },
         "vin": {

@@ -89,32 +89,6 @@ const getInquiryByUserId = (req,res,next) => {
         }
     })
 }
-const getInquiryContactByInquiryId = (req,res,next) => {
-    let params = req.params;
-    inquiryContactDAO.getInquiryContactByInquiryId(params,(error,result)=>{
-        if(error){
-            logger.error('getInquiryContactByInquiryId' + error.message);
-            throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
-        }else{
-            logger.info('getInquiryContactByInquiryId' + 'success');
-            resUtil.resetQueryRes(res,result,null);
-            return next();
-        }
-    })
-}
-const getInquiryInvoiceByInquiryId = (req,res,next) => {
-    let params = req.params;
-    inquiryInvoiceDAO.getInquiryInvoiceByInquiryId(params, (error, result) => {
-        if (error) {
-            logger.error('getInquiryInvoiceByInquiryId' + error.message);
-            throw sysError.InternalError(error.message, sysMsg.SYS_INTERNAL_ERROR_MSG);
-        } else {
-            logger.info('getInquiryInvoiceByInquiryId' + 'success');
-            resUtil.resetQueryRes(res, result, null);
-            return next();
-        }
-    })
-}
 const updateInquiryStatus = (req,res,next) => {
     let params = req.params;
     inquiryDAO.updateInquiryStatus(params,(error,result)=>{
@@ -159,7 +133,6 @@ const cancelInquiry = (req,res,next) => {
 module.exports = {
     addRouteInquiry,
     getInquiryByUserId,
-    getInquiryContactByInquiryId,
     updateInquiryStatus,
     updateFeePrice,
     cancelInquiry
