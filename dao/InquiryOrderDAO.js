@@ -166,6 +166,18 @@ const cancelOrder = (params,callback) => {
         callback(error,rows);
     })
 }
+const putSendInfo = (params,callback) => {
+    let query = "update inquiry_order set send_name = ?,send_phone=?,send_address=? where id=? ";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.sendName;
+    paramsArray[i++] = params.sendPhone;
+    paramsArray[i++] = params.sendAddress;
+    paramsArray[i] = params.orderId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('putSendInfo');
+        callback(error,rows);
+    })
+}
 module.exports = {
     getInquiryOrder,
     addInquiryOrder,
@@ -177,5 +189,6 @@ module.exports = {
     addOrderCar,
     putMark,
     updateOrderPaymengStatusByOrderId,
-    cancelOrder
+    cancelOrder,
+    putSendInfo
 }

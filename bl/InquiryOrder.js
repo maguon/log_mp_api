@@ -191,6 +191,19 @@ const cancelOrder = (req,res,next) => {
         }
     })
 }
+const putSendInfo = (req,res,next) => {
+    let params = req.params;
+    inquiryOrderDAO.putSendInfo(params,(error,result)=>{
+        if(error){
+            logger.error('putSendInfo' + error.message);
+            resUtil.resInternalError(error,res,next);
+        }else{
+            logger.info('putSendInfo' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
+}
 module.exports = {
     addInquiryOrder,
     putInquiryOrder,
@@ -200,6 +213,7 @@ module.exports = {
     getOrder,
     addOrderCar,
     putMark,
-    cancelOrder
+    cancelOrder,
+    putSendInfo
 }
 

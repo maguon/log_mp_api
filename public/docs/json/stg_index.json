@@ -2655,6 +2655,57 @@
         }
       }
     },
+    "/user/{userId}/order/{orderId}/sendInfo": {
+      "put": {
+        "tags": [
+          "order"
+        ],
+        "summary": "inquiryManageOrder query by inquiryManageId",
+        "description": "inquiryManageOrder query by inquiryManageId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "sendInfo",
+            "in": "body",
+            "description": "sendInfo",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/sendInfo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/sendInfo"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
     "/admin/{adminId}/order/{orderId}/feePrice/{feePrice}": {
       "put": {
         "tags": [
@@ -5000,6 +5051,23 @@
       },
       "xml": {
         "name": "receiveInfo"
+      }
+    },
+    "sendInfo": {
+      "type": "object",
+      "properties": {
+        "sendName": {
+          "type": "string"
+        },
+        "sendPhone": {
+          "type": "string"
+        },
+        "sendAddress": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "sendInfo"
       }
     },
     "carInfo": {
