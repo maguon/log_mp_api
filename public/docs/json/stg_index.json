@@ -1278,6 +1278,55 @@
         }
       }
     },
+    "/admin/{adminId}/inquiryCar/{inquiryCarId}/actFee/{actFee}": {
+      "put": {
+        "tags": [
+          "inquiryCar"
+        ],
+        "summary": " query by routeId look car",
+        "description": " query routeId id look car",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "inquiryCarId",
+            "in": "path",
+            "description": "inquiryCarId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "actFee",
+            "in": "path",
+            "description": "actFee",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/actFee"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
     "/admin/{adminId}/inquiryCar": {
       "get": {
         "tags": [

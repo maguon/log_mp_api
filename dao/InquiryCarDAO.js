@@ -7,27 +7,29 @@ const httpUtil = require('../util/HttpUtil');
 const db = require('../db/connection/MysqlDb.js');
 
 const getInquiryCarByInquiryId = (params,callback) => {
-    let query = " select id,inquiry_id,model_id,old_car,plan,fee,car_num,vin,status,created_on,updated_on,fee/car_num as fee_solo,plan/car_num as plan_solo from inquiry_car where id is not null ";
+    let query = " select ic.id,ic.inquiry_id,ic.model_id,ic.old_car,ic.plan,ic.fee,ic.car_num,ic.vin,ic.status,ic.created_on," +
+                " ic.updated_on,ic.fee/ic.car_num as fee_solo,ic.plan/ic.car_num as plan_solo,ic.act_fee from inquiry_car ic " +
+                " where ic.id is not null ";
     let paramsArray = [],i=0;
     if(params.inquiryId){
         paramsArray[i++] = params.inquiryId;
-        query = query + " and inquiry_id = ? "
+        query = query + " and ic.inquiry_id = ? "
     }
     if(params.userId){
         paramsArray[i++] = params.userId;
-        query = query + " and user_id = ? "
+        query = query + " and ic.user_id = ? "
     }
     if(params.inquiryCarId){
         paramsArray[i++] = params.inquiryCarId;
-        query = query + " and id = ? "
+        query = query + " and ic.id = ? "
     }
     if(params.type){
         paramsArray[i++] = params.type;
-        query = query + " and type = ? "
+        query = query + " and ic.type = ? "
     }
     if(params.status){
         paramsArray[i] = params.status;
-        query = query + " and status = ? "
+        query = query + " and ic.status = ? "
     }
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('getInquiryCarByInquiryId');
@@ -76,9 +78,20 @@ const updateStatus = (params,callback) => {
         callback(error,rows)
     })
 }
+const updateActFee = (params,callback) => {
+    let query = " update inquiry_car set act_fee=? where id = ?";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.actFee;
+    paramsArray[i] = params.inquiryCarId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('updateActFee');
+        callback(error,rows)
+    })
+}
 module.exports = {
     getInquiryCarByInquiryId,
     addCar,
     addCarByOrder,
-    updateStatus
+    updateStatus,
+    updateActFee
 }
