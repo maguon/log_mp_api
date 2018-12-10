@@ -103,8 +103,8 @@ const createServer=()=>{
     server.get('/api/user/:userId/queryInquiry',inquiry.getInquiryByUserId);
     server.get('/api/admin/:adminId/queryInquiry',inquiry.getInquiryByUserId);
     server.put({path:'/api/admin/:adminId/user/:userId/inquiry/:inquiryId/feePrice',contentType: 'application/json'},inquiry.updateFeePrice);
-    server.put({path:'/api/user/:userId/inquiry/:inquiryId/inquiryStatus',contentType: 'application/json'},inquiry.updateInquiryStatus);
-    server.put({path:'/api/admin/:adminId/inquiry/:inquiryId/inquiryStatus',contentType: 'application/json'},inquiry.updateInquiryStatus);
+    server.put({path:'/api/user/:userId/inquiry/:inquiryId/inquiryStatus/:status',contentType: 'application/json'},inquiry.updateInquiryStatus);
+    server.put({path:'/api/admin/:adminId/inquiry/:inquiryId/inquiryStatus/:status',contentType: 'application/json'},inquiry.updateInquiryStatus);
     server.put({path:'/api/user/:userId/inquiry/:inquiryId/cancel',contentType: 'application/json'},inquiry.cancelInquiry);
     server.put({path:'/api/admin/:adminId/inquiry/:inquiryId/cancel',contentType: 'application/json'},inquiry.cancelInquiry);
     /**

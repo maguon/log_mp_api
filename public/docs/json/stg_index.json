@@ -2333,6 +2333,15 @@
             "description": "inquiryId",
             "required": true,
             "type": "integer"
+          },
+          {
+            "name": "inquiryStatus",
+            "in": "body",
+            "description": "inquiryStatus",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/inquiryStatus"
+            }
           }
         ],
         "responses": {
@@ -2375,6 +2384,15 @@
             "description": "inquiryId",
             "required": true,
             "type": "integer"
+          },
+          {
+            "name": "inquiryStatus",
+            "in": "body",
+            "description": "inquiryStatus",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/inquiryStatus"
+            }
           }
         ],
         "responses": {
@@ -2393,7 +2411,7 @@
         }
       }
     },
-    "/admin/{adminId}/inquiry/{inquiryId}/inquiryStatus": {
+    "/admin/{adminId}/inquiry/{inquiryId}/inquiryStatus/{status}": {
       "put": {
         "tags": [
           "inquiry"
@@ -2419,13 +2437,11 @@
             "type": "integer"
           },
           {
-            "name": "inquiryStatus",
-            "in": "body",
-            "description": "inquiryStatus",
+            "name": "status",
+            "in": "path",
+            "description": "status",
             "required": true,
-            "schema": {
-              "$ref": "#/definitions/inquiryStatus"
-            }
+            "type": "integer"
           }
         ],
         "responses": {
@@ -2444,7 +2460,7 @@
         }
       }
     },
-    "/user/{userId}/inquiry/{inquiryId}/inquiryStatus": {
+    "/user/{userId}/inquiry/{inquiryId}/inquiryStatus/{status}": {
       "put": {
         "tags": [
           "inquiry"
@@ -2470,13 +2486,11 @@
             "type": "integer"
           },
           {
-            "name": "inquiryStatus",
-            "in": "body",
-            "description": "inquiryStatus",
+            "name": "status",
+            "in": "path",
+            "description": "status",
             "required": true,
-            "schema": {
-              "$ref": "#/definitions/inquiryStatus"
-            }
+            "type": "integer"
           }
         ],
         "responses": {
@@ -5202,9 +5216,6 @@
     "inquiryStatus": {
       "type": "object",
       "properties": {
-        "status": {
-          "type": "integer"
-        },
         "markReason": {
           "type": "string"
         }

@@ -83,10 +83,9 @@ const getInquiryByUserId = (params,callback) => {
     })
 }
 const updateInquiryStatus = (params,callback) => {
-    let query = "update inquiry_info set status = ?,mark_reason=? where id = ? ";
+    let query = "update inquiry_info set status = ? where id = ? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.status;
-    paramsArray[i++] = params.markReason;
     paramsArray[i] = params.inquiryId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('updateInquiryStatus');
@@ -127,8 +126,9 @@ const updateFeeByCar = (params,callback) => {
     })
 }
 const cancelInquiry = (params,callback) => {
-    let query = "update inquiry_info set status = 3,cancel_time=? where id = ? ";
+    let query = "update inquiry_info set status = 3,mark_reason=?,cancel_time=? where id = ? ";
     let paramsArray = [],i=0;
+    paramsArray[i++] = params.markReason;
     paramsArray[i++] = params.myDate;
     paramsArray[i] = params.inquiryId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
