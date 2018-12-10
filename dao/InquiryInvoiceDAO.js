@@ -32,8 +32,13 @@ const getInquiryInvoice = (params,callback) => {
         query = query + " and uii.status = ?";
     }
     if(params.userName){
-        paramsArray[i] = params.userName;
+        paramsArray[i++] = params.userName;
         query = query + " and ui.user_name = ?";
+    }
+    if(params.start && params.size){
+        paramsArray[i++] = parseInt(params.start);
+        paramsArray[i] = parseInt(params.size);
+        query = query + " limit ?, ?";
     }
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('getInquiryInvoice');
