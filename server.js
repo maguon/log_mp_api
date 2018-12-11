@@ -23,6 +23,7 @@ const address = require('./bl/Address.js');
 const inquiryBank = require('./bl/InquiryBank.js');
 const inquiryInvoice = require('./bl/InquiryInvoice.js');
 const payment = require('./bl/Payment.js');
+const addressContact = require('./bl/AddressContact.js');
 //const email = require('./bl/Email.js');
 
 
@@ -154,8 +155,16 @@ const createServer=()=>{
     server.get('/api/admin/:adminId/address',address.getAddress);
     server.get('/api/user/:userId/address',address.getAddress);
     server.post({path:'/api/user/:userId/address',contentType: 'application/json'},address.addAddress);
+    server.post({path:'/api/admin/:adminId/address',contentType: 'application/json'},address.addAddress);
     server.put({path:'/api/user/:userId/address/:addressId/status/:status/',contentType: 'application/json'},address.updateStatus);
     server.put({path:'/api/user/:userId/address/:addressId/addressInfo',contentType: 'application/json'},address.updateAddress);
+    /**
+     address_info
+     */
+    server.get('/api/admin/:adminId/addressContact',addressContact.getAddressContact);
+    server.get('/api/user/:userId/addressContact',addressContact.getAddressContact);
+    server.post({path:'/api/admin/:adminId/addressContact',contentType: 'application/json'},addressContact.addAddressContact);
+    server.del({path:'/api/admin/:adminId/addressContact/:addressContactId',contentType: 'application/json'},addressContact.delAddressContact);
     /**
      admin_user
      */

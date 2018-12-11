@@ -68,6 +68,10 @@
       "description":"address of log api"
     },
     {
+      "name": "addressContact",
+      "description":"addressContact of log api"
+    },
+    {
       "name": "supplier",
       "description":"supplier of log api"
     },
@@ -4046,6 +4050,27 @@
             "type": "integer"
           },
           {
+            "name": "userName",
+            "in": "query",
+            "description": "userName",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "name",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "city",
+            "in": "query",
+            "description": "city",
+            "required": false,
+            "type": "string"
+          },
+          {
             "name": "addressId",
             "in": "query",
             "description": "addressId",
@@ -4081,6 +4106,279 @@
             "description": "Invalid token value or invalid admin id"
           }
         }
+      },
+      "post": {
+        "tags": [
+          "address"
+        ],
+        "summary": "add address",
+        "description": "add address",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "addressAdmin",
+            "in": "body",
+            "description": "addressAdmin",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/addressAdmin"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/addressAdmin"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/addressContact": {
+      "get": {
+        "tags": [
+          "addressContact"
+        ],
+        "summary": "get address",
+        "description": "get address",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "addressId",
+            "in": "query",
+            "description": "addressId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "userName",
+            "in": "query",
+            "description": "userName",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "addressContactId",
+            "in": "query",
+            "description": "addressContactId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "status",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "type",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/addressContact"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/addressContact": {
+      "get": {
+        "tags": [
+          "addressContact"
+        ],
+        "summary": "get address",
+        "description": "get address",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "userId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "addressId",
+            "in": "query",
+            "description": "addressId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "userName",
+            "in": "query",
+            "description": "userName",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "addressContactId",
+            "in": "query",
+            "description": "addressContactId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "status",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "type",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/addressContact"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "addressContact"
+        ],
+        "summary": "add address",
+        "description": "add address",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "addressContactAdmin",
+            "in": "body",
+            "description": "addressContactAdmin",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/addressContactAdmin"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/addressContactAdmin"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/addressContact/{addressContactId}": {
+      "delete": {
+        "tags": [
+          "addressContact"
+        ],
+        "summary": "get address",
+        "description": "get address",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "addressContactId",
+            "in": "path",
+            "description": "addressContactId",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/addressContact"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
       }
     },
     "/user/{userId}/address": {
@@ -4100,6 +4398,27 @@
             "description": "userId",
             "required": true,
             "type": "integer"
+          },
+          {
+            "name": "userName",
+            "in": "query",
+            "description": "userName",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "name",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "city",
+            "in": "query",
+            "description": "city",
+            "required": false,
+            "type": "string"
           },
           {
             "name": "addressId",
@@ -5181,9 +5500,6 @@
         "name": {
           "type": "string"
         },
-        "phone": {
-          "type": "string"
-        },
         "address": {
           "type": "string"
         },
@@ -5199,6 +5515,58 @@
       },
       "xml": {
         "name": "address"
+      }
+    },
+    "addressContactAdmin": {
+      "type": "object",
+      "properties": {
+        "addressId": {
+          "type": "integer"
+        },
+        "userName": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "position": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "addressContactAdmin"
+      }
+    },
+    "addressAdmin": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "mark": {
+          "type": "string"
+        },
+        "type": {
+          "type": "integer"
+        },
+        "lon": {
+          "type": "integer"
+        },
+        "lat": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "addressAdmin"
       }
     },
     "addressInfo": {

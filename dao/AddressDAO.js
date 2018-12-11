@@ -7,23 +7,37 @@ const httpUtil = require('../util/HttpUtil');
 const db = require('../db/connection/MysqlDb.js');
 
 const getAddress = (params,callback) => {
-    let query = " select * from address_info where id is not null ";
+    let query = " select ai.* from address_info ai " +
+                " left join address_contact ui on ui.address_id=ai.id " +
+                " where ai.id is not null ";
     let paramsArray = [],i=0;
     if(params.userId){
         paramsArray[i++] = params.userId;
-        query = query + " and user_id = ? "
+        query = query + " and ai.user_id = ? "
     }
     if(params.addressId){
         paramsArray[i++] = params.addressId;
-        query = query + " and id = ? "
+        query = query + " and ai.id = ? "
+    }
+    if(params.city){
+        paramsArray[i++] = params.city;
+        query = query + " and ai.city = ? "
+    }
+    if(params.name){
+        paramsArray[i++] = params.name;
+        query = query + " and ai.name = ? "
+    }
+    if(params.userName){
+        paramsArray[i++] = params.userName;
+        query = query + " and ui.userName = ? "
     }
     if(params.status){
         paramsArray[i++] = params.status;
-        query = query + " and status = ? "
+        query = query + " and ai.status = ? "
     }
     if(params.type){
         paramsArray[i] = params.type;
-        query = query + " and type = ? "
+        query = query + " and ai.type = ? "
     }
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('getAddress');
@@ -31,15 +45,16 @@ const getAddress = (params,callback) => {
     })
 }
 const addAddress = (params,callback) => {
-    let query = " insert into address_info(city,user_id,name,phone,address,type,mark) values(?,?,?,?,?,?,?)";
+    let query = " insert into address_info(city,user_id,name,address,type,mark,lon,lat) values(?,?,?,?,?,?,?,?)";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.city;
     paramsArray[i++] = params.userId;
     paramsArray[i++] = params.name;
-    paramsArray[i++] = params.phone;
     paramsArray[i++] = params.address;
     paramsArray[i++] = params.type;
-    paramsArray[i] = params.mark;
+    paramsArray[i++] = params.mark;
+    paramsArray[i++] = params.lon;
+    paramsArray[i] = params.lat;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('addAddress');
         callback(error,rows)
