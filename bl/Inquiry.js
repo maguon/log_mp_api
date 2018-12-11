@@ -65,7 +65,7 @@ const addRouteInquiry = (req,res,next) => {
                             reject(error);
                         }else{
                             logger.info('updateFee'+'success');
-                            resUtil.resetUpdateRes(res,result,null);
+                            resUtil.resetUpdateRes(res,{inquiryId:params.inquiryId},null);
                             return next();
                         }
                     })
