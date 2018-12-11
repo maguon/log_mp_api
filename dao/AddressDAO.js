@@ -8,7 +8,6 @@ const db = require('../db/connection/MysqlDb.js');
 
 const getAddress = (params,callback) => {
     let query = " select ai.* from address_info ai " +
-                " left join address_contact ui on ui.address_id=ai.id " +
                 " where ai.id is not null ";
     let paramsArray = [],i=0;
     if(params.userId){
