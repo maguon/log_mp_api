@@ -158,6 +158,7 @@ const createServer=()=>{
     server.post({path:'/api/admin/:adminId/address',contentType: 'application/json'},address.addAddress);
     server.put({path:'/api/user/:userId/address/:addressId/status/:status/',contentType: 'application/json'},address.updateStatus);
     server.put({path:'/api/user/:userId/address/:addressId/addressInfo',contentType: 'application/json'},address.updateAddress);
+    server.put({path:'/api/admin/:adminId/address/:addressId/addressByAdmin',contentType: 'application/json'},address.updateAddressByAdmin);
     /**
      address_info
      */

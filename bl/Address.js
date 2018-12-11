@@ -59,9 +59,23 @@ const updateAddress = (req,res,next) => {
         }
     })
 }
+const updateAddressByAdmin = (req,res,next) => {
+    let params = req.params;
+    addressDAO.updateAddressByAdmin(params,(error,result)=>{
+        if(error){
+            logger.error('updateAddressByAdmin' + error.message);
+            resUtil.resInternalError(error,res,next);
+        }else{
+            logger.info('updateAddressByAdmin' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
+}
 module.exports = {
     getAddress,
     addAddress,
     updateStatus,
-    updateAddress
+    updateAddress,
+    updateAddressByAdmin
 }

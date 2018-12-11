@@ -84,9 +84,23 @@ const updateAddress = (params,callback) => {
         callback(error,rows)
     })
 }
+const updateAddressByAdmin = (params,callback) => {
+    let query = " update address_info set city=?,name=?,address=?, mark=? where id = ?";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.city;
+    paramsArray[i++] = params.name;
+    paramsArray[i++] = params.address;
+    paramsArray[i++] = params.mark;
+    paramsArray[i] = params.addressId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('updateAddressByAdmin');
+        callback(error,rows)
+    })
+}
 module.exports = {
     getAddress,
     addAddress,
     updateStatus,
-    updateAddress
+    updateAddress,
+    updateAddressByAdmin
 }

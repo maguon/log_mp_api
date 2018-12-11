@@ -4600,6 +4600,57 @@
         }
       }
     },
+    "/admin/{adminId}/address/{addressId}/addressByAdmin": {
+      "put": {
+        "tags": [
+          "address"
+        ],
+        "summary": "put address",
+        "description": "put address",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "addressId",
+            "in": "path",
+            "description": "addressId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "addressByAdmin",
+            "in": "body",
+            "description": "addressByAdmin",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/addressByAdmin"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/addressByAdmin"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
     "/user/{userId}/payment": {
       "get": {
         "tags": [
@@ -5593,6 +5644,26 @@
       },
       "xml": {
         "name": "addressInfo"
+      }
+    },
+    "addressByAdmin": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "mark": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "addressByAdmin"
       }
     },
     "inquiryStatus": {
