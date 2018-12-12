@@ -5489,6 +5489,12 @@
       "properties": {
         "cityName": {
           "type": "string"
+        },
+        "cityPinYin": {
+          "type": "string"
+        },
+        "cityPY": {
+          "type": "string"
         }
       },
       "xml": {
