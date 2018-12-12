@@ -122,20 +122,6 @@ const getOrder = (params,callback) => {
         callback(error,rows);
     })
 }
-const addOrderCar = (params,callback) => {
-    let query = " insert into inquiry_car(user_id,inquiry_id,vin,model_id,old_car,plan,type) values(?,?,?,?,?,?,1) ";
-    let paramsArray = [],i=0;
-    paramsArray[i++] = params.userId;
-    paramsArray[i++] = params.inquiryId;
-    paramsArray[i++] = params.vin;
-    paramsArray[i++] = params.modelId;
-    paramsArray[i++] = params.oldCar;
-    paramsArray[i] = params.plan;
-    db.dbQuery(query,paramsArray,(error,rows)=>{
-        logger.debug('addOrderCar');
-        callback(error,rows);
-    })
-}
 const putMark = (params,callback) => {
     let query = " update user_order set mark=? where id = ? ";
     let paramsArray = [],i=0;
@@ -186,7 +172,6 @@ module.exports = {
     putFreightPrice,
     putStatus,
     getOrder,
-    addOrderCar,
     putMark,
     updateOrderPaymengStatusByOrderId,
     cancelOrder,

@@ -151,19 +151,6 @@ const getOrder = (req,res,next) => {
         }
     })
 }
-const addOrderCar = (req,res,next) => {
-    let params = req.params;
-    inquiryOrderDAO.addOrderCar(params,(error,result)=>{
-        if(error){
-            logger.error('addOrderCar' + error.message);
-            resUtil.resInternalError(error,res,next);
-        }else{
-            logger.info('addOrderCar' + 'success');
-            resUtil.resetCreateRes(res,result,null);
-            return next();
-        }
-    })
-}
 const putMark = (req,res,next) => {
     let params = req.params;
     inquiryOrderDAO.putMark(params,(error,result)=>{
@@ -211,7 +198,6 @@ module.exports = {
     putFreightPrice,
     putStatus,
     getOrder,
-    addOrderCar,
     putMark,
     cancelOrder,
     putSendInfo

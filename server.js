@@ -24,6 +24,7 @@ const inquiryBank = require('./bl/InquiryBank.js');
 const inquiryInvoice = require('./bl/InquiryInvoice.js');
 const payment = require('./bl/Payment.js');
 const addressContact = require('./bl/AddressContact.js');
+const orderItem = require('./bl/OrderItem.js');
 //const email = require('./bl/Email.js');
 
 
@@ -109,7 +110,7 @@ const createServer=()=>{
     server.put({path:'/api/user/:userId/inquiry/:inquiryId/cancel',contentType: 'application/json'},inquiry.cancelInquiry);
     server.put({path:'/api/admin/:adminId/inquiry/:inquiryId/cancel',contentType: 'application/json'},inquiry.cancelInquiry);
     /**
-     inquiry_invoice
+     user_invoice
      */
     server.post({path:'/api/user/:userId/inquiryInvoice',contentType: 'application/json'},inquiryInvoice.addInquiryInvoice);
     server.get('/api/user/:userId/inquiryInvoice',inquiryInvoice.getInquiryInvoice);
@@ -123,9 +124,9 @@ const createServer=()=>{
     server.get('/api/user/:userId/inquiryCar',inquiryCar.getInquiryCarByInquiryId);
     server.get('/api/admin/:adminId/inquiryCar',inquiryCar.getInquiryCarByInquiryId);
     server.put({path:'/api/user/:userId/inquiryCar/:inquiryCarId/status/:status',contentType: 'application/json'},inquiryCar.updateStatus);
-    server.put({path:'/api/admin/:adminId/inquiryCar/:inquiryCarId/actFee/:actFee',contentType: 'application/json'},inquiryCar.updateActFee);
+
     /**
-     inquiry_order
+     user_order
      */
     server.post({path:'/api/user/:userId/inquiry/:inquiryId/order',contentType: 'application/json'},inquiryOrder.addInquiryOrder);
     server.post({path:'/api/admin/:adminId/user/:userId/inquiry/:inquiryId/order',contentType: 'application/json'},inquiryOrder.addInquiryOrder);
@@ -140,10 +141,18 @@ const createServer=()=>{
     server.get('/api/user/:userId/orderInfo',inquiryOrder.getOrder);
     server.get('/api/user/:userId/order',inquiryOrder.getOrder);
     server.get('/api/admin/:adminId/order',inquiryOrder.getOrder);
-    server.post({path:'/api/user/:userId/car',contentType: 'application/json'},inquiryOrder.addOrderCar);
     server.put({path:'/api/user/:userId/order/:orderId/orderMark',contentType: 'application/json'},inquiryOrder.putMark);
     /**
-     inquiry_bank
+     order_item
+     */
+    server.get('/api/user/:userId/orderItem',orderItem.getOrderCar);
+    server.get('/api/admin/:adminId/orderItem',orderItem.getOrderCar);
+    server.post({path:'/api/user/:userId/car',contentType: 'application/json'},orderItem.addOrderCar);
+    server.post({path:'/api/admin/:adminId/carAdmin',contentType: 'application/json'},orderItem.addOrderCarAdmin);
+    server.del({path:'/api/user/:userId/orderItem/:orderItemId',contentType: 'application/json'},orderItem.delOrderCar);
+    server.put({path:'/api/admin/:adminId/orderItem/:orderItemId/actFee/:actFee',contentType: 'application/json'},orderItem.updateActFee);
+    /**
+     user_bank
      */
     server.post({path:'/api/user/:userId/inquiryBank',contentType: 'application/json'},inquiryBank.addInquiryBank);
     server.get('/api/user/:userId/inquiryBank',inquiryBank.getInquiryBank);

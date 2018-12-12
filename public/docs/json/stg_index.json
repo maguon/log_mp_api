@@ -44,6 +44,10 @@
       "description": "order of log api"
     },
     {
+      "name": "orderItem",
+      "description": "orderItem of log api"
+    },
+    {
       "name": "inquiryInvoice",
       "description": "inquiryInvoice of log api"
     },
@@ -1282,10 +1286,10 @@
         }
       }
     },
-    "/admin/{adminId}/inquiryCar/{inquiryCarId}/actFee/{actFee}": {
+    "/admin/{adminId}/orderItem/{orderItemId}/actFee/{actFee}": {
       "put": {
         "tags": [
-          "inquiryCar"
+          "orderItem"
         ],
         "summary": " query by routeId look car",
         "description": " query routeId id look car",
@@ -1301,9 +1305,9 @@
             "type": "integer"
           },
           {
-            "name": "inquiryCarId",
+            "name": "orderItemId",
             "in": "path",
-            "description": "inquiryCarId",
+            "description": "orderItemId",
             "required": true,
             "type": "integer"
           },
@@ -3021,7 +3025,7 @@
     "/user/{userId}/car": {
       "post": {
         "tags": [
-          "order"
+          "orderItem"
         ],
         "summary": "inquiryManageOrder query by inquiryManageId",
         "description": "inquiryManageOrder query by inquiryManageId",
@@ -3053,6 +3057,211 @@
               "type": "object",
               "items": {
                 "$ref": "#/definitions/carInfo"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/carAdmin": {
+      "post": {
+        "tags": [
+          "orderItem"
+        ],
+        "summary": "inquiryManageOrder query by inquiryManageId",
+        "description": "inquiryManageOrder query by inquiryManageId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "carAdmin",
+            "in": "body",
+            "description": "carAdmin",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/carAdmin"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/carAdmin"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/orderItem": {
+      "get": {
+        "tags": [
+          "orderItem"
+        ],
+        "summary": " query by routeId look order",
+        "description": " query by routeId id look order",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "query",
+            "description": "orderId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "orderItemId",
+            "in": "query",
+            "description": "orderItemId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "type",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/orderItem"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/orderItem": {
+      "get": {
+        "tags": [
+          "orderItem"
+        ],
+        "summary": " query by routeId look order",
+        "description": " query by routeId id look order",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "userId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "query",
+            "description": "orderId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "orderItemId",
+            "in": "query",
+            "description": "orderItemId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "type",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/orderItem"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/orderItem/{orderItemId}": {
+      "delete": {
+        "tags": [
+          "orderItem"
+        ],
+        "summary": " query by routeId look order",
+        "description": " query by routeId id look order",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderItemId",
+            "in": "path",
+            "description": "orderItemId",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/orderItem"
               }
             }
           },
@@ -5471,24 +5680,56 @@
     "carInfo": {
       "type": "object",
       "properties": {
-        "inquiryId": {
+        "orderId": {
           "type": "integer"
         },
         "vin": {
           "type": "string"
         },
-        "modelId": {
+        "modelType": {
           "type": "integer"
         },
         "oldCar": {
           "type": "integer"
         },
-        "plan": {
+        "valuation": {
+          "type": "integer"
+        },
+        "oraPrice": {
           "type": "integer"
         }
       },
       "xml": {
         "name": "carInfo"
+      }
+    },
+    "carAdmin": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "integer"
+        },
+        "orderId": {
+          "type": "integer"
+        },
+        "vin": {
+          "type": "string"
+        },
+        "modelType": {
+          "type": "integer"
+        },
+        "oldCar": {
+          "type": "integer"
+        },
+        "valuation": {
+          "type": "integer"
+        },
+        "oraPrice": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "carAdmin"
       }
     },
     "orderMark": {

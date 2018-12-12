@@ -78,20 +78,10 @@ const updateStatus = (params,callback) => {
         callback(error,rows)
     })
 }
-const updateActFee = (params,callback) => {
-    let query = " update inquiry_car set act_fee=? where id = ?";
-    let paramsArray = [],i=0;
-    paramsArray[i++] = params.actFee;
-    paramsArray[i] = params.inquiryCarId;
-    db.dbQuery(query,paramsArray,(error,rows)=>{
-        logger.debug('updateActFee');
-        callback(error,rows)
-    })
-}
 module.exports = {
     getInquiryCarByInquiryId,
     addCar,
     addCarByOrder,
     updateStatus,
-    updateActFee
+
 }
