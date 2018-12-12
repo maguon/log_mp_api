@@ -9,7 +9,7 @@ const db = require('../db/connection/MysqlDb.js');
 const getInquiryOrder = (params,callback) => {
     let query = " select uo.*,ii.service_type from inquiry_info ii " +
                 " left join user_info ui on ui.id=ii.user_id " +
-                " left join inquiry_order uo on uo.inquiry_id = ii.id " +
+                " left join user_order uo on uo.inquiry_id = ii.id " +
                 " where ii.id is not null ";
     let paramsArray = [],i=0;
     if(params.userId){
@@ -22,7 +22,7 @@ const getInquiryOrder = (params,callback) => {
     })
 }
 const addInquiryOrder = (params,callback) => {
-    let query = " insert into inquiry_order(service_type,user_id,inquiry_id,fee_price,count) values(?,?,?,?,?) ";
+    let query = " insert into user_order(service_type,user_id,inquiry_id,fee_price,count) values(?,?,?,?,?) ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.serviceType;
     paramsArray[i++] = params.userId;
@@ -35,7 +35,7 @@ const addInquiryOrder = (params,callback) => {
     })
 }
 const putInquiryOrder = (params,callback) => {
-    let query = " update inquiry_order set fee_price=?,count=? where id = ? ";
+    let query = " update user_order set fee_price=?,count=? where id = ? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.feePrice;
     paramsArray[i++] = params.count;
@@ -46,7 +46,7 @@ const putInquiryOrder = (params,callback) => {
     })
 }
 const putReceiveInfo = (params,callback) => {
-    let query = " update inquiry_order set recv_name=?,recv_phone=?,recv_address=? where id = ? ";
+    let query = " update user_order set recv_name=?,recv_phone=?,recv_address=? where id = ? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.recvName;
     paramsArray[i++] = params.recvPhone;
@@ -58,7 +58,7 @@ const putReceiveInfo = (params,callback) => {
     })
 }
 const putFreightPrice = (params,callback) => {
-    let query = " update inquiry_order set fee_price=? where id = ? ";
+    let query = " update user_order set fee_price=? where id = ? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.feePrice;
     paramsArray[i] = params.orderId;
@@ -68,7 +68,7 @@ const putFreightPrice = (params,callback) => {
     })
 }
 const putStatus = (params,callback) => {
-    let query = " update inquiry_order set status=? where id = ? ";
+    let query = " update user_order set status=? where id = ? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.status;
     paramsArray[i] = params.orderId;
@@ -78,7 +78,7 @@ const putStatus = (params,callback) => {
     })
 }
 const getOrder = (params,callback) => {
-    let query = " select * from inquiry_order where id is not null ";
+    let query = " select * from user_order where id is not null ";
     let paramsArray = [],i=0;
     if(params.userId){
         paramsArray[i++] = params.userId;
@@ -137,7 +137,7 @@ const addOrderCar = (params,callback) => {
     })
 }
 const putMark = (params,callback) => {
-    let query = " update inquiry_order set mark=? where id = ? ";
+    let query = " update user_order set mark=? where id = ? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.mark;
     paramsArray[i] = params.orderId;
@@ -147,7 +147,7 @@ const putMark = (params,callback) => {
     })
 }
 const updateOrderPaymengStatusByOrderId = (params,callback) => {
-    let query = "update inquiry_order set payment_status = ? where id=? ";
+    let query = "update user_order set payment_status = ? where id=? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.paymentStatus;
     paramsArray[i] = params.orderId;
@@ -157,7 +157,7 @@ const updateOrderPaymengStatusByOrderId = (params,callback) => {
     })
 }
 const cancelOrder = (params,callback) => {
-    let query = "update inquiry_order set status = 0,cancel_time=? where id=? ";
+    let query = "update user_order set status = 0,cancel_time=? where id=? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.myDate;
     paramsArray[i] = params.orderId;
@@ -167,7 +167,7 @@ const cancelOrder = (params,callback) => {
     })
 }
 const putSendInfo = (params,callback) => {
-    let query = "update inquiry_order set send_name = ?,send_phone=?,send_address=? where id=? ";
+    let query = "update user_order set send_name = ?,send_phone=?,send_address=? where id=? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.sendName;
     paramsArray[i++] = params.sendPhone;

@@ -7,7 +7,7 @@ const httpUtil = require('../util/HttpUtil');
 const db = require('../db/connection/MysqlDb.js');
 
 const getInquiryBank = (params,callback) => {
-    let query = " select ub.* from inquiry_bank ub " +
+    let query = " select ub.* from user_bank ub " +
                 " left join user_info ui on ub.user_id=ui.id " +
                 " where ub.id is not null ";
     let paramsArray = [],i=0;
@@ -34,7 +34,7 @@ const getInquiryBank = (params,callback) => {
     })
 }
 const addInquiryBank = (params,callback) => {
-    let query = " insert into inquiry_bank(user_id,bank,bank_code,account_name) values(?,?,?,?)";
+    let query = " insert into user_bank(user_id,bank,bank_code,account_name) values(?,?,?,?)";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.userId;
     paramsArray[i++] = params.bank;
@@ -46,7 +46,7 @@ const addInquiryBank = (params,callback) => {
     })
 }
 const updateInquiryBank = (params,callback) => {
-    let query = " update inquiry_bank set status = ? where id = ?";
+    let query = " update user_bank set status = ? where id = ?";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.status;
     paramsArray[i] = params.inquiryBankId;
@@ -56,7 +56,7 @@ const updateInquiryBank = (params,callback) => {
     })
 }
 const updateInquiryBankStatus = (params,callback) => {
-    let query = " update inquiry_bank set status = 0 where user_id = ?";
+    let query = " update user_bank set status = 0 where user_id = ?";
     let paramsArray = [],i=0;
     paramsArray[i] = params.userId;
     db.dbQuery(query,paramsArray,(error,rows)=>{

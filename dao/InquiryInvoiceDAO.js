@@ -7,7 +7,7 @@ const httpUtil = require('../util/HttpUtil');
 const db = require('../db/connection/MysqlDb.js');
 
 const getInquiryInvoice = (params,callback) => {
-    let query = " select ui.user_name,uii.* from inquiry_invoice uii " +
+    let query = " select ui.user_name,uii.* from user_invoice uii " +
                 " left join user_info ui on uii.user_id=ui.id " +
                 " where uii.id is not null ";
     let paramsArray = [],i=0;
@@ -46,7 +46,7 @@ const getInquiryInvoice = (params,callback) => {
     })
 }
 const addInquiryInvoice = (params,callback) => {
-    let query = " insert into inquiry_invoice(user_id,company_name,tax_number,company_address,bank,bank_code,company_phone) values(?,?,?,?,?,?,?)";
+    let query = " insert into user_invoice(user_id,company_name,tax_number,company_address,bank,bank_code,company_phone) values(?,?,?,?,?,?,?)";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.userId;
     paramsArray[i++] = params.companyName;
@@ -61,7 +61,7 @@ const addInquiryInvoice = (params,callback) => {
     })
 }
 const updateInquiryInvoiceStatus = (params,callback) => {
-    let query = " update inquiry_invoice set status = ? where id = ? ";
+    let query = " update user_invoice set status = ? where id = ? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.status;
     paramsArray[i] = params.inquiryInvoiceId;
@@ -71,7 +71,7 @@ const updateInquiryInvoiceStatus = (params,callback) => {
     })
 }
 const updateInquiryInvoiceStatusByUserId = (params,callback) => {
-    let query = " update inquiry_invoice set status = 0 where user_id = ? ";
+    let query = " update user_invoice set status = 0 where user_id = ? ";
     let paramsArray = [],i=0;
     paramsArray[i] = params.userId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
