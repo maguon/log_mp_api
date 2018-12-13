@@ -52,7 +52,7 @@ const hosts = {
     },
     mq : {
         host :"stg.myxxjs.com",
-        port : 9101
+        port : 9202
     },
     record : {
         host:"stg.myxxjs.com",
