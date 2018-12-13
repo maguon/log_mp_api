@@ -44,13 +44,11 @@ const getAddress = (params,callback) => {
     })
 }
 const addAddress = (params,callback) => {
-    let query = " insert into address_info(city,user_id,name,address,type,mark,lon,lat) values(?,?,?,?,?,?,?,?)";
+    let query = " insert into address_info(city,name,address,mark,lon,lat) values(?,?,?,?,?,?)";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.city;
-    paramsArray[i++] = params.userId;
     paramsArray[i++] = params.name;
     paramsArray[i++] = params.address;
-    paramsArray[i++] = params.type;
     paramsArray[i++] = params.mark;
     paramsArray[i++] = params.lon;
     paramsArray[i] = params.lat;
