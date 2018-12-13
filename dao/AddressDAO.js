@@ -83,11 +83,13 @@ const updateAddress = (params,callback) => {
     })
 }
 const updateAddressByAdmin = (params,callback) => {
-    let query = " update address_info set city=?,name=?,address=?, mark=? where id = ?";
+    let query = " update address_info set city=?,name=?,address=?, lon=?,lat=?,mark=? where id = ?";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.city;
     paramsArray[i++] = params.name;
     paramsArray[i++] = params.address;
+    paramsArray[i++] = params.lon;
+    paramsArray[i++] = params.lat;
     paramsArray[i++] = params.mark;
     paramsArray[i] = params.addressId;
     db.dbQuery(query,paramsArray,(error,rows)=>{

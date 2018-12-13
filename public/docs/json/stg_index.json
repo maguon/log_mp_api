@@ -5907,6 +5907,12 @@
         },
         "mark": {
           "type": "string"
+        },
+        "lon": {
+          "type": "integer"
+        },
+        "lat": {
+          "type": "integer"
         }
       },
       "xml": {
