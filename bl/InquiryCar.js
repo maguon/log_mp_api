@@ -106,10 +106,23 @@ const updateStatus = (req,res,next) => {
         }
     })
 }
+const updateInquiryCar = (req,res,next) => {
+    let params = req.params;
+    inquiryCarDAO.updateInquiryCar(params,(error,result)=>{
+        if(error){
+            logger.error('updateInquiryCar' + error.message);
+            resUtil.resInternalError(error,res,next);
+        }else{
+            logger.info('updateInquiryCar' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
+}
 module.exports = {
     getInquiryCarByInquiryId,
     addCar,
     addCarByOrder,
     updateStatus,
-
+    updateInquiryCar
 }

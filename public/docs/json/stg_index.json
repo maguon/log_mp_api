@@ -4751,6 +4751,57 @@
         }
       }
     },
+    "/user/{userId}/inquiryCar/{inquiryCarId}/inquiryCarInfo": {
+      "put": {
+        "tags": [
+          "inquiryCar"
+        ],
+        "summary": "put address",
+        "description": "put address",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "inquiryCarId",
+            "in": "path",
+            "description": "inquiryCarId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "inquiryCarInfo",
+            "in": "body",
+            "description": "inquiryCarInfo",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/inquiryCarInfo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryCarInfo"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
     "/user/{userId}/address/{addressId}/addressInfo": {
       "put": {
         "tags": [
@@ -5992,6 +6043,29 @@
       },
       "xml": {
         "name": "wechatPayment"
+      }
+    },
+    "inquiryCarInfo": {
+      "type": "object",
+      "properties": {
+        "modelId": {
+          "type": "integer"
+        },
+        "oldCar": {
+          "type": "integer"
+        },
+        "plan": {
+          "type": "integer"
+        },
+        "fee": {
+          "type": "integer"
+        },
+        "carNum": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "inquiryCarInfo"
       }
     }
   }

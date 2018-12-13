@@ -124,6 +124,7 @@ const createServer=()=>{
     server.get('/api/user/:userId/inquiryCar',inquiryCar.getInquiryCarByInquiryId);
     server.get('/api/admin/:adminId/inquiryCar',inquiryCar.getInquiryCarByInquiryId);
     server.put({path:'/api/user/:userId/inquiryCar/:inquiryCarId/status/:status',contentType: 'application/json'},inquiryCar.updateStatus);
+    server.put({path:'/api/user/:userId/inquiryCar/:inquiryCarId/inquiryCarInfo',contentType: 'application/json'},inquiryCar.updateInquiryCar);
 
     /**
      user_order
