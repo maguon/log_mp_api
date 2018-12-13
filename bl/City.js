@@ -57,9 +57,22 @@ const updateCity = (req,res,next) =>{
         }
     })
 }
-
+const queryCityAdmin = (req,res,next) => {
+    let params = req.params;
+    cityInfoDAO.queryCityAdmin(params,(error,result)=>{
+        if(error){
+            logger.error('queryCityAdmin' + error.message);
+            resUtil.resInternalError(error,res,next);
+        }else{
+            logger.info('queryCityAdmin' + 'success');
+            resUtil.resetQueryRes(res,result,null);
+            return next();
+        }
+    })
+}
 module.exports = {
     addCity,
     queryCity,
-    updateCity
+    updateCity,
+    queryCityAdmin
 }
