@@ -4270,7 +4270,7 @@
             "in": "query",
             "description": "city",
             "required": false,
-            "type": "string"
+            "type": "integer"
           },
           {
             "name": "addressId",
@@ -4620,7 +4620,7 @@
             "in": "query",
             "description": "city",
             "required": false,
-            "type": "string"
+            "type": "integer"
           },
           {
             "name": "addressId",
@@ -5846,7 +5846,7 @@
           "type": "string"
         },
         "city": {
-          "type": "string"
+          "type": "integer"
         },
         "mark": {
           "type": "string"
@@ -5892,7 +5892,7 @@
           "type": "string"
         },
         "city": {
-          "type": "string"
+          "type": "integer"
         },
         "mark": {
           "type": "string"
@@ -5924,7 +5924,7 @@
           "type": "string"
         },
         "city": {
-          "type": "string"
+          "type": "integer"
         },
         "mark": {
           "type": "string"
@@ -5947,7 +5947,7 @@
           "type": "string"
         },
         "city": {
-          "type": "string"
+          "type": "integer"
         },
         "mark": {
           "type": "string"

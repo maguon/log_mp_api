@@ -7,7 +7,8 @@ const httpUtil = require('../util/HttpUtil');
 const db = require('../db/connection/MysqlDb.js');
 
 const getAddress = (params,callback) => {
-    let query = " select ai.* from address_info ai " +
+    let query = " select ci.id as city_id,ci.city_name,ai.* from address_info ai " +
+                " left join city_info ci on ci.id=ai.city " +
                 " where ai.id is not null ";
     let paramsArray = [],i=0;
     if(params.userId){
