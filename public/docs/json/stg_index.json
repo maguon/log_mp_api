@@ -908,14 +908,14 @@
             "in": "query",
             "description": "routeStart",
             "required": false,
-            "type": "string"
+            "type": "integer"
           },
           {
             "name": "routeEnd",
             "in": "query",
             "description": "routeEnd",
             "required": false,
-            "type": "string"
+            "type": "integer"
           },
           {
             "name": "status",
@@ -1020,14 +1020,14 @@
             "in": "query",
             "description": "routeStart",
             "required": false,
-            "type": "string"
+            "type": "integer"
           },
           {
             "name": "routeEnd",
             "in": "query",
             "description": "routeEnd",
             "required": false,
-            "type": "string"
+            "type": "integer"
           },
           {
             "name": "status",

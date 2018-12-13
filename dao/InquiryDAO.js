@@ -50,11 +50,11 @@ const getInquiryByUserId = (params,callback) => {
     }
     if(params.routeStart){
         paramsArray[i++] = params.routeStart;
-        query = query + " and cri.route_start = ? ";
+        query = query + " and cri.route_start_id = ? ";
     }
     if(params.routeEnd){
         paramsArray[i++] = params.routeEnd;
-        query = query + " and cri.route_end = ? ";
+        query = query + " and cri.route_end_id = ? ";
     }
     if(params.serviceType){
         paramsArray[i++] = params.serviceType;
