@@ -4259,13 +4259,6 @@
             "type": "integer"
           },
           {
-            "name": "userName",
-            "in": "query",
-            "description": "userName",
-            "required": false,
-            "type": "string"
-          },
-          {
             "name": "name",
             "in": "query",
             "description": "name",
