@@ -925,18 +925,18 @@
             "type": "integer"
           },
           {
-            "name": "routStartId",
+            "name": "startCity",
             "in": "query",
-            "description": "routStartId",
+            "description": "startCity",
             "required": false,
-            "type": "integer"
+            "type": "string"
           },
           {
-            "name": "routEndId",
+            "name": "endCity",
             "in": "query",
-            "description": "routEndId",
+            "description": "endCity",
             "required": false,
-            "type": "integer"
+            "type": "string"
           },
           {
             "name": "phone",
@@ -1054,6 +1054,20 @@
             "name": "phone",
             "in": "query",
             "description": "phone",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "startCity",
+            "in": "query",
+            "description": "startCity",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "endCity",
+            "in": "query",
+            "description": "endCity",
             "required": false,
             "type": "string"
           },
@@ -5609,11 +5623,11 @@
         "fee": {
           "type": "integer"
         },
-        "routStartId": {
-          "type": "integer"
+        "startCity": {
+          "type": "string"
         },
-        "routEndId": {
-          "type": "integer"
+        "endCity": {
+          "type": "string"
         }
       },
       "xml": {
