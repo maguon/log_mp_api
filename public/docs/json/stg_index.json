@@ -925,6 +925,20 @@
             "type": "integer"
           },
           {
+            "name": "routStartId",
+            "in": "query",
+            "description": "routStartId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "routEndId",
+            "in": "query",
+            "description": "routEndId",
+            "required": false,
+            "type": "integer"
+          },
+          {
             "name": "phone",
             "in": "query",
             "description": "phone",
@@ -2182,7 +2196,7 @@
         }
       }
     },
-    "/user/{userId}//inquiry": {
+    "/user/{userId}/inquiry": {
       "post": {
         "tags": [
           "inquiry"
@@ -5593,6 +5607,12 @@
           "type": "integer"
         },
         "fee": {
+          "type": "integer"
+        },
+        "routStartId": {
+          "type": "integer"
+        },
+        "routEndId": {
           "type": "integer"
         }
       },
