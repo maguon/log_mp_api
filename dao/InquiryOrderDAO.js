@@ -98,11 +98,11 @@ const getOrder = (params,callback) => {
     }
     if(params.startCityId){
         paramsArray[i++] = params.startCityId;
-        query = query + " and rci.route_start_id = ? ";
+        query = query + " and ii.start_id = ? ";
     }
     if(params.endCityId){
         paramsArray[i++] = params.endCityId;
-        query = query + " and rci.route_end_id = ? ";
+        query = query + " and ii.end_id = ? ";
     }
     if(params.serviceType){
         paramsArray[i++] = params.serviceType;
