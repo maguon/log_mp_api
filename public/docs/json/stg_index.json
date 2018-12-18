@@ -1480,18 +1480,18 @@
             "type": "string"
           },
           {
-            "name": "startCity",
+            "name": "startCityId",
             "in": "query",
-            "description": "startCity",
+            "description": "startCityId",
             "required": false,
-            "type": "string"
+            "type": "integer"
           },
           {
-            "name": "endCity",
+            "name": "endCityId",
             "in": "query",
-            "description": "endCity",
+            "description": "endCityId",
             "required": false,
-            "type": "string"
+            "type": "integer"
           },
           {
             "name": "serviceType",
@@ -1627,18 +1627,18 @@
             "type": "string"
           },
           {
-            "name": "startCity",
+            "name": "startCityId",
             "in": "query",
-            "description": "startCity",
+            "description": "startCityId",
             "required": false,
-            "type": "string"
+            "type": "integer"
           },
           {
-            "name": "endCity",
+            "name": "endCityId",
             "in": "query",
-            "description": "endCity",
+            "description": "endCityId",
             "required": false,
-            "type": "string"
+            "type": "integer"
           },
           {
             "name": "serviceType",

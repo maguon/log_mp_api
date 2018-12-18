@@ -6,6 +6,7 @@ const sysMsg = require('../util/SystemMsg.js');
 const sysError = require('../util/SystemError.js');
 const logger = serverLogger.createLogger('OrderItem.js');
 const orderItemDAO = require('../dao/OrderItemDAO.js');
+const orderDAO = require('../dao/InquiryOrderDAO.js');
 
 const addOrderCar = (req,res,next) => {
     let params = req.params;
@@ -62,15 +63,59 @@ const addOrderCarAdmin = (req,res,next) => {
 
 const updateActFee = (req,res,next) => {
     let params = req.params;
-    orderItemDAO.updateActFee(params,(error,result)=>{
-        if(error){
-            logger.error('updateActFee' + error.message);
-            resUtil.resInternalError(error,res,next);
-        }else{
-            logger.info('updateActFee' + 'success');
-            resUtil.resetUpdateRes(res,result,null);
-            return next();
-        }
+    new Promise((resolve,reject)=>{
+        orderItemDAO.updateActFee(params,(error,result)=>{
+            if(error){
+                logger.error('updateActFee' + error.message);
+                reject(error);
+            }else{
+                logger.info('updateActFee' + 'success');
+                resolve();
+            }
+        })
+    }).then(()=>{
+        new Promise((resolve,reject)=>{
+            orderItemDAO.getOrderCar({orderItemId:params.orderItemId},(error,rows)=>{
+                if(error){
+                    logger.error('getOrderCar' + error.message);
+                    reject(error);
+                }else{
+                    logger.info('getOrderCar' + 'success');
+                    params.orderId = rows[0].order_id;
+                    resolve();
+                }
+            })
+        }).then(()=>{
+            new Promise((resolve,reject)=>{
+                orderItemDAO.getOrderCar({orderId:params.orderId},(error,rows)=>{
+                    if(error){
+                        logger.error('getOrderCar' + error.message);
+                        reject(error);
+                    }else{
+                        logger.info('getOrderCar' + 'success');
+                        let actFee = 0;
+                        for(let i = 0; i < rows.length; i ++){
+                            actFee = actFee + rows[i].act_price;
+                        }
+                        params.feePrice = actFee;
+                        resolve();
+                    }
+                })
+            }).then(()=>{
+                new Promise((resolve,reject)=>{
+                    orderDAO.putFreightPrice(params,(error,result)=>{
+                        if(error){
+                            logger.error('putFreightPrice' + error.message);
+                            reject(error);
+                        }else{
+                            logger.info('putFreightPrice' + 'success');
+                            resUtil.resetUpdateRes(res,result,null);
+                            return next();
+                        }
+                    })
+                })
+            })
+        })
     })
 }
 module.exports = {
