@@ -68,6 +68,14 @@ const getInquiryByUserId = (params,callback) => {
         paramsArray[i++] = params.routeEnd;
         query = query + " and cri.route_end_id = ? ";
     }
+    if(params.startCityId){
+        paramsArray[i++] = params.startCityId;
+        query = query + " and ii.start_id = ? ";
+    }
+    if(params.endCityId){
+        paramsArray[i++] = params.endCityId;
+        query = query + " and ii.end_id = ? ";
+    }
     if(params.serviceType){
         paramsArray[i++] = params.serviceType;
         query = query + " and ii.service_type = ? ";

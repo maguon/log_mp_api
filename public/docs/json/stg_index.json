@@ -1072,6 +1072,20 @@
             "type": "string"
           },
           {
+            "name": "startCityId",
+            "in": "query",
+            "description": "startCityId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "endCityId",
+            "in": "query",
+            "description": "endCityId",
+            "required": false,
+            "type": "integer"
+          },
+          {
             "name": "inquiryTimeStart",
             "in": "query",
             "description": "inquiryTimeStart",
