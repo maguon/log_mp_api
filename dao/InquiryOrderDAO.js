@@ -150,6 +150,78 @@ const getOrder = (params,callback) => {
         callback(error,rows);
     })
 }
+const getOrderByUser = (params,callback) => {
+    let query = " select uo.count as car_num,ii.start_id,ii.end_id,ui.phone,ui.user_name,ii.start_city,ii.end_city,uo.* from user_order uo " +
+                " left join user_info ui on ui.id=uo.user_id " +
+                " left join inquiry_info ii on ii.id=uo.inquiry_id " +
+                " where uo.id is not null ";
+    let paramsArray = [],i=0;
+    if(params.userId){
+        paramsArray[i++] = params.userId;
+        query = query + " and uo.user_id = ? ";
+    }
+    if(params.userName){
+        paramsArray[i++] = params.userName;
+        query = query + " and ui.user_name = ? ";
+    }
+    if(params.phone){
+        paramsArray[i++] = params.phone;
+        query = query + " and ui.phone = ? ";
+    }
+    if(params.startCityId){
+        paramsArray[i++] = params.startCityId;
+        query = query + " and ii.start_id = ? ";
+    }
+    if(params.endCityId){
+        paramsArray[i++] = params.endCityId;
+        query = query + " and ii.end_id = ? ";
+    }
+    if(params.serviceType){
+        paramsArray[i++] = params.serviceType;
+        query = query + " and uo.service_type = ? ";
+    }
+    if(params.createdType){
+        paramsArray[i++] = params.createdType;
+        query = query + " and uo.created_type = ? ";
+    }
+    if(params.orderId){
+        paramsArray[i++] = params.orderId;
+        query = query + " and uo.id = ? ";
+    }
+    if(params.inquiryId){
+        paramsArray[i++] = params.inquiryId;
+        query = query + " and uo.inquiry_id = ? ";
+    }
+    if(params.paymentStatus){
+        paramsArray[i++] = params.paymentStatus;
+        query = query + " and uo.payment_status = ? ";
+    }
+    if(params.logStatus){
+        paramsArray[i++] = params.logStatus;
+        query = query + " and uo.log_status = ? ";
+    }
+    if(params.status){
+        paramsArray[i++] = params.status;
+        query = query + " and uo.status = ? ";
+    }
+    if(params.createdOnStart){
+        paramsArray[i++] = params.createdOnStart + " 00:00:00";
+        query = query + " and uo.created_on >= ? ";
+    }
+    if(params.createdOnEnd){
+        paramsArray[i++] = params.createdOnEnd + " 23:59:59";
+        query = query + " and uo.created_on <= ? ";
+    }
+    if(params.start && params.size){
+        paramsArray[i++] = parseInt(params.start);
+        paramsArray[i] = parseInt(params.size);
+        query = query + " limit ?, ? ";
+    }
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('getOrderByUser');
+        callback(error,rows);
+    })
+}
 const putMark = (params,callback) => {
     let query = " update user_order set mark=? where id = ? ";
     let paramsArray = [],i=0;
@@ -215,5 +287,6 @@ module.exports = {
     updateOrderPaymengStatusByOrderId,
     cancelOrder,
     putSendInfo,
-    putAdminMark
+    putAdminMark,
+    getOrderByUser
 }

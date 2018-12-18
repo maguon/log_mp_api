@@ -204,6 +204,19 @@ const getOrder = (req,res,next) => {
         }
     })
 }
+const getOrderByUser = (req,res,next) => {
+    let params = req.params;
+    inquiryOrderDAO.getOrderByUser(params,(error,result)=>{
+        if(error){
+            logger.error('getOrderByUser' + error.message);
+            resUtil.resInternalError(error,res,next);
+        }else{
+            logger.info('getOrderByUser' + 'success');
+            resUtil.resetQueryRes(res,result,null);
+            return next();
+        }
+    })
+}
 const putMark = (req,res,next) => {
     let params = req.params;
     inquiryOrderDAO.putMark(params,(error,result)=>{
@@ -268,6 +281,7 @@ module.exports = {
     putMark,
     putAdminMark,
     cancelOrder,
-    putSendInfo
+    putSendInfo,
+    getOrderByUser
 }
 

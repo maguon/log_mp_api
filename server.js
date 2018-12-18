@@ -140,7 +140,7 @@ const createServer=()=>{
     server.put({path:'/api/user/:userId/order/:orderId/cancel',contentType: 'application/json'},inquiryOrder.cancelOrder);
     server.put({path:'/api/admin/:adminId/order/:orderId/cancel',contentType: 'application/json'},inquiryOrder.cancelOrder);
     server.get('/api/user/:userId/orderInfo',inquiryOrder.getOrder);
-    server.get('/api/user/:userId/order',inquiryOrder.getOrder);
+    server.get('/api/user/:userId/order',inquiryOrder.getOrderByUser);
     server.get('/api/admin/:adminId/order',inquiryOrder.getOrder);
     server.put({path:'/api/user/:userId/order/:orderId/orderMark',contentType: 'application/json'},inquiryOrder.putMark);
     server.put({path:'/api/admin/:adminId/order/:orderId/adminMark',contentType: 'application/json'},inquiryOrder.putAdminMark);
@@ -239,7 +239,7 @@ const createServer=()=>{
     server.post({path:'/api/admin/:adminId/user/:userId/order/:orderId/wechatRefund',contentType: 'application/json'},payment.wechatRefund);
     server.post({path:'/api/wechatRefund',contentType: 'text/xml'},payment.addWechatRefund);
     server.put({path:'/api/admin/:adminId/payment/:paymentId/paymentRemark',contentType: 'application/json'},payment.updateRemark);
-
+    server.post({path:'/api/user/:userId/order/:orderId/bankPayment',contentType: 'application/json'},payment.addBankPayment);
     /**
      * sendPswdSms
      */
