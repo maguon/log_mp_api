@@ -1466,6 +1466,48 @@
             "type": "integer"
           },
           {
+            "name": "userName",
+            "in": "query",
+            "description": "userName",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "phone",
+            "in": "query",
+            "description": "phone",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "startCity",
+            "in": "query",
+            "description": "startCity",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "endCity",
+            "in": "query",
+            "description": "endCity",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "serviceType",
+            "in": "query",
+            "description": "serviceType",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "createdType",
+            "in": "query",
+            "description": "createdType",
+            "required": false,
+            "type": "integer"
+          },
+          {
             "name": "status",
             "in": "query",
             "description": "status",
@@ -1567,6 +1609,48 @@
             "name": "orderId",
             "in": "query",
             "description": "orderId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "userName",
+            "in": "query",
+            "description": "userName",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "phone",
+            "in": "query",
+            "description": "phone",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "startCity",
+            "in": "query",
+            "description": "startCity",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "endCity",
+            "in": "query",
+            "description": "endCity",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "serviceType",
+            "in": "query",
+            "description": "serviceType",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "createdType",
+            "in": "query",
+            "description": "createdType",
             "required": false,
             "type": "integer"
           },

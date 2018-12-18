@@ -8,7 +8,7 @@ const logger = serverLogger.createLogger('InquiryOrder.js');
 const inquiryOrderDAO = require('../dao/InquiryOrderDAO.js');
 const inquiryDAO = require('../dao/InquiryDAO.js');
 
-const addInquiryOrder = (req,res,next) => {
+const addInquiryOrderByUser = (req,res,next) => {
     let params = req.params;
     new Promise((resolve,reject)=>{
         inquiryDAO.getInquiryByUserId(params,(error,rows)=>{
@@ -27,6 +27,59 @@ const addInquiryOrder = (req,res,next) => {
                 params.feePrice = feePrice;
                 params.count = count;
                 params.serviceType = rows[0].service_type;
+                params.createdType = 1;
+                resolve();
+            }
+        })
+    }).then(()=>{
+        new Promise((resolve,reject)=>{
+            inquiryOrderDAO.addInquiryOrder(params,(error,result)=>{
+                if(error){
+                    logger.error('addInquiryOrder' + error.message);
+                    reject(error);
+                }else{
+                    logger.info('addInquiryOrder'+'success');
+                    resolve();
+                }
+            })
+        }).then(()=>{
+            new Promise((resolve,reject)=>{
+                inquiryDAO.updateInquiryStatus({status:2,inquiryId:params.inquiryId},(error,result)=>{
+                    if(error){
+                        logger.error('updateInquiryStatus' + error.message);
+                        reject(error);
+                    }else{
+                        logger.info('updateInquiryStatus'+'success');
+                        resUtil.resetUpdateRes(res,result,null);
+                        return next();
+                    }
+                })
+            })
+        })
+    }).catch((error)=>{
+        resUtil.resInternalError(error,res,next);
+    })
+}
+const addInquiryOrderByAdmin = (req,res,next) => {
+    let params = req.params;
+    new Promise((resolve,reject)=>{
+        inquiryDAO.getInquiryByUserId(params,(error,rows)=>{
+            if(error){
+                logger.error('getInquiryByUserId' + error.message);
+                reject(error);
+            }else if(rows && rows.length < 1){
+                logger.warn('getInquiryByUserId'+'查无此询价信息');
+                resUtil.resetFailedRes(res,'查无此询价信息',null);
+            }else{
+                logger.info('getInquiryByUserId'+'success');
+                let feePrice = 0;
+                let count = 0;
+                feePrice = feePrice + rows[0].fee_price;
+                count = count +rows[0].car_num;
+                params.feePrice = feePrice;
+                params.count = count;
+                params.serviceType = rows[0].service_type;
+                params.createdType = 2;
                 resolve();
             }
         })
@@ -192,7 +245,8 @@ const putSendInfo = (req,res,next) => {
     })
 }
 module.exports = {
-    addInquiryOrder,
+    addInquiryOrderByAdmin,
+    addInquiryOrderByUser,
     putInquiryOrder,
     putReceiveInfo,
     putFreightPrice,
