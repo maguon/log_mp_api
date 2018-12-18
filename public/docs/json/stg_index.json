@@ -3452,6 +3452,57 @@
         }
       }
     },
+    "/admin/{adminId}/order/{orderId}/adminMark": {
+      "put": {
+        "tags": [
+          "order"
+        ],
+        "summary": "inquiryManageOrder query by inquiryManageId",
+        "description": "inquiryManageOrder query by inquiryManageId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "adminMark",
+            "in": "body",
+            "description": "adminMark",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/adminMark"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/adminMark"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
     "/user/{userId}/city": {
       "post": {
         "tags": [
@@ -5938,6 +5989,17 @@
       },
       "xml": {
         "name": "orderMark"
+      }
+    },
+    "adminMark": {
+      "type": "object",
+      "properties": {
+        "adminMark": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "adminMark"
       }
     },
     "inquiryCar": {

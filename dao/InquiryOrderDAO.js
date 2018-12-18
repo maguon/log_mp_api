@@ -161,6 +161,16 @@ const putMark = (params,callback) => {
         callback(error,rows);
     })
 }
+const putAdminMark = (params,callback) => {
+    let query = " update user_order set admin_mark=? where id = ? ";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.adminMark;
+    paramsArray[i] = params.orderId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('putAdminMark');
+        callback(error,rows);
+    })
+}
 const updateOrderPaymengStatusByOrderId = (params,callback) => {
     let query = "update user_order set payment_status = ? where id=? ";
     let paramsArray = [],i=0;
@@ -205,5 +215,6 @@ module.exports = {
     putMark,
     updateOrderPaymengStatusByOrderId,
     cancelOrder,
-    putSendInfo
+    putSendInfo,
+    putAdminMark
 }

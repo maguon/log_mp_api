@@ -217,6 +217,19 @@ const putMark = (req,res,next) => {
         }
     })
 }
+const putAdminMark = (req,res,next) => {
+    let params = req.params;
+    inquiryOrderDAO.putAdminMark(params,(error,result)=>{
+        if(error){
+            logger.error('putAdminMark' + error.message);
+            resUtil.resInternalError(error,res,next);
+        }else{
+            logger.info('putAdminMark' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
+}
 const cancelOrder = (req,res,next) => {
     let params = req.params;
     params.myDate = new Date();
@@ -253,6 +266,7 @@ module.exports = {
     putStatus,
     getOrder,
     putMark,
+    putAdminMark,
     cancelOrder,
     putSendInfo
 }
