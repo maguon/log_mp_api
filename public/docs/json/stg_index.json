@@ -2927,6 +2927,15 @@
             "description": "orderId",
             "required": true,
             "type": "integer"
+          },
+          {
+            "name": "orderCancel",
+            "in": "body",
+            "description": "orderCancel",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/orderCancel"
+            }
           }
         ],
         "responses": {
@@ -2935,12 +2944,12 @@
             "schema": {
               "type": "object",
               "items": {
-                "$ref": "#/definitions/receiveInfo"
+                "$ref": "#/definitions/orderCancel"
               }
             }
           },
           "400": {
-            "description": "Invalid token value or invalid user id"
+            "description": "Invalid token value or invalid admin id"
           }
         }
       }
@@ -2969,6 +2978,15 @@
             "description": "orderId",
             "required": true,
             "type": "integer"
+          },
+          {
+            "name": "orderCancel",
+            "in": "body",
+            "description": "orderCancel",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/orderCancel"
+            }
           }
         ],
         "responses": {
@@ -5727,6 +5745,17 @@
       },
       "xml": {
         "name": "inquiryManageOrder"
+      }
+    },
+    "orderCancel": {
+      "type": "object",
+      "properties": {
+        "cancelMark": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "orderCancel"
       }
     },
     "supplier": {

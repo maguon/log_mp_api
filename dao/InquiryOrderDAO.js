@@ -172,8 +172,9 @@ const updateOrderPaymengStatusByOrderId = (params,callback) => {
     })
 }
 const cancelOrder = (params,callback) => {
-    let query = "update user_order set status = 0,cancel_time=? where id=? ";
+    let query = "update user_order set status = 0,cancel_reason=?,cancel_time=? where id=? ";
     let paramsArray = [],i=0;
+    paramsArray[i++] = params.cancelMark;
     paramsArray[i++] = params.myDate;
     paramsArray[i] = params.orderId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
