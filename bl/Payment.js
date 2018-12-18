@@ -406,11 +406,25 @@ const getRefundByPaymentId=(req,res,next) => {
         }
     })
 }
+const updateRemark = (req,res,next)=>{
+    let params = req.params;
+    paymentDAO.updateRemark(params,(error,result)=>{
+        if(error){
+            logger.error('updateRemark' + error.message);
+            resUtil.resInternalError(error, res, next);
+        }else{
+            logger.info('updateRemark' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    });
+}
 module.exports = {
     addWechatPayment,
     updateWechatPayment,
     wechatRefund,
     addWechatRefund,
     getPayment,
-    getRefundByPaymentId
+    getRefundByPaymentId,
+    updateRemark
 }

@@ -5453,6 +5453,57 @@
         }
       }
     },
+    "/admin/{adminId}/payment/{paymentId}/paymentRemark": {
+      "put": {
+        "tags": [
+          "payment"
+        ],
+        "summary": "payment",
+        "description": "payment",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "admin Id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "paymentId",
+            "in": "path",
+            "description": "paymentId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "paymentRemark",
+            "in": "body",
+            "description": "paymentRemark",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/paymentRemark"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/paymentRemark"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
     "/accountConfirmEmail": {
       "post": {
         "tags": [
@@ -6281,6 +6332,17 @@
       },
       "xml": {
         "name": "inquiryCarInfo"
+      }
+    },
+    "paymentRemark": {
+      "type": "object",
+      "properties": {
+        "remark": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "paymentRemark"
       }
     }
   }

@@ -185,6 +185,16 @@ const updateRefund = (params,callback) => {
         callback(error,rows);
     })
 }
+const updateRemark = (params,callback) => {
+    let query = " update payment_info set remark=? where id = ?";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.remark;
+    paramsArray[i] = params.paymentId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('updateRemark');
+        callback(error,rows);
+    })
+}
 module.exports = {
     getPayment,
     addPayment,
@@ -195,5 +205,6 @@ module.exports = {
     getPaymentByRefundId,
     delRefundFail,
     addWechatRefund,
-    updateRefund
+    updateRefund,
+    updateRemark
 }
