@@ -79,7 +79,7 @@ const putStatus = (params,callback) => {
     })
 }
 const getOrder = (params,callback) => {
-    let query = " select ui.phone,ui.user_name,ii.route_id,uo.* from user_order uo " +
+    let query = " select ui.phone,ui.user_name,ii.start_city,ii.end_city,uo.* from user_order uo " +
                 " left join user_info ui on ui.id=uo.user_id " +
                 " left join inquiry_info ii on ii.id=uo.inquiry_id " +
                 " where uo.id is not null ";
