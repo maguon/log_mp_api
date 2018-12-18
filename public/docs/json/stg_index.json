@@ -5781,6 +5781,12 @@
         },
         "endCity": {
           "type": "string"
+        },
+        "startId": {
+          "type": "integer"
+        },
+        "endId": {
+          "type": "integer"
         }
       },
       "xml": {

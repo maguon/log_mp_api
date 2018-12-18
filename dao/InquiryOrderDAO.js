@@ -79,10 +79,9 @@ const putStatus = (params,callback) => {
     })
 }
 const getOrder = (params,callback) => {
-    let query = " select rci.route_start_id,rci.route_end_id,ui.phone,ui.user_name,ii.start_city,ii.end_city,uo.* from user_order uo " +
+    let query = " select ii.start_id,ii.end_id,ui.phone,ui.user_name,ii.start_city,ii.end_city,uo.* from user_order uo " +
                 " left join user_info ui on ui.id=uo.user_id " +
                 " left join inquiry_info ii on ii.id=uo.inquiry_id " +
-                " left join city_route_info rci on rci.route_id=ii.route_id " +
                 " where uo.id is not null ";
     let paramsArray = [],i=0;
     if(params.userId){
