@@ -242,6 +242,16 @@ const addBankRefund = (params,callback) => {
         callback(error,rows);
     })
 }
+const updateRefundRemark = (params,callback) => {
+    let query = " update payment_info set refund_mark = ?,refund_status=0 where id=? and type=1";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.refundRemark;
+    paramsArray[i] = params.paymentId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('updateRefundRemark');
+        callback(error,rows);
+    })
+}
 module.exports = {
     getPayment,
     addPayment,
@@ -256,5 +266,6 @@ module.exports = {
     updateRemark,
     addBankPayment,
     updateBankStatus,
-    addBankRefund
+    addBankRefund,
+    updateRefundRemark
 }

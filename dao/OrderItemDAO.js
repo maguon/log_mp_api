@@ -71,9 +71,10 @@ const addOrderCarAdmin = (params,callback) => {
 }
 
 const updateActFee = (params,callback) => {
-    let query = " update order_item set act_price=? where id = ?";
+    let query = " update order_item set act_price=?,safe_price=? where id = ?";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.actFee;
+    paramsArray[i++] = params.safePrice;
     paramsArray[i] = params.orderItemId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('updateActFee');

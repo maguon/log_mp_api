@@ -511,6 +511,19 @@ const addBankRefund = (req,res,next) => {
         resUtil.resInternalError(error,res,next);
     })
 }
+const updateRefundRemark = (req,res,next)=>{
+    let params = req.params;
+    paymentDAO.updateRefundRemark(params,(error,result)=>{
+        if(error){
+            logger.error('updateRefundRemark' + error.message);
+            resUtil.resInternalError(error, res, next);
+        }else{
+            logger.info('updateRefundRemark' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    });
+}
 module.exports = {
     addWechatPayment,
     updateWechatPayment,
@@ -521,5 +534,6 @@ module.exports = {
     updateRemark,
     addBankPayment,
     updateBankStatus,
-    addBankRefund
+    addBankRefund,
+    updateRefundRemark
 }

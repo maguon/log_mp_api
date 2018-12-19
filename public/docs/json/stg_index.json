@@ -1328,7 +1328,7 @@
         }
       }
     },
-    "/admin/{adminId}/orderItem/{orderItemId}/actFee/{actFee}": {
+    "/admin/{adminId}/orderItem/{orderItemId}/actFeeAndSafePrice": {
       "put": {
         "tags": [
           "orderItem"
@@ -1354,11 +1354,13 @@
             "type": "integer"
           },
           {
-            "name": "actFee",
-            "in": "path",
-            "description": "actFee",
+            "name": "actFeeAndSafePrice",
+            "in": "body",
+            "description": "actFeeAndSafePrice",
             "required": true,
-            "type": "integer"
+            "schema": {
+              "$ref": "#/definitions/actFeeAndSafePrice"
+            }
           }
         ],
         "responses": {
@@ -1367,7 +1369,7 @@
             "schema": {
               "type": "object",
               "items": {
-                "$ref": "#/definitions/actFee"
+                "$ref": "#/definitions/actFeeAndSafePrice"
               }
             }
           },
@@ -5669,6 +5671,57 @@
         }
       }
     },
+    "/user/{userId}/payment/{paymentId}/RefundRemark": {
+      "put": {
+        "tags": [
+          "payment"
+        ],
+        "summary": "payment",
+        "description": "payment",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "paymentId",
+            "in": "path",
+            "description": "paymentId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "RefundRemark",
+            "in": "body",
+            "description": "RefundRemark",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RefundRemark"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/RefundRemark"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
     "/accountConfirmEmail": {
       "post": {
         "tags": [
@@ -6002,6 +6055,9 @@
           "type": "integer"
         },
         "endId": {
+          "type": "integer"
+        },
+        "safeStatus": {
           "type": "integer"
         }
       },
@@ -6533,6 +6589,20 @@
         "name": "inquiryCarInfo"
       }
     },
+    "actFeeAndSafePrice": {
+      "type": "object",
+      "properties": {
+        "actFee": {
+          "type": "integer"
+        },
+        "safePrice": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "actFeeAndSafePrice"
+      }
+    },
     "paymentRemark": {
       "type": "object",
       "properties": {
@@ -6542,6 +6612,17 @@
       },
       "xml": {
         "name": "paymentRemark"
+      }
+    },
+    "RefundRemark": {
+      "type": "object",
+      "properties": {
+        "refundRemark": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "RefundRemark"
       }
     }
   }

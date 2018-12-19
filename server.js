@@ -152,7 +152,7 @@ const createServer=()=>{
     server.post({path:'/api/user/:userId/car',contentType: 'application/json'},orderItem.addOrderCar);
     server.post({path:'/api/admin/:adminId/carAdmin',contentType: 'application/json'},orderItem.addOrderCarAdmin);
     server.del({path:'/api/user/:userId/orderItem/:orderItemId',contentType: 'application/json'},orderItem.delOrderCar);
-    server.put({path:'/api/admin/:adminId/orderItem/:orderItemId/actFee/:actFee',contentType: 'application/json'},orderItem.updateActFee);
+    server.put({path:'/api/admin/:adminId/orderItem/:orderItemId/actFeeAndSafePrice',contentType: 'application/json'},orderItem.updateActFee);
     /**
      user_bank
      */
@@ -242,6 +242,7 @@ const createServer=()=>{
     server.post({path:'/api/user/:userId/order/:orderId/bankPayment',contentType: 'application/json'},payment.addBankPayment);
     server.post({path:'/api/admin/:adminId/order/:orderId/bankRefund',contentType: 'application/json'},payment.addBankRefund);
     server.put({path:'/api/admin/:adminId/payment/:paymentId/bankStatus/:status',contentType: 'application/json'},payment.updateBankStatus);
+    server.put({path:'/api/user/:userId/payment/:paymentId/RefundRemark',contentType: 'application/json'},payment.updateRefundRemark);
     /**
      * sendPswdSms
      */

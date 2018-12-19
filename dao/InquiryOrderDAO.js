@@ -68,6 +68,17 @@ const putFreightPrice = (params,callback) => {
         callback(error,rows);
     })
 }
+const putSafePrice = (params,callback) => {
+    let query = " update user_order set fee_price=?,safe_price=? where id = ? ";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.feePrice;
+    paramsArray[i++] = params.safePrice;
+    paramsArray[i] = params.orderId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('putSafePrice');
+        callback(error,rows);
+    })
+}
 const putStatus = (params,callback) => {
     let query = " update user_order set status=? where id = ? ";
     let paramsArray = [],i=0;
@@ -288,5 +299,6 @@ module.exports = {
     cancelOrder,
     putSendInfo,
     putAdminMark,
-    getOrderByUser
+    getOrderByUser,
+    putSafePrice
 }

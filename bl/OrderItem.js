@@ -94,21 +94,24 @@ const updateActFee = (req,res,next) => {
                     }else{
                         logger.info('getOrderCar' + 'success');
                         let actFee = 0;
+                        let safePrice = 0;
                         for(let i = 0; i < rows.length; i ++){
                             actFee = actFee + rows[i].act_price;
+                            safePrice = safePrice + rows[i].safe_price;
                         }
                         params.feePrice = actFee;
+                        params.safePrice = safePrice;
                         resolve();
                     }
                 })
             }).then(()=>{
                 new Promise((resolve,reject)=>{
-                    orderDAO.putFreightPrice(params,(error,result)=>{
+                    orderDAO.putSafePrice(params,(error,result)=>{
                         if(error){
-                            logger.error('putFreightPrice' + error.message);
+                            logger.error('putSafePrice' + error.message);
                             reject(error);
                         }else{
-                            logger.info('putFreightPrice' + 'success');
+                            logger.info('putSafePrice' + 'success');
                             resUtil.resetUpdateRes(res,result,null);
                             return next();
                         }
