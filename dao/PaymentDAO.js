@@ -213,6 +213,35 @@ const addBankPayment = (params,callback) => {
         callback(error,rows);
     })
 }
+const updateBankStatus = (params,callback) => {
+    let query = " update payment_info set status = ? where id=? and payment_type=2";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.status;
+    paramsArray[i] = params.paymentId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('updateBankStatus');
+        callback(error,rows);
+    })
+}
+const addBankRefund = (params,callback) => {
+    let query = " insert into payment_info(user_id,order_id,total_fee,remark,date_id,payment_type,type,bank,bank_code,account_name,p_id) values(?,?,?,?,?,?,?,?,?,?,?)";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.userId;
+    paramsArray[i++] = params.orderId;
+    paramsArray[i++] = params.totalFee;
+    paramsArray[i++] = params.remark;
+    paramsArray[i++] = params.dateId;
+    paramsArray[i++] = params.paymentType;
+    paramsArray[i++] = params.type;
+    paramsArray[i++] = params.bank;
+    paramsArray[i++] = params.bankCode;
+    paramsArray[i++] = params.accountName;
+    paramsArray[i] = params.pId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('addBankRefund');
+        callback(error,rows);
+    })
+}
 module.exports = {
     getPayment,
     addPayment,
@@ -225,5 +254,7 @@ module.exports = {
     addWechatRefund,
     updateRefund,
     updateRemark,
-    addBankPayment
+    addBankPayment,
+    updateBankStatus,
+    addBankRefund
 }

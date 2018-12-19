@@ -457,6 +457,60 @@ const addBankPayment = (req,res,next) => {
         resUtil.resInternalError(error,res,next);
     })
 }
+const updateBankStatus = (req,res,next)=>{
+    let params = req.params;
+    paymentDAO.updateBankStatus(params,(error,result)=>{
+        if(error){
+            logger.error('updateBankStatus' + error.message);
+            resUtil.resInternalError(error, res, next);
+        }else{
+            logger.info('updateBankStatus' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    });
+}
+const addBankRefund = (req,res,next) => {
+    let params = req.params;
+    let myDate = new Date();
+    params.dateId = moment(myDate).format('YYYYMMDD');
+    new Promise((resolve,reject)=>{
+        paymentDAO.getPayment({orderId:params.orderId,type:1},(error,rows)=>{
+            if(error){
+                logger.error('getPayment' + error.message);
+                reject(error);
+            }else if(rows && rows.length < 1){
+                logger.warn('getPayment'+'查无此信息');
+                resUtil.resetFailedRes(res,'查无此信息',null);
+            }else{
+                logger.info('getPayment'+'success');
+                params.userId = rows[0].user_id;
+                params.bank = rows[0].bank;
+                params.bankCode = rows[0].bank_code;
+                params.accountName = rows[0].account_name;
+                params.paymentType = 2;
+                params.type = 0;
+                params.pId = rows[0].id;
+                resolve();
+            }
+        })
+    }).then(()=>{
+        new Promise((resolve,reject)=>{
+            paymentDAO.addBankRefund(params,(error,result)=>{
+                if(error){
+                    logger.error('addBankRefund' + error.message);
+                    reject(error);
+                }else{
+                    logger.info('addBankRefund'+'success');
+                    resUtil.resetCreateRes(res,result,null);
+                    return next();
+                }
+            })
+        })
+    }).catch((error)=>{
+        resUtil.resInternalError(error,res,next);
+    })
+}
 module.exports = {
     addWechatPayment,
     updateWechatPayment,
@@ -465,5 +519,7 @@ module.exports = {
     getPayment,
     getRefundByPaymentId,
     updateRemark,
-    addBankPayment
+    addBankPayment,
+    updateBankStatus,
+    addBankRefund
 }

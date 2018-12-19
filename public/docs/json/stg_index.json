@@ -5409,6 +5409,55 @@
         }
       }
     },
+    "/admin/{adminId}/payment/{paymentId}/bankStatus/{status}": {
+      "put": {
+        "tags": [
+          "payment"
+        ],
+        "summary": "put status",
+        "description": "put status",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "paymentId",
+            "in": "path",
+            "description": "paymentId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "path",
+            "description": "status",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/bankStatus"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
     "/user/{userId}/order/{orderId}/bankPayment": {
       "post": {
         "tags": [
@@ -5456,6 +5505,57 @@
           },
           "400": {
             "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/order/{orderId}/bankRefund": {
+      "post": {
+        "tags": [
+          "payment"
+        ],
+        "summary": "put address",
+        "description": "put address",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "bankRefund",
+            "in": "body",
+            "description": "bankRefund",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/bankRefund"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/bankRefund"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
           }
         }
       }
@@ -6394,6 +6494,20 @@
       },
       "xml": {
         "name": "bankPayment"
+      }
+    },
+    "bankRefund": {
+      "type": "object",
+      "properties": {
+        "remark": {
+          "type": "string"
+        },
+        "totalFee": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "bankRefund"
       }
     },
     "inquiryCarInfo": {
