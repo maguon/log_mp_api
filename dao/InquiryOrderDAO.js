@@ -22,8 +22,9 @@ const getInquiryOrder = (params,callback) => {
     })
 }
 const addInquiryOrder = (params,callback) => {
-    let query = " insert into user_order(created_type,service_type,user_id,inquiry_id,fee_price,count) values(?,?,?,?,?,?) ";
+    let query = " insert into user_order(admin_id,created_type,service_type,user_id,inquiry_id,fee_price,count) values(?,?,?,?,?,?,?) ";
     let paramsArray = [],i=0;
+    paramsArray[i++] = params.adminId;
     paramsArray[i++] = params.createdType;
     paramsArray[i++] = params.serviceType;
     paramsArray[i++] = params.userId;
@@ -90,9 +91,10 @@ const putStatus = (params,callback) => {
     })
 }
 const getOrder = (params,callback) => {
-    let query = " select ii.start_id,ii.end_id,ui.phone,ui.user_name,ii.start_city,ii.end_city,uo.* from user_order uo " +
+    let query = " select au.id as admin_id,au.real_name as admin_name,ii.start_id,ii.end_id,ui.phone,ui.user_name,ii.start_city,ii.end_city,uo.* from user_order uo " +
                 " left join user_info ui on ui.id=uo.user_id " +
                 " left join inquiry_info ii on ii.id=uo.inquiry_id " +
+                " left join admin_user au on au.id=uo.admin_id " +
                 " where uo.id is not null ";
     let paramsArray = [],i=0;
     if(params.userId){
@@ -162,9 +164,10 @@ const getOrder = (params,callback) => {
     })
 }
 const getOrderByUser = (params,callback) => {
-    let query = " select uo.count as car_num,ii.start_id,ii.end_id,ui.phone,ui.user_name,ii.start_city,ii.end_city,uo.* from user_order uo " +
+    let query = " select au.id as admin_id,au.real_name as admin_name,uo.count as car_num,ii.start_id,ii.end_id,ui.phone,ui.user_name,ii.start_city,ii.end_city,uo.* from user_order uo " +
                 " left join user_info ui on ui.id=uo.user_id " +
                 " left join inquiry_info ii on ii.id=uo.inquiry_id " +
+                " left join admin_user au on au.id=uo.admin_id " +
                 " where uo.id is not null ";
     let paramsArray = [],i=0;
     if(params.userId){
