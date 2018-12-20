@@ -111,6 +111,10 @@ const getOrder = (params,callback) => {
         paramsArray[i++] = params.phone;
         query = query + " and ui.phone = ? ";
     }
+    if(params.realName){
+        paramsArray[i++] = params.realName;
+        query = query + " and au.real_name = ? ";
+    }
     if(params.startCityId){
         paramsArray[i++] = params.startCityId;
         query = query + " and ii.start_id = ? ";
