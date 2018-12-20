@@ -22,8 +22,10 @@ const getInquiryOrder = (params,callback) => {
     })
 }
 const addInquiryOrder = (params,callback) => {
-    let query = " insert into user_order(admin_id,created_type,service_type,user_id,inquiry_id,fee_price,count) values(?,?,?,?,?,?,?) ";
+    let query = " insert into user_order(route_start_id,route_end_id,admin_id,created_type,service_type,user_id,inquiry_id,fee_price,count) values(?,?,?,?,?,?,?,?,?) ";
     let paramsArray = [],i=0;
+    paramsArray[i++] = params.routeStartId;
+    paramsArray[i++] = params.routeEndId;
     paramsArray[i++] = params.adminId;
     paramsArray[i++] = params.createdType;
     paramsArray[i++] = params.serviceType;
@@ -267,7 +269,7 @@ const updateOrderPaymengStatusByOrderId = (params,callback) => {
     })
 }
 const cancelOrder = (params,callback) => {
-    let query = "update user_order set status = 0,cancel_reason=?,cancel_time=? where id=? ";
+    let query = "update user_order set status = 8,cancel_reason=?,cancel_time=? where id=? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.cancelMark;
     paramsArray[i++] = params.myDate;

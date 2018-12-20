@@ -75,11 +75,13 @@ const addInquiryOrderByAdmin = (req,res,next) => {
                 let feePrice = 0;
                 let count = 0;
                 feePrice = feePrice + rows[0].fee_price;
-                count = count +rows[0].car_num;
+                count = count + rows[0].car_num;
                 params.feePrice = feePrice;
                 params.count = count;
                 params.serviceType = rows[0].service_type;
                 params.createdType = 2;
+                params.routeStartId = rows[0].start_id;
+                params.routeEndId = rows[0].end_id;
                 resolve();
             }
         })

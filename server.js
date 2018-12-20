@@ -131,6 +131,7 @@ const createServer=()=>{
      */
     server.post({path:'/api/user/:userId/inquiry/:inquiryId/order',contentType: 'application/json'},inquiryOrder.addInquiryOrderByUser);
     server.post({path:'/api/admin/:adminId/user/:userId/inquiry/:inquiryId/order',contentType: 'application/json'},inquiryOrder.addInquiryOrderByAdmin);
+    //server.post({path:'/api/admin/:adminId/user/:userId/order',contentType: 'application/json'},inquiryOrder.addOrder);
     server.put({path:'/api/user/:userId/order/:orderId/inquiryManageOrder',contentType: 'application/json'},inquiryOrder.putInquiryOrder);
     server.put({path:'/api/user/:userId/order/:orderId/receiveInfo',contentType: 'application/json'},inquiryOrder.putReceiveInfo);
     server.put({path:'/api/user/:userId/order/:orderId/sendInfo',contentType: 'application/json'},inquiryOrder.putSendInfo);
