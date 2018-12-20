@@ -2819,6 +2819,57 @@
         }
       }
     },
+    "/admin/{adminId}/order/{orderId}/receiveInfo": {
+      "put": {
+        "tags": [
+          "order"
+        ],
+        "summary": "inquiryManageOrder query by inquiryManageId",
+        "description": "inquiryManageOrder query by inquiryManageId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "receiveInfo",
+            "in": "body",
+            "description": "receiveInfo",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/receiveInfo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/receiveInfo"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
     "/user/{userId}/order/{orderId}/sendInfo": {
       "put": {
         "tags": [
@@ -2866,6 +2917,57 @@
           },
           "400": {
             "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/order/{orderId}/sendInfo": {
+      "put": {
+        "tags": [
+          "order"
+        ],
+        "summary": "inquiryManageOrder query by inquiryManageId",
+        "description": "inquiryManageOrder query by inquiryManageId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "sendInfo",
+            "in": "body",
+            "description": "sendInfo",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/sendInfo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/sendInfo"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
           }
         }
       }
