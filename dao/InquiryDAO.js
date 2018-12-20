@@ -125,8 +125,9 @@ const updateFeePrice = (params,callback) => {
     })
 }
 const updateFee = (params,callback) => {
-    let query = "update inquiry_info set fee = ? where id = ? ";
+    let query = "update inquiry_info set safe_price = ?,fee = ? where id = ? ";
     let paramsArray = [],i=0;
+    paramsArray[i++] = params.safePrice;
     paramsArray[i++] = params.fee;
     paramsArray[i] = params.inquiryId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
@@ -135,8 +136,9 @@ const updateFee = (params,callback) => {
     })
 }
 const updateFeeByCar = (params,callback) => {
-    let query = "update inquiry_info set fee = ?,car_num=? where id = ? ";
+    let query = "update inquiry_info set safe_price = ?,fee = ?,car_num=? where id = ? ";
     let paramsArray = [],i=0;
+    paramsArray[i++] = params.safePrice;
     paramsArray[i++] = params.fee;
     paramsArray[i++] = params.carNum;
     paramsArray[i] = params.inquiryId;

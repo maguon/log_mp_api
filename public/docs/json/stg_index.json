@@ -6059,6 +6059,9 @@
         },
         "safeStatus": {
           "type": "integer"
+        },
+        "safePrice": {
+          "type": "integer"
         }
       },
       "xml": {

@@ -7,7 +7,7 @@ const httpUtil = require('../util/HttpUtil');
 const db = require('../db/connection/MysqlDb.js');
 
 const getInquiryCarByInquiryId = (params,callback) => {
-    let query = " select ic.id,ic.inquiry_id,ic.model_id,ic.old_car,ic.plan,ic.fee,ic.car_num,ic.status,ic.safe_status,ic.created_on," +
+    let query = " select ic.id,ic.inquiry_id,ic.model_id,ic.old_car,ic.plan,ic.fee,ic.car_num,ic.status,ic.safe_status,ic.safe_price,ic.created_on," +
                 " ic.updated_on,ic.fee/ic.car_num as fee_solo,ic.plan/ic.car_num as plan_solo from inquiry_car ic " +
                 " where ic.id is not null ";
     let paramsArray = [],i=0;
@@ -37,8 +37,9 @@ const getInquiryCarByInquiryId = (params,callback) => {
     })
 }
 const addCar = (params,callback) => {
-    let query = " insert into inquiry_car(safe_status,user_id,inquiry_id,model_id,old_car,plan,fee,car_num) values(?,?,?,?,?,?,?,?)";
+    let query = " insert into inquiry_car(safe_price,safe_status,user_id,inquiry_id,model_id,old_car,plan,fee,car_num) values(?,?,?,?,?,?,?,?)";
     let paramsArray = [],i=0;
+    paramsArray[i++] = params.safePrice;
     paramsArray[i++] = params.safeStatus;
     paramsArray[i++] = params.userId;
     paramsArray[i++] = params.inquiryId;
