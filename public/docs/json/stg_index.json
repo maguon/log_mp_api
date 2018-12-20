@@ -2578,15 +2578,6 @@
             "description": "inquiryId",
             "required": true,
             "type": "integer"
-          },
-          {
-            "name": "inquiryStatus",
-            "in": "body",
-            "description": "inquiryStatus",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/inquiryStatus"
-            }
           }
         ],
         "responses": {
