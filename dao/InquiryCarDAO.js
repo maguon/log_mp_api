@@ -37,7 +37,7 @@ const getInquiryCarByInquiryId = (params,callback) => {
     })
 }
 const addCar = (params,callback) => {
-    let query = " insert into inquiry_car(safe_price,safe_status,user_id,inquiry_id,model_id,old_car,plan,fee,car_num) values(?,?,?,?,?,?,?,?)";
+    let query = " insert into inquiry_car(safe_price,safe_status,user_id,inquiry_id,model_id,old_car,plan,fee,car_num) values(?,?,?,?,?,?,?,?,?)";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.safePrice;
     paramsArray[i++] = params.safeStatus;
