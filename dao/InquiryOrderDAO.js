@@ -95,7 +95,7 @@ const putStatus = (params,callback) => {
 const getOrder = (params,callback) => {
     let query = " select au.id as admin_id,au.real_name as admin_name,ii.start_id,ii.end_id,ui.phone,ui.user_name,ii.start_city,ii.end_city,uo.* from user_order uo " +
                 " left join user_info ui on ui.id=uo.user_id " +
-                " left join inquiry_info ii on ii.id=uo.inquiry_id " +
+                " left join inquiry_info ii on ii.id=uo.inquiry_id  " +
                 " left join admin_user au on au.id=uo.admin_id " +
                 " where uo.id is not null ";
     let paramsArray = [],i=0;
@@ -292,8 +292,9 @@ const putSendInfo = (params,callback) => {
     })
 }
 const addOrder = (params,callback) => {
-    let query = " insert into user_order(created_type,admin_id,route_start_id,route_end_id,service_type) values(1,?,?,?,?) ";
+    let query = " insert into user_order(inquiry_id,created_type,admin_id,route_start_id,route_end_id,service_type) values(?,1,?,?,?,?) ";
     let paramsArray = [],i=0;
+    paramsArray[i++] = params.inquiryId;
     paramsArray[i++] = params.adminId;
     paramsArray[i++] = params.routeStartId;
     paramsArray[i++] = params.routeEndId;

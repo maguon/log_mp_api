@@ -274,6 +274,14 @@ const putSendInfo = (req,res,next) => {
 }
 const addOrder = (req,res,next) => {
     let params = req.params;
+    let routeStartId = "";
+    let routeEndId = "";
+    routeStartId = routeStartId + params.routeStartId;
+    routeEndId = routeEndId + params.routeEndId;
+    if(params.routeStartId > params.routeEndId){
+        params.inquiryId =routeEndId + routeStartId;
+    }
+    params.inquiryId = routeStartId + routeEndId;
     inquiryOrderDAO.addOrder(params,(error,result)=>{
         if(error){
             logger.error('addOrder' + error.message);
