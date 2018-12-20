@@ -6592,6 +6592,12 @@
         },
         "carNum": {
           "type": "integer"
+        },
+        "safePrice": {
+          "type": "integer"
+        },
+        "safeStatus": {
+          "type": "integer"
         }
       },
       "xml": {

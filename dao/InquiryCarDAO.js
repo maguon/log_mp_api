@@ -81,8 +81,10 @@ const updateStatus = (params,callback) => {
     })
 }
 const updateInquiryCar = (params,callback) => {
-    let query = " update inquiry_car set model_id=?,old_car=?,plan=?,fee=?,car_num=? where id = ?";
+    let query = " update inquiry_car set safe_status=?,safe_price=?,model_id=?,old_car=?,plan=?,fee=?,car_num=? where id = ?";
     let paramsArray = [],i=0;
+    paramsArray[i++] = params.safeStatus;
+    paramsArray[i++] = params.safePrice;
     paramsArray[i++] = params.modelId;
     paramsArray[i++] = params.oldCar;
     paramsArray[i++] = params.plan;
