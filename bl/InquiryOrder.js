@@ -272,6 +272,19 @@ const putSendInfo = (req,res,next) => {
         }
     })
 }
+const addOrder = (req,res,next) => {
+    let params = req.params;
+    inquiryOrderDAO.addOrder(params,(error,result)=>{
+        if(error){
+            logger.error('addOrder' + error.message);
+            resUtil.resInternalError(error,res,next);
+        }else{
+            logger.info('addOrder' + 'success');
+            resUtil.resetCreateRes(res,result,null);
+            return next();
+        }
+    })
+}
 module.exports = {
     addInquiryOrderByAdmin,
     addInquiryOrderByUser,
@@ -284,6 +297,7 @@ module.exports = {
     putAdminMark,
     cancelOrder,
     putSendInfo,
-    getOrderByUser
+    getOrderByUser,
+    addOrder
 }
 

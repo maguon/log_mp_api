@@ -291,6 +291,19 @@ const putSendInfo = (params,callback) => {
         callback(error,rows);
     })
 }
+const addOrder = (params,callback) => {
+    let query = " insert into user_order(admin_id,user_id,route_start_id,route_end_id,service_type) values(?,?,?,?,?) ";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.adminId;
+    paramsArray[i++] = params.userId;
+    paramsArray[i++] = params.routeStartId;
+    paramsArray[i++] = params.routeEndId;
+    paramsArray[i] = params.serviceType;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('addOrder');
+        callback(error,rows);
+    })
+}
 module.exports = {
     getInquiryOrder,
     addInquiryOrder,
@@ -305,5 +318,6 @@ module.exports = {
     putSendInfo,
     putAdminMark,
     getOrderByUser,
-    putSafePrice
+    putSafePrice,
+    addOrder
 }

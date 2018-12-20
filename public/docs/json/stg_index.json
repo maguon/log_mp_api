@@ -1785,6 +1785,57 @@
         }
       }
     },
+    "/admin/{adminId}/user/{userId}/orderNew": {
+      "post": {
+        "tags": [
+          "order"
+        ],
+        "summary": "inquiryManageOrder query by inquiryManageId",
+        "description": "inquiryManageOrder query by inquiryManageId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderNew",
+            "in": "body",
+            "description": "orderNew",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/orderNew"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryManage"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
     "/user/{userId}/inquiry/{inquiryId}/order": {
       "post": {
         "tags": [
@@ -6740,6 +6791,23 @@
       },
       "xml": {
         "name": "RefundRemark"
+      }
+    },
+    "orderNew": {
+      "type": "object",
+      "properties": {
+        "routeStartId": {
+          "type": "integer"
+        },
+        "routeEndId": {
+          "type": "integer"
+        },
+        "serviceType": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "orderNew"
       }
     }
   }
