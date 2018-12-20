@@ -292,10 +292,9 @@ const putSendInfo = (params,callback) => {
     })
 }
 const addOrder = (params,callback) => {
-    let query = " insert into user_order(admin_id,user_id,route_start_id,route_end_id,service_type) values(?,?,?,?,?) ";
+    let query = " insert into user_order(admin_id,route_start_id,route_end_id,service_type) values(?,?,?,?) ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.adminId;
-    paramsArray[i++] = params.userId;
     paramsArray[i++] = params.routeStartId;
     paramsArray[i++] = params.routeEndId;
     paramsArray[i] = params.serviceType;

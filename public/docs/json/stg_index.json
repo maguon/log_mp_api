@@ -1785,7 +1785,7 @@
         }
       }
     },
-    "/admin/{adminId}/user/{userId}/orderNew": {
+    "/admin/{adminId}/orderNew": {
       "post": {
         "tags": [
           "order"
@@ -1800,13 +1800,6 @@
             "name": "adminId",
             "in": "path",
             "description": "adminId",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "userId",
             "required": true,
             "type": "integer"
           },
