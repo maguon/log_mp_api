@@ -148,7 +148,7 @@ const updateFeeByCar = (params,callback) => {
     })
 }
 const cancelInquiry = (params,callback) => {
-    let query = "update inquiry_info set status = 3,mark_reason=?,cancel_time=? where id = ? ";
+    let query = "update inquiry_info set status = 0,mark_reason=?,cancel_time=? where id = ? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.markReason;
     paramsArray[i++] = params.myDate;
