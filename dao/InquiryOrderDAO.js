@@ -377,8 +377,9 @@ const putSendInfo = (params,callback) => {
     })
 }
 const addOrder = (params,callback) => {
-    let query = " insert into user_order(ora_trans_price,ora_insure_price,total_trans_price,total_insure_price,distance,route_start,route_end,inquiry_id,created_type,admin_id,route_start_id,route_end_id,service_type) values(?,?,?,?,?,?,?,?,1,?,?,?,?) ";
+    let query = " insert into user_order(route_id,ora_trans_price,ora_insure_price,total_trans_price,total_insure_price,distance,route_start,route_end,created_type,admin_id,route_start_id,route_end_id,service_type) values(?,?,?,?,?,?,?,?,1,?,?,?,?) ";
     let paramsArray = [],i=0;
+    paramsArray[i++] = params.routeId;
     paramsArray[i++] = params.oraTransPrice;
     paramsArray[i++] = params.oraInsurePrice;
     paramsArray[i++] = params.totalTransPrice;
@@ -386,7 +387,6 @@ const addOrder = (params,callback) => {
     paramsArray[i++] = params.distance;
     paramsArray[i++] = params.routeStart;
     paramsArray[i++] = params.routeEnd;
-    paramsArray[i++] = params.inquiryId;
     paramsArray[i++] = params.adminId;
     paramsArray[i++] = params.routeStartId;
     paramsArray[i++] = params.routeEndId;

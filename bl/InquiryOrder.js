@@ -311,8 +311,9 @@ const addOrder = (req,res,next) => {
     routeEndId = routeEndId + params.routeEndId;
     if(params.routeStartId > params.routeEndId){
         params.routeId =routeEndId + routeStartId;
+    }else{
+        params.routeId = routeStartId + routeEndId;
     }
-    params.routeId = routeStartId + routeEndId;
     new Promise((resolve,reject)=>{
         routeDAO.getRoute({routeId:params.routeId},(error,rows)=>{
             if(error){
