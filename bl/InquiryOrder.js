@@ -8,6 +8,7 @@ const logger = serverLogger.createLogger('InquiryOrder.js');
 const inquiryOrderDAO = require('../dao/InquiryOrderDAO.js');
 const inquiryDAO = require('../dao/InquiryDAO.js');
 const cityDAO = require('../dao/CityInfoDAO.js');
+const routeDAO = require('../dao/RouteDAO.js');
 
 const addInquiryOrderByUser = (req,res,next) => {
     let params = req.params;
@@ -85,31 +86,48 @@ const addInquiryOrderByAdmin = (req,res,next) => {
                 params.routeEndId = rows[0].end_id;
                 params.routeStart = rows[0].start_city;
                 params.routeEnd = rows[0].end_city;
+                params.routeId = rows[0].route_id;
                 resolve();
             }
         })
     }).then(()=>{
         new Promise((resolve,reject)=>{
-            inquiryOrderDAO.addInquiryOrder(params,(error,result)=>{
+            routeDAO.getRoute({routeId:params.routeId},(error,rows)=>{
                 if(error){
-                    logger.error('addInquiryOrder' + error.message);
+                    logger.error('getRoute' + error.message);
                     reject(error);
+                }else if(rows && rows.length < 1){
+                    logger.warn('getRoute'+'没有这个路线');
+                    resUtil.resetFailedRes(res,'没有这个路线',null);
                 }else{
-                    logger.info('addInquiryOrder'+'success');
+                    logger.info('getRoute'+'success');
+                    params.distance = rows[0].distance;
                     resolve();
                 }
             })
         }).then(()=>{
             new Promise((resolve,reject)=>{
-                inquiryDAO.updateInquiryStatus({status:2,inquiryId:params.inquiryId},(error,result)=>{
+                inquiryOrderDAO.addInquiryOrder(params,(error,result)=>{
                     if(error){
-                        logger.error('updateInquiryStatus' + error.message);
+                        logger.error('addInquiryOrder' + error.message);
                         reject(error);
                     }else{
-                        logger.info('updateInquiryStatus'+'success');
-                        resUtil.resetUpdateRes(res,result,null);
-                        return next();
+                        logger.info('addInquiryOrder'+'success');
+                        resolve();
                     }
+                })
+            }).then(()=>{
+                new Promise((resolve,reject)=>{
+                    inquiryDAO.updateInquiryStatus({status:2,inquiryId:params.inquiryId},(error,result)=>{
+                        if(error){
+                            logger.error('updateInquiryStatus' + error.message);
+                            reject(error);
+                        }else{
+                            logger.info('updateInquiryStatus'+'success');
+                            resUtil.resetUpdateRes(res,result,null);
+                            return next();
+                        }
+                    })
                 })
             })
         })
@@ -277,31 +295,31 @@ const putSendInfo = (req,res,next) => {
 }
 const addOrder = (req,res,next) => {
     let params = req.params;
-    // let routeStartId = "";
-    // let routeEndId = "";
-    // routeStartId = routeStartId + params.routeStartId;
-    // routeEndId = routeEndId + params.routeEndId;
-    // if(params.routeStartId > params.routeEndId){
-    //     params.inquiryId =routeEndId + routeStartId;
-    // }
-    // params.inquiryId = routeStartId + routeEndId;
+    let routeStartId = "";
+    let routeEndId = "";
+    routeStartId = routeStartId + params.routeStartId;
+    routeEndId = routeEndId + params.routeEndId;
+    if(params.routeStartId > params.routeEndId){
+        params.inquiryId =routeEndId + routeStartId;
+    }
+    params.routeId = routeStartId + routeEndId;
     new Promise((resolve,reject)=>{
-        cityDAO.queryCity({cityId:params.routeStartId},(error,rows)=>{
+        routeDAO.getRoute({routeId:params.routeId},(error,rows)=>{
             if(error){
-                logger.error('queryCity' + error.message);
+                logger.error('getRoute' + error.message);
                 reject(error);
             }else if(rows && rows.length < 1){
-                logger.warn('queryCity'+'没有这个城市');
-                resUtil.resetFailedRes(res,'没有这个城市',null);
+                logger.warn('getRoute'+'没有这个路线');
+                resUtil.resetFailedRes(res,'没有这个路线',null);
             }else{
-                logger.info('queryCity'+'success');
-                params.routeStart = rows[0].city_name;
+                logger.info('getRoute'+'success');
+                params.distance = rows[0].distance;
                 resolve();
             }
         })
     }).then(()=>{
         new Promise((resolve,reject)=>{
-            cityDAO.queryCity({cityId:params.routeEndId},(error,rows)=>{
+            cityDAO.queryCity({cityId:params.routeStartId},(error,rows)=>{
                 if(error){
                     logger.error('queryCity' + error.message);
                     reject(error);
@@ -310,21 +328,37 @@ const addOrder = (req,res,next) => {
                     resUtil.resetFailedRes(res,'没有这个城市',null);
                 }else{
                     logger.info('queryCity'+'success');
-                    params.routeEnd = rows[0].city_name;
+                    params.routeStart = rows[0].city_name;
                     resolve();
                 }
             })
         }).then(()=>{
             new Promise((resolve,reject)=>{
-                inquiryOrderDAO.addOrder(params,(error,result)=>{
+                cityDAO.queryCity({cityId:params.routeEndId},(error,rows)=>{
                     if(error){
-                        logger.error('addOrder' + error.message);
+                        logger.error('queryCity' + error.message);
                         reject(error);
+                    }else if(rows && rows.length < 1){
+                        logger.warn('queryCity'+'没有这个城市');
+                        resUtil.resetFailedRes(res,'没有这个城市',null);
                     }else{
-                        logger.info('addOrder' + 'success');
-                        resUtil.resetCreateRes(res,result,null);
-                        return next();
+                        logger.info('queryCity'+'success');
+                        params.routeEnd = rows[0].city_name;
+                        resolve();
                     }
+                })
+            }).then(()=>{
+                new Promise((resolve,reject)=>{
+                    inquiryOrderDAO.addOrder(params,(error,result)=>{
+                        if(error){
+                            logger.error('addOrder' + error.message);
+                            reject(error);
+                        }else{
+                            logger.info('addOrder' + 'success');
+                            resUtil.resetCreateRes(res,result,null);
+                            return next();
+                        }
+                    })
                 })
             })
         })

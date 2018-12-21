@@ -22,8 +22,9 @@ const getInquiryOrder = (params,callback) => {
     })
 }
 const addInquiryOrder = (params,callback) => {
-    let query = " insert into user_order(route_start,route_end,route_start_id,route_end_id,admin_id,created_type,service_type,user_id,inquiry_id,fee_price,count) values(?,?,?,?,?,?,?,?,?,?,?) ";
+    let query = " insert into user_order(distance,route_start,route_end,route_start_id,route_end_id,admin_id,created_type,service_type,user_id,inquiry_id,fee_price,count) values(?,?,?,?,?,?,?,?,?,?,?,?) ";
     let paramsArray = [],i=0;
+    paramsArray[i++] = params.distance;
     paramsArray[i++] = params.routeStart;
     paramsArray[i++] = params.routeEnd;
     paramsArray[i++] = params.routeStartId;
@@ -374,8 +375,9 @@ const putSendInfo = (params,callback) => {
     })
 }
 const addOrder = (params,callback) => {
-    let query = " insert into user_order(route_start,route_end,inquiry_id,created_type,admin_id,route_start_id,route_end_id,service_type) values(?,?,?,1,?,?,?,?) ";
+    let query = " insert into user_order(distance,route_start,route_end,inquiry_id,created_type,admin_id,route_start_id,route_end_id,service_type) values(?,?,?,?,1,?,?,?,?) ";
     let paramsArray = [],i=0;
+    paramsArray[i++] = params.distance;
     paramsArray[i++] = params.routeStart;
     paramsArray[i++] = params.routeEnd;
     paramsArray[i++] = params.inquiryId;
