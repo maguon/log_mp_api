@@ -24,7 +24,8 @@ const addInquiryOrderByUser = (req,res,next) => {
                 logger.info('getInquiryByUserId'+'success');
                 let feePrice = 0;
                 let count = 0;
-                feePrice = feePrice + rows[0].fee_price;
+                feePrice = feePrice + rows[0].total_trans_price;
+                params.totalInsurePrice = feePrice + rows[0].total_insure_price;
                 count = count +rows[0].car_num;
                 params.feePrice = feePrice;
                 params.count = count;

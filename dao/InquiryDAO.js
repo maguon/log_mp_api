@@ -7,8 +7,10 @@ const httpUtil = require('../util/HttpUtil');
 const db = require('../db/connection/MysqlDb.js');
 
 const addRouteInquiry = (params,callback) => {
-    let query = "insert into inquiry_info(ora_trans_price,ora_insure_price,user_id,route_id,service_type,inquiry_name,start_id,end_id,start_city,end_city) values(?,?,?,?,?,?,?,?)";
+    let query = "insert into inquiry_info(total_trans_price,total_insure_price,ora_trans_price,ora_insure_price,user_id,route_id,service_type,inquiry_name,start_id,end_id,start_city,end_city) values(?,?,?,?,?,?,?,?,?,?,?,?)";
     let paramsArray = [],i=0;
+    paramsArray[i++] = params.fee;
+    paramsArray[i++] = params.safePrice;
     paramsArray[i++] = params.fee;
     paramsArray[i++] = params.safePrice;
     paramsArray[i++] = params.userId;
@@ -139,7 +141,7 @@ const updateFee = (params,callback) => {
     })
 }
 const updateFeeByCar = (params,callback) => {
-    let query = "update inquiry_info set insure_price = ?,trans_price = ?,car_num=? where id = ? ";
+    let query = "update inquiry_info set ora_insure_price = ?,ora_trans_price = ?,car_num=? where id = ? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.safePrice;
     paramsArray[i++] = params.fee;

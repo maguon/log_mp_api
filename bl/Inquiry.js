@@ -51,8 +51,8 @@ const addRouteInquiry = (req,res,next) => {
                         let fee = 0;
                         let safePrice = 0;
                         for(let i = 0;i<rows.length;i++){
-                            fee = fee + rows[i].fee * rows[i].car_num;
-                            safePrice = safePrice + rows[i].safe_price * rows[i].car_num;
+                            fee = fee + rows[i].trans_price * rows[i].car_num;
+                            safePrice = safePrice + rows[i].insure_price * rows[i].car_num;
                         }
                         params.fee = fee;
                         params.safePrice = safePrice;

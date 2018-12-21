@@ -38,7 +38,7 @@ const addCar = (req,res,next) => {
         })
     }).then(()=>{
         new Promise((resolve,reject)=>{
-            inquiryCarDAO.getInquiryCarByInquiryId(params,(error,rows)=>{
+            inquiryCarDAO.getInquiryCarByInquiryId({inquiryId:params.inquiryId},(error,rows)=>{
                 if(error){
                     logger.error('getInquiryCarByInquiryId' + error.message);
                     reject(error);
@@ -51,9 +51,9 @@ const addCar = (req,res,next) => {
                     let carNum = 0;
                     let safePrice = 0;
                     for(let i = 0;i < rows.length; i++){
-                        fee = fee + rows[i].fee * rows[i].car_num;
+                        fee = fee + rows[i].trans_price * rows[i].car_num;
                         carNum = carNum + rows[i].car_num;
-                        safePrice = safePrice + rows[i].safe_price * rows[i].car_num;
+                        safePrice = safePrice + rows[i].insure_price * rows[i].car_num;
                     }
                     params.fee = fee;
                     params.carNum = carNum;
