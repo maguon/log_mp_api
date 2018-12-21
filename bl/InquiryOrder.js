@@ -30,6 +30,13 @@ const addInquiryOrderByUser = (req,res,next) => {
                 params.count = count;
                 params.serviceType = rows[0].service_type;
                 params.createdType = 1;
+                params.routeStartId = rows[0].start_id;
+                params.routeEndId = rows[0].end_id;
+                params.routeStart = rows[0].start_city;
+                params.routeEnd = rows[0].end_city;
+                params.routeId = rows[0].route_id;
+                params.oraTransPrice = rows[0].ora_trans_price;
+                params.oraInsurePrice = rows[0].ora_insure_price;
                 resolve();
             }
         })
@@ -87,6 +94,8 @@ const addInquiryOrderByAdmin = (req,res,next) => {
                 params.routeStart = rows[0].start_city;
                 params.routeEnd = rows[0].end_city;
                 params.routeId = rows[0].route_id;
+                params.oraTransPrice = rows[0].ora_trans_price;
+                params.oraInsurePrice = rows[0].ora_insure_price;
                 resolve();
             }
         })
@@ -300,7 +309,7 @@ const addOrder = (req,res,next) => {
     routeStartId = routeStartId + params.routeStartId;
     routeEndId = routeEndId + params.routeEndId;
     if(params.routeStartId > params.routeEndId){
-        params.inquiryId =routeEndId + routeStartId;
+        params.routeId =routeEndId + routeStartId;
     }
     params.routeId = routeStartId + routeEndId;
     new Promise((resolve,reject)=>{

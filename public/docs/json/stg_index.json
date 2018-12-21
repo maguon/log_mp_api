@@ -6279,9 +6279,6 @@
         "plan": {
           "type": "integer"
         },
-        "fee": {
-          "type": "integer"
-        },
         "startCity": {
           "type": "string"
         },
@@ -6295,6 +6292,9 @@
           "type": "integer"
         },
         "safeStatus": {
+          "type": "integer"
+        },
+        "fee": {
           "type": "integer"
         },
         "safePrice": {
@@ -6498,6 +6498,15 @@
         },
         "safeStatus": {
           "type": "integer"
+        },
+        "oraInsurePrice": {
+          "type": "integer"
+        },
+        "actTransPrice": {
+          "type": "integer"
+        },
+        "actInsurePrice": {
+          "type": "integer"
         }
       },
       "xml": {
@@ -6565,6 +6574,9 @@
       "type": "object",
       "properties": {
         "feePrice": {
+          "type": "integer"
+        },
+        "totalInsurePrice": {
           "type": "integer"
         },
         "mark": {
@@ -6915,6 +6927,18 @@
     "orderNew": {
       "type": "object",
       "properties": {
+        "oraTransPrice": {
+          "type": "integer"
+        },
+        "oraInsurePrice": {
+          "type": "integer"
+        },
+        "totalTransPrice": {
+          "type": "integer"
+        },
+        "totalInsurePrice": {
+          "type": "integer"
+        },
         "routeStartId": {
           "type": "integer"
         },

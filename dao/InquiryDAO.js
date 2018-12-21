@@ -7,8 +7,10 @@ const httpUtil = require('../util/HttpUtil');
 const db = require('../db/connection/MysqlDb.js');
 
 const addRouteInquiry = (params,callback) => {
-    let query = "insert into inquiry_info(user_id,route_id,service_type,inquiry_name,start_id,end_id,start_city,end_city) values(?,?,?,?,?,?,?,?)";
+    let query = "insert into inquiry_info(ora_trans_price,ora_insure_price,user_id,route_id,service_type,inquiry_name,start_id,end_id,start_city,end_city) values(?,?,?,?,?,?,?,?)";
     let paramsArray = [],i=0;
+    paramsArray[i++] = params.fee;
+    paramsArray[i++] = params.safePrice;
     paramsArray[i++] = params.userId;
     paramsArray[i++] = params.routeId;
     paramsArray[i++] = params.serviceType;
@@ -113,9 +115,10 @@ const updateInquiryStatus = (params,callback) => {
     })
 }
 const updateFeePrice = (params,callback) => {
-    let query = "update inquiry_info set fee_price = ?,mark=?,inquiry_time=?,status=1 where id = ? ";
+    let query = "update inquiry_info set total_trans_price = ?,total_insure_price = ?,mark=?,inquiry_time=?,status=1 where id = ? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.feePrice;
+    paramsArray[i++] = params.totalInsurePrice;
     paramsArray[i++] = params.mark;
     paramsArray[i++] = params.myDate;
     paramsArray[i] = params.inquiryId;
@@ -125,7 +128,7 @@ const updateFeePrice = (params,callback) => {
     })
 }
 const updateFee = (params,callback) => {
-    let query = "update inquiry_info set safe_price = ?,fee = ? where id = ? ";
+    let query = "update inquiry_info set ora_insure_price = ?,ora_trans_price = ? where id = ? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.safePrice;
     paramsArray[i++] = params.fee;
@@ -136,7 +139,7 @@ const updateFee = (params,callback) => {
     })
 }
 const updateFeeByCar = (params,callback) => {
-    let query = "update inquiry_info set safe_price = ?,fee = ?,car_num=? where id = ? ";
+    let query = "update inquiry_info set insure_price = ?,trans_price = ?,car_num=? where id = ? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.safePrice;
     paramsArray[i++] = params.fee;
@@ -148,7 +151,7 @@ const updateFeeByCar = (params,callback) => {
     })
 }
 const cancelInquiry = (params,callback) => {
-    let query = "update inquiry_info set status = 3,mark_reason=?,cancel_time=? where id = ? ";
+    let query = "update inquiry_info set status = 3,cancel_reason=?,cancel_time=? where id = ? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.markReason;
     paramsArray[i++] = params.myDate;

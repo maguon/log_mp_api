@@ -22,8 +22,10 @@ const getInquiryOrder = (params,callback) => {
     })
 }
 const addInquiryOrder = (params,callback) => {
-    let query = " insert into user_order(distance,route_start,route_end,route_start_id,route_end_id,admin_id,created_type,service_type,user_id,inquiry_id,fee_price,count) values(?,?,?,?,?,?,?,?,?,?,?,?) ";
+    let query = " insert into user_order(ora_insure_price,route_id,distance,route_start,route_end,route_start_id,route_end_id,admin_id,created_type,service_type,user_id,inquiry_id,ora_trans_price,car_num) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
     let paramsArray = [],i=0;
+    paramsArray[i++] = params.oraInsurePrice;
+    paramsArray[i++] = params.routeId;
     paramsArray[i++] = params.distance;
     paramsArray[i++] = params.routeStart;
     paramsArray[i++] = params.routeEnd;
@@ -34,7 +36,7 @@ const addInquiryOrder = (params,callback) => {
     paramsArray[i++] = params.serviceType;
     paramsArray[i++] = params.userId;
     paramsArray[i++] = params.inquiryId;
-    paramsArray[i++] = params.feePrice;
+    paramsArray[i++] = params.oraTransPrice;
     paramsArray[i] = params.count;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('addInquiryOrder');
@@ -42,7 +44,7 @@ const addInquiryOrder = (params,callback) => {
     })
 }
 const putInquiryOrder = (params,callback) => {
-    let query = " update user_order set fee_price=?,count=? where id = ? ";
+    let query = " update user_order set fee_price=?,car_num=? where id = ? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.feePrice;
     paramsArray[i++] = params.count;
@@ -65,7 +67,7 @@ const putReceiveInfo = (params,callback) => {
     })
 }
 const putFreightPrice = (params,callback) => {
-    let query = " update user_order set fee_price=? where id = ? ";
+    let query = " update user_order set total_trans_price=? where id = ? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.feePrice;
     paramsArray[i] = params.orderId;
@@ -75,7 +77,7 @@ const putFreightPrice = (params,callback) => {
     })
 }
 const putSafePrice = (params,callback) => {
-    let query = " update user_order set fee_price=?,safe_price=? where id = ? ";
+    let query = " update user_order set total_trans_price=?,total_insure_price=? where id = ? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.feePrice;
     paramsArray[i++] = params.safePrice;
@@ -249,7 +251,7 @@ const getOrderNew = (params,callback) => {
     })
 }
 const getOrderByUser = (params,callback) => {
-    let query = " select au.id as admin_id,au.real_name as admin_name,uo.count as car_num,ii.start_id,ii.end_id,ui.phone,ui.user_name,ii.start_city,ii.end_city,uo.* from user_order uo " +
+    let query = " select au.id as admin_id,au.real_name as admin_name,uo.car_num,ii.start_id,ii.end_id,ui.phone,ui.user_name,ii.start_city,ii.end_city,uo.* from user_order uo " +
                 " left join user_info ui on ui.id=uo.user_id " +
                 " left join inquiry_info ii on ii.id=uo.inquiry_id " +
                 " left join admin_user au on au.id=uo.admin_id " +
@@ -375,8 +377,12 @@ const putSendInfo = (params,callback) => {
     })
 }
 const addOrder = (params,callback) => {
-    let query = " insert into user_order(distance,route_start,route_end,inquiry_id,created_type,admin_id,route_start_id,route_end_id,service_type) values(?,?,?,?,1,?,?,?,?) ";
+    let query = " insert into user_order(ora_trans_price,ora_insure_price,total_trans_price,total_insure_price,distance,route_start,route_end,inquiry_id,created_type,admin_id,route_start_id,route_end_id,service_type) values(?,?,?,?,?,?,?,?,1,?,?,?,?) ";
     let paramsArray = [],i=0;
+    paramsArray[i++] = params.oraTransPrice;
+    paramsArray[i++] = params.oraInsurePrice;
+    paramsArray[i++] = params.totalTransPrice;
+    paramsArray[i++] = params.totalInsurePrice;
     paramsArray[i++] = params.distance;
     paramsArray[i++] = params.routeStart;
     paramsArray[i++] = params.routeEnd;
