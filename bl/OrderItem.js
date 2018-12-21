@@ -60,7 +60,6 @@ const addOrderCarAdmin = (req,res,next) => {
         }
     })
 }
-
 const updateActFee = (req,res,next) => {
     let params = req.params;
     new Promise((resolve,reject)=>{
@@ -121,10 +120,24 @@ const updateActFee = (req,res,next) => {
         })
     })
 }
+const updateOrderItemInfo = (req,res,next) => {
+    let params = req.params;
+    orderItemDAO.updateOrderItemInfo(params,(error,result)=>{
+        if(error){
+            logger.error('updateOrderItemInfo' + error.message);
+            resUtil.resInternalError(error,res,next);
+        }else{
+            logger.info('updateOrderItemInfo' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
+}
 module.exports = {
     addOrderCar,
     getOrderCar,
     delOrderCar,
     addOrderCarAdmin,
-    updateActFee
+    updateActFee,
+    updateOrderItemInfo
 }

@@ -155,7 +155,9 @@ const createServer=()=>{
     server.post({path:'/api/user/:userId/car',contentType: 'application/json'},orderItem.addOrderCar);
     server.post({path:'/api/admin/:adminId/carAdmin',contentType: 'application/json'},orderItem.addOrderCarAdmin);
     server.del({path:'/api/user/:userId/orderItem/:orderItemId',contentType: 'application/json'},orderItem.delOrderCar);
+    server.del({path:'/api/admin/:adminId/orderItem/:orderItemId',contentType: 'application/json'},orderItem.delOrderCar);
     server.put({path:'/api/admin/:adminId/orderItem/:orderItemId/actFeeAndSafePrice',contentType: 'application/json'},orderItem.updateActFee);
+    server.put({path:'/api/admin/:adminId/orderItem/:orderItemId/orderItemInfo',contentType: 'application/json'},orderItem.updateOrderItemInfo);
     /**
      user_bank
      */

@@ -55,8 +55,10 @@ const delOrderCar = (params,callback) => {
     })
 }
 const addOrderCarAdmin = (params,callback) => {
-    let query = " insert into order_item(user_id,order_id,vin,model_type,old_car,valuation,ora_price,type) values(?,?,?,?,?,?,?,1) ";
+    let query = " insert into order_item(safe_status,safe_price,user_id,order_id,vin,model_type,old_car,valuation,ora_price,type) values(?,?,?,?,?,?,?,?,?,1) ";
     let paramsArray = [],i=0;
+    paramsArray[i++] = params.safeStatus;
+    paramsArray[i++] = params.safePrice;
     paramsArray[i++] = params.userId;
     paramsArray[i++] = params.orderId;
     paramsArray[i++] = params.vin;
@@ -81,10 +83,27 @@ const updateActFee = (params,callback) => {
         callback(error,rows)
     })
 }
+const updateOrderItemInfo = (params,callback) => {
+    let query = " update order_item set vin=?,model_type=?,old_car=?,valuation=?,ora_price=?,safe_status=?,safe_price=? where id = ?";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.vin;
+    paramsArray[i++] = params.modelType;
+    paramsArray[i++] = params.oldCar;
+    paramsArray[i++] = params.valuation;
+    paramsArray[i++] = params.oraPrice;
+    paramsArray[i++] = params.safeStatus;
+    paramsArray[i++] = params.safePrice;
+    paramsArray[i] = params.orderItemId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('updateOrderItemInfo');
+        callback(error,rows)
+    })
+}
 module.exports = {
     addOrderCar,
     getOrderCar,
     delOrderCar,
     addOrderCarAdmin,
-    updateActFee
+    updateActFee,
+    updateOrderItemInfo
 }
