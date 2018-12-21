@@ -7,6 +7,7 @@ const sysError = require('../util/SystemError.js');
 const logger = serverLogger.createLogger('InquiryOrder.js');
 const inquiryOrderDAO = require('../dao/InquiryOrderDAO.js');
 const inquiryDAO = require('../dao/InquiryDAO.js');
+const cityDAO = require('../dao/CityInfoDAO.js');
 
 const addInquiryOrderByUser = (req,res,next) => {
     let params = req.params;
@@ -82,6 +83,8 @@ const addInquiryOrderByAdmin = (req,res,next) => {
                 params.createdType = 2;
                 params.routeStartId = rows[0].start_id;
                 params.routeEndId = rows[0].end_id;
+                params.routeStart = rows[0].start_city;
+                params.routeEnd = rows[0].end_city;
                 resolve();
             }
         })
@@ -274,21 +277,70 @@ const putSendInfo = (req,res,next) => {
 }
 const addOrder = (req,res,next) => {
     let params = req.params;
-    let routeStartId = "";
-    let routeEndId = "";
-    routeStartId = routeStartId + params.routeStartId;
-    routeEndId = routeEndId + params.routeEndId;
-    if(params.routeStartId > params.routeEndId){
-        params.inquiryId =routeEndId + routeStartId;
-    }
-    params.inquiryId = routeStartId + routeEndId;
-    inquiryOrderDAO.addOrder(params,(error,result)=>{
+    // let routeStartId = "";
+    // let routeEndId = "";
+    // routeStartId = routeStartId + params.routeStartId;
+    // routeEndId = routeEndId + params.routeEndId;
+    // if(params.routeStartId > params.routeEndId){
+    //     params.inquiryId =routeEndId + routeStartId;
+    // }
+    // params.inquiryId = routeStartId + routeEndId;
+    new Promise((resolve,reject)=>{
+        cityDAO.queryCity({cityId:params.routeStartId},(error,rows)=>{
+            if(error){
+                logger.error('queryCity' + error.message);
+                reject(error);
+            }else if(rows && rows.length < 1){
+                logger.warn('queryCity'+'没有这个城市');
+                resUtil.resetFailedRes(res,'没有这个城市',null);
+            }else{
+                logger.info('queryCity'+'success');
+                params.routeStart = rows[0].city_name;
+                resolve();
+            }
+        })
+    }).then(()=>{
+        new Promise((resolve,reject)=>{
+            cityDAO.queryCity({cityId:params.routeEndId},(error,rows)=>{
+                if(error){
+                    logger.error('queryCity' + error.message);
+                    reject(error);
+                }else if(rows && rows.length < 1){
+                    logger.warn('queryCity'+'没有这个城市');
+                    resUtil.resetFailedRes(res,'没有这个城市',null);
+                }else{
+                    logger.info('queryCity'+'success');
+                    params.routeEnd = rows[0].city_name;
+                    resolve();
+                }
+            })
+        }).then(()=>{
+            new Promise((resolve,reject)=>{
+                inquiryOrderDAO.addOrder(params,(error,result)=>{
+                    if(error){
+                        logger.error('addOrder' + error.message);
+                        reject(error);
+                    }else{
+                        logger.info('addOrder' + 'success');
+                        resUtil.resetCreateRes(res,result,null);
+                        return next();
+                    }
+                })
+            })
+        })
+    }).catch((error)=>{
+        resUtil.resInternalError(error,res,next);
+    })
+}
+const getOrderNew = (req,res,next) => {
+    let params = req.params;
+    inquiryOrderDAO.getOrderNew(params,(error,result)=>{
         if(error){
-            logger.error('addOrder' + error.message);
+            logger.error('getOrderNew' + error.message);
             resUtil.resInternalError(error,res,next);
         }else{
-            logger.info('addOrder' + 'success');
-            resUtil.resetCreateRes(res,result,null);
+            logger.info('getOrderNew' + 'success');
+            resUtil.resetQueryRes(res,result,null);
             return next();
         }
     })
@@ -306,6 +358,7 @@ module.exports = {
     cancelOrder,
     putSendInfo,
     getOrderByUser,
-    addOrder
+    addOrder,
+    getOrderNew
 }
 
