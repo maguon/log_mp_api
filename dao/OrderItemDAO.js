@@ -15,7 +15,7 @@ const addOrderCar = (params,callback) => {
     paramsArray[i++] = params.modelType;
     paramsArray[i++] = params.oldCar;
     paramsArray[i++] = params.valuation;
-    paramsArray[i++] = params.oraPrice;
+    paramsArray[i++] = params.oraTransPrice;
     paramsArray[i++] = params.oraInsurePrice;
     paramsArray[i++] = params.actTransPrice;
     paramsArray[i] = params.actInsurePrice;
@@ -58,17 +58,16 @@ const delOrderCar = (params,callback) => {
     })
 }
 const addOrderCarAdmin = (params,callback) => {
-    let query = " insert into order_item(safe_status,safe_price,user_id,order_id,vin,model_type,old_car,valuation,ora_trans_price,type,ora_insure_price,act_trans_price,act_insure_price) values(?,?,?,?,?,?,?,?,?,1,?,?,?) ";
+    let query = " insert into order_item(safe_status,user_id,order_id,vin,model_type,old_car,valuation,ora_trans_price,type,ora_insure_price,act_trans_price,act_insure_price) values(?,?,?,?,?,?,?,?,1,?,?,?) ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.safeStatus;
-    paramsArray[i++] = params.safePrice;
     paramsArray[i++] = params.userId;
     paramsArray[i++] = params.orderId;
     paramsArray[i++] = params.vin;
     paramsArray[i++] = params.modelType;
     paramsArray[i++] = params.oldCar;
     paramsArray[i++] = params.valuation;
-    paramsArray[i++] = params.oraPrice;
+    paramsArray[i++] = params.oraTransPrice;
     paramsArray[i++] = params.oraInsurePrice;
     paramsArray[i++] = params.actTransPrice;
     paramsArray[i] = params.actInsurePrice;

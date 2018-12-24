@@ -67,12 +67,25 @@ const putReceiveInfo = (params,callback) => {
     })
 }
 const putFreightPrice = (params,callback) => {
-    let query = " update user_order set total_trans_price=? where id = ? ";
+    let query = " update user_order set total_trans_price=?,total_insure_price=? where id = ? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.feePrice;
+    paramsArray[i++] = params.totalInsurePrice;
     paramsArray[i] = params.orderId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('putFreightPrice');
+        callback(error,rows);
+    })
+}
+const putNewPrice = (params,callback) => {
+    let query = " update user_order set total_trans_price=?,total_insure_price=?,car_num=? where id = ? ";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.feePrice;
+    paramsArray[i++] = params.totalInsurePrice;
+    paramsArray[i++] = params.carNum;
+    paramsArray[i] = params.orderId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('putNewPrice');
         callback(error,rows);
     })
 }
@@ -377,13 +390,9 @@ const putSendInfo = (params,callback) => {
     })
 }
 const addOrder = (params,callback) => {
-    let query = " insert into user_order(route_id,ora_trans_price,ora_insure_price,total_trans_price,total_insure_price,distance,route_start,route_end,created_type,admin_id,route_start_id,route_end_id,service_type) values(?,?,?,?,?,?,?,?,1,?,?,?,?) ";
+    let query = " insert into user_order(route_id,distance,route_start,route_end,created_type,admin_id,route_start_id,route_end_id,service_type) values(?,?,?,?,1,?,?,?,?) ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.routeId;
-    paramsArray[i++] = params.oraTransPrice;
-    paramsArray[i++] = params.oraInsurePrice;
-    paramsArray[i++] = params.totalTransPrice;
-    paramsArray[i++] = params.totalInsurePrice;
     paramsArray[i++] = params.distance;
     paramsArray[i++] = params.routeStart;
     paramsArray[i++] = params.routeEnd;
@@ -412,5 +421,6 @@ module.exports = {
     getOrderByUser,
     putSafePrice,
     addOrder,
-    getOrderNew
+    getOrderNew,
+    putNewPrice
 }

@@ -3065,7 +3065,7 @@
         }
       }
     },
-    "/admin/{adminId}/order/{orderId}/feePrice/{feePrice}": {
+    "/admin/{adminId}/order/{orderId}/totalTransInsurePrice": {
       "put": {
         "tags": [
           "order"
@@ -3091,11 +3091,13 @@
             "type": "integer"
           },
           {
-            "name": "feePrice",
-            "in": "path",
-            "description": "feePrice",
+            "name": "totalTransInsurePrice",
+            "in": "body",
+            "description": "totalTransInsurePrice",
             "required": true,
-            "type": "integer"
+            "schema": {
+              "$ref": "#/definitions/totalTransInsurePrice"
+            }
           }
         ],
         "responses": {
@@ -6461,7 +6463,16 @@
         "valuation": {
           "type": "integer"
         },
-        "oraPrice": {
+        "oraTransPrice": {
+          "type": "integer"
+        },
+        "oraInsurePrice": {
+          "type": "integer"
+        },
+        "actTransPrice": {
+          "type": "integer"
+        },
+        "actInsurePrice": {
           "type": "integer"
         }
       },
@@ -6490,13 +6501,10 @@
         "valuation": {
           "type": "integer"
         },
-        "oraPrice": {
-          "type": "integer"
-        },
-        "safePrice": {
-          "type": "integer"
-        },
         "safeStatus": {
+          "type": "integer"
+        },
+        "oraTransPrice": {
           "type": "integer"
         },
         "oraInsurePrice": {
@@ -6927,18 +6935,6 @@
     "orderNew": {
       "type": "object",
       "properties": {
-        "oraTransPrice": {
-          "type": "integer"
-        },
-        "oraInsurePrice": {
-          "type": "integer"
-        },
-        "totalTransPrice": {
-          "type": "integer"
-        },
-        "totalInsurePrice": {
-          "type": "integer"
-        },
         "routeStartId": {
           "type": "integer"
         },
@@ -6951,6 +6947,20 @@
       },
       "xml": {
         "name": "orderNew"
+      }
+    },
+    "totalTransInsurePrice": {
+      "type": "object",
+      "properties": {
+        "feePrice": {
+          "type": "integer"
+        },
+        "totalInsurePrice": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "totalTransInsurePrice"
       }
     }
   }
