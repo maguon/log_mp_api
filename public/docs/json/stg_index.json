@@ -6466,12 +6466,6 @@
         "valuation": {
           "type": "integer"
         },
-        "oraTransPrice": {
-          "type": "integer"
-        },
-        "oraInsurePrice": {
-          "type": "integer"
-        },
         "actTransPrice": {
           "type": "integer"
         },
@@ -6505,12 +6499,6 @@
           "type": "integer"
         },
         "safeStatus": {
-          "type": "integer"
-        },
-        "oraTransPrice": {
-          "type": "integer"
-        },
-        "oraInsurePrice": {
           "type": "integer"
         },
         "actTransPrice": {
