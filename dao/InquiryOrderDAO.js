@@ -44,10 +44,10 @@ const addInquiryOrder = (params,callback) => {
     })
 }
 const putInquiryOrder = (params,callback) => {
-    let query = " update user_order set fee_price=?,car_num=? where id = ? ";
+    let query = " update user_order set ora_trans_price=?,ora_insure_price=? where id = ? ";
     let paramsArray = [],i=0;
-    paramsArray[i++] = params.feePrice;
-    paramsArray[i++] = params.count;
+    paramsArray[i++] = params.oraTransPrice;
+    paramsArray[i++] = params.oraInsurePrice;
     paramsArray[i] = params.orderId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('putInquiryOrder');

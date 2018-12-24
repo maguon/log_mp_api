@@ -147,7 +147,17 @@ const addInquiryOrderByAdmin = (req,res,next) => {
 }
 const putInquiryOrder = (req,res,next) => {
     let params = req.params;
-    new Promise((resolve,reject)=>{
+    inquiryOrderDAO.putInquiryOrder(params,(error,result)=>{
+        if(error){
+            logger.error('putInquiryOrder' + error.message);
+            resUtil.resetFailedRes(error,res,next);
+        }else{
+            logger.info('putInquiryOrder' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
+    /*new Promise((resolve,reject)=>{
         inquiryDAO.getInquiryByUserId(params,(error,rows)=>{
             if(error){
                 logger.error('getInquiryByUserId' + error.message);
@@ -183,7 +193,7 @@ const putInquiryOrder = (req,res,next) => {
         })
     }).catch((error)=>{
         resUtil.resInternalError(error,res,next);
-    })
+    })*/
 }
 const putReceiveInfo = (req,res,next) => {
     let params = req.params;

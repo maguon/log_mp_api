@@ -2810,7 +2810,7 @@
         }
       }
     },
-    "/user/{userId}/order/{orderId}/inquiryManageOrder": {
+    "/admin/{adminId}/order/{orderId}/inquiryManageOrder": {
       "put": {
         "tags": [
           "order"
@@ -2822,9 +2822,9 @@
         ],
         "parameters": [
           {
-            "name": "userId",
+            "name": "adminId",
             "in": "path",
-            "description": "userId",
+            "description": "adminId",
             "required": true,
             "type": "integer"
           },
@@ -6310,8 +6310,11 @@
     "inquiryManageOrder": {
       "type": "object",
       "properties": {
-        "mark": {
-          "type": "string"
+        "oraTransPrice": {
+          "type": "integer"
+        },
+        "oraInsurePrice": {
+          "type": "integer"
         }
       },
       "xml": {
