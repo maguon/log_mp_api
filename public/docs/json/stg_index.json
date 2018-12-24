@@ -6466,6 +6466,12 @@
         "valuation": {
           "type": "integer"
         },
+        "oraTransPrice": {
+          "type": "integer"
+        },
+        "oraInsurePrice": {
+          "type": "integer"
+        },
         "actTransPrice": {
           "type": "integer"
         },
@@ -6480,9 +6486,6 @@
     "carAdmin": {
       "type": "object",
       "properties": {
-        "userId": {
-          "type": "integer"
-        },
         "orderId": {
           "type": "integer"
         },
@@ -6499,6 +6502,12 @@
           "type": "integer"
         },
         "safeStatus": {
+          "type": "integer"
+        },
+        "oraTransPrice": {
+          "type": "integer"
+        },
+        "oraInsurePrice": {
           "type": "integer"
         },
         "actTransPrice": {
