@@ -27,9 +27,10 @@ const addRouteInquiry = (params,callback) => {
     })
 }
 const getInquiryByUserId = (params,callback) => {
-    let query = " select ii.*,ui.user_name,ui.phone,cri.distance from inquiry_info ii " +
+    let query = " select au.real_name as admin_user,ii.*,ui.user_name,ui.phone,cri.distance from inquiry_info ii " +
                 " left join city_route_info cri on cri.route_id=ii.route_id " +
                 " left join user_info ui on ui.id=ii.user_id " +
+                " left join admin_user au on au.id=ii.admin_id " +
                 " where ii.id is not null ";
     let paramsArray = [],i=0;
     if(params.userId){
@@ -117,8 +118,9 @@ const updateInquiryStatus = (params,callback) => {
     })
 }
 const updateFeePrice = (params,callback) => {
-    let query = "update inquiry_info set total_trans_price = ?,total_insure_price = ?,mark=?,inquiry_time=?,status=1 where id = ? ";
+    let query = "update inquiry_info set admin_id = ?,total_trans_price = ?,total_insure_price = ?,mark=?,inquiry_time=?,status=1 where id = ? ";
     let paramsArray = [],i=0;
+    paramsArray[i++] = params.adminId;
     paramsArray[i++] = params.feePrice;
     paramsArray[i++] = params.totalInsurePrice;
     paramsArray[i++] = params.mark;
