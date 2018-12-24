@@ -111,7 +111,7 @@ const putStatus = (params,callback) => {
     })
 }
 const getOrder = (params,callback) => {
-    let query = " select au.id as admin_id,au.real_name as admin_name,ii.start_id,ii.end_id,ui.phone,ui.user_name,ii.start_city,ii.end_city,uo.* from user_order uo " +
+    let query = " select au.id as admin_id,au.real_name as admin_name,ui.phone,ui.user_name,uo.* from user_order uo " +
                 " left join user_info ui on ui.id=uo.user_id " +
                 " left join inquiry_info ii on ii.id=uo.inquiry_id  " +
                 " left join admin_user au on au.id=uo.admin_id " +
