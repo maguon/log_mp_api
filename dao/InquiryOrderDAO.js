@@ -111,7 +111,7 @@ const putStatus = (params,callback) => {
     })
 }
 const getOrder = (params,callback) => {
-    let query = " select au.id as admin_id,au.real_name as admin_name,ui.phone,ui.user_name,uo.* from user_order uo " +
+    let query = " select uo.route_start_id as start_id,uo.route_end_id as end_id,uo.route_start as start_city,uo.route_end as end_city,au.id as admin_id,au.real_name as admin_name,ui.phone,ui.user_name,uo.* from user_order uo " +
                 " left join user_info ui on ui.id=uo.user_id " +
                 " left join inquiry_info ii on ii.id=uo.inquiry_id  " +
                 " left join admin_user au on au.id=uo.admin_id " +
@@ -135,11 +135,11 @@ const getOrder = (params,callback) => {
     }
     if(params.startCityId){
         paramsArray[i++] = params.startCityId;
-        query = query + " and ii.start_id = ? ";
+        query = query + " and uo.route_start_id = ? ";
     }
     if(params.endCityId){
         paramsArray[i++] = params.endCityId;
-        query = query + " and ii.end_id = ? ";
+        query = query + " and uo.route_end_id = ? ";
     }
     if(params.serviceType){
         paramsArray[i++] = params.serviceType;

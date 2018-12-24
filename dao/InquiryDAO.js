@@ -27,7 +27,7 @@ const addRouteInquiry = (params,callback) => {
     })
 }
 const getInquiryByUserId = (params,callback) => {
-    let query = " select ii.*,cri.route_start_id,cri.route_start,cri.route_end_id,cri.route_end,ui.user_name,ui.phone,cri.distance from inquiry_info ii " +
+    let query = " select ii.*,ui.user_name,ui.phone,cri.distance from inquiry_info ii " +
                 " left join city_route_info cri on cri.route_id=ii.route_id " +
                 " left join user_info ui on ui.id=ii.user_id " +
                 " where ii.id is not null ";
