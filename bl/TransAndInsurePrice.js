@@ -8,7 +8,7 @@ const systemConst = require('../util/SystemConst.js');
 
 const transAndInsurePrice = (req,res,next) => {
     let params = req.params;
-    systemConst.transAndInsurePrice({distance:params.distance,modelType:params.modelType,oldCar:params.oldCar,serviceType:params.serviceType,valuation:params.valuation},(rows)=>{
+    systemConst.transAndInsurePrice({insuranceFlag:params.insuranceFlag,distance:params.distance,modelType:params.modelType,oldCar:params.oldCar,serviceType:params.serviceType,valuation:params.valuation},(rows)=>{
         if(rows.length < 1){
             logger.warn('transAndInsurePrice' + '计算错误');
             resUtil.resetFailedRes(res,'计算错误',next);

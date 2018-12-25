@@ -819,7 +819,7 @@
         }
       }
     },
-    "/user/{userId}/transAndInsurePrice": {
+    "/transAndInsurePrice": {
       "post": {
         "tags": [
           "transAndInsurePrice"
@@ -830,13 +830,6 @@
           "application/json"
         ],
         "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "user info",
-            "required": true,
-            "type": "integer"
-          },
           {
             "name": "transAndInsurePrice",
             "in": "body",
@@ -859,50 +852,6 @@
           },
           "400": {
             "description": "Invalid token value or invalid user id"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/transAndInsurePrice": {
-      "post": {
-        "tags": [
-          "transAndInsurePrice"
-        ],
-        "summary": "find transAndInsurePrice",
-        "description": "find transAndInsurePrice",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "admin info",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "transAndInsurePrice",
-            "in": "body",
-            "description": "transAndInsurePrice",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/transAndInsurePrice"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/transAndInsurePrice"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
           }
         }
       }
@@ -7071,6 +7020,9 @@
           "type": "integer"
         },
         "valuation": {
+          "type": "integer"
+        },
+        "insuranceFlag": {
           "type": "integer"
         }
       },

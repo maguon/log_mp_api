@@ -256,8 +256,7 @@ const createServer=()=>{
     /**
      * TransAndInsurePrice
      */
-    server.post({path:'/api/user/:userId/transAndInsurePrice',contentType: 'application/json'},transAndInsurePrice.transAndInsurePrice);
-    server.post({path:'/api/admin/:adminId/transAndInsurePrice',contentType: 'application/json'},transAndInsurePrice.transAndInsurePrice);
+    server.post({path:'/api/transAndInsurePrice',contentType: 'application/json'},transAndInsurePrice.transAndInsurePrice);
     /**
      emil
      */
