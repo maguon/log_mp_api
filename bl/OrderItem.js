@@ -7,10 +7,15 @@ const sysError = require('../util/SystemError.js');
 const logger = serverLogger.createLogger('OrderItem.js');
 const orderItemDAO = require('../dao/OrderItemDAO.js');
 const orderDAO = require('../dao/InquiryOrderDAO.js');
+const systemConst = require('../util/SystemConst.js');
 
 const addOrderCar = (req,res,next) => {
     let params = req.params;
     let orderItemId = 0;
+    systemConst.transAndInsurePrice(params,(rows)=>{
+        params.oraTransPrice = rows[0].trans;
+        params.oraInsurePrice = rows[0].insure;
+    });
     new Promise((resolve,reject)=>{
         orderItemDAO.addOrderCar(params,(error,result)=>{
             if(error){
@@ -100,6 +105,10 @@ const delOrderCar = (req,res,next) => {
 const addOrderCarAdmin = (req,res,next) => {
     let params = req.params;
     let orderItemId = 0;
+    systemConst.transAndInsurePrice(params,(rows)=>{
+        params.oraTransPrice = rows[0].trans;
+        params.oraInsurePrice = rows[0].insure;
+    });
     new Promise((resolve,reject)=>{
         orderItemDAO.addOrderCarAdmin(params,(error,result)=>{
             if(error){

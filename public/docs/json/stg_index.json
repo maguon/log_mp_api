@@ -1716,7 +1716,7 @@
         }
       }
     },
-    "/admin/{adminId}/user/{userId}/inquiry/{inquiryId}/order": {
+    "/admin/{adminId}/inquiry/{inquiryId}/order": {
       "post": {
         "tags": [
           "order"
@@ -1731,13 +1731,6 @@
             "name": "adminId",
             "in": "path",
             "description": "adminId",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "userId",
             "required": true,
             "type": "integer"
           },
@@ -1765,7 +1758,7 @@
         }
       }
     },
-    "/admin/{adminId}/orderNew": {
+    "/admin/{adminId}/order": {
       "post": {
         "tags": [
           "order"
@@ -2047,7 +2040,7 @@
         }
       }
     },
-    "/admin/{adminId}/inquiryInvoice": {
+    "/admin/{adminId}/invoice": {
       "get": {
         "tags": [
           "inquiryInvoice"
@@ -2138,7 +2131,7 @@
         }
       }
     },
-    "/user/{userId}/inquiryInvoice": {
+    "/user/{userId}/invoice": {
       "get": {
         "tags": [
           "inquiryInvoice"
@@ -2250,7 +2243,7 @@
         }
       }
     },
-    "/user/{userId}/inquiryInvoice/{inquiryInvoiceId}/status/{status}": {
+    "/user/{userId}/invoice/{invoiceId}/status/{status}": {
       "put": {
         "tags": [
           "inquiryInvoice"
@@ -3264,7 +3257,7 @@
         }
       }
     },
-    "/user/{userId}/car": {
+    "/user/{userId}/order/{orderId}/car": {
       "post": {
         "tags": [
           "orderItem"
@@ -3279,6 +3272,13 @@
             "name": "userId",
             "in": "path",
             "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
             "required": true,
             "type": "integer"
           },
@@ -3308,7 +3308,7 @@
         }
       }
     },
-    "/admin/{adminId}/carAdmin": {
+    "/admin/{adminId}/order/{orderId}/carAdmin": {
       "post": {
         "tags": [
           "orderItem"
@@ -3323,6 +3323,13 @@
             "name": "adminId",
             "in": "path",
             "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
             "required": true,
             "type": "integer"
           },
@@ -6347,9 +6354,6 @@
     "carInfo": {
       "type": "object",
       "properties": {
-        "orderId": {
-          "type": "integer"
-        },
         "vin": {
           "type": "string"
         },
@@ -6362,10 +6366,10 @@
         "valuation": {
           "type": "integer"
         },
-        "oraTransPrice": {
+        "distance": {
           "type": "integer"
         },
-        "oraInsurePrice": {
+        "insuranceFlag": {
           "type": "integer"
         }
       },
@@ -6376,9 +6380,6 @@
     "carAdmin": {
       "type": "object",
       "properties": {
-        "orderId": {
-          "type": "integer"
-        },
         "vin": {
           "type": "string"
         },
@@ -6394,10 +6395,13 @@
         "safeStatus": {
           "type": "integer"
         },
-        "oraTransPrice": {
+        "actTransPrice": {
           "type": "integer"
         },
-        "oraInsurePrice": {
+        "actInsurePrice": {
+          "type": "integer"
+        },
+        "distance": {
           "type": "integer"
         }
       },
