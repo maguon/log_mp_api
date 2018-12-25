@@ -24,6 +24,7 @@ const inquiryBank = require('./bl/InquiryBank.js');
 const inquiryInvoice = require('./bl/InquiryInvoice.js');
 const payment = require('./bl/Payment.js');
 const addressContact = require('./bl/AddressContact.js');
+const transAndInsurePrice = require('./bl/TransAndInsurePrice.js');
 const orderItem = require('./bl/OrderItem.js');
 //const email = require('./bl/Email.js');
 
@@ -252,6 +253,11 @@ const createServer=()=>{
      * sendPswdSms
      */
     server.post({path:'/api/user/:userId/phone/:phone/userPhoneSms',contentType: 'application/json'},sms.sendUserSms);
+    /**
+     * TransAndInsurePrice
+     */
+    server.post({path:'/api/user/:userId/transAndInsurePrice',contentType: 'application/json'},transAndInsurePrice.transAndInsurePrice);
+    server.post({path:'/api/admin/:adminId/transAndInsurePrice',contentType: 'application/json'},transAndInsurePrice.transAndInsurePrice);
     /**
      emil
      */

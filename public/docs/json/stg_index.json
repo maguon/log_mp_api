@@ -88,6 +88,10 @@
       "description":"supplierContact of log api"
     },
     {
+      "name": "transAndInsurePrice",
+      "description":"transAndInsurePrice of log api"
+    },
+    {
       "name": "accountConfirmEmail",
       "description":"accountConfirmEmail of log api"
     }
@@ -811,6 +815,94 @@
           },
           "400": {
             "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/transAndInsurePrice": {
+      "post": {
+        "tags": [
+          "transAndInsurePrice"
+        ],
+        "summary": "find transAndInsurePrice",
+        "description": "find transAndInsurePrice",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "user info",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "transAndInsurePrice",
+            "in": "body",
+            "description": "transAndInsurePrice",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/transAndInsurePrice"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/transAndInsurePrice"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/transAndInsurePrice": {
+      "post": {
+        "tags": [
+          "transAndInsurePrice"
+        ],
+        "summary": "find transAndInsurePrice",
+        "description": "find transAndInsurePrice",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "admin info",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "transAndInsurePrice",
+            "in": "body",
+            "description": "transAndInsurePrice",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/transAndInsurePrice"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/transAndInsurePrice"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
           }
         }
       }
@@ -6961,6 +7053,29 @@
       },
       "xml": {
         "name": "totalTransInsurePrice"
+      }
+    },
+    "transAndInsurePrice": {
+      "type": "object",
+      "properties": {
+        "distance": {
+          "type": "integer"
+        },
+        "modelType": {
+          "type": "integer"
+        },
+        "oldCar": {
+          "type": "integer"
+        },
+        "serviceType": {
+          "type": "integer"
+        },
+        "valuation": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "transAndInsurePrice"
       }
     }
   }
