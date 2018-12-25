@@ -898,126 +898,7 @@
         }
       }
     },
-    "/user/{userId}/queryInquiry": {
-      "get": {
-        "tags": [
-          "inquiry"
-        ],
-        "summary": "query by user id and inquiryId look inquiry",
-        "description": "query by user id look and inquiryId inquiry",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "userId",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "inquiryId",
-            "in": "query",
-            "description": "inquiryId",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "serviceType",
-            "in": "query",
-            "description": "serviceType",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "modelId",
-            "in": "query",
-            "description": "modelId",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "oldCar",
-            "in": "query",
-            "description": "oldCar",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "routeStart",
-            "in": "query",
-            "description": "routeStart",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "routeEnd",
-            "in": "query",
-            "description": "routeEnd",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "status",
-            "in": "query",
-            "description": "status",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "startCity",
-            "in": "query",
-            "description": "startCity",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "endCity",
-            "in": "query",
-            "description": "endCity",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "phone",
-            "in": "query",
-            "description": "phone",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "inquiryTimeStart",
-            "in": "query",
-            "description": "inquiryTimeStart",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "inquiryTimeEnd",
-            "in": "query",
-            "description": "inquiryTimeEnd",
-            "required": false,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/inquiryUser"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/queryInquiry": {
+    "/admin/{adminId}/inquiry": {
       "get": {
         "tags": [
           "inquiry"
@@ -1970,41 +1851,6 @@
         }
       }
     },
-    "/user/{userId}/contact": {
-      "get": {
-        "tags": [
-          "inquiry"
-        ],
-        "summary": " query by user id look contact",
-        "description": " query by user id look contact",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "userId",
-            "required": true,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/inquiryUser"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
     "/admin/{adminId}/inquiryBank": {
       "get": {
         "tags": [
@@ -2454,6 +2300,123 @@
       }
     },
     "/user/{userId}/inquiry": {
+      "get": {
+        "tags": [
+          "inquiry"
+        ],
+        "summary": "query by user id and inquiryId look inquiry",
+        "description": "query by user id look and inquiryId inquiry",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "inquiryId",
+            "in": "query",
+            "description": "inquiryId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "serviceType",
+            "in": "query",
+            "description": "serviceType",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "modelId",
+            "in": "query",
+            "description": "modelId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "oldCar",
+            "in": "query",
+            "description": "oldCar",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "routeStart",
+            "in": "query",
+            "description": "routeStart",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "routeEnd",
+            "in": "query",
+            "description": "routeEnd",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "status",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "startCity",
+            "in": "query",
+            "description": "startCity",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "endCity",
+            "in": "query",
+            "description": "endCity",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "phone",
+            "in": "query",
+            "description": "phone",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "inquiryTimeStart",
+            "in": "query",
+            "description": "inquiryTimeStart",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "inquiryTimeEnd",
+            "in": "query",
+            "description": "inquiryTimeEnd",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryUser"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      },
       "post": {
         "tags": [
           "inquiry"
@@ -2492,112 +2455,7 @@
             }
           },
           "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/user/{userId}/inquiryManage": {
-      "get": {
-        "tags": [
-          "inquiry"
-        ],
-        "summary": "inquiryManage query",
-        "description": "inquiryManage query",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "userId",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "inquiryId",
-            "in": "query",
-            "description": "inquiryId",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "phone",
-            "in": "query",
-            "description": "phone",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "routeStart",
-            "in": "query",
-            "description": "routeStart",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "routeEnd",
-            "in": "query",
-            "description": "routeEnd",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "serviceType",
-            "in": "query",
-            "description": "serviceType",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "inquiryTimeStart",
-            "in": "query",
-            "description": "inquiryTimeStart",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "inquiryTimeEnd",
-            "in": "query",
-            "description": "inquiryTimeEnd",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "status",
-            "in": "query",
-            "description": "status",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "start",
-            "in": "query",
-            "description": "start",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "size",
-            "in": "query",
-            "description": "size",
-            "required": false,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/inquiryManage"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
+            "description": "Invalid token value or invalid user id"
           }
         }
       }
@@ -6337,10 +6195,7 @@
         "safeStatus": {
           "type": "integer"
         },
-        "fee": {
-          "type": "integer"
-        },
-        "safePrice": {
+        "distance": {
           "type": "integer"
         }
       },

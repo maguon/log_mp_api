@@ -31,7 +31,7 @@ const transAndInsurePrice = (params,callback) => {
         modelRatio = 1.1;
     }
     transPrice = servicePrice + 1.2 * params.distance * modelRatio * oldCarRatio;
-    if(params.insuranceFlag == 1){
+    if(params.insuranceFlag == 1 || params.safeStatus == 1){
         insurePrice = params.valuation * 0.05;
     }
     let priceItem = [{

@@ -8,9 +8,16 @@ const logger = serverLogger.createLogger('Inquiry.js');
 const inquiryDAO = require('../dao/InquiryDAO.js');
 const inquiryCarDAO = require('../dao/InquiryCarDAO.js');
 const moment = require('moment/moment.js');
+const systemConst = require('../util/SystemConst.js');
 
 const addRouteInquiry = (req,res,next) => {
     let params = req.params;
+    params.modelType = params.modelId;
+    params.valuation = params.plan;
+    systemConst.transAndInsurePrice(params,(rows)=>{
+        params.fee = rows[0].trans;
+        params.safePrice = rows[0].insure;
+    });
     new Promise((resolve,reject)=>{
         inquiryDAO.addRouteInquiry(params,(error,result)=>{
             if(error){
