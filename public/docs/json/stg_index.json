@@ -2700,7 +2700,7 @@
         }
       }
     },
-    "/admin/{adminId}/order/{orderId}/inquiryManageOrder": {
+    "/admin/{adminId}/order/{orderId}/oraPrice": {
       "put": {
         "tags": [
           "order"
