@@ -7,7 +7,7 @@ const httpUtil = require('../util/HttpUtil');
 const db = require('../db/connection/MysqlDb.js');
 
 const addOrderCar = (params,callback) => {
-    let query = " insert into order_item(user_id,order_id,vin,model_type,old_car,valuation,ora_trans_price,ora_insure_price,act_trans_price,act_insure_price) values(?,?,?,?,?,?,?,?,?,?) ";
+    let query = " insert into order_item(user_id,order_id,vin,model_type,old_car,valuation,ora_trans_price,ora_insure_price) values(?,?,?,?,?,?,?,?) ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.userId;
     paramsArray[i++] = params.orderId;
@@ -16,9 +16,7 @@ const addOrderCar = (params,callback) => {
     paramsArray[i++] = params.oldCar;
     paramsArray[i++] = params.valuation;
     paramsArray[i++] = params.oraTransPrice;
-    paramsArray[i++] = params.oraInsurePrice;
-    paramsArray[i++] = params.actTransPrice;
-    paramsArray[i] = params.actInsurePrice;
+    paramsArray[i] = params.oraInsurePrice;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('addOrderCar');
         callback(error,rows);
@@ -58,7 +56,7 @@ const delOrderCar = (params,callback) => {
     })
 }
 const addOrderCarAdmin = (params,callback) => {
-    let query = " insert into order_item(safe_status,user_id,order_id,vin,model_type,old_car,valuation,ora_trans_price,type,ora_insure_price,act_trans_price,act_insure_price) values(?,?,?,?,?,?,?,?,1,?,?,?) ";
+    let query = " insert into order_item(safe_status,user_id,order_id,vin,model_type,old_car,valuation,ora_trans_price,type,ora_insure_price) values(?,?,?,?,?,?,?,?,1,?) ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.safeStatus;
     paramsArray[i++] = params.userId;
@@ -68,9 +66,7 @@ const addOrderCarAdmin = (params,callback) => {
     paramsArray[i++] = params.oldCar;
     paramsArray[i++] = params.valuation;
     paramsArray[i++] = params.oraTransPrice;
-    paramsArray[i++] = params.oraInsurePrice;
-    paramsArray[i++] = params.actTransPrice;
-    paramsArray[i] = params.actInsurePrice;
+    paramsArray[i] = params.oraInsurePrice;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('addOrderCarAdmin');
         callback(error,rows);

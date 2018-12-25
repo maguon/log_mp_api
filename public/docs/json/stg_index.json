@@ -6512,12 +6512,6 @@
         },
         "oraInsurePrice": {
           "type": "integer"
-        },
-        "actTransPrice": {
-          "type": "integer"
-        },
-        "actInsurePrice": {
-          "type": "integer"
         }
       },
       "xml": {
@@ -6549,12 +6543,6 @@
           "type": "integer"
         },
         "oraInsurePrice": {
-          "type": "integer"
-        },
-        "actTransPrice": {
-          "type": "integer"
-        },
-        "actInsurePrice": {
           "type": "integer"
         }
       },
