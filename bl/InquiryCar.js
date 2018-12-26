@@ -202,17 +202,17 @@ const updateInquiryCar = (req,res,next) => {
                         resUtil.resetFailedRes(res,'查无此车辆信息',null);
                     }else{
                         logger.info('getInquiryCarByInquiryId' + 'success');
-                        let carName = 0;
+                        let carNum = 0;
                         let oraTransPrice = 0;
                         let oraInsurePrice = 0;
                         for (let i = 0; i < rows.length; i++) {
-                            carName = carName + rows[i].car_num;
+                            carNum = carNum + rows[i].car_num;
                             oraTransPrice = oraTransPrice + rows[i].trans_price * rows[i].car_num;
                             oraInsurePrice = oraInsurePrice + rows[i].insure_price * rows[i].car_num;
                         }
                         params.oraTransPrice = oraTransPrice;
                         params.oraInsurePrice = oraInsurePrice;
-                        params.carName = carName;
+                        params.carNum = carNum;
                         resolve();
                     }
                 })
