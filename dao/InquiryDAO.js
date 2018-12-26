@@ -164,9 +164,11 @@ const cancelInquiry = (params,callback) => {
     })
 }
 const updateCarNum = (params,callback) => {
-    let query = "update inquiry_info set car_num = ? where id = ? ";
+    let query = "update inquiry_info set car_num = ?,ora_trans_price = ?,ora_insure_price = ? where id = ? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.carNum;
+    paramsArray[i++] = params.oraTransPrice;
+    paramsArray[i++] = params.oraInsurePrice;
     paramsArray[i] = params.inquiryId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('updateCarNum');

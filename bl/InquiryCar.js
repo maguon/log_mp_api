@@ -135,8 +135,12 @@ const updateStatus = (req,res,next) => {
                     }else{
                         logger.info('getInquiryCarByInquiryId' + 'success');
                         params.carNum= 0;
+                        params.oraTransPrice = 0;
+                        params.oraInsurePrice = 0;
                         for (let i = 0; i < rows.length; i++) {
                             params.carNum = params.carNum + rows[i].car_num;
+                            params.oraTransPrice = params.oraTransPrice + rows[i].trans_price * rows[i].car_num;
+                            params.oraInsurePrice = params.oraInsurePrice + rows[i].insure_price * rows[i].car_num;
                         }
                         resolve();
                     }
