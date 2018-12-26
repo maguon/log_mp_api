@@ -169,8 +169,12 @@ const createServer=()=>{
     /**
      user_address
      */
+    server.get('/api/admin/:adminId/userAddress',userAddress.getAddress);
     server.get('/api/user/:userId/userAddress',userAddress.getAddress);
     server.post({path:'/api/user/:userId/userAddress',contentType: 'application/json'},userAddress.addAddress);
+    server.put({path:'/api/user/:userId/userAddress/:addressId/status/:status/',contentType: 'application/json'},userAddress.updateStatus);
+    server.put({path:'/api/user/:userId/userAddress/:addressId/address',contentType: 'application/json'},userAddress.updateAddress);
+    server.del({path:'/api/user/:userId/userAddress/:addressId',contentType: 'application/json'},userAddress.delAddress);
     /**
      address_info
      */

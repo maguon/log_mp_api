@@ -33,7 +33,49 @@ const addAddress = (req,res,next) => {
         }
     })
 }
+const updateStatus = (req,res,next) => {
+    let params = req.params;
+    userAddressDAO.updateStatus(params,(error,result)=>{
+        if(error){
+            logger.error('updateStatus' + error.message);
+            resUtil.resInternalError(error,res,next);
+        }else{
+            logger.info('updateStatus' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
+}
+const updateAddress = (req,res,next) => {
+    let params = req.params;
+    userAddressDAO.updateAddress(params,(error,result)=>{
+        if(error){
+            logger.error('updateAddress' + error.message);
+            resUtil.resInternalError(error,res,next);
+        }else{
+            logger.info('updateAddress' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
+}
+const delAddress = (req,res,next) => {
+    let params = req.params;
+    userAddressDAO.delAddress(params,(error,result)=>{
+        if(error){
+            logger.error('delAddress' + error.message);
+            resUtil.resInternalError(error,res,next);
+        }else{
+            logger.info('delAddress' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
+}
 module.exports = {
     addAddress,
-    getAddress
+    getAddress,
+    updateStatus,
+    updateAddress,
+    delAddress
 }

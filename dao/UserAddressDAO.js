@@ -7,8 +7,9 @@ const httpUtil = require('../util/HttpUtil');
 const db = require('../db/connection/MysqlDb.js');
 
 const addAddress = (params,callback) => {
-    let query = " insert into address_info(address,detail_address,user_name,phone,type) values(?,?,?,?,?)";
+    let query = " insert into user_address(user_id,address,detail_address,user_name,phone,type) values(?,?,?,?,?,?)";
     let paramsArray = [],i=0;
+    paramsArray[i++] = params.userId;
     paramsArray[i++] = params.address;
     paramsArray[i++] = params.detailAddress;
     paramsArray[i++] = params.userName;
@@ -35,7 +36,43 @@ const getAddress = (params,callback) => {
         callback(error,rows)
     })
 }
+const updateStatus = (params,callback) => {
+    let query = " update user_address set status = ? where id = ?";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.status;
+    paramsArray[i] = params.addressId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('updateStatus');
+        callback(error,rows)
+    })
+}
+const updateAddress = (params,callback) => {
+    let query = " update user_address set address = ?,detail_address = ?,user_name = ?,phone = ?,type = ? where id = ?";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.address;
+    paramsArray[i++] = params.detailAddress;
+    paramsArray[i++] = params.userName;
+    paramsArray[i++] = params.phone;
+    paramsArray[i++] = params.type;
+    paramsArray[i] = params.addressId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('updateAddress');
+        callback(error,rows)
+    })
+}
+const delAddress = (params,callback) => {
+    let query = " delete from user_address where id = ?";
+    let paramsArray = [],i=0;
+    paramsArray[i] = params.addressId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('delAddress');
+        callback(error,rows)
+    })
+}
 module.exports = {
     addAddress,
-    getAddress
+    getAddress,
+    updateStatus,
+    updateAddress,
+    delAddress
 }
