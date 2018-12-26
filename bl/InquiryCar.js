@@ -98,15 +98,66 @@ const addCarByOrder = (req,res,next) => {
 }
 const updateStatus = (req,res,next) => {
     let params = req.params;
-    inquiryCarDAO.updateStatus(params,(error,result)=>{
-        if(error){
-            logger.error('updateStatus' + error.message);
-            resUtil.resInternalError(error,res,next);
-        }else{
-            logger.info('updateStatus' + 'success');
-            resUtil.resetUpdateRes(res,result,null);
-            return next();
-        }
+    new Promise((resolve,reject)=>{
+        inquiryCarDAO.updateStatus(params,(error,result)=>{
+            if(error){
+                logger.error('updateStatus' + error.message);
+                reject(error);
+            }else{
+                logger.info('updateStatus' + 'success');
+                resolve();
+            }
+        })
+    }).then(()=>{
+        new Promise((resolve,reject)=>{
+            inquiryCarDAO.getInquiryCar({inquiryCarId:params.inquiryCarId},(error,rows)=>{
+                if(error){
+                    logger.error('getInquiryCar' + error.message);
+                    reject(error);
+                }else if(rows && rows.length < 1){
+                    logger.warn('getInquiryCar' + '查无此车辆信息');
+                    resUtil.resetFailedRes(res,'查无此车辆信息',null);
+                }else{
+                    logger.info('getInquiryCar' + 'success');
+                    params.inquiryId = rows[0].inquiry_id;
+                    resolve();
+                }
+            })
+        }).then(()=>{
+            new Promise((resolve,reject)=>{
+                inquiryCarDAO.getInquiryCarByInquiryId({inquiryId:params.inquiryId},(error,rows)=>{
+                    if(error){
+                        logger.error('getInquiryCarByInquiryId' + error.message);
+                        reject(error);
+                    }else if(rows && rows.length < 1){
+                        logger.warn('getInquiryCarByInquiryId' + '查无此询价车辆信息');
+                        resUtil.resetFailedRes(res,'查无此询价车辆信息',null);
+                    }else{
+                        logger.info('getInquiryCarByInquiryId' + 'success');
+                        params.carNum= 0;
+                        for (let i = 0; i < rows.length; i++) {
+                            params.carNum = params.carNum + rows[i].car_num;
+                        }
+                        resolve();
+                    }
+                })
+            }).then(()=>{
+                new Promise((resolve,reject)=>{
+                    inquiryDAO.updateCarNum(params,(error,result)=>{
+                        if(error){
+                            logger.error('updateCarNum' + error.message);
+                            reject(error);
+                        }else{
+                            logger.info('updateCarNum' + 'success');
+                            resUtil.resetUpdateRes(res,result,null);
+                            return next();
+                        }
+                    })
+                })
+            })
+        })
+    }).catch((error)=>{
+        resUtil.resInternalError(error,res,next);
     })
 }
 const updateInquiryCar = (req,res,next) => {

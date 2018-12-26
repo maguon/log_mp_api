@@ -34,7 +34,7 @@ const addWechatPayment = (req,res,next) => {
                 resUtil.resetFailedRes(res,'查无此订单',null);
             }else{
                 logger.info('getOrder'+'success');
-                params.totalFee = rows[0].fee_price;
+                params.totalFee = rows[0].total_trans_price + rows[0].total_insure_price;
                 params.type = 1;
                 params.payment_type = 1;
                 resolve();

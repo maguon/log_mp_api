@@ -163,6 +163,16 @@ const cancelInquiry = (params,callback) => {
         callback(error,rows);
     })
 }
+const updateCarNum = (params,callback) => {
+    let query = "update inquiry_info set car_num = ? where id = ? ";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.carNum;
+    paramsArray[i] = params.inquiryId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('updateCarNum');
+        callback(error,rows);
+    })
+}
 module.exports = {
     addRouteInquiry,
     getInquiryByUserId,
@@ -170,5 +180,6 @@ module.exports = {
     updateFeePrice,
     updateFee,
     updateFeeByCar,
-    cancelInquiry
+    cancelInquiry,
+    updateCarNum
 }
