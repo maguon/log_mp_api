@@ -166,15 +166,73 @@ const updateStatus = (req,res,next) => {
 }
 const updateInquiryCar = (req,res,next) => {
     let params = req.params;
-    inquiryCarDAO.updateInquiryCar(params,(error,result)=>{
-        if(error){
-            logger.error('updateInquiryCar' + error.message);
-            resUtil.resInternalError(error,res,next);
-        }else{
-            logger.info('updateInquiryCar' + 'success');
-            resUtil.resetUpdateRes(res,result,null);
-            return next();
-        }
+    new Promise((resolve,reject)=>{
+        inquiryCarDAO.updateInquiryCar(params,(error,result)=>{
+            if(error){
+                logger.error('updateInquiryCar' + error.message);
+                reject(error);
+            }else{
+                logger.info('updateInquiryCar' + 'success');
+                resolve();
+            }
+        })
+    }).then(()=>{
+        new Promise((resolve,reject)=>{
+            inquiryCarDAO.getInquiryCarByInquiryId({inquiryCarId:params.inquiryCarId},(error,rows)=>{
+                if(error){
+                    logger.error('getInquiryCarByInquiryId' + error.message);
+                    reject(error);
+                }else if(rows && rows.length < 1){
+                    logger.warn('getInquiryCarByInquiryId' + '查无此车辆信息');
+                    resUtil.resetFailedRes(res,'查无此车辆信息',null);
+                }else{
+                    logger.info('getInquiryCarByInquiryId' + 'success');
+                    params.inquiryId = rows[0].inquiry_id;
+                    resolve();
+                }
+            })
+        }).then(()=>{
+            new Promise((resolve,reject)=>{
+                inquiryCarDAO.getInquiryCarByInquiryId({inquiryId:params.inquiryId},(error,rows)=>{
+                    if(error){
+                        logger.error('getInquiryCarByInquiryId' + error.message);
+                        reject(error);
+                    }else if(rows && rows.length < 1){
+                        logger.warn('getInquiryCarByInquiryId' + '查无此车辆信息');
+                        resUtil.resetFailedRes(res,'查无此车辆信息',null);
+                    }else{
+                        logger.info('getInquiryCarByInquiryId' + 'success');
+                        let carName = 0;
+                        let oraTransPrice = 0;
+                        let oraInsurePrice = 0;
+                        for (let i = 0; i < rows.length; i++) {
+                            carName = carName + rows[i].car_num;
+                            oraTransPrice = oraTransPrice + rows[i].trans_price * rows[i].car_num;
+                            oraInsurePrice = oraInsurePrice + rows[i].insure_price * rows[i].car_num;
+                        }
+                        params.oraTransPrice = oraTransPrice;
+                        params.oraInsurePrice = oraInsurePrice;
+                        params.carName = carName;
+                        resolve();
+                    }
+                })
+            }).then(()=>{
+                new Promise((resolve,reject)=>{
+                    inquiryDAO.updateCarNum(params,(error,result)=>{
+                        if(error){
+                            logger.error('updateCarNum' + error.message);
+                            reject(error);
+                        }else{
+                            logger.info('updateCarNum' + 'success');
+                            resUtil.resetUpdateRes(res,result,null);
+                            return next();
+                        }
+                    })
+                })
+            })
+        })
+    }).catch((error)=>{
+        resUtil.resInternalError(error,res,next);
     })
 }
 module.exports = {
