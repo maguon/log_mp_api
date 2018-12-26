@@ -25,125 +25,144 @@ const addWechatPayment = (req,res,next) => {
     params.dateId = moment(myDate).format('YYYYMMDD');
     let requestIp = req.connection.remoteAddress.replace('::ffff:','');
     new Promise((resolve,reject)=>{
-        inquiryOrderDAO.getOrder({orderId:params.orderId},(error,rows)=>{
+        paymentDAO.getPaymentByOrderId({orderId:params.orderId,type:1},(error,rows)=>{
             if(error){
-                logger.error('getOrder' + error.message);
+                logger.error('getPaymentByOrderId' + error.message);
                 reject(error);
             }else if(rows && rows.length < 1){
-                logger.warn('getOrder'+'查无此订单',null);
-                resUtil.resetFailedRes(res,'查无此订单',null);
+                logger.warn('getPaymentByOrderId'+'查无此订单支付信息',null);
+                resUtil.resetFailedRes(res,'查无此订单支付信息',null);
             }else{
-                logger.info('getOrder'+'success');
-                params.totalFee = rows[0].total_trans_price + rows[0].total_insure_price;
-                params.type = 1;
-                params.payment_type = 1;
+                logger.info('getPaymentByOrderId'+'success');
+                params.price = 0;
+                for (let i = 0; i < rows.length; i++) {
+                    params.price = params.price + rows[i].total_fee;
+                }
                 resolve();
             }
         })
     }).then(()=>{
         new Promise((resolve,reject)=>{
-            paymentDAO.getPayment({orderId:params.orderId},(error,rows)=>{
+            inquiryOrderDAO.getOrder({orderId:params.orderId},(error,rows)=>{
                 if(error){
-                    logger.error('getPayment' + error.message);
+                    logger.error('getOrder' + error.message);
                     reject(error);
-                }else if(rows && rows.length > 0){
-                    logger.warn('getPayment'+'已经生成该支付信息');
-                    resUtil.resetQueryRes(res,{paymentId:rows[0].id},null);
+                }else if(rows && rows.length < 1){
+                    logger.warn('getOrder'+'查无此订单',null);
+                    resUtil.resetFailedRes(res,'查无此订单',null);
                 }else{
-                    logger.info('getPayment'+'success');
+                    logger.info('getOrder'+'success');
+                    params.totalFee = rows[0].total_trans_price + rows[0].total_insure_price - params.price;
+                    params.type = 1;
+                    params.payment_type = 1;
                     resolve();
                 }
             })
         }).then(()=>{
             new Promise((resolve,reject)=>{
-                paymentDAO.addPayment(params,(error,result)=>{
+                paymentDAO.getPayment({orderId:params.orderId},(error,rows)=>{
                     if(error){
-                        logger.error('addPayment' + error.message);
+                        logger.error('getPayment' + error.message);
                         reject(error);
-                    }else if(result && result.insertId < 1){
-                        logger.warn('addPayment'+'创建支付信息失败');
-                        resUtil.resetFailedRes(res,'创建支付信息失败',null);
+                    }else if(rows && rows.length > 0){
+                        logger.warn('getPayment'+'已经生成该支付信息');
+                        resUtil.resetQueryRes(res,{paymentId:rows[0].id},null);
                     }else{
-                        logger.info('addPayment'+'success');
+                        logger.info('getPayment'+'success');
                         resolve();
                     }
                 })
             }).then(()=>{
                 new Promise((resolve,reject)=>{
-                    let signStr =
-                        "appid="+sysConfig.wechatConfig.mpAppId
-                        + "&body="+body
-                        + "&mch_id="+sysConfig.wechatConfig.mchId
-                        + "&nonce_str="+ourString
-                        + "&notify_url="+sysConfig.wechatConfig.notifyUrl
-                        + "&openid="+params.openid
-                        + "&out_trade_no="+params.orderId
-                        + "&spbill_create_ip="+requestIp
-                        + "&total_fee=" +params.totalFee * 100
-                        + "&trade_type="+jsa
-                        + "&key="+sysConfig.wechatConfig.paymentKey;
-                    let signByMd = encrypt.encryptByMd5NoKey(signStr);
-                    let reqBody =
-                        '<xml><appid>'+sysConfig.wechatConfig.mpAppId+'</appid>' +
-                        '<body>'+body+'</body>' +
-                        '<mch_id>'+sysConfig.wechatConfig.mchId+'</mch_id>' +
-                        '<nonce_str>'+ourString+'</nonce_str>' +
-                        '<notify_url>'+sysConfig.wechatConfig.notifyUrl+'</notify_url>' +
-                        '<openid>'+params.openid+'</openid>' +
-                        '<out_trade_no>'+params.orderId+'</out_trade_no>' +
-                        '<spbill_create_ip>'+requestIp+'</spbill_create_ip>' +
-                        '<total_fee>'+params.totalFee * 100 + '</total_fee>' +
-                        '<trade_type>'+jsa+'</trade_type>' +
-                        '<sign>'+signByMd+'</sign></xml>';
-                    let url="/pay/unifiedorder";
-                    let options = {
-                        host: 'api.mch.weixin.qq.com',
-                        port: 443,
-                        path: url,
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                            'Content-Length' : Buffer.byteLength(reqBody, 'utf8')
+                    paymentDAO.addPayment(params,(error,result)=>{
+                        if(error){
+                            logger.error('addPayment' + error.message);
+                            reject(error);
+                        }else if(result && result.insertId < 1){
+                            logger.warn('addPayment'+'创建支付信息失败');
+                            resUtil.resetFailedRes(res,'创建支付信息失败',null);
+                        }else{
+                            logger.info('addPayment'+'success');
+                            resolve();
                         }
-                    }
-                    let httpsReq = https.request(options,(result)=>{
-                        let data = "";
-                        result.on('data',(d)=>{
-                            data += d;
-                        }).on('end',()=>{
-                            xmlParser.parseString(data,(err,result)=>{
-                                //将返回的结果再次格式化
-                                let resString = JSON.stringify(result);
-                                let evalJson = eval('(' + resString + ')');
-                                let myDate = new Date();
-                                let myDateStr = myDate.getTime()/1000;
-                                let parseIntDate = parseInt(myDateStr);
-                                let paySignMD5 = encrypt.encryptByMd5NoKey('appId='+sysConfig.wechatConfig.mpAppId+'&nonceStr='+evalJson.xml.nonce_str+'&package=prepay_id='+evalJson.xml.prepay_id+'&signType=MD5&timeStamp='+parseIntDate+'&key=a7c5c6cd22d89a3eea6c739a1a3c74d1');
-                                let paymentJson = [{
-                                    nonce_str: evalJson.xml.nonce_str,
-                                    prepay_id: evalJson.xml.prepay_id,
-                                    sign:evalJson.xml.sign,
-                                    timeStamp: parseIntDate,
-                                    paySign: paySignMD5
-                                }];
-                                logger.info("paymentResult"+resString);
-                                resUtil.resetQueryRes(res,paymentJson,null);
+                    })
+                }).then(()=>{
+                    new Promise((resolve,reject)=>{
+                        let signStr =
+                            "appid="+sysConfig.wechatConfig.mpAppId
+                            + "&body="+body
+                            + "&mch_id="+sysConfig.wechatConfig.mchId
+                            + "&nonce_str="+ourString
+                            + "&notify_url="+sysConfig.wechatConfig.notifyUrl
+                            + "&openid="+params.openid
+                            + "&out_trade_no="+params.orderId
+                            + "&spbill_create_ip="+requestIp
+                            + "&total_fee=" +params.totalFee * 100
+                            + "&trade_type="+jsa
+                            + "&key="+sysConfig.wechatConfig.paymentKey;
+                        let signByMd = encrypt.encryptByMd5NoKey(signStr);
+                        let reqBody =
+                            '<xml><appid>'+sysConfig.wechatConfig.mpAppId+'</appid>' +
+                            '<body>'+body+'</body>' +
+                            '<mch_id>'+sysConfig.wechatConfig.mchId+'</mch_id>' +
+                            '<nonce_str>'+ourString+'</nonce_str>' +
+                            '<notify_url>'+sysConfig.wechatConfig.notifyUrl+'</notify_url>' +
+                            '<openid>'+params.openid+'</openid>' +
+                            '<out_trade_no>'+params.orderId+'</out_trade_no>' +
+                            '<spbill_create_ip>'+requestIp+'</spbill_create_ip>' +
+                            '<total_fee>'+params.totalFee * 100 + '</total_fee>' +
+                            '<trade_type>'+jsa+'</trade_type>' +
+                            '<sign>'+signByMd+'</sign></xml>';
+                        let url="/pay/unifiedorder";
+                        let options = {
+                            host: 'api.mch.weixin.qq.com',
+                            port: 443,
+                            path: url,
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                                'Content-Length' : Buffer.byteLength(reqBody, 'utf8')
+                            }
+                        }
+                        let httpsReq = https.request(options,(result)=>{
+                            let data = "";
+                            result.on('data',(d)=>{
+                                data += d;
+                            }).on('end',()=>{
+                                xmlParser.parseString(data,(err,result)=>{
+                                    //将返回的结果再次格式化
+                                    let resString = JSON.stringify(result);
+                                    let evalJson = eval('(' + resString + ')');
+                                    let myDate = new Date();
+                                    let myDateStr = myDate.getTime()/1000;
+                                    let parseIntDate = parseInt(myDateStr);
+                                    let paySignMD5 = encrypt.encryptByMd5NoKey('appId='+sysConfig.wechatConfig.mpAppId+'&nonceStr='+evalJson.xml.nonce_str+'&package=prepay_id='+evalJson.xml.prepay_id+'&signType=MD5&timeStamp='+parseIntDate+'&key=a7c5c6cd22d89a3eea6c739a1a3c74d1');
+                                    let paymentJson = [{
+                                        nonce_str: evalJson.xml.nonce_str,
+                                        prepay_id: evalJson.xml.prepay_id,
+                                        sign:evalJson.xml.sign,
+                                        timeStamp: parseIntDate,
+                                        paySign: paySignMD5
+                                    }];
+                                    logger.info("paymentResult"+resString);
+                                    resUtil.resetQueryRes(res,paymentJson,null);
+                                });
+                                res.send(200,data);
+                                return next();
+                            }).on('error', (e)=>{
+                                logger.info('wechatPayment '+ e.message);
+                                res.send(500,e);
+                                return next();
                             });
-                            res.send(200,data);
-                            return next();
-                        }).on('error', (e)=>{
+                        });
+                        httpsReq.write(reqBody,"utf-8");
+                        httpsReq.end();
+                        httpsReq.on('error',(e)=>{
                             logger.info('wechatPayment '+ e.message);
                             res.send(500,e);
                             return next();
                         });
-                    });
-                    httpsReq.write(reqBody,"utf-8");
-                    httpsReq.end();
-                    httpsReq.on('error',(e)=>{
-                        logger.info('wechatPayment '+ e.message);
-                        res.send(500,e);
-                        return next();
-                    });
+                    })
                 })
             })
         })
@@ -367,6 +386,19 @@ const getPayment = (req,res,next)=>{
         }
     });
 }
+const getPaymentPrice = (req,res,next)=>{
+    let params = req.params;
+    paymentDAO.getPaymentPrice(params,(error,result)=>{
+        if(error){
+            logger.error('getPaymentPrice' + error.message);
+            resUtil.resInternalError(error, res, next);
+        }else{
+            logger.info('getPaymentPrice' + 'success');
+            resUtil.resetQueryRes(res,result,null);
+            return next();
+        }
+    });
+}
 const getRefundByPaymentId=(req,res,next) => {
     let params = req.params;
     paymentDAO.getPayment(params,(error,rows)=>{
@@ -535,5 +567,6 @@ module.exports = {
     addBankPayment,
     updateBankStatus,
     addBankRefund,
-    updateRefundRemark
+    updateRefundRemark,
+    getPaymentPrice
 }

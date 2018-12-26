@@ -6,6 +6,29 @@ const sysConfig = require("../config/SystemConfig");
 const httpUtil = require('../util/HttpUtil');
 const db = require('../db/connection/MysqlDb.js');
 
+const getPaymentPrice = (params,callback) => {
+    let query = " select (uo.total_trans_price + uo.total_insure_price) as total_price,sum(pi.total_fee) as payment_price,(uo.total_trans_price + uo.total_insure_price - sum(pi.total_fee)) as surplus_price from payment_info pi " +
+                " left join user_order uo on uo.id=pi.order_id " +
+                " where pi.id is not null ";
+    let paramsArray = [],i=0;
+    if(params.userId){
+        paramsArray[i++] = params.userId;
+        query = query + " and pi.user_id = ? ";
+    }
+    if(params.orderId){
+        paramsArray[i++] = params.orderId;
+        query = query + " and pi.order_id = ? ";
+    }
+    if(params.paymentId){
+        paramsArray[i++] = params.paymentId;
+        query = query + " and pi.id = ? ";
+    }
+    query = query + ' group by pi.order_id';
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('getPaymentPrice');
+        callback(error,rows)
+    })
+}
 const getPayment = (params,callback) => {
     let query = " select * from payment_info where id is not null ";
     let paramsArray = [],i=0;
@@ -267,5 +290,6 @@ module.exports = {
     addBankPayment,
     updateBankStatus,
     addBankRefund,
-    updateRefundRemark
+    updateRefundRemark,
+    getPaymentPrice
 }

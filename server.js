@@ -246,6 +246,7 @@ const createServer=()=>{
      * payment_info
      */
     server.get('/api/user/:userId/payment' ,payment.getPayment);
+    server.get('/api/admin/:adminId/paymentPrice' ,payment.getPaymentPrice);
     server.get('/api/admin/:adminId/payment' ,payment.getPayment);
     server.get('/api/admin/:adminId/paymentRefund' ,payment.getRefundByPaymentId);
     server.post({path:'/api/user/:userId/order/:orderId/wechatPayment',contentType: 'application/json'},payment.addWechatPayment);
