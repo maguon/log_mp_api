@@ -231,6 +231,10 @@ const updateActFee = (req,res,next) => {
 }
 const updateOrderItemInfo = (req,res,next) => {
     let params = req.params;
+    systemConst.transAndInsurePrice(params,(rows)=>{
+        params.oraTransPrice = rows[0].trans;
+        params.oraInsurePrice = rows[0].insure;
+    });
     orderItemDAO.updateOrderItemInfo(params,(error,result)=>{
         if(error){
             logger.error('updateOrderItemInfo' + error.message);

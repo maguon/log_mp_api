@@ -87,8 +87,10 @@ const updateActFee = (params,callback) => {
     })
 }
 const updateOrderItemInfo = (params,callback) => {
-    let query = " update order_item set vin=?,model_type=?,old_car=?,valuation=?,act_trans_price=?,safe_status=?,act_insure_price=? where id = ?";
+    let query = " update order_item set ora_trans_price=?,ora_insure_price=?,vin=?,model_type=?,old_car=?,valuation=?,act_trans_price=?,safe_status=?,act_insure_price=? where id = ?";
     let paramsArray = [],i=0;
+    paramsArray[i++] = params.oraTransPrice;
+    paramsArray[i++] = params.oraInsurePrice;
     paramsArray[i++] = params.vin;
     paramsArray[i++] = params.modelType;
     paramsArray[i++] = params.oldCar;

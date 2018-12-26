@@ -166,6 +166,10 @@ const createServer=()=>{
     server.get('/api/admin/:adminId/inquiryBank',inquiryBank.getInquiryBank);
     server.put({path:'/api/user/:userId/inquiryBank/:inquiryBankId/status/:status',contentType: 'application/json'},inquiryBank.updateInquiryBank);
     /**
+     user_address
+     */
+
+    /**
      address_info
      */
     server.get('/api/admin/:adminId/address',address.getAddress);
