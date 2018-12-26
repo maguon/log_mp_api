@@ -26,6 +26,7 @@ const payment = require('./bl/Payment.js');
 const addressContact = require('./bl/AddressContact.js');
 const transAndInsurePrice = require('./bl/TransAndInsurePrice.js');
 const orderItem = require('./bl/OrderItem.js');
+const userAddress = require('./bl/UserAddress.js');
 //const email = require('./bl/Email.js');
 
 
@@ -168,7 +169,8 @@ const createServer=()=>{
     /**
      user_address
      */
-
+    server.get('/api/user/:userId/userAddress',userAddress.getAddress);
+    server.post({path:'/api/user/:userId/userAddress',contentType: 'application/json'},userAddress.addAddress);
     /**
      address_info
      */

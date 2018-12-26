@@ -6352,6 +6352,9 @@
         },
         "distance": {
           "type": "integer"
+        },
+        "serviceType": {
+          "type": "integer"
         }
       },
       "xml": {
