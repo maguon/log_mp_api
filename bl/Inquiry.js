@@ -12,12 +12,11 @@ const systemConst = require('../util/SystemConst.js');
 
 const addRouteInquiry = (req,res,next) => {
     let params = req.params;
-    params.modelType = params.modelId;
-    params.valuation = params.plan;
-    systemConst.transAndInsurePrice(params,(rows)=>{
-        params.fee = rows[0].trans;
-        params.safePrice = rows[0].insure;
-    });
+    let modelId = params.modelId;
+    let oldCar = params.oldCar;
+    let carNum = params.carNum;
+    let plan = params.plan;
+    let safeStatus = params.safeStatus;
     new Promise((resolve,reject)=>{
         inquiryDAO.addRouteInquiry(params,(error,result)=>{
             if(error){
@@ -34,16 +33,30 @@ const addRouteInquiry = (req,res,next) => {
         })
     }).then(()=>{
         new Promise((resolve,reject)=>{
-            params.carNum = 1;
-            inquiryCarDAO.addCar(params,(error,result)=>{
-                if(error){
-                    logger.error('addRouteInquiry' + error.message);
-                    reject(error);
-                }else{
-                    logger.info('addRouteInquiry' + 'success');
-                    resolve();
-                }
-            })
+            for (let i = 0; i < modelId.length; i++) {
+                params.modelId = modelId[i];
+                params.oldCar = oldCar[i];
+                params.carNum = carNum[i];
+                params.plan = plan[i];
+                params.safeStatus = safeStatus[i];
+                params.valuation = params.plan;
+                params.modelType = params.modelId;
+                systemConst.transAndInsurePrice(params,(rows)=>{
+                    params.fee = rows[0].trans;
+                    params.safePrice = rows[0].insure;
+                });
+                inquiryCarDAO.addCar(params,(error,result)=>{
+                    if(error){
+                        logger.error('addRouteInquiry' + error.message);
+                        reject(error);
+                    }else{
+                        logger.info('addRouteInquiry'+ i + 'success');
+                    }
+                })
+            }
+            setTimeout(()=>{
+                resolve();
+            },500);
         }).then(()=>{
             new Promise((resolve,reject)=>{
                 inquiryCarDAO.getInquiryCarByInquiryId({inquiryId:params.inquiryId,type:0},(error,rows)=>{
@@ -57,18 +70,21 @@ const addRouteInquiry = (req,res,next) => {
                         logger.info('getInquiryCarByInquiryId'+'success');
                         let fee = 0;
                         let safePrice = 0;
+                        let count = 0;
                         for(let i = 0;i<rows.length;i++){
                             fee = fee + rows[i].trans_price * rows[i].car_num;
                             safePrice = safePrice + rows[i].insure_price * rows[i].car_num;
+                            count = count + rows[i].car_num;
                         }
                         params.fee = fee;
                         params.safePrice = safePrice;
+                        params.carNum = count;
                         resolve();
                     }
                 })
             }).then(()=>{
                 new Promise((resolve,reject)=>{
-                    inquiryDAO.updateFee({inquiryId:params.inquiryId,fee:params.fee,safePrice:params.safePrice},(error,result)=>{
+                    inquiryDAO.updateFee({carNum:params.carNum,inquiryId:params.inquiryId,fee:params.fee,safePrice:params.safePrice},(error,result)=>{
                         if(error){
                             logger.error('updateFee' + error.message);
                             reject(error);

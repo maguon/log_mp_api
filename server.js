@@ -121,8 +121,7 @@ const createServer=()=>{
     /**
      inquiry_car
      */
-    server.post({path:'/api/user/:userId/inquiryCar',contentType: 'application/json'},inquiryCar.addCar);
-    server.post({path:'/api/user/:userId/inquiryCarByOrder',contentType: 'application/json'},inquiryCar.addCarByOrder);
+    server.post({path:'/api/user/:userId/inquiry/:inquiryId/inquiryCar',contentType: 'application/json'},inquiryCar.addCar);
     server.get('/api/user/:userId/inquiryCar',inquiryCar.getInquiryCarByInquiryId);
     server.get('/api/admin/:adminId/inquiryCar',inquiryCar.getInquiryCarByInquiryId);
     server.put({path:'/api/user/:userId/inquiryCar/:inquiryCarId/status/:status',contentType: 'application/json'},inquiryCar.updateStatus);

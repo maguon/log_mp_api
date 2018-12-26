@@ -1116,7 +1116,9 @@
             "description": "Invalid token value or invalid admin id"
           }
         }
-      },
+      }
+    },
+    "/user/{userId}/inquiry/{inquiryId}/inquiryCar": {
       "post": {
         "tags": [
           "inquiryCar"
@@ -1135,46 +1137,9 @@
             "type": "integer"
           },
           {
-            "name": "inquiryCar",
-            "in": "body",
-            "description": "inquiryCar",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/inquiryCar"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/inquiryCar"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/user/{userId}/inquiryCarByOrder": {
-      "post": {
-        "tags": [
-          "inquiryCar"
-        ],
-        "summary": " query by routeId look car",
-        "description": " query routeId id look car",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
+            "name": "inquiryId",
             "in": "path",
-            "description": "userId",
+            "description": "inquiryId",
             "required": true,
             "type": "integer"
           },
@@ -6678,9 +6643,6 @@
     "inquiryCar": {
       "type": "object",
       "properties": {
-        "inquiryId": {
-          "type": "integer"
-        },
         "vin": {
           "type": "string"
         },
