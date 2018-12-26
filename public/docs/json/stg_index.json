@@ -3206,55 +3206,6 @@
         }
       }
     },
-    "/user/{userId}/orderInfo": {
-      "get": {
-        "tags": [
-          "order"
-        ],
-        "summary": "inquiryManageOrder query by inquiryManageId",
-        "description": "inquiryManageOrder query by inquiryManageId",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "userId",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "orderId",
-            "in": "query",
-            "description": "orderId",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "status",
-            "in": "query",
-            "description": "status",
-            "required": false,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/orderInfo"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid user id"
-          }
-        }
-      }
-    },
     "/user/{userId}/order/{orderId}/car": {
       "post": {
         "tags": [
@@ -6782,13 +6733,16 @@
         "valuation": {
           "type": "integer"
         },
-        "oraPrice": {
+        "actTransPrice": {
           "type": "integer"
         },
         "safeStatus": {
           "type": "integer"
         },
-        "safePrice": {
+        "actInsurePrice": {
+          "type": "integer"
+        },
+        "distance": {
           "type": "integer"
         }
       },

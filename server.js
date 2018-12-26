@@ -143,7 +143,6 @@ const createServer=()=>{
     server.put({path:'/api/admin/:adminId/order/:orderId/status/:status',contentType: 'application/json'},inquiryOrder.putStatus);
     server.put({path:'/api/user/:userId/order/:orderId/cancel',contentType: 'application/json'},inquiryOrder.cancelOrder);
     server.put({path:'/api/admin/:adminId/order/:orderId/cancel',contentType: 'application/json'},inquiryOrder.cancelOrder);
-    server.get('/api/user/:userId/orderInfo',inquiryOrder.getOrder);
     server.get('/api/user/:userId/order',inquiryOrder.getOrderByUser);
     server.get('/api/admin/:adminId/order',inquiryOrder.getOrder);
     server.put({path:'/api/user/:userId/order/:orderId/orderMark',contentType: 'application/json'},inquiryOrder.putMark);
