@@ -86,6 +86,7 @@ const addInquiryOrderByAdmin = (req,res,next) => {
                 let count = 0;
                 feePrice = feePrice + rows[0].fee_price;
                 count = count + rows[0].car_num;
+                params.userId = rows[0].user_id;
                 params.feePrice = feePrice;
                 params.count = count;
                 params.serviceType = rows[0].service_type;
