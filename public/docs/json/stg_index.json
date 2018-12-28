@@ -6083,6 +6083,364 @@
         }
       }
     },
+    "/user/{userId}/order/{orderId}/payment/{paymentId}/refundApply": {
+      "post": {
+        "tags": [
+          "refundApply"
+        ],
+        "summary": "refundApply",
+        "description": "refundApply",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "paymentId",
+            "in": "path",
+            "description": "paymentId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "refundApply",
+            "in": "body",
+            "description": "refundApply",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/refundApply"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/bankRefund"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/order/{orderId}/payment/{paymentId}/refundApply": {
+      "post": {
+        "tags": [
+          "refundApply"
+        ],
+        "summary": "refundApply",
+        "description": "refundApply",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "paymentId",
+            "in": "path",
+            "description": "paymentId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "refundApply",
+            "in": "body",
+            "description": "refundApply",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/refundApply"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/bankRefund"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/refundApply": {
+      "get": {
+        "tags": [
+          "refundApply"
+        ],
+        "summary": "refundApply",
+        "description": "refundApply",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "query",
+            "description": "orderId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "paymentId",
+            "in": "query",
+            "description": "paymentId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "refundApplyId",
+            "in": "query",
+            "description": "refundApplyId",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/bankRefund"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/refundApply": {
+      "get": {
+        "tags": [
+          "refundApply"
+        ],
+        "summary": "refundApply",
+        "description": "refundApply",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "query",
+            "description": "orderId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "paymentId",
+            "in": "query",
+            "description": "paymentId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "refundApplyId",
+            "in": "query",
+            "description": "refundApplyId",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/bankRefund"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/order/{orderId}/payment/{paymentId}/refundApply/{refundApplyId}/refuseStatus": {
+      "put": {
+        "tags": [
+          "refundApply"
+        ],
+        "summary": "refundApply",
+        "description": "refundApply",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "paymentId",
+            "in": "path",
+            "description": "paymentId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "refundApplyId",
+            "in": "path",
+            "description": "refundApplyId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "refuseStatus",
+            "in": "body",
+            "description": "refuseStatus",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/refuseStatus"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/refuseStatus"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/order/{orderId}/payment/{paymentId}/refundApply/{refundApplyId}/refundStatus": {
+      "put": {
+        "tags": [
+          "refundApply"
+        ],
+        "summary": "refundApply",
+        "description": "refundApply",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "paymentId",
+            "in": "path",
+            "description": "paymentId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "refundApplyId",
+            "in": "path",
+            "description": "refundApplyId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "refundStatus",
+            "in": "body",
+            "description": "refundStatus",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/refundStatus"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/refundStatus"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
     "/admin/{adminId}/user/{userId}/order/{orderId}/wechatRefund": {
       "post": {
         "tags": [
@@ -7306,6 +7664,51 @@
       },
       "xml": {
         "name": "userAddressInfo"
+      }
+    },
+    "refundApply": {
+      "type": "object",
+      "properties": {
+        "mark": {
+          "type": "string"
+        },
+        "applyFee": {
+          "type": "integer"
+        },
+        "bank": {
+          "type": "string"
+        },
+        "bankCode": {
+          "type": "string"
+        },
+        "accountName": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "refundApply"
+      }
+    },
+    "refuseStatus": {
+      "type": "object",
+      "properties": {
+        "refuseReason": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "refuseStatus"
+      }
+    },
+    "refundStatus": {
+      "type": "object",
+      "properties": {
+        "refundFee": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "refundStatus"
       }
     }
   }

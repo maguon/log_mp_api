@@ -33,7 +33,35 @@ const getRefundApply = (req,res,next)=>{
         }
     });
 }
+const updateRefuseStatus = (req,res,next)=>{
+    let params = req.params;
+    refundApplyDAO.updateRefuseStatus(params,(error,result)=>{
+        if(error){
+            logger.error('updateRefuseStatus' + error.message);
+            resUtil.resInternalError(error, res, next);
+        }else{
+            logger.info('updateRefuseStatus' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    });
+}
+const updateRefundStatus = (req,res,next)=>{
+    let params = req.params;
+    refundApplyDAO.updateRefundStatus(params,(error,result)=>{
+        if(error){
+            logger.error('updateRefundStatus' + error.message);
+            resUtil.resInternalError(error, res, next);
+        }else{
+            logger.info('updateRefundStatus' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    });
+}
 module.exports = {
     addRefundApply,
-    getRefundApply
+    getRefundApply,
+    updateRefuseStatus,
+    updateRefundStatus
 }
