@@ -5550,7 +5550,7 @@
         }
       }
     },
-    "/admin/{adminId}/paymentPrice": {
+    "/admin/{adminId}/paymentStat": {
       "get": {
         "tags": [
           "payment"
@@ -5977,6 +5977,57 @@
           },
           "400": {
             "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/order/{orderId}/bankPayment": {
+      "post": {
+        "tags": [
+          "payment"
+        ],
+        "summary": "put address",
+        "description": "put address",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "bankPayment",
+            "in": "body",
+            "description": "bankPayment",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/bankPayment"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/bankPayment"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
           }
         }
       }
@@ -7031,6 +7082,9 @@
         },
         "accountName": {
           "type": "string"
+        },
+        "totalFee": {
+          "type": "integer"
         }
       },
       "xml": {

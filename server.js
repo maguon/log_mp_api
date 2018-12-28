@@ -246,7 +246,7 @@ const createServer=()=>{
      * payment_info
      */
     server.get('/api/user/:userId/payment' ,payment.getPayment);
-    server.get('/api/admin/:adminId/paymentPrice' ,payment.getPaymentPrice);
+    server.get('/api/admin/:adminId/paymentStat' ,payment.getPaymentPrice);
     server.get('/api/admin/:adminId/payment' ,payment.getPayment);
     server.get('/api/admin/:adminId/paymentRefund' ,payment.getRefundByPaymentId);
     server.post({path:'/api/user/:userId/order/:orderId/wechatPayment',contentType: 'application/json'},payment.addWechatPayment);
@@ -255,6 +255,7 @@ const createServer=()=>{
     server.post({path:'/api/wechatRefund',contentType: 'text/xml'},payment.addWechatRefund);
     server.put({path:'/api/admin/:adminId/payment/:paymentId/paymentRemark',contentType: 'application/json'},payment.updateRemark);
     server.post({path:'/api/user/:userId/order/:orderId/bankPayment',contentType: 'application/json'},payment.addBankPayment);
+    server.post({path:'/api/admin/:adminId/order/:orderId/bankPayment',contentType: 'application/json'},payment.addBankPaymentByadmin);
     server.post({path:'/api/admin/:adminId/order/:orderId/bankRefund',contentType: 'application/json'},payment.addBankRefund);
     server.put({path:'/api/admin/:adminId/payment/:paymentId/bankStatus/:status',contentType: 'application/json'},payment.updateBankStatus);
     server.put({path:'/api/user/:userId/payment/:paymentId/RefundRemark',contentType: 'application/json'},payment.updateRefundRemark);

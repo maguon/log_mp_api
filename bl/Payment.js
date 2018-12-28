@@ -466,7 +466,6 @@ const addBankPayment = (req,res,next) => {
             }else{
                 logger.info('getOrder'+'success');
                 params.orderId = rows[0].id;
-                params.totalFee = rows[0].fee_price;
                 params.paymentType = 2;
                 params.type = 1
                 resolve();
@@ -480,6 +479,44 @@ const addBankPayment = (req,res,next) => {
                     reject(error);
                 }else{
                     logger.info('addBankPayment' + 'success');
+                    resUtil.resetCreateRes(res,result,null);
+                    return next();
+                }
+            })
+        })
+    }).catch((error)=>{
+        resUtil.resInternalError(error,res,next);
+    })
+}
+const addBankPaymentByadmin = (req,res,next) => {
+    let params = req.params;
+    let myDate = new Date();
+    params.dateId = moment(myDate).format('YYYYMMDD');
+    new Promise((resolve,reject)=>{
+        orderDAO.getOrder({orderId:params.orderId},(error,rows)=>{
+            if(error){
+                logger.error('getOrder' + error.message);
+                reject(error);
+            }else if(rows && rows.length < 1){
+                logger.warn('getOrder'+'查无此订单');
+                resUtil.resetFailedRes(res,'查无此订单',null);
+            }else{
+                logger.info('getOrder'+'success');
+                params.orderId = rows[0].id;
+                params.userId = rows[0].user_id;
+                params.paymentType = 2;
+                params.type = 1
+                resolve();
+            }
+        })
+    }).then(()=>{
+        new Promise((resolve,reject)=>{
+            paymentDAO.addBankPaymentByadmin(params,(error,result)=>{
+                if(error){
+                    logger.error('addBankPaymentByadmin' + error.message);
+                    reject(error);
+                }else{
+                    logger.info('addBankPaymentByadmin' + 'success');
                     resUtil.resetCreateRes(res,result,null);
                     return next();
                 }
@@ -568,5 +605,6 @@ module.exports = {
     updateBankStatus,
     addBankRefund,
     updateRefundRemark,
-    getPaymentPrice
+    getPaymentPrice,
+    addBankPaymentByadmin
 }
