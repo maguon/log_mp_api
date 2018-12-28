@@ -27,6 +27,7 @@ const addressContact = require('./bl/AddressContact.js');
 const transAndInsurePrice = require('./bl/TransAndInsurePrice.js');
 const orderItem = require('./bl/OrderItem.js');
 const userAddress = require('./bl/UserAddress.js');
+const refundApply = require('./bl/RefundApply.js');
 //const email = require('./bl/Email.js');
 
 
@@ -259,6 +260,13 @@ const createServer=()=>{
     server.post({path:'/api/admin/:adminId/order/:orderId/bankRefund',contentType: 'application/json'},payment.addBankRefund);
     server.put({path:'/api/admin/:adminId/payment/:paymentId/bankStatus/:status',contentType: 'application/json'},payment.updateBankStatus);
     server.put({path:'/api/user/:userId/payment/:paymentId/RefundRemark',contentType: 'application/json'},payment.updateRefundRemark);
+    /**
+     * refund_apply
+     */
+    server.post({path:'/api/user/:userId/order/:orderId/payment/:paymentId/refundApply',contentType: 'application/json'},refundApply.addRefundApply);
+    server.post({path:'/api/admin/:adminId/order/:orderId/payment/:paymentId/refundApply',contentType: 'application/json'},refundApply.addRefundApply);
+    server.get('/api/user/:userId/refundApply' ,refundApply.getRefundApply);
+    server.get('/api/admin/:adminId/refundApply' ,refundApply.getRefundApply);
     /**
      * sendPswdSms
      */
