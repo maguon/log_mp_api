@@ -59,9 +59,23 @@ const updateRefundStatus = (req,res,next)=>{
         }
     });
 }
+const getRefundApplyStat = (req,res,next)=>{
+    let params = req.params;
+    refundApplyDAO.getRefundApplyStat(params,(error,result)=>{
+        if(error){
+            logger.error('getRefundApplyStat' + error.message);
+            resUtil.resInternalError(error, res, next);
+        }else{
+            logger.info('getRefundApplyStat' + 'success');
+            resUtil.resetQueryRes(res,result,null);
+            return next();
+        }
+    });
+}
 module.exports = {
     addRefundApply,
     getRefundApply,
     updateRefuseStatus,
-    updateRefundStatus
+    updateRefundStatus,
+    getRefundApplyStat
 }

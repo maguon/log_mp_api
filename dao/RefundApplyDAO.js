@@ -65,9 +65,33 @@ const updateRefundStatus = (params,callback) => {
         callback(error,rows);
     })
 }
+const getRefundApplyStat = (params,callback) => {
+    let query = " select pt.id as pt_type,p.bank,p.bank_code,p.account_name,sum(p.total_fee) as total_fee from payment_type pt " +
+                " left join payment_info p on pt.id=p.type " +
+                " where pt.id is not null ";
+    let paramsArray = [],i=0;
+    if(params.orderId){
+        paramsArray[i++] = params.orderId;
+        query = query + " and p.order_id = ?"
+    }
+    if(params.refundApplyId){
+        paramsArray[i++] = params.refundApplyId;
+        query = query + " and p.id = ?"
+    }
+    if(params.status){
+        paramsArray[i] = params.status;
+        query = query + " and p.status = ?"
+    }
+    query = query + " group by pt.id,p.id ";
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('getRefundApplyStat');
+        callback(error,rows)
+    })
+}
 module.exports = {
     addRefundApply,
     getRefundApply,
     updateRefuseStatus,
-    updateRefundStatus
+    updateRefundStatus,
+    getRefundApplyStat
 }

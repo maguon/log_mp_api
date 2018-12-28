@@ -6311,6 +6311,62 @@
         }
       }
     },
+    "/admin/{adminId}/refundApplyStat": {
+      "get": {
+        "tags": [
+          "refundApply"
+        ],
+        "summary": "refundApply",
+        "description": "refundApply",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "query",
+            "description": "orderId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "paymentId",
+            "in": "query",
+            "description": "paymentId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "refundApplyId",
+            "in": "query",
+            "description": "refundApplyId",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/bankRefund"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
     "/admin/{adminId}/order/{orderId}/payment/{paymentId}/refundApply/{refundApplyId}/refuseStatus": {
       "put": {
         "tags": [
