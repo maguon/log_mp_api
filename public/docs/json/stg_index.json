@@ -6032,7 +6032,7 @@
         }
       }
     },
-    "/admin/{adminId}/order/{orderId}/bankRefund": {
+    "/admin/{adminId}/order/{orderId}/payment/{paymentId}/bankRefund": {
       "post": {
         "tags": [
           "payment"
@@ -6054,6 +6054,13 @@
             "name": "orderId",
             "in": "path",
             "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "paymentId",
+            "in": "path",
+            "description": "paymentId",
             "required": true,
             "type": "integer"
           },

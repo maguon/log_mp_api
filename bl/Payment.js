@@ -543,6 +543,7 @@ const addBankRefund = (req,res,next) => {
     let params = req.params;
     let myDate = new Date();
     params.dateId = moment(myDate).format('YYYYMMDD');
+    new Promise()
     new Promise((resolve,reject)=>{
         paymentDAO.getPayment({orderId:params.orderId,type:1},(error,rows)=>{
             if(error){
