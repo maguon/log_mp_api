@@ -35,15 +35,31 @@ const addAddress = (req,res,next) => {
 }
 const updateStatus = (req,res,next) => {
     let params = req.params;
-    userAddressDAO.updateStatus(params,(error,result)=>{
-        if(error){
-            logger.error('updateStatus' + error.message);
-            resUtil.resInternalError(error,res,next);
-        }else{
-            logger.info('updateStatus' + 'success');
-            resUtil.resetUpdateRes(res,result,null);
-            return next();
-        }
+    new Promise((resolve,reject)=>{
+        userAddressDAO.updateStatusByUserId(params,(error,result)=>{
+            if(error){
+                logger.error('updateStatusByUserId' + error.message);
+                reject(error);
+            }else{
+                logger.info('updateStatusByUserId' + 'success');
+                resolve();
+            }
+        })
+    }).then(()=>{
+        new Promise((resolve,reject)=>{
+            userAddressDAO.updateStatus(params,(error,result)=>{
+                if(error){
+                    logger.error('updateStatus' + error.message);
+                    reject(error);
+                }else{
+                    logger.info('updateStatus' + 'success');
+                    resUtil.resetUpdateRes(res,result,null);
+                    return next();
+                }
+            })
+        })
+    }).catch((error)=>{
+        resUtil.resInternalError(error,res,next);
     })
 }
 const updateAddress = (req,res,next) => {

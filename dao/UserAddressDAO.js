@@ -73,10 +73,20 @@ const delAddress = (params,callback) => {
         callback(error,rows)
     })
 }
+const updateStatusByUserId = (params,callback) => {
+    let query = " update user_address set status = 0 where user_id = ?";
+    let paramsArray = [],i=0;
+    paramsArray[i] = params.userId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('updateStatusByUserId');
+        callback(error,rows)
+    })
+}
 module.exports = {
     addAddress,
     getAddress,
     updateStatus,
     updateAddress,
-    delAddress
+    delAddress,
+    updateStatusByUserId
 }
