@@ -29,7 +29,11 @@ const getAddress = (params,callback) => {
     }
     if(params.addressId){
         query = query + " and id = ? ";
-        paramsArray[i] = params.addressId;
+        paramsArray[i++] = params.addressId;
+    }
+    if(params.type){
+        query = query + " and type = ? ";
+        paramsArray[i] = params.type;
     }
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('getAddress');
