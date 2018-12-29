@@ -543,9 +543,8 @@ const addBankRefund = (req,res,next) => {
     let params = req.params;
     let myDate = new Date();
     params.dateId = moment(myDate).format('YYYYMMDD');
-    new Promise()
     new Promise((resolve,reject)=>{
-        paymentDAO.getPayment({orderId:params.orderId,type:1},(error,rows)=>{
+        paymentDAO.getPayment(params,(error,rows)=>{
             if(error){
                 logger.error('getPayment' + error.message);
                 reject(error);
@@ -554,27 +553,63 @@ const addBankRefund = (req,res,next) => {
                 resUtil.resetFailedRes(res,'查无此信息',null);
             }else{
                 logger.info('getPayment'+'success');
-                params.userId = rows[0].user_id;
-                params.bank = rows[0].bank;
-                params.bankCode = rows[0].bank_code;
-                params.accountName = rows[0].account_name;
-                params.paymentType = 2;
-                params.type = 0;
-                params.pId = rows[0].id;
+                params.allFee = rows[0].total_fee;
                 resolve();
             }
         })
     }).then(()=>{
         new Promise((resolve,reject)=>{
-            paymentDAO.addBankRefund(params,(error,result)=>{
+            paymentDAO.getAllRefund(params,(error,rows)=>{
                 if(error){
-                    logger.error('addBankRefund' + error.message);
+                    logger.error('getAllRefund' + error.message);
                     reject(error);
+                }else if(rows && rows.length < 1){
+                    logger.warn('getAllRefund'+'查无此信息');
+                    resUtil.resetFailedRes(res,'查无此信息',null);
                 }else{
-                    logger.info('addBankRefund'+'success');
-                    resUtil.resetCreateRes(res,result,null);
-                    return next();
+                    logger.info('getAllRefund'+'success');
+                    params.allRefundFee = rows[0].refund_fee;
+                    if(params.allFee + params.allRefundFee <= 0 && params.allRefundFee){
+                        resUtil.resetFailedRes(res,'已经退款完成',null);
+                        return next();
+                    }
+                    resolve();
                 }
+            })
+        }).then(()=>{
+            new Promise((resolve,reject)=>{
+                paymentDAO.getPayment({orderId:params.orderId,type:1},(error,rows)=>{
+                    if(error){
+                        logger.error('getPayment' + error.message);
+                        reject(error);
+                    }else if(rows && rows.length < 1){
+                        logger.warn('getPayment'+'查无此信息');
+                        resUtil.resetFailedRes(res,'查无此信息',null);
+                    }else{
+                        logger.info('getPayment'+'success');
+                        params.userId = rows[0].user_id;
+                        params.bank = rows[0].bank;
+                        params.bankCode = rows[0].bank_code;
+                        params.accountName = rows[0].account_name;
+                        params.paymentType = 2;
+                        params.type = 0;
+                        params.pId = rows[0].id;
+                        resolve();
+                    }
+                })
+            }).then(()=>{
+                new Promise((resolve,reject)=>{
+                    paymentDAO.addBankRefund(params,(error,result)=>{
+                        if(error){
+                            logger.error('addBankRefund' + error.message);
+                            reject(error);
+                        }else{
+                            logger.info('addBankRefund'+'success');
+                            resUtil.resetCreateRes(res,result,null);
+                            return next();
+                        }
+                    })
+                })
             })
         })
     }).catch((error)=>{

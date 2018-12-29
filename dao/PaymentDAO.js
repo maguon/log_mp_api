@@ -339,6 +339,60 @@ const updateRefundRemark = (params,callback) => {
         callback(error,rows);
     })
 }
+const getAllRefund = (params,callback) => {
+    let query = " select sum(total_fee) as refund_fee from payment_info where id is not null ";
+    let paramsArray = [],i=0;
+    if(params.userId){
+        paramsArray[i++] = params.userId;
+        query = query + " and user_id = ? ";
+    }
+    if(params.orderId){
+        paramsArray[i++] = params.orderId;
+        query = query + " and order_id =? ";
+    }
+    if(params.phone){
+        paramsArray[i++] = params.phone;
+        query = query + " and phone =? ";
+    }
+    if(params.userName){
+        paramsArray[i++] = params.userName;
+        query = query + " and user_name =? ";
+    }
+    if(params.type){
+        paramsArray[i++] = params.type;
+        query = query + " and type =? ";
+    }
+    if(params.status){
+        paramsArray[i++] = params.status;
+        query = query + " and status =? ";
+    }
+    if(params.paymentType){
+        paramsArray[i++] = params.paymentType;
+        query = query + " and payment_type =? ";
+    }
+    if(params.paymentId){
+        paramsArray[i++] = params.paymentId;
+        query = query + " and p_id =? ";
+    }
+    if(params.createdOnStart){
+        paramsArray[i++] = params.createdOnStart+" 00:00:00";
+        query = query + " and created_on >=? ";
+    }
+    if(params.createdOnEnd){
+        paramsArray[i++] = params.createdOnEnd+" 23:59:59";
+        query = query + " and created_on <=? ";
+    }
+    query = query + " order by created_on desc";
+    if(params.start && params.size){
+        paramsArray[i++] = parseInt(params.start);
+        paramsArray[i] = parseInt(params.size);
+        query = query + " limit ?,? ";
+    }
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('getAllRefund');
+        callback(error,rows)
+    })
+}
 module.exports = {
     getPayment,
     addPayment,
@@ -356,5 +410,6 @@ module.exports = {
     addBankRefund,
     updateRefundRemark,
     getPaymentPrice,
-    addBankPaymentByadmin
+    addBankPaymentByadmin,
+    getAllRefund
 }
