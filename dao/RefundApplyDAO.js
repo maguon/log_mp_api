@@ -22,23 +22,25 @@ const addRefundApply = (params,callback) => {
     })
 }
 const getRefundApply = (params,callback) => {
-    let query = " select * from refund_apply where id is not null";
+    let query = " select pi.total_fee, ra.* from refund_apply ra" +
+                " left join payment_info pi on pi.id=ra.payment_id " +
+                " where ra.id is not null";
     let paramsArray = [],i=0;
     if(params.userId){
         paramsArray[i++] = params.userId;
-        query = query + " and user_id = ?"
+        query = query + " and ra.user_id = ?"
     }
     if(params.orderId){
         paramsArray[i++] = params.orderId;
-        query = query + " and order_id = ?"
+        query = query + " and ra.order_id = ?"
     }
     if(params.refundApplyId){
         paramsArray[i++] = params.refundApplyId;
-        query = query + " and id = ?"
+        query = query + " and ra.id = ?"
     }
     if(params.status){
         paramsArray[i] = params.status;
-        query = query + " and status = ?"
+        query = query + " and ra.status = ?"
     }
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('getRefundApply');
