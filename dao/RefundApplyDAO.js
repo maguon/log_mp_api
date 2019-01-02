@@ -7,15 +7,12 @@ const httpUtil = require('../util/HttpUtil');
 const db = require('../db/connection/MysqlDb.js');
 
 const addRefundApply = (params,callback) => {
-    let query = " insert into refund_apply(order_id,payment_id,mark,apply_fee,bank,bank_code,account_name) values(?,?,?,?,?,?,?) ";
+    let query = " insert into refund_apply(order_id,payment_id,remark,apply_fee) values(?,?,?,?) ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.orderId;
     paramsArray[i++] = params.paymentId;
     paramsArray[i++] = params.mark;
-    paramsArray[i++] = params.applyFee;
-    paramsArray[i++] = params.bank;
-    paramsArray[i++] = params.bankCode;
-    paramsArray[i] = params.accountName;
+    paramsArray[i] = params.applyFee;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('addRefundApply');
         callback(error,rows);
@@ -90,10 +87,32 @@ const getRefundApplyStat = (params,callback) => {
         callback(error,rows)
     })
 }
+
+const updateRefundById = (params,callback) => {
+    let paramsArray = [],i=0;
+    let query = " update refund_apply set apply_fee = ?";
+    if (params.mark){
+        query += " ,remark = ?";
+    }
+    query += " where order_id = ? and payment_id = ? and id = ?";
+    paramsArray[i++] = params.applyFee;
+    if (params.mark){
+        paramsArray[i++] = params.mark;
+    }
+    paramsArray[i++] = params.orderId;
+    paramsArray[i++] = params.paymentId;
+    paramsArray[i] = params.refundId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('updateRefundById');
+        callback(error,rows);
+    })
+}
+
 module.exports = {
     addRefundApply,
     getRefundApply,
     updateRefuseStatus,
     updateRefundStatus,
-    getRefundApplyStat
+    getRefundApplyStat,
+    updateRefundById
 }

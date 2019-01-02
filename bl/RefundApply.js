@@ -72,10 +72,25 @@ const getRefundApplyStat = (req,res,next)=>{
         }
     });
 }
+
+const updateRefundById = (req,res,next)=>{
+    let params = req.params;
+    refundApplyDAO.updateRefundById(params,(error,result)=>{
+        if(error){
+            logger.error('updateRefundById' + error.message);
+            resUtil.resInternalError(error, res, next);
+        }else{
+            logger.info('updateRefundById' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    });
+}
 module.exports = {
     addRefundApply,
     getRefundApply,
     updateRefuseStatus,
     updateRefundStatus,
-    getRefundApplyStat
+    getRefundApplyStat,
+    updateRefundById
 }

@@ -271,6 +271,7 @@ const createServer=()=>{
     server.get('/api/admin/:adminId/refundApplyStat' ,refundApply.getRefundApplyStat);
     server.put({path:'/api/admin/:adminId/order/:orderId/payment/:paymentId/refundApply/:refundApplyId/refuseStatus',contentType: 'application/json'},refundApply.updateRefuseStatus);
     server.put({path:'/api/admin/:adminId/order/:orderId/payment/:paymentId/refundApply/:refundApplyId/refundStatus',contentType: 'application/json'},refundApply.updateRefundStatus);
+    server.put({path:'/api/admin/:adminId/order/:orderId/payment/:paymentId/refundApply/:refundId',contentType: 'application/json'},refundApply.updateRefundById);
     /**
      * sendPswdSms
      */
