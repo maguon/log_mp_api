@@ -86,11 +86,25 @@ const updateRefundById = (req,res,next)=>{
         }
     });
 }
+const deleteById = (req,res,next)=>{
+    let params = req.params;
+    refundApplyDAO.deleteById(params,(error,result)=>{
+        if(error){
+            logger.error('deleteRefundApply:' + error.message);
+            resUtil.resInternalError(error, res, next);
+        }else{
+            logger.info('deleteRefundApply:' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    });
+}
 module.exports = {
     addRefundApply,
     getRefundApply,
     updateRefuseStatus,
     updateRefundStatus,
     getRefundApplyStat,
-    updateRefundById
+    updateRefundById,
+    deleteById
 }

@@ -272,6 +272,7 @@ const createServer=()=>{
     server.put({path:'/api/admin/:adminId/order/:orderId/payment/:paymentId/refundApply/:refundApplyId/refuseStatus',contentType: 'application/json'},refundApply.updateRefuseStatus);
     server.put({path:'/api/admin/:adminId/order/:orderId/payment/:paymentId/refundApply/:refundApplyId/refundStatus',contentType: 'application/json'},refundApply.updateRefundStatus);
     server.put({path:'/api/admin/:adminId/order/:orderId/payment/:paymentId/refundApply/:refundId',contentType: 'application/json'},refundApply.updateRefundById);
+    server.del({path:'/api/admin/:adminId/order/:orderId/payment/:paymentId/deleteRefundApply/:refundApplyId',contentType: 'application/json'},refundApply.deleteById);
     /**
      * sendPswdSms
      */
