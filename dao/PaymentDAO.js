@@ -35,9 +35,17 @@ const getPayment = (params,callback) => {
                 +" left join admin_user on user_order.admin_id = admin_user.id"
                 +" where payment_info.id is not null";
     let paramsArray = [],i=0;
+    if(params.adminId){
+        paramsArray[i++] = params.adminId;
+        query = query + " and payment_info.admin_id = ? ";
+    }
     if(params.userId){
         paramsArray[i++] = params.userId;
         query = query + " and payment_info.user_id = ? ";
+    }
+    if(params.orderId){
+        paramsArray[i++] = params.orderId;
+        query = query + " and payment_info.order_id = ? ";
     }
     if(params.paymentId){
         paramsArray[i++] = params.paymentId;
@@ -71,46 +79,7 @@ const getPayment = (params,callback) => {
         paramsArray[i++] = params.createdOnEnd;
         query = query + " and date_format(payment_info.created_on,'%Y-%m-%d') <= ? ";
     }
-    if(params.orderId){
-        paramsArray[i++] = params.orderId;
-        query = query + " and order_id =? ";
-    }
-    if(params.phone){
-        paramsArray[i++] = params.phone;
-        query = query + " and phone =? ";
-    }
-    if(params.userName){
-        paramsArray[i++] = params.userName;
-        query = query + " and user_name =? ";
-    }
-    if(params.type){
-        paramsArray[i++] = params.type;
-        query = query + " and type =? ";
-    }
-    if(params.status){
-        paramsArray[i++] = params.status;
-        query = query + " and status =? ";
-    }
-    if(params.paymentType){
-        paramsArray[i++] = params.paymentType;
-        query = query + " and payment_type =? ";
-    }
-    if(params.pId){
-        paramsArray[i++] = params.pId;
-        query = query + " and p_id =? ";
-    }
-    if(params.createdOnStart){
-        paramsArray[i++] = params.createdOnStart+" 00:00:00";
-        query = query + " and created_on >=? ";
-    }
-    if(params.createdOnEnd){
-        paramsArray[i++] = params.createdOnEnd+" 23:59:59";
-        query = query + " and created_on <=? ";
-    }
-    if(params.paymentId){
-        paramsArray[i++] = params.paymentId;
-        query = query + " and id =? ";
-    }
+
     query = query + " order by created_on desc";
     if(params.start && params.size){
         paramsArray[i++] = parseInt(params.start);
