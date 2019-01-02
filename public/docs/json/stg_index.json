@@ -5702,18 +5702,18 @@
             "type": "integer"
           },
           {
-            "name": "phone",
+            "name": "paymentId",
             "in": "query",
-            "description": "phone",
+            "description": "paymentId",
             "required": false,
-            "type": "string"
+            "type": "integer"
           },
           {
-            "name": "userName",
+            "name": "paymentType",
             "in": "query",
-            "description": "userName",
+            "description": "payment_type 1微信支付2··",
             "required": false,
-            "type": "string"
+            "type": "integer"
           },
           {
             "name": "type",
@@ -5730,33 +5730,41 @@
             "type": "integer"
           },
           {
-            "name": "paymentType",
+            "name": "createOrderUser",
             "in": "query",
-            "description": "payment_type 1微信支付2··",
+            "description": "订单创建人",
             "required": false,
-            "type": "integer"
+            "type": "string"
+          },
+          {
+            "name": "bank",
+            "in": "query",
+            "description": "bank",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "accountUser",
+            "in": "query",
+            "description": "accountUser",
+            "required": false,
+            "type": "string"
           },
           {
             "name": "createdOnStart",
             "in": "query",
-            "description": "createdOnStart",
+            "description": "格式：2018-09-23",
             "required": false,
-            "type": "integer"
+            "type": "string"
           },
           {
             "name": "createdOnEnd",
             "in": "query",
-            "description": "createdOnEnd",
+            "description": "格式：2018-09-23",
             "required": false,
-            "type": "integer"
+            "type": "string"
           },
-          {
-            "name": "paymentId",
-            "in": "query",
-            "description": "paymentId",
-            "required": false,
-            "type": "integer"
-          },
+
           {
             "name": "start",
             "in": "query",
