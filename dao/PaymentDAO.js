@@ -30,11 +30,46 @@ const getPaymentPrice = (params,callback) => {
     })
 }
 const getPayment = (params,callback) => {
-    let query = " select * from payment_info where id is not null ";
+    let query = " select admin_user.real_name createOrderUser,payment_info.* from payment_info"
+                +" left join user_order on payment_info.order_id = user_order.id"
+                +" left join admin_user on user_order.admin_id = admin_user.id"
+                +" where payment_info.id is not null";
     let paramsArray = [],i=0;
     if(params.userId){
         paramsArray[i++] = params.userId;
-        query = query + " and user_id = ? ";
+        query = query + " and payment_info.user_id = ? ";
+    }
+    if(params.paymentId){
+        paramsArray[i++] = params.paymentId;
+        query = query + " and payment_info.id = ? ";
+    }
+    if(params.paymentType){
+        paramsArray[i++] = params.paymentType;
+        query = query + " and payment_info.type = ? ";
+    }
+    if(params.status){
+        paramsArray[i++] = params.status;
+        query = query + " and payment_info.status = ? ";
+    }
+    if(params.createOrderUser){
+        paramsArray[i++] = params.createOrderUser;
+        query = query + " and admin_user.real_name = ? ";
+    }
+    if(params.bank){
+        paramsArray[i++] = params.bank;
+        query = query + " and payment_info.bank = ? ";
+    }
+    if(params.accountUser){
+        paramsArray[i++] = params.accountUser;
+        query = query + " and payment_info.account_name = ? ";
+    }
+    if(params.createdOnStart){
+        paramsArray[i++] = params.createdOnStart;
+        query = query + " and date_format(payment_info.created_on,'%Y-%m-%d') >= ? ";
+    }
+    if(params.createdOnEnd){
+        paramsArray[i++] = params.createdOnEnd;
+        query = query + " and date_format(payment_info.created_on,'%Y-%m-%d') <= ? ";
     }
     if(params.orderId){
         paramsArray[i++] = params.orderId;
