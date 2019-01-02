@@ -7868,6 +7868,15 @@
         },
         "applyFee": {
           "type": "integer"
+        },
+        "bank": {
+          "type": "string"
+        },
+        "bankCode": {
+          "type": "string"
+        },
+        "accountName": {
+          "type": "string"
         }
       },
       "xml": {
