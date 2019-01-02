@@ -403,6 +403,23 @@ const getAllRefund = (params,callback) => {
         callback(error,rows)
     })
 }
+const updatePaymentByadmin=(params,callback)=>{
+    let paramsArray = [],i=0;
+    let query = " update payment_info set remark = ? ,bank = ? , bank_code = ? , account_name = ? ,total_fee = ? where id = ? and admin_id = ? and order_id = ?";
+    paramsArray[i++] = params.remark;
+    paramsArray[i++] = params.bank;
+    paramsArray[i++] = params.bankCode;
+    paramsArray[i++] = params.accountName;
+    paramsArray[i++] = params.totalFee;
+    paramsArray[i++] = params.paymentId;
+    paramsArray[i++] = params.adminId;
+    paramsArray[i] = params.orderId;
+
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('updatePaymentByadmin');
+        callback(error,rows);
+    })
+}
 module.exports = {
     getPayment,
     addPayment,
@@ -421,5 +438,6 @@ module.exports = {
     updateRefundRemark,
     getPaymentPrice,
     addBankPaymentByadmin,
-    getAllRefund
+    getAllRefund,
+    updatePaymentByadmin
 }

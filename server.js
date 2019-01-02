@@ -260,6 +260,7 @@ const createServer=()=>{
     server.post({path:'/api/admin/:adminId/order/:orderId/payment/:paymentId/bankRefund',contentType: 'application/json'},payment.addBankRefund);
     server.put({path:'/api/admin/:adminId/payment/:paymentId/bankStatus/:status',contentType: 'application/json'},payment.updateBankStatus);
     server.put({path:'/api/user/:userId/payment/:paymentId/RefundRemark',contentType: 'application/json'},payment.updateRefundRemark);
+    server.put({path:'/api/admin/:adminId/order/:orderId/bankPayment/:paymentId',contentType: 'application/json'},payment.updatePaymentById);
     /**
      * refund_apply
      */

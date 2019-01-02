@@ -629,6 +629,43 @@ const updateRefundRemark = (req,res,next)=>{
         }
     });
 }
+const updatePaymentById = (req,res,next) => {
+    let params = req.params;
+    let myDate = new Date();
+    params.dateId = moment(myDate).format('YYYYMMDD');
+    new Promise((resolve,reject)=>{
+        orderDAO.getOrder({orderId:params.orderId},(error,rows)=>{
+            if(error){
+                logger.error('getOrder' + error.message);
+                reject(error);
+            }else if(rows && rows.length < 1){
+                logger.warn('getOrder'+'查无此订单');
+                resUtil.resetFailedRes(res,'查无此订单',null);
+            }else{
+                logger.info('getOrder'+'success');
+                params.orderId = rows[0].id;
+                params.adminId = rows[0].admin_id;
+                resolve();
+            }
+        })
+    }).then(()=>{
+        new Promise((resolve,reject)=>{
+            paymentDAO.updatePaymentByadmin(params,(error,result)=>{
+                if(error){
+                    logger.error('updatePaymentByadmin:' + error.message);
+                    reject(error);
+                }else{
+                    logger.info('updatePaymentByadmin:' + 'success');
+                    resUtil.resetUpdateRes(res,result,null);
+                    return next();
+                }
+            })
+        })
+    }).catch((error)=>{
+        resUtil.resInternalError(error,res,next);
+    })
+}
+
 module.exports = {
     addWechatPayment,
     updateWechatPayment,
@@ -642,5 +679,6 @@ module.exports = {
     addBankRefund,
     updateRefundRemark,
     getPaymentPrice,
-    addBankPaymentByadmin
+    addBankPaymentByadmin,
+    updatePaymentById
 }
