@@ -97,13 +97,14 @@ const updateRefundById = (params,callback) => {
     if (params.mark){
         query += " ,remark = ?";
     }
-    query += " where order_id = ? and payment_id = ? and id = ?";
+    query += " ,payment_id = ?"
+    query += " where order_id = ? and and id = ?";
     paramsArray[i++] = params.applyFee;
     if (params.mark){
         paramsArray[i++] = params.mark;
     }
-    paramsArray[i++] = params.orderId;
     paramsArray[i++] = params.paymentId;
+    paramsArray[i++] = params.orderId;
     paramsArray[i] = params.refundId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('updateRefundById');
