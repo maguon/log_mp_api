@@ -503,7 +503,7 @@ const addBankPaymentByadmin = (req,res,next) => {
             }else{
                 logger.info('getOrder'+'success');
                 params.orderId = rows[0].id;
-                params.userId = rows[0].user_id;
+                params.adminId = rows[0].admin_id;
                 params.paymentType = 2;
                 params.type = 1
                 resolve();

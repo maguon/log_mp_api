@@ -287,9 +287,9 @@ const addBankPayment = (params,callback) => {
     })
 }
 const addBankPaymentByadmin = (params,callback) => {
-    let query = " insert into payment_info(user_id,order_id,total_fee,remark,date_id,payment_type,type,bank,bank_code,account_name) values(?,?,?,?,?,?,?,?,?,?)";
+    let query = " insert into payment_info(admin_id,order_id,total_fee,remark,date_id,payment_type,type,bank,bank_code,account_name) values(?,?,?,?,?,?,?,?,?,?)";
     let paramsArray = [],i=0;
-    paramsArray[i++] = params.userId;
+    paramsArray[i++] = params.adminId;
     paramsArray[i++] = params.orderId;
     paramsArray[i++] = params.totalFee;
     paramsArray[i++] = params.remark;
