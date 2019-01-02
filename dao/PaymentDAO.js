@@ -53,8 +53,14 @@ const getPayment = (params,callback) => {
     }
     if(params.paymentType){
         paramsArray[i++] = params.paymentType;
+        query = query + " and payment_info.payment_type = ? ";
+    }
+
+    if(params.type){
+        paramsArray[i++] = params.type;
         query = query + " and payment_info.type = ? ";
     }
+
     if(params.status){
         paramsArray[i++] = params.status;
         query = query + " and payment_info.status = ? ";
