@@ -6057,18 +6057,13 @@
             "type": "integer"
           },
           {
-            "name": "totalFee",
-            "in": "query",
-            "description": "totalFee",
+            "name": "paymentReview",
+            "in": "body",
+            "description": "paymentReview",
             "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "status",
-            "in": "query",
-            "description": "status",
-            "required": true,
-            "type": "integer"
+            "schema": {
+              "$ref": "#/definitions/paymentReview"
+            }
           }
         ],
         "responses": {
@@ -8108,6 +8103,19 @@
       },
       "xml": {
         "name": "refundStatus"
+      }
+    },
+    "paymentReview": {
+      "type": "object",
+      "properties": {
+        "totalFee": {
+          "type": "integer"
+        },"status": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "paymentReview"
       }
     }
   }
