@@ -97,13 +97,16 @@ const updateRefundById = (params,callback) => {
     if (params.mark){
         query += " ,remark = ?";
     }
-    query += " ,payment_id = ?"
-    query += " where order_id = ? and and id = ?";
+    query += " ,payment_id = ? ,bank = ? ,bank_code = ? ,account_name = ?";
+    query += " where order_id = ? and id = ?";
     paramsArray[i++] = params.applyFee;
     if (params.mark){
         paramsArray[i++] = params.mark;
     }
     paramsArray[i++] = params.paymentId;
+    paramsArray[i++] = params.bank;
+    paramsArray[i++] = params.bankCode;
+    paramsArray[i++] = params.accountName;
     paramsArray[i++] = params.orderId;
     paramsArray[i] = params.refundId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
