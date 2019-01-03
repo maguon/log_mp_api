@@ -48,7 +48,7 @@
       "description": "orderItem of log api"
     },
     {
-      "name": "Invoice",
+      "name": "invoice",
       "description": "Invoice of log api"
     },
     {
@@ -2051,7 +2051,7 @@
     "/admin/{adminId}/invoice": {
       "get": {
         "tags": [
-          "Invoice"
+          "invoice"
         ],
         "summary": " query by user id look invoice",
         "description": " query by user id look invoice",
@@ -2142,7 +2142,7 @@
     "/user/{userId}/invoice": {
       "get": {
         "tags": [
-          "Invoice"
+          "invoice"
         ],
         "summary": " query by user id look invoice",
         "description": " query by user id look invoice",
@@ -2254,7 +2254,7 @@
     "/user/{userId}/invoice/{invoiceId}/status/{status}": {
       "put": {
         "tags": [
-          "Invoice"
+          "invoice"
         ],
         "summary": " put by user id look invoice",
         "description": " put by user id look invoice",
