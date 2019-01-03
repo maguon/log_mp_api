@@ -31,7 +31,12 @@ let CUST_CREATE_EXISTING = "已经存在";
 /**
  * The module for admin
  */
-var ADMIN_LOGIN_USER_UNREGISTERED = "用户不存在"; //Customer use a email that not exist in system to login.
+let ADMIN_LOGIN_USER_UNREGISTERED = "用户不存在"; //Customer use a email that not exist in system to login.
+
+/**
+ * The payment for admin
+ */
+let ADMIN_PAYMENT_UPDATE_PERMISSION = "只有银行转账才能修改金额";
 
 module.exports = {
     SYS_AUTH_TOKEN_ERROR,
@@ -54,5 +59,6 @@ module.exports = {
     CUST_FORBIDDEN_STATE_ERROR,
     CUST_CHANGE_EMAIL_DATA_ERROR,
     CUST_CREATE_EXISTING,
-    ADMIN_LOGIN_USER_UNREGISTERED
+    ADMIN_LOGIN_USER_UNREGISTERED,
+    ADMIN_PAYMENT_UPDATE_PERMISSION
 }

@@ -48,8 +48,8 @@
       "description": "orderItem of log api"
     },
     {
-      "name": "inquiryInvoice",
-      "description": "inquiryInvoice of log api"
+      "name": "Invoice",
+      "description": "Invoice of log api"
     },
     {
       "name": "user",
@@ -2051,7 +2051,7 @@
     "/admin/{adminId}/invoice": {
       "get": {
         "tags": [
-          "inquiryInvoice"
+          "Invoice"
         ],
         "summary": " query by user id look invoice",
         "description": " query by user id look invoice",
@@ -2142,7 +2142,7 @@
     "/user/{userId}/invoice": {
       "get": {
         "tags": [
-          "inquiryInvoice"
+          "Invoice"
         ],
         "summary": " query by user id look invoice",
         "description": " query by user id look invoice",
@@ -2210,7 +2210,7 @@
       },
       "post": {
         "tags": [
-          "inquiryInvoice"
+          "Invoice"
         ],
         "summary": " add by user id look invoice",
         "description": " add by user id look invoice",
@@ -2254,7 +2254,7 @@
     "/user/{userId}/invoice/{invoiceId}/status/{status}": {
       "put": {
         "tags": [
-          "inquiryInvoice"
+          "Invoice"
         ],
         "summary": " put by user id look invoice",
         "description": " put by user id look invoice",
@@ -5804,7 +5804,7 @@
           {
             "name": "paymentType",
             "in": "query",
-            "description": "payment_type 1微信支付2··",
+            "description": "1:微信;2:银行转账",
             "required": false,
             "type": "integer"
           },
@@ -6011,6 +6011,55 @@
             "name": "status",
             "in": "path",
             "description": "status",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/bankStatus"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/payment/{paymentId}/bankTransfer/amount/{totalFee}": {
+      "put": {
+        "tags": [
+          "payment"
+        ],
+        "summary": "updateAmount",
+        "description": "updateAmount",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "paymentId",
+            "in": "path",
+            "description": "paymentId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "totalFee",
+            "in": "path",
+            "description": "totalFee",
             "required": true,
             "type": "integer"
           }

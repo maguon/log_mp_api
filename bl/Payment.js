@@ -13,6 +13,7 @@ const encrypt = require('../util/Encrypt.js');
 const moment = require('moment/moment.js');
 const inquiryOrderDAO = require('../dao/InquiryOrderDAO.js');
 const https = require('https');
+const sysConsts = require("../util/SystemConst");
 
 const addWechatPayment = (req,res,next) => {
     let params = req.params;
@@ -665,7 +666,44 @@ const updatePaymentById = (req,res,next) => {
         resUtil.resInternalError(error,res,next);
     })
 }
+const updateTotalFee = (req,res,next) => {
+    let params = req.params;
+    let myDate = new Date();
+    params.dateId = moment(myDate).format('YYYYMMDD');
+    new Promise((resolve,reject)=>{
+        paymentDAO.getPaymentById(params,(error,rows)=>{
+            if(error){
+                logger.error('getPaymentById' + error.message);
+                reject(error);
+            }else{
+                logger.info('getPaymentById'+'success');
+                let paymentType = rows[0].payment_type;
+                if (paymentType == sysConsts.PAYMENT_TYPE.bankTransfer) {
+                    resolve();
+                }else {
+                    logger.error('updateTotalFee :' + sysMsg.ADMIN_PAYMENT_UPDATE_PERMISSION);
+                    reject(sysMsg.ADMIN_PAYMENT_UPDATE_PERMISSION);
+                }
 
+            }
+        })
+    }).then(()=>{
+        new Promise((resolve,reject)=>{
+            paymentDAO.updateTotalFee(params,(error,result)=>{
+                if(error){
+                    logger.error('updateTotalFee:' + error.message);
+                    reject(error);
+                }else{
+                    logger.info('updateTotalFee:' + 'success');
+                    resUtil.resetUpdateRes(res,result,null);
+                    return next();
+                }
+            })
+        })
+    }).catch((error)=>{
+        resUtil.resInternalError(error,res,next);
+    })
+}
 module.exports = {
     addWechatPayment,
     updateWechatPayment,
@@ -680,5 +718,6 @@ module.exports = {
     updateRefundRemark,
     getPaymentPrice,
     addBankPaymentByadmin,
-    updatePaymentById
+    updatePaymentById,
+    updateTotalFee
 }

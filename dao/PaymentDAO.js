@@ -420,6 +420,26 @@ const updatePaymentByadmin=(params,callback)=>{
         callback(error,rows);
     })
 }
+const getPaymentById =(params,callback)=>{
+    let query = " select * from payment_info where id = ?";
+    let paramsArray = [],i=0;
+    paramsArray[i] = params.paymentId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('getPaymentById');
+        callback(error,rows)
+    })
+}
+const updateTotalFee =(params,callback)=>{
+    let query = " update payment_info set total_fee = ? where id = ? and admin_id = ?";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.totalFee;
+    paramsArray[i++] = params.paymentId;
+    paramsArray[i] = params.adminId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('updateTotalFee');
+        callback(error,rows)
+    })
+}
 module.exports = {
     getPayment,
     addPayment,
@@ -439,5 +459,7 @@ module.exports = {
     getPaymentPrice,
     addBankPaymentByadmin,
     getAllRefund,
-    updatePaymentByadmin
+    updatePaymentByadmin,
+    getPaymentById,
+    updateTotalFee
 }

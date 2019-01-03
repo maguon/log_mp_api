@@ -1,4 +1,31 @@
 'use strict';
+const CAR_MODEL ={
+    NormalCar:{
+        type:1,
+        ratio:0.9
+    },
+    NormalSUV:{
+        type:2,
+        ratio:1.0
+    },
+    LargeSUV:{
+        type:3,
+        ratio:1.1
+    },
+    normalBPV:{
+        type:4,
+        ratio:1.0
+    },
+    LargeBPV:{
+        type:5,
+        ratio:1.01
+    }
+}
+
+const PAYMENT_TYPE = {
+    wechat:1,
+    bankTransfer:2
+}
 
 const transAndInsurePrice = (params,callback) => {
     let servicePrice = 0;
@@ -41,5 +68,7 @@ const transAndInsurePrice = (params,callback) => {
     callback(priceItem);
 }
 module.exports = {
-    transAndInsurePrice
+    transAndInsurePrice,
+    CAR_MODEL,
+    PAYMENT_TYPE
 }
