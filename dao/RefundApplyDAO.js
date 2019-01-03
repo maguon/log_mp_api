@@ -22,25 +22,61 @@ const addRefundApply = (params,callback) => {
     })
 }
 const getRefundApply = (params,callback) => {
-    let query = " select pi.total_fee, ra.* from refund_apply ra" +
-                " left join payment_info pi on pi.id=ra.payment_id " +
+    let query = " select ra.*,uo.created_type,uo.user_id,pi.payment_type,au.real_name from refund_apply ra" +
+                " left join user_order uo on ra.order_id = uo.id" +
+                " left join payment_info pi on ra.payment_id = pi.id" +
+                " left join admin_user au on uo.admin_id = au.id" +
                 " where ra.id is not null";
     let paramsArray = [],i=0;
-    if(params.userId){
-        paramsArray[i++] = params.userId;
-        query = query + " and ra.user_id = ?"
-    }
     if(params.orderId){
         paramsArray[i++] = params.orderId;
         query = query + " and ra.order_id = ?"
+    }
+    if(params.paymentId){
+        paramsArray[i++] = params.paymentId;
+        query = query + " and ra.payment_id = ?"
     }
     if(params.refundApplyId){
         paramsArray[i++] = params.refundApplyId;
         query = query + " and ra.id = ?"
     }
+    if(params.orderType){
+        paramsArray[i] = params.orderType;
+        query = query + " and uo.created_type = ?"
+    }
+    if(params.refundMethod){
+        paramsArray[i++] = params.refundMethod;
+        query = query + " and pi.payment_type = ?"
+    }
+    if(params.createOrderUser){
+        paramsArray[i] = params.createOrderUser;
+        query = query + " and au.real_name = ?"
+    }
+    if(params.createdOnStart){
+        paramsArray[i++] = params.createdOnStart;
+        query = query + " and date_format(ra.created_on,'%Y-%m-%d') >= ? ";
+    }
+    if(params.createdOnEnd){
+        paramsArray[i++] = params.createdOnEnd;
+        query = query + " and date_format(ra.created_on,'%Y-%m-%d') <= ? ";
+    }
+    if(params.updateOnStart){
+        paramsArray[i++] = params.updateOnStart;
+        query = query + " and date_format(ra.updated_on,'%Y-%m-%d') >= ? ";
+    }
+    if(params.updateOnEnd){
+        paramsArray[i++] = params.updateOnEnd;
+        query = query + " and date_format(ra.updated_on,'%Y-%m-%d') <= ? ";
+    }
     if(params.status){
-        paramsArray[i] = params.status;
+        paramsArray[i++] = params.status;
         query = query + " and ra.status = ?"
+    }
+    query = query + " order by created_on desc";
+    if(params.start && params.size){
+        paramsArray[i++] = parseInt(params.start);
+        paramsArray[i] = parseInt(params.size);
+        query = query + " limit ?,? ";
     }
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('getRefundApply');

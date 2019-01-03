@@ -27,6 +27,20 @@ const PAYMENT_TYPE = {
     bankTransfer:2
 }
 
+const ORDER_TYPE ={
+    internal :1,
+    extrnal :2
+}
+const ORDER_SERVICE_TYPE ={
+    doorToDoor :1,
+    selfMention :2
+}
+const REFUND_STATUS = {
+    refuse:0,
+    refunded:1,
+    applying:2
+}
+
 const transAndInsurePrice = (params,callback) => {
     let servicePrice = 0;
     let oldCarRatio = 0;
@@ -70,5 +84,8 @@ const transAndInsurePrice = (params,callback) => {
 module.exports = {
     transAndInsurePrice,
     CAR_MODEL,
-    PAYMENT_TYPE
+    PAYMENT_TYPE,
+    REFUND_STATUS,
+    ORDER_TYPE,
+    ORDER_SERVICE_TYPE
 }

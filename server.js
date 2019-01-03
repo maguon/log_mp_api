@@ -275,12 +275,12 @@ const createServer=()=>{
     server.post({path:'/api/user/:userId/order/:orderId/payment/:paymentId/refundApply',contentType: 'application/json'},refundApply.addRefundApply);
     server.post({path:'/api/admin/:adminId/order/:orderId/payment/:paymentId/refundApply',contentType: 'application/json'},refundApply.addRefundApply);
     server.get('/api/user/:userId/refundApply' ,refundApply.getRefundApply);
-    server.get('/api/admin/:adminId/refundApply' ,refundApply.getRefundApply);
     server.get('/api/admin/:adminId/refundApplyStat' ,refundApply.getRefundApplyStat);
     server.put({path:'/api/admin/:adminId/order/:orderId/payment/:paymentId/refundApply/:refundApplyId/refuseStatus',contentType: 'application/json'},refundApply.updateRefuseStatus);
     server.put({path:'/api/admin/:adminId/order/:orderId/payment/:paymentId/refundApply/:refundApplyId/refundStatus',contentType: 'application/json'},refundApply.updateRefundStatus);
     server.put({path:'/api/admin/:adminId/order/:orderId/payment/:paymentId/refundApply/:refundId',contentType: 'application/json'},refundApply.updateRefundById);
     server.del({path:'/api/admin/:adminId/order/:orderId/payment/:paymentId/deleteRefundApply/:refundApplyId',contentType: 'application/json'},refundApply.deleteById);
+    server.get('/api/admin/:adminId/refundApply' ,refundApply.getRefundApply);
     /**
      * sendPswdSms
      */

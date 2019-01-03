@@ -6650,7 +6650,7 @@
           "refundApply"
         ],
         "summary": "refundApply",
-        "description": "refundApply",
+        "description": "get refundApply list",
         "produces": [
           "application/json"
         ],
@@ -6680,6 +6680,76 @@
             "name": "refundApplyId",
             "in": "query",
             "description": "refundApplyId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "orderType",
+            "in": "query",
+            "description": "订单类型",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "refundMethod",
+            "in": "query",
+            "description": "退款方式",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "createOrderUser",
+            "in": "query",
+            "description": "订单创建人",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "createdOnStart",
+            "in": "query",
+            "description": "申请时间(始)格式：2018-09-23",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "createdOnEnd",
+            "in": "query",
+            "description": "申请时间(终)",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "updateOnStart",
+            "in": "query",
+            "description": "处理时间(始)格式：2018-09-23",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "updateOnEnd",
+            "in": "query",
+            "description": "处理时间(终)",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "状态",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "size",
             "required": false,
             "type": "integer"
           }
