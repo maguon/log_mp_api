@@ -3623,6 +3623,57 @@
         }
       }
     },
+    "/admin/{adminId}/order/{orderId}/paymentRemark": {
+      "put": {
+        "tags": [
+          "order"
+        ],
+        "summary": "update paymentRemark in an order",
+        "description": "update paymentRemark in an order",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "paymentRemark",
+            "in": "body",
+            "description": "paymentRemark",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/paymentRemark"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/adminMark"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
     "/user/{userId}/city": {
       "post": {
         "tags": [
