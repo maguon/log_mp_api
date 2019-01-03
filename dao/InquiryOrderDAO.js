@@ -405,6 +405,16 @@ const addOrder = (params,callback) => {
         callback(error,rows);
     })
 }
+const updatePaymentRemark = (params,callback) => {
+    let query = "update user_order set payment_remark = ? where id = ?";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.remark;
+    paramsArray[i] = params.orderId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('updatePaymentRemark');
+        callback(error,rows);
+    })
+}
 module.exports = {
     getInquiryOrder,
     addInquiryOrder,
@@ -422,5 +432,6 @@ module.exports = {
     putSafePrice,
     addOrder,
     getOrderNew,
-    putNewPrice
+    putNewPrice,
+    updatePaymentRemark
 }

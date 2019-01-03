@@ -148,6 +148,7 @@ const createServer=()=>{
     server.get('/api/admin/:adminId/order',inquiryOrder.getOrder);
     server.put({path:'/api/user/:userId/order/:orderId/orderMark',contentType: 'application/json'},inquiryOrder.putMark);
     server.put({path:'/api/admin/:adminId/order/:orderId/adminMark',contentType: 'application/json'},inquiryOrder.putAdminMark);
+    server.put({path:'/api/admin/:adminId/order/:orderId/paymentRemark',contentType: 'application/json'},inquiryOrder.updatePaymentRemark);
     /**
      order_item
      */

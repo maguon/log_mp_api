@@ -401,6 +401,19 @@ const getOrderNew = (req,res,next) => {
         }
     })
 }
+const updatePaymentRemark = (req,res,next) => {
+    let params = req.params;
+    inquiryOrderDAO.updatePaymentRemark(params,(error,result)=>{
+        if(error){
+            logger.error('updatePaymentRemark:' + error.message);
+            resUtil.resInternalError(error,res,next);
+        }else{
+            logger.info('updatePaymentRemark:' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
+}
 module.exports = {
     addInquiryOrderByAdmin,
     addInquiryOrderByUser,
@@ -415,6 +428,7 @@ module.exports = {
     putSendInfo,
     getOrderByUser,
     addOrder,
-    getOrderNew
+    getOrderNew,
+    updatePaymentRemark
 }
 
