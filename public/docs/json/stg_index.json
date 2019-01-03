@@ -2028,7 +2028,7 @@
             "name": "userBankId",
             "in": "path",
             "description": "userBankId",
-            "required": false,
+            "required": true,
             "type": "integer"
           }
         ],
@@ -2161,7 +2161,7 @@
             "name": "inquiryInvoiceId",
             "in": "query",
             "description": "inquiryInvoiceId",
-            "required": true,
+            "required": false,
             "type": "integer"
           },
           {
