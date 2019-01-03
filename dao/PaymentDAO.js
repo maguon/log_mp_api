@@ -430,9 +430,10 @@ const getPaymentById =(params,callback)=>{
     })
 }
 const updateTotalFee =(params,callback)=>{
-    let query = " update payment_info set total_fee = ? where id = ? and admin_id = ?";
+    let query = " update payment_info set total_fee = ? ,status = ? where id = ? and admin_id = ?";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.totalFee;
+    paramsArray[i++] = params.status;
     paramsArray[i++] = params.paymentId;
     paramsArray[i] = params.adminId;
     db.dbQuery(query,paramsArray,(error,rows)=>{

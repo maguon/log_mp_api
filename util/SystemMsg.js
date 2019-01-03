@@ -36,7 +36,8 @@ let ADMIN_LOGIN_USER_UNREGISTERED = "用户不存在"; //Customer use a email th
 /**
  * The payment for admin
  */
-let ADMIN_PAYMENT_UPDATE_PERMISSION = "只有银行转账才能修改金额";
+let ADMIN_PAYMENT_UPDATE_PERMISSION = "只有银行转账才能操作";
+let ADMIN_PAYMENT_NO_MSG = "找不到该支付信息";
 
 module.exports = {
     SYS_AUTH_TOKEN_ERROR,
@@ -60,5 +61,6 @@ module.exports = {
     CUST_CHANGE_EMAIL_DATA_ERROR,
     CUST_CREATE_EXISTING,
     ADMIN_LOGIN_USER_UNREGISTERED,
-    ADMIN_PAYMENT_UPDATE_PERMISSION
+    ADMIN_PAYMENT_UPDATE_PERMISSION,
+    ADMIN_PAYMENT_NO_MSG
 }

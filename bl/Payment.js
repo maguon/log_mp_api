@@ -677,14 +677,21 @@ const updateTotalFee = (req,res,next) => {
                 reject(error);
             }else{
                 logger.info('getPaymentById'+'success');
-                let paymentType = rows[0].payment_type;
-                if (paymentType == sysConsts.PAYMENT_TYPE.bankTransfer) {
-                    resolve();
+                if(rows.length >0){
+                    let paymentType = rows[0].payment_type;
+                    if (paymentType == sysConsts.PAYMENT_TYPE.bankTransfer) {
+                        resolve();
+                    }else {
+                        logger.error('updateTotalFee :' + sysMsg.ADMIN_PAYMENT_UPDATE_PERMISSION);
+                        resUtil.resetUpdateRes(res,null,sysMsg.ADMIN_PAYMENT_UPDATE_PERMISSION);
+                        reject(sysMsg.ADMIN_PAYMENT_UPDATE_PERMISSION);
+                        return next();
+                    }
                 }else {
-                    logger.error('updateTotalFee :' + sysMsg.ADMIN_PAYMENT_UPDATE_PERMISSION);
-                    reject(sysMsg.ADMIN_PAYMENT_UPDATE_PERMISSION);
+                    resUtil.resetUpdateRes(res,null,sysMsg.ADMIN_PAYMENT_NO_MSG);
+                    reject(sysMsg.ADMIN_PAYMENT_NO_MSG);
+                    return next();
                 }
-
             }
         })
     }).then(()=>{

@@ -6031,7 +6031,7 @@
         }
       }
     },
-    "/admin/{adminId}/payment/{paymentId}/bankTransfer/amount/{totalFee}": {
+    "/admin/{adminId}/payment/{paymentId}/bankTransfer/paymentReview": {
       "put": {
         "tags": [
           "payment"
@@ -6058,8 +6058,15 @@
           },
           {
             "name": "totalFee",
-            "in": "path",
+            "in": "query",
             "description": "totalFee",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "status",
             "required": true,
             "type": "integer"
           }
