@@ -64,9 +64,20 @@ const updateInquiryBankStatus = (params,callback) => {
         callback(error,rows)
     })
 }
+const deleteById = (params,callback) => {
+    let query = " delete from user_bank where user_id = ? and id = ?";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.userId;
+    paramsArray[i] = params.userBankId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('deleteById');
+        callback(error,rows)
+    })
+}
 module.exports = {
     getInquiryBank,
     addInquiryBank,
     updateInquiryBank,
-    updateInquiryBankStatus
+    updateInquiryBankStatus,
+    deleteById
 }

@@ -2006,6 +2006,48 @@
         }
       }
     },
+    "/user/{userId}/inquiryBank/{userBankId}": {
+      "delete": {
+        "tags": [
+          "inquiryBank"
+        ],
+        "summary": " delete a bank msg by id",
+        "description": " delete a bank msg by id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "userBankId",
+            "in": "path",
+            "description": "userBankId",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryUser"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
     "/admin/{adminId}/invoice": {
       "get": {
         "tags": [
@@ -2119,7 +2161,7 @@
             "name": "inquiryInvoiceId",
             "in": "query",
             "description": "inquiryInvoiceId",
-            "required": false,
+            "required": true,
             "type": "integer"
           },
           {

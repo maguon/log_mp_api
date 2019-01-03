@@ -165,6 +165,7 @@ const createServer=()=>{
     server.post({path:'/api/user/:userId/inquiryBank',contentType: 'application/json'},inquiryBank.addInquiryBank);
     server.get('/api/user/:userId/inquiryBank',inquiryBank.getInquiryBank);
     server.get('/api/admin/:adminId/inquiryBank',inquiryBank.getInquiryBank);
+    server.del({path:'/api/user/:userId/inquiryBank/:userBankId',contentType: 'application/json'},inquiryBank.deleteUserBank);
     server.put({path:'/api/user/:userId/inquiryBank/:inquiryBankId/status/:status',contentType: 'application/json'},inquiryBank.updateInquiryBank);
     /**
      user_address

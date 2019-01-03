@@ -62,9 +62,23 @@ const updateInquiryBank = (req,res,next) => {
         resUtil.resInternalError(error,res,next);
     })
 }
+const deleteUserBank = (req,res,next) => {
+    let params = req.params;
+    inquiryBankDAO.deleteById(params,(error,result)=>{
+        if(error){
+            logger.error('deleteUserBank :' + error.message);
+            resUtil.resInternalError(error,res,next);
+        }else{
+            logger.info('deleteUserBank :' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
+}
 module.exports = {
     getInquiryBank,
     addInquiryBank,
-    updateInquiryBank
+    updateInquiryBank,
+    deleteUserBank
 }
 
