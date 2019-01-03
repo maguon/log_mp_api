@@ -2300,6 +2300,57 @@
         }
       }
     },
+    "/admin/{adminId}/order/{orderId}/invoiceApply": {
+      "post": {
+        "tags": [
+          "invoice"
+        ],
+        "summary": " admin apply an order invoice",
+        "description": "admin apply an order invoice",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "applyMsg",
+            "in": "body",
+            "description": "applyMsg",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/invoiceApply"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/invoiceApply"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
     "/user/{userId}/inquiry": {
       "get": {
         "tags": [
@@ -8116,6 +8167,35 @@
       },
       "xml": {
         "name": "paymentReview"
+      }
+    },
+    "invoiceApply": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "taxNumber": {
+          "type": "string"
+        },
+        "bank": {
+          "type": "string"
+        },
+        "bankCode": {
+          "type": "string"
+        },
+        "companyPhone": {
+          "type": "string"
+        },
+        "companyAddress": {
+          "type": "string"
+        },
+        "remark": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "invoiceApply"
       }
     }
   }

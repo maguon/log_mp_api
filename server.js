@@ -28,6 +28,7 @@ const transAndInsurePrice = require('./bl/TransAndInsurePrice.js');
 const orderItem = require('./bl/OrderItem.js');
 const userAddress = require('./bl/UserAddress.js');
 const refundApply = require('./bl/RefundApply.js');
+const orderInvoice = require("./bl/OrderInvoice");
 //const email = require('./bl/Email.js');
 
 
@@ -119,6 +120,10 @@ const createServer=()=>{
     server.get('/api/user/:userId/invoice',inquiryInvoice.getInquiryInvoice);
     server.get('/api/admin/:adminId/invoice',inquiryInvoice.getInquiryInvoice);
     server.put({path:'/api/user/:userId/invoice/:invoiceId/status/:status',contentType: 'application/json'},inquiryInvoice.updateInquiryInvoiceStatus);
+    /**
+     * order_invoice_apply
+     */
+    server.post({path:'/api/admin/:adminId/order/:orderId/invoiceApply',contentType: 'application/json'},orderInvoice.addByAdmin);
     /**
      inquiry_car
      */
