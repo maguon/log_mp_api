@@ -22,7 +22,7 @@ const addRefundApply = (params,callback) => {
     })
 }
 const getRefundApply = (params,callback) => {
-    let query = " select ra.*,uo.created_type,uo.user_id,pi.payment_type,au.real_name from refund_apply ra" +
+    let query = " select ra.*,uo.created_type,uo.user_id,pi.payment_type,au.real_name,pi.total_fee from refund_apply ra" +
                 " left join user_order uo on ra.order_id = uo.id" +
                 " left join payment_info pi on ra.payment_id = pi.id" +
                 " left join admin_user au on uo.admin_id = au.id" +
