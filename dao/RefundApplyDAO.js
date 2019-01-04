@@ -41,7 +41,7 @@ const getRefundApply = (params,callback) => {
         query = query + " and ra.id = ?"
     }
     if(params.orderType){
-        paramsArray[i] = params.orderType;
+        paramsArray[i++] = params.orderType;
         query = query + " and uo.created_type = ?"
     }
     if(params.refundMethod){
@@ -49,7 +49,7 @@ const getRefundApply = (params,callback) => {
         query = query + " and pi.payment_type = ?"
     }
     if(params.createOrderUser){
-        paramsArray[i] = params.createOrderUser;
+        paramsArray[i++] = params.createOrderUser;
         query = query + " and au.real_name = ?"
     }
     if(params.createdOnStart){

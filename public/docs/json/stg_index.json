@@ -4720,7 +4720,7 @@
           {
             "name": "type",
             "in": "query",
-            "description": "type",
+            "description": "type 0:发车地址 1：收车地址",
             "required": false,
             "type": "integer"
           }
