@@ -6826,13 +6826,13 @@
         }
       }
     },
-    "/admin/{adminId}/order/{orderId}/payment/{paymentId}/refundApply/{refundApplyId}/refuseStatus": {
+    "/admin/{adminId}/order/{orderId}/payment/{paymentId}/refundApply/{refundApplyId}/refuse": {
       "put": {
         "tags": [
           "refundApply"
         ],
         "summary": "refundApply",
-        "description": "refundApply",
+        "description": "agree with refundApply",
         "produces": [
           "application/json"
         ],
@@ -6852,13 +6852,6 @@
             "type": "integer"
           },
           {
-            "name": "paymentId",
-            "in": "path",
-            "description": "paymentId",
-            "required": true,
-            "type": "integer"
-          },
-          {
             "name": "refundApplyId",
             "in": "path",
             "description": "refundApplyId",
@@ -6866,7 +6859,14 @@
             "type": "integer"
           },
           {
-            "name": "refuseStatus",
+            "name": "paymentId",
+            "in": "path",
+            "description": "paymentId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "refuseMsg",
             "in": "body",
             "description": "refuseStatus",
             "required": true,
@@ -6891,13 +6891,13 @@
         }
       }
     },
-    "/admin/{adminId}/order/{orderId}/payment/{paymentId}/refundApply/{refundApplyId}/refundStatus": {
+    "/admin/{adminId}/order/{orderId}/payment/:paymentId/refundApply/{refundApplyId}/agree": {
       "put": {
         "tags": [
           "refundApply"
         ],
         "summary": "refundApply",
-        "description": "refundApply",
+        "description": "agree with refundApply",
         "produces": [
           "application/json"
         ],
@@ -6917,13 +6917,6 @@
             "type": "integer"
           },
           {
-            "name": "paymentId",
-            "in": "path",
-            "description": "paymentId",
-            "required": true,
-            "type": "integer"
-          },
-          {
             "name": "refundApplyId",
             "in": "path",
             "description": "refundApplyId",
@@ -6931,7 +6924,14 @@
             "type": "integer"
           },
           {
-            "name": "refundStatus",
+            "name": "paymentId",
+            "in": "path",
+            "description": "paymentId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "agreeMsg",
             "in": "body",
             "description": "refundStatus",
             "required": true,
@@ -8220,6 +8220,9 @@
       "properties": {
         "refundFee": {
           "type": "integer"
+        },
+        "remark": {
+          "type": "string"
         }
       },
       "xml": {

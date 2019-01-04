@@ -6,6 +6,7 @@ const sysMsg = require('../util/SystemMsg.js');
 const sysError = require('../util/SystemError.js');
 const logger = serverLogger.createLogger('RefundApply.js');
 const refundApplyDAO = require('../dao/RefundApplyDAO.js');
+const sysConst = require("../util/SystemConst");
 
 const addRefundApply = (req,res,next)=>{
     let params = req.params;
@@ -35,6 +36,7 @@ const getRefundApply = (req,res,next)=>{
 }
 const updateRefuseStatus = (req,res,next)=>{
     let params = req.params;
+    params.status = sysConst.REFUND_STATUS.refuse;
     refundApplyDAO.updateRefuseStatus(params,(error,result)=>{
         if(error){
             logger.error('updateRefuseStatus' + error.message);
@@ -48,6 +50,7 @@ const updateRefuseStatus = (req,res,next)=>{
 }
 const updateRefundStatus = (req,res,next)=>{
     let params = req.params;
+    params.status = sysConst.REFUND_STATUS.refunded;
     refundApplyDAO.updateRefundStatus(params,(error,result)=>{
         if(error){
             logger.error('updateRefundStatus' + error.message);

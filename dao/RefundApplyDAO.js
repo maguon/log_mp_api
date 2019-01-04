@@ -7,7 +7,7 @@ const httpUtil = require('../util/HttpUtil');
 const db = require('../db/connection/MysqlDb.js');
 
 const addRefundApply = (params,callback) => {
-    let query = " insert into refund_apply(order_id,payment_id,remark,apply_fee,bank,bank_code,account_name) values(?,?,?,?,?,?,?) ";
+    let query = " insert into refund_apply(order_id,payment_id,apply_reason,apply_fee,bank,bank_code,account_name) values(?,?,?,?,?,?,?) ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.orderId;
     paramsArray[i++] = params.paymentId;
@@ -84,20 +84,27 @@ const getRefundApply = (params,callback) => {
     })
 }
 const updateRefuseStatus = (params,callback) => {
-    let query = " update refund_apply set status = 0,refuse_reason = ? where id = ?";
+    let query = " update refund_apply set status = ? ,refuse_reason = ? where id = ? and order_id = ? and payment_id = ?";
     let paramsArray = [],i=0;
+    paramsArray[i++] = params.status;
     paramsArray[i++] = params.refuseReason;
-    paramsArray[i] = params.refundApplyId;
+    paramsArray[i++] = params.refundApplyId;
+    paramsArray[i++] = params.orderId;
+    paramsArray[i] = params.paymentId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('updateRefuseStatus');
         callback(error,rows);
     })
 }
 const updateRefundStatus = (params,callback) => {
-    let query = " update refund_apply set status = 1,refund_fee = ? where id = ?";
+    let query = " update refund_apply set status = ?,refund_fee = ?,remark = ? where id = ? and order_id = ? and payment_id = ?";
     let paramsArray = [],i=0;
+    paramsArray[i++] = params.status;
     paramsArray[i++] = params.refundFee;
-    paramsArray[i] = params.refundApplyId;
+    paramsArray[i++] = params.remark;
+    paramsArray[i++] = params.refundApplyId;
+    paramsArray[i++] = params.orderId;
+    paramsArray[i] = params.paymentId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('updateRefundStatus');
         callback(error,rows);
