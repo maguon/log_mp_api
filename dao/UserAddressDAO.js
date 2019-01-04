@@ -74,9 +74,11 @@ const delAddress = (params,callback) => {
     })
 }
 const updateStatusByUserId = (params,callback) => {
-    let query = " update user_address set status = 0 where user_id = ?";
+    let query = " update user_address set status = ? where user_id = ? and type = ?";
     let paramsArray = [],i=0;
-    paramsArray[i] = params.userId;
+    paramsArray[i++] = params.status;
+    paramsArray[i++] = params.userId;
+    paramsArray[i] = params.type;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('updateStatusByUserId');
         callback(error,rows)

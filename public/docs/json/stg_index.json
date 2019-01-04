@@ -4783,7 +4783,7 @@
         }
       }
     },
-    "/user/{userId}/userAddress/{addressId}/status/{status}": {
+    "/user/{userId}/userAddress/{addressId}/type/{type}": {
       "put": {
         "tags": [
           "userAddress"
@@ -4809,9 +4809,9 @@
             "type": "integer"
           },
           {
-            "name": "status",
+            "name": "type",
             "in": "path",
-            "description": "status",
+            "description": "1:发车；0:收车",
             "required": true,
             "type": "integer"
           }
@@ -7935,6 +7935,9 @@
         },
         "openid": {
           "type": "string"
+        },
+        "totalFee": {
+          "type": "integer"
         }
       },
       "xml": {

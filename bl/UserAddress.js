@@ -6,6 +6,7 @@ const sysMsg = require('../util/SystemMsg.js');
 const sysError = require('../util/SystemError.js');
 const logger = serverLogger.createLogger('UserAddress.js');
 const userAddressDAO = require('../dao/UserAddressDAO.js');
+const sysConsts = require("../util/SystemConst");
 
 const getAddress = (req,res,next) => {
     let params = req.params;
@@ -36,6 +37,7 @@ const addAddress = (req,res,next) => {
 const updateStatus = (req,res,next) => {
     let params = req.params;
     new Promise((resolve,reject)=>{
+        params.status = sysConsts.USER_ADDRESS.status.disabled;
         userAddressDAO.updateStatusByUserId(params,(error,result)=>{
             if(error){
                 logger.error('updateStatusByUserId' + error.message);
@@ -47,6 +49,7 @@ const updateStatus = (req,res,next) => {
         })
     }).then(()=>{
         new Promise((resolve,reject)=>{
+            params.status = sysConsts.USER_ADDRESS.status.enable;
             userAddressDAO.updateStatus(params,(error,result)=>{
                 if(error){
                     logger.error('updateStatus' + error.message);
