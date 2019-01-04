@@ -22,7 +22,7 @@ const addRefundApply = (params,callback) => {
     })
 }
 const getRefundApply = (params,callback) => {
-    let query = " select ra.*,uo.created_type,uo.user_id,pi.payment_type,au.real_name,pi.total_fee from refund_apply ra" +
+    let query = " select ra.*,uo.created_type,uo.user_id,pi.payment_type,au.real_name,pi.total_fee,pi.bank,pi.bank_code,pi.account_name from refund_apply ra" +
                 " left join user_order uo on ra.order_id = uo.id" +
                 " left join payment_info pi on ra.payment_id = pi.id" +
                 " left join admin_user au on uo.admin_id = au.id" +
@@ -133,7 +133,6 @@ const getRefundApplyStat = (params,callback) => {
         callback(error,rows)
     })
 }
-
 const updateRefundById = (params,callback) => {
     let paramsArray = [],i=0;
     let query = " update refund_apply set apply_fee = ?";
@@ -168,7 +167,16 @@ const deleteById = (params,callback) => {
         callback(error,rows);
     })
 }
-
+const updatePaymentRefundId = (params,callback) => {
+    let paramsArray = [],i=0;
+    let query = " update refund_apply set payment_refund_id = ? where id = ?";
+    paramsArray[i++] = params.paymentRefundId;
+    paramsArray[i] = params.refundId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('updatePaymentRefundId');
+        callback(error,rows);
+    })
+}
 module.exports = {
     addRefundApply,
     getRefundApply,
@@ -176,5 +184,6 @@ module.exports = {
     updateRefundStatus,
     getRefundApplyStat,
     updateRefundById,
-    deleteById
+    deleteById,
+    updatePaymentRefundId
 }
