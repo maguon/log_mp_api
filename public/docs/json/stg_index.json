@@ -6832,7 +6832,7 @@
           "refundApply"
         ],
         "summary": "refundApply",
-        "description": "agree with refundApply",
+        "description": "refuse with refundApply",
         "produces": [
           "application/json"
         ],
@@ -6891,7 +6891,7 @@
         }
       }
     },
-    "/admin/{adminId}/order/{orderId}/payment/:paymentId/refundApply/{refundApplyId}/agree": {
+    "/admin/{adminId}/order/{orderId}/payment/{paymentId}/refundApply/{refundApplyId}/agree": {
       "put": {
         "tags": [
           "refundApply"
