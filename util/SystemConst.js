@@ -22,9 +22,19 @@ const CAR_MODEL ={
     }
 }
 
-const PAYMENT_TYPE = {
-    wechat:1,
-    bankTransfer:2
+const PAYMENT = {
+    paymentType:{
+        wechat:1,
+        bankTransfer:2
+    },
+    type:{
+        payment:1,
+        refund:0
+    },
+    status:{
+        unPaid:0,
+        paid:1
+    }
 }
 
 const ORDER_TYPE ={
@@ -39,6 +49,16 @@ const REFUND_STATUS = {
     refuse:0,
     refunded:1,
     applying:2
+}
+const USER_ADDRESS ={
+    type:{
+        departure:1,
+        parking:0
+    },
+    status:{
+        disabled:0,//停用地址
+        enable:1//启用地址
+    }
 }
 
 const transAndInsurePrice = (params,callback) => {
@@ -84,8 +104,9 @@ const transAndInsurePrice = (params,callback) => {
 module.exports = {
     transAndInsurePrice,
     CAR_MODEL,
-    PAYMENT_TYPE,
+    PAYMENT,
     REFUND_STATUS,
     ORDER_TYPE,
-    ORDER_SERVICE_TYPE
+    ORDER_SERVICE_TYPE,
+    USER_ADDRESS
 }
