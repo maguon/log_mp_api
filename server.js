@@ -268,7 +268,7 @@ const createServer=()=>{
     server.put({path:'/api/admin/:adminId/payment/:paymentId/bankStatus/:status',contentType: 'application/json'},payment.updateBankStatus);
     server.put({path:'/api/user/:userId/payment/:paymentId/RefundRemark',contentType: 'application/json'},payment.updateRefundRemark);
     server.put({path:'/api/admin/:adminId/order/:orderId/bankPayment/:paymentId',contentType: 'application/json'},payment.updatePaymentById);
-    server.put({path:'/api/admin/:adminId/payment/:paymentId/bankTransfer/paymentReview',contentType: 'application/json'},payment.updateTotalFee);
+    server.put({path:'/api/admin/:adminId/payment/:paymentId/paymentReview',contentType: 'application/json'},payment.updateTotalFee);
     /**
      * refund_apply
      */
