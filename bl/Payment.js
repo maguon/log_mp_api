@@ -696,6 +696,7 @@ const updateTotalFee = (req,res,next) => {
         })
     }).then(()=>{
         new Promise((resolve,reject)=>{
+            params.status = sysConsts.PAYMENT.status.paid;
             paymentDAO.updateTotalFee(params,(error,result)=>{
                 if(error){
                     logger.error('updateTotalFee:' + error.message);

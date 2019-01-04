@@ -8237,8 +8237,6 @@
       "properties": {
         "totalFee": {
           "type": "integer"
-        },"status": {
-          "type": "integer"
         }
       },
       "xml": {
