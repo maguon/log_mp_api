@@ -37,13 +37,20 @@ const PAYMENT = {
     }
 }
 
-const ORDER_TYPE ={
-    internal :1,
-    extrnal :2
-}
-const ORDER_SERVICE_TYPE ={
-    doorToDoor :1,
-    selfMention :2
+const ORDER ={
+    type :{
+        internal :1,
+        extrnal :2
+    },
+    serviceType:{
+        doorToDoor :1,
+        selfMention :2
+    },
+    paymentStatus:{
+        complete:2,//支付完成
+        unPaid:0,//未支付
+        partial:1//部分支付
+    }
 }
 const REFUND_STATUS = {
     refuse:0,
@@ -106,7 +113,6 @@ module.exports = {
     CAR_MODEL,
     PAYMENT,
     REFUND_STATUS,
-    ORDER_TYPE,
-    ORDER_SERVICE_TYPE,
+    ORDER,
     USER_ADDRESS
 }

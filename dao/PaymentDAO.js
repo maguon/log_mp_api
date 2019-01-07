@@ -441,6 +441,43 @@ const updateTotalFee =(params,callback)=>{
         callback(error,rows)
     })
 }
+const getById =(params,callback)=>{
+    let query = " select * from payment_info where id = ?";
+    let paramsArray = [],i=0;
+    paramsArray[i] = params.paymentId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('getById');
+        callback(error,rows)
+    })
+}
+const addRefundPayment = (params,callback) => {
+    let query = " insert into payment_info(admin_id,order_id,total_fee,date_id,status,payment_type,type,bank,bank_code,account_name,p_id) values(?,?,?,?,?,?,?,?,?,?,?)";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.adminId;
+    paramsArray[i++] = params.orderId;
+    paramsArray[i++] = params.totalFee;
+    paramsArray[i++] = params.dateId;
+    paramsArray[i++] = params.status;
+    paramsArray[i++] = params.paymentType;
+    paramsArray[i++] = params.type;
+    paramsArray[i++] = params.bank;
+    paramsArray[i++] = params.bankCode;
+    paramsArray[i++] = params.accountName;
+    paramsArray[i] = params.paymentId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('addRefundPayment');
+        callback(error,rows);
+    })
+}
+const getByOrderId =(params,callback)=>{
+    let query = " select * from payment_info where order_id = ?";
+    let paramsArray = [],i=0;
+    paramsArray[i] = params.paymentId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('getByOrderId');
+        callback(error,rows)
+    })
+}
 module.exports = {
     getPayment,
     addPayment,
@@ -462,5 +499,8 @@ module.exports = {
     getAllRefund,
     updatePaymentByadmin,
     getPaymentById,
-    updateTotalFee
+    updateTotalFee,
+    getById,
+    addRefundPayment,
+    getByOrderId
 }

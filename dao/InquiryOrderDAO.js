@@ -415,6 +415,83 @@ const updatePaymentRemark = (params,callback) => {
         callback(error,rows);
     })
 }
+const getById =(params,callback) => {
+    let query = " select uo.route_start_id as start_id,uo.route_end_id as end_id,uo.route_start as start_city,uo.route_end as end_city,au.id as admin_id,au.real_name as admin_name,ui.phone,ui.user_name,uo.* from user_order uo " +
+        " left join user_info ui on ui.id=uo.user_id " +
+        " left join inquiry_info ii on ii.id=uo.inquiry_id  " +
+        " left join admin_user au on au.id=uo.admin_id " +
+        " where uo.id is not null ";
+    let paramsArray = [],i=0;
+    if(params.userId){
+        paramsArray[i++] = params.userId;
+        query = query + " and uo.user_id = ? ";
+    }
+    if(params.userName){
+        paramsArray[i++] = params.userName;
+        query = query + " and ui.user_name = ? ";
+    }
+    if(params.phone){
+        paramsArray[i++] = params.phone;
+        query = query + " and ui.phone = ? ";
+    }
+    if(params.realName){
+        paramsArray[i++] = params.realName;
+        query = query + " and au.real_name = ? ";
+    }
+    if(params.startCityId){
+        paramsArray[i++] = params.startCityId;
+        query = query + " and uo.route_start_id = ? ";
+    }
+    if(params.endCityId){
+        paramsArray[i++] = params.endCityId;
+        query = query + " and uo.route_end_id = ? ";
+    }
+    if(params.serviceType){
+        paramsArray[i++] = params.serviceType;
+        query = query + " and uo.service_type = ? ";
+    }
+    if(params.createdType){
+        paramsArray[i++] = params.createdType;
+        query = query + " and uo.created_type = ? ";
+    }
+    if(params.orderId){
+        paramsArray[i++] = params.orderId;
+        query = query + " and uo.id = ? ";
+    }
+    if(params.inquiryId){
+        paramsArray[i++] = params.inquiryId;
+        query = query + " and uo.inquiry_id = ? ";
+    }
+    if(params.paymentStatus){
+        paramsArray[i++] = params.paymentStatus;
+        query = query + " and uo.payment_status = ? ";
+    }
+    if(params.logStatus){
+        paramsArray[i++] = params.logStatus;
+        query = query + " and uo.log_status = ? ";
+    }
+    if(params.status){
+        paramsArray[i++] = params.status;
+        query = query + " and uo.status = ? ";
+    }
+    if(params.createdOnStart){
+        paramsArray[i++] = params.createdOnStart + " 00:00:00";
+        query = query + " and uo.created_on >= ? ";
+    }
+    if(params.createdOnEnd){
+        paramsArray[i++] = params.createdOnEnd + " 23:59:59";
+        query = query + " and uo.created_on <= ? ";
+    }
+    if(params.start && params.size){
+        paramsArray[i++] = parseInt(params.start);
+        paramsArray[i] = parseInt(params.size);
+        query = query + " limit ?, ? ";
+    }
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('getOrder');
+        callback(error,rows);
+    })
+}
 module.exports = {
     getInquiryOrder,
     addInquiryOrder,

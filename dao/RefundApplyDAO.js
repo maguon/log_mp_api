@@ -171,7 +171,7 @@ const updatePaymentRefundId = (params,callback) => {
     let paramsArray = [],i=0;
     let query = " update refund_apply set payment_refund_id = ? where id = ?";
     paramsArray[i++] = params.paymentRefundId;
-    paramsArray[i] = params.refundId;
+    paramsArray[i] = params.refundApplyId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('updatePaymentRefundId');
         callback(error,rows);
