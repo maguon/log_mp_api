@@ -311,10 +311,11 @@ const addBankPaymentByadmin = (params,callback) => {
     })
 }
 const updateBankStatus = (params,callback) => {
-    let query = " update payment_info set status = ? where id=? and payment_type=2";
+    let query = " update payment_info set status = ? where id=? and payment_type=?";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.status;
-    paramsArray[i] = params.paymentId;
+    paramsArray[i++] = params.paymentId;
+    paramsArray[i] = params.paymentType;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('updateBankStatus');
         callback(error,rows);
@@ -472,7 +473,7 @@ const addRefundPayment = (params,callback) => {
 const getByOrderId =(params,callback)=>{
     let query = " select * from payment_info where order_id = ?";
     let paramsArray = [],i=0;
-    paramsArray[i] = params.paymentId;
+    paramsArray[i] = params.orderId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('getByOrderId');
         callback(error,rows)

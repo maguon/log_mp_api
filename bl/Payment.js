@@ -529,16 +529,88 @@ const addBankPaymentByadmin = (req,res,next) => {
 }
 const updateBankStatus = (req,res,next)=>{
     let params = req.params;
-    paymentDAO.updateBankStatus(params,(error,result)=>{
-        if(error){
-            logger.error('updateBankStatus' + error.message);
-            resUtil.resInternalError(error, res, next);
-        }else{
-            logger.info('updateBankStatus' + 'success');
-            resUtil.resetUpdateRes(res,result,null);
-            return next();
-        }
-    });
+    let realPaymentPrice = 0;
+    let paymentPrice =0;
+    let totalPrice =0;
+    new Promise((resolve,reject)=>{
+        params.status = sysConsts.PAYMENT.status.paid;
+        params.paymentType = sysConsts.PAYMENT.paymentType.bankTransfer;
+        paymentDAO.updateBankStatus(params,(error,result)=>{
+            if(error){
+                logger.error('updateBankStatus' + error.message);
+                resUtil.resInternalError(error, res, next);
+                reject(error);
+            }else{
+                logger.info('updateBankStatus' + 'success');
+                resolve();
+
+            }
+        });
+    }).then(()=>{
+        new Promise((resolve,reject)=>{
+            paymentDAO.getByOrderId(params,(error,rows)=>{
+                if(error){
+                    logger.error('getPaymentByOrderId' + error.message);
+                    resUtil.resInternalError(error, res, next);
+                    reject(error);
+                }else{
+                    logger.info('getPaymentByOrderId' + 'success');
+                    for (let i in rows){
+                        realPaymentPrice += rows[i].total_fee;
+                        if (rows[i].p_id == null && rows[i].status == sysConsts.PAYMENT.status.paid) {
+                            paymentPrice += rows[i].total_fee;
+                        }
+                    }
+                    resolve();
+                }
+            });
+        }).then(()=>{
+            new Promise((resolve,reject)=>{
+                inquiryOrderDAO.getById(params,(error,rows)=>{
+                    if(error){
+                        logger.error('getOrderById' + error.message);
+                        resUtil.resInternalError(error, res, next);
+                        reject(error);
+                    }else{
+                        logger.info('getOrderById' + 'success');
+                        totalPrice = rows[0].total_trans_price + rows[0].total_insure_price;
+                        resolve();
+                    }
+                })
+            }).then(()=>{
+                new Promise((resolve,reject)=>{
+                    if (totalPrice > realPaymentPrice ){
+                        params.paymentStatus = sysConsts.ORDER.paymentStatus.partial;
+                    } else if (totalPrice == realPaymentPrice){
+                        params.paymentStatus = sysConsts.ORDER.paymentStatus.complete;
+                    }
+                    inquiryOrderDAO.updateOrderPaymengStatusByOrderId(params,(error,result)=>{
+                        if(error){
+                            logger.error('updateOrderPaymengStatusByOrderId' + error.message);
+                            resUtil.resInternalError(error, res, next);
+                            reject(error);
+                        }else{
+                            logger.info('updateOrderPaymengStatusByOrderId' + 'success');
+                            resolve();
+                        }
+                    });
+                }).then(()=>{
+                    params.realPaymentPrice = realPaymentPrice;
+                    inquiryOrderDAO.updateRealPaymentPrice(params,(error,result)=>{
+                        if(error){
+                            logger.error('updateRealPaymentPrice' + error.message);
+                            resUtil.resInternalError(error, res, next);
+                        }else{
+                            logger.info('updateRealPaymentPrice' + 'success');
+                            resUtil.resetUpdateRes(res,result,null);
+                            return next();
+                        }
+                    });
+                })
+            })
+        })
+    })
+
 }
 const addBankRefund = (req,res,next) => {
     let params = req.params;

@@ -6033,7 +6033,7 @@
         }
       }
     },
-    "/admin/{adminId}/payment/{paymentId}/bankStatus/{status}": {
+    "/admin/{adminId}/payment/{paymentId}/bankStatus": {
       "put": {
         "tags": [
           "payment"
@@ -6059,9 +6059,9 @@
             "type": "integer"
           },
           {
-            "name": "status",
-            "in": "path",
-            "description": "status",
+            "name": "orderId",
+            "in": "query",
+            "description": "orderId",
             "required": true,
             "type": "integer"
           }
