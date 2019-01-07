@@ -7,15 +7,12 @@ const httpUtil = require('../util/HttpUtil');
 const db = require('../db/connection/MysqlDb.js');
 
 const addRefundApply = (params,callback) => {
-    let query = " insert into refund_apply(order_id,payment_id,apply_reason,apply_fee,bank,bank_code,account_name) values(?,?,?,?,?,?,?) ";
+    let query = " insert into refund_apply(order_id,payment_id,apply_reason,apply_fee) values(?,?,?,?) ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.orderId;
     paramsArray[i++] = params.paymentId;
     paramsArray[i++] = params.mark;
-    paramsArray[i++] = params.applyFee;
-    paramsArray[i++] = params.bank;
-    paramsArray[i++] = params.bankCode;
-    paramsArray[i] = params.accountName;
+    paramsArray[i] = params.applyFee;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('addRefundApply');
         callback(error,rows);
