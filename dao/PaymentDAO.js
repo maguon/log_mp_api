@@ -8,7 +8,7 @@ const db = require('../db/connection/MysqlDb.js');
 
 const getPaymentPrice = (params,callback) => {
     let query = " select (uo.total_trans_price + uo.total_insure_price) as total_price,sum(pi.total_fee) as payment_price,(uo.total_trans_price + uo.total_insure_price - sum(pi.total_fee)) as surplus_price from payment_info pi " +
-                " left join user_order uo on uo.id=pi.order_id " +
+                " left join order_info uo on uo.id=pi.order_id " +
                 " where pi.id is not null ";
     let paramsArray = [],i=0;
     if(params.userId){
@@ -31,8 +31,8 @@ const getPaymentPrice = (params,callback) => {
 }
 const getPayment = (params,callback) => {
     let query = " select admin_user.real_name createOrderUser,payment_info.* from payment_info"
-                +" left join user_order on payment_info.order_id = user_order.id"
-                +" left join admin_user on user_order.admin_id = admin_user.id"
+                +" left join order_info on payment_info.order_id = order_info.id"
+                +" left join admin_user on order_info.admin_id = admin_user.id"
                 +" where payment_info.id is not null";
     let paramsArray = [],i=0;
     if(params.adminId){

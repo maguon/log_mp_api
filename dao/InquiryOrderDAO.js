@@ -9,7 +9,7 @@ const db = require('../db/connection/MysqlDb.js');
 const getInquiryOrder = (params,callback) => {
     let query = " select uo.*,ii.service_type from inquiry_info ii " +
                 " left join user_info ui on ui.id=ii.user_id " +
-                " left join user_order uo on uo.inquiry_id = ii.id " +
+                " left join order_info uo on uo.inquiry_id = ii.id " +
                 " where ii.id is not null ";
     let paramsArray = [],i=0;
     if(params.userId){
@@ -22,7 +22,7 @@ const getInquiryOrder = (params,callback) => {
     })
 }
 const addInquiryOrder = (params,callback) => {
-    let query = " insert into user_order(user_id,ora_insure_price,route_id,distance,route_start,route_end,route_start_id,route_end_id,admin_id,created_type,service_type,inquiry_id,ora_trans_price,car_num) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+    let query = " insert into order_info(user_id,ora_insure_price,route_id,distance,route_start,route_end,route_start_id,route_end_id,admin_id,created_type,service_type,inquiry_id,ora_trans_price,car_num) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.userId;
     paramsArray[i++] = params.oraInsurePrice;
@@ -44,7 +44,7 @@ const addInquiryOrder = (params,callback) => {
     })
 }
 const putInquiryOrder = (params,callback) => {
-    let query = " update user_order set ora_trans_price=?,ora_insure_price=? where id = ? ";
+    let query = " update order_info set ora_trans_price=?,ora_insure_price=? where id = ? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.oraTransPrice;
     paramsArray[i++] = params.oraInsurePrice;
@@ -55,7 +55,7 @@ const putInquiryOrder = (params,callback) => {
     })
 }
 const putReceiveInfo = (params,callback) => {
-    let query = " update user_order set recv_name=?,recv_phone=?,recv_address=? where id = ? ";
+    let query = " update order_info set recv_name=?,recv_phone=?,recv_address=? where id = ? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.recvName;
     paramsArray[i++] = params.recvPhone;
@@ -67,7 +67,7 @@ const putReceiveInfo = (params,callback) => {
     })
 }
 const putFreightPrice = (params,callback) => {
-    let query = " update user_order set total_trans_price=?,total_insure_price=? where id = ? ";
+    let query = " update order_info set total_trans_price=?,total_insure_price=? where id = ? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.feePrice;
     paramsArray[i++] = params.totalInsurePrice;
@@ -78,7 +78,7 @@ const putFreightPrice = (params,callback) => {
     })
 }
 const putNewPrice = (params,callback) => {
-    let query = " update user_order set total_trans_price=?,total_insure_price=?,car_num=? where id = ? ";
+    let query = " update order_info set total_trans_price=?,total_insure_price=?,car_num=? where id = ? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.feePrice;
     paramsArray[i++] = params.totalInsurePrice;
@@ -90,7 +90,7 @@ const putNewPrice = (params,callback) => {
     })
 }
 const putSafePrice = (params,callback) => {
-    let query = " update user_order set total_trans_price=?,total_insure_price=? where id = ? ";
+    let query = " update order_info set total_trans_price=?,total_insure_price=? where id = ? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.feePrice;
     paramsArray[i++] = params.safePrice;
@@ -101,7 +101,7 @@ const putSafePrice = (params,callback) => {
     })
 }
 const putStatus = (params,callback) => {
-    let query = " update user_order set status=? where id = ? ";
+    let query = " update order_info set status=? where id = ? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.status;
     paramsArray[i] = params.orderId;
@@ -111,7 +111,7 @@ const putStatus = (params,callback) => {
     })
 }
 const getOrder = (params,callback) => {
-    let query = " select uo.route_start_id as start_id,uo.route_end_id as end_id,uo.route_start as start_city,uo.route_end as end_city,au.id as admin_id,au.real_name as admin_name,ui.phone,ui.user_name,uo.* from user_order uo " +
+    let query = " select uo.route_start_id as start_id,uo.route_end_id as end_id,uo.route_start as start_city,uo.route_end as end_city,au.id as admin_id,au.real_name as admin_name,ui.phone,ui.user_name,uo.* from order_info uo " +
                 " left join user_info ui on ui.id=uo.user_id " +
                 " left join inquiry_info ii on ii.id=uo.inquiry_id  " +
                 " left join admin_user au on au.id=uo.admin_id " +
@@ -188,7 +188,7 @@ const getOrder = (params,callback) => {
     })
 }
 const getOrderNew = (params,callback) => {
-    let query = " select au.id as admin_id,au.real_name as admin_name,ui.phone,ui.user_name,uo.* from user_order uo " +
+    let query = " select au.id as admin_id,au.real_name as admin_name,ui.phone,ui.user_name,uo.* from order_info uo " +
                 " left join user_info ui on ui.id=uo.user_id " +
                 " left join admin_user au on au.id=uo.admin_id " +
                 " where uo.id is not null ";
@@ -264,7 +264,7 @@ const getOrderNew = (params,callback) => {
     })
 }
 const getOrderByUser = (params,callback) => {
-    let query = " select ii.total_trans_price as trans_price,ii.total_insure_price as insure_price,au.id as admin_id,au.real_name as admin_name,uo.car_num,ii.start_id,ii.end_id,ui.phone,ui.user_name,ii.start_city,ii.end_city,uo.* from user_order uo " +
+    let query = " select ii.total_trans_price as trans_price,ii.total_insure_price as insure_price,au.id as admin_id,au.real_name as admin_name,uo.car_num,ii.start_id,ii.end_id,ui.phone,ui.user_name,ii.start_city,ii.end_city,uo.* from order_info uo " +
                 " left join user_info ui on ui.id=uo.user_id " +
                 " left join inquiry_info ii on ii.id=uo.inquiry_id " +
                 " left join admin_user au on au.id=uo.admin_id " +
@@ -337,7 +337,7 @@ const getOrderByUser = (params,callback) => {
     })
 }
 const putMark = (params,callback) => {
-    let query = " update user_order set mark=? where id = ? ";
+    let query = " update order_info set mark=? where id = ? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.mark;
     paramsArray[i] = params.orderId;
@@ -347,7 +347,7 @@ const putMark = (params,callback) => {
     })
 }
 const putAdminMark = (params,callback) => {
-    let query = " update user_order set admin_mark=? where id = ? ";
+    let query = " update order_info set admin_mark=? where id = ? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.adminMark;
     paramsArray[i] = params.orderId;
@@ -357,7 +357,7 @@ const putAdminMark = (params,callback) => {
     })
 }
 const updateOrderPaymengStatusByOrderId = (params,callback) => {
-    let query = "update user_order set payment_status = ? where id=? ";
+    let query = "update order_info set payment_status = ? where id=? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.paymentStatus;
     paramsArray[i] = params.orderId;
@@ -367,7 +367,7 @@ const updateOrderPaymengStatusByOrderId = (params,callback) => {
     })
 }
 const cancelOrder = (params,callback) => {
-    let query = "update user_order set status = 8,cancel_reason=?,cancel_time=? where id=? ";
+    let query = "update order_info set status = 8,cancel_reason=?,cancel_time=? where id=? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.cancelMark;
     paramsArray[i++] = params.myDate;
@@ -378,7 +378,7 @@ const cancelOrder = (params,callback) => {
     })
 }
 const putSendInfo = (params,callback) => {
-    let query = "update user_order set send_name = ?,send_phone=?,send_address=? where id=? ";
+    let query = "update order_info set send_name = ?,send_phone=?,send_address=? where id=? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.sendName;
     paramsArray[i++] = params.sendPhone;
@@ -390,7 +390,7 @@ const putSendInfo = (params,callback) => {
     })
 }
 const addOrder = (params,callback) => {
-    let query = " insert into user_order(route_id,distance,route_start,route_end,created_type,admin_id,route_start_id,route_end_id,service_type) values(?,?,?,?,1,?,?,?,?) ";
+    let query = " insert into order_info(route_id,distance,route_start,route_end,created_type,admin_id,route_start_id,route_end_id,service_type) values(?,?,?,?,1,?,?,?,?) ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.routeId;
     paramsArray[i++] = params.distance;
@@ -406,7 +406,7 @@ const addOrder = (params,callback) => {
     })
 }
 const updatePaymentRemark = (params,callback) => {
-    let query = "update user_order set payment_remark = ? where id = ?";
+    let query = "update order_info set payment_remark = ? where id = ?";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.remark;
     paramsArray[i] = params.orderId;
@@ -416,7 +416,7 @@ const updatePaymentRemark = (params,callback) => {
     })
 }
 const getById =(params,callback) => {
-    let query = " select * from user_order where id = ?";
+    let query = " select * from order_info where id = ?";
     let paramsArray = [],i=0;
     paramsArray[i] = params.orderId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
@@ -425,7 +425,7 @@ const getById =(params,callback) => {
     })
 }
 const updateRealPaymentPrice =(params,callback) => {
-    let query = " update user_order set real_payment_price = ? where id = ? ";
+    let query = " update order_info set real_payment_price = ? where id = ? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.realPaymentPrice;
     paramsArray[i] = params.orderId;
