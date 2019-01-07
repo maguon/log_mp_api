@@ -715,6 +715,7 @@ const updateTotalFee = (req,res,next) => {
                 if(rows.length >0){
                     let paymentType = rows[0].payment_type;
                     if (paymentType == sysConsts.PAYMENT.paymentType.bankTransfer) {
+                        params.orderId = rows[0].order_id;
                         resolve();
                     }else {
                         logger.error('updateTotalFee :' + sysMsg.ADMIN_PAYMENT_UPDATE_PERMISSION);
