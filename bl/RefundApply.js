@@ -9,6 +9,7 @@ const refundApplyDAO = require('../dao/RefundApplyDAO.js');
 const sysConst = require("../util/SystemConst");
 const paymentDAO = require("../dao/PaymentDAO");
 const moment = require('moment/moment.js');
+const orderInfoDAO = require("../dao/InquiryOrderDAO");
 
 const addRefundApply = (req,res,next)=>{
     let params = req.params;
@@ -98,15 +99,43 @@ const updateRefundStatus = (req,res,next)=>{
                     }
                 })
             }).then(()=>{
-                refundApplyDAO.updatePaymentRefundId(params, (error, result) => {
-                    if (error) {
-                        logger.error('updatePaymentRefundId' + error.message);
-                        resUtil.resInternalError(error, res, next);
-                    } else {
-                        logger.info('updatePaymentRefundId' + 'success');
-                        resUtil.resetUpdateRes(res, result, null);
-                        return next();
-                    }
+                new Promise((resolve,reject)=> {
+                    refundApplyDAO.updatePaymentRefundId(params, (error, result) => {
+                        if (error) {
+                            logger.error('updatePaymentRefundId' + error.message);
+                            resUtil.resInternalError(error, res, next);
+                            reject(error);
+                        } else {
+                            logger.info('updatePaymentRefundId' + 'success');
+                            resolve();
+                        }
+                    })
+                }).then(()=>{
+                    new Promise((resolve,reject)=> {
+                        orderInfoDAO.getById(params, (error, rows) => {
+                            if (error) {
+                                logger.error('getOrderById' + error.message);
+                                resUtil.resInternalError(error, res, next);
+                                reject(error);
+                            } else {
+                                logger.info('getOrderById' + 'success');
+                                params.realPaymentPrice = rows[0].real_payment_price - params.refundFee;
+                                resolve();
+                            }
+                        })
+                    }).then(()=>{
+                        orderInfoDAO.updateRealPaymentPrice(params, (error, result) => {
+                            if (error) {
+                                logger.error('updateRealPaymentPrice' + error.message);
+                                resUtil.resInternalError(error, res, next);
+                            } else {
+                                logger.info('updateRealPaymentPrice' + 'success');
+                                resUtil.resetUpdateRes(res, result, null);
+                                return next();
+                            }
+                        })
+                    })
+
                 })
             })
         })
