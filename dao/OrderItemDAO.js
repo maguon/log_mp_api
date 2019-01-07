@@ -48,9 +48,10 @@ const getOrderCar = (params,callback) => {
     })
 }
 const delOrderCar = (params,callback) => {
-    let query = " delete from order_item where id = ? and type = 1 ";
+    let query = " delete from order_item where id = ? and user_id = ? ";
     let paramsArray = [],i=0;
-    paramsArray[i] = params.orderItemId;
+    paramsArray[i++] = params.orderItemId;
+    paramsArray[i] = params.userId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('delOrderCar');
         callback(error,rows);
