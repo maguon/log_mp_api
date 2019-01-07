@@ -529,6 +529,7 @@ const addBankPaymentByadmin = (req,res,next) => {
 const updateBankStatus = (req,res,next)=>{
     let params = req.params;
     let realPaymentPrice =0;
+    new Promise()
     new Promise((resolve,reject)=>{
         params.status = sysConsts.PAYMENT.status.paid;
         params.paymentType = sysConsts.PAYMENT.paymentType.bankTransfer;
