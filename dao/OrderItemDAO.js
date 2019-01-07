@@ -75,7 +75,6 @@ const addOrderCarAdmin = (params,callback) => {
         callback(error,rows);
     })
 }
-
 const updateActFee = (params,callback) => {
     let query = " update order_item set act_trans_price=?,act_insure_price=? where id = ?";
     let paramsArray = [],i=0;
@@ -105,11 +104,28 @@ const updateOrderItemInfo = (params,callback) => {
         callback(error,rows)
     })
 }
+const updateCarType = (params,callback) => {
+    let query = " update order_item set model_type= ?,vin =? ,old_car =?, valuation =?,safe_status = ? where id =? and user_id =? and order_id =? ";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.type;
+    paramsArray[i++] = params.vin;
+    paramsArray[i++] = params.oldCar;
+    paramsArray[i++] = params.valuation;
+    paramsArray[i++] = params.safeStatus;
+    paramsArray[i++] = params.orderItemId;
+    paramsArray[i++] = params.userId;
+    paramsArray[i] = params.orderId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('updateCarType');
+        callback(error,rows)
+    })
+}
 module.exports = {
     addOrderCar,
     getOrderCar,
     delOrderCar,
     addOrderCarAdmin,
     updateActFee,
-    updateOrderItemInfo
+    updateOrderItemInfo,
+    updateCarType
 }

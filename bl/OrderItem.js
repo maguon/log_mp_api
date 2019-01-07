@@ -246,11 +246,25 @@ const updateOrderItemInfo = (req,res,next) => {
         }
     })
 }
+const updateCarType = (req,res,next) => {
+    let params = req.params;
+    orderItemDAO.updateCarType(params,(error,result)=>{
+        if(error){
+            logger.error('updateCarType' + error.message);
+            resUtil.resInternalError(error,res,next);
+        }else{
+            logger.info('updateCarType' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
+}
 module.exports = {
     addOrderCar,
     getOrderCar,
     delOrderCar,
     addOrderCarAdmin,
     updateActFee,
-    updateOrderItemInfo
+    updateOrderItemInfo,
+    updateCarType
 }
