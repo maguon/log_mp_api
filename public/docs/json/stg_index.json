@@ -6134,7 +6134,7 @@
         }
       }
     },
-    "/admin/{adminId}/payment/{paymentId}/paymentReview": {
+    "/admin/{adminId}/order/{orderId}/payment/{paymentId}/paymentReview": {
       "put": {
         "tags": [
           "payment"
@@ -6161,7 +6161,7 @@
           },
           {
             "name": "orderId",
-            "in": "query",
+            "in": "path",
             "description": "orderId",
             "required": true,
             "type": "integer"
