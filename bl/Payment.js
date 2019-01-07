@@ -529,50 +529,73 @@ const addBankPaymentByadmin = (req,res,next) => {
 const updateBankStatus = (req,res,next)=>{
     let params = req.params;
     let realPaymentPrice =0;
-    new Promise()
     new Promise((resolve,reject)=>{
-        params.status = sysConsts.PAYMENT.status.paid;
-        params.paymentType = sysConsts.PAYMENT.paymentType.bankTransfer;
-        paymentDAO.updateBankStatus(params,(error,result)=>{
+        paymentDAO.getPaymentById(params,(error,rows)=>{
             if(error){
-                logger.error('updateBankStatus' + error.message);
-                resUtil.resInternalError(error, res, next);
+                logger.error('getPaymentById' + error.message);
                 reject(error);
             }else{
-                logger.info('updateBankStatus' + 'success');
-                resolve();
+                logger.info('getPaymentById'+'success');
+                if(rows.length >0){
+                    let paymentType = rows[0].payment_type;
+                    if (paymentType == sysConsts.PAYMENT.paymentType.bankTransfer) {
+                        params.orderId = rows[0].order_id;
+                        resolve();
+                    }else {
+                        logger.error('updateTotalFee :' + sysMsg.ADMIN_PAYMENT_UPDATE_PERMISSION);
+                        resUtil.resetUpdateRes(res,null,sysMsg.ADMIN_PAYMENT_UPDATE_PERMISSION);
+                        reject(sysMsg.ADMIN_PAYMENT_UPDATE_PERMISSION);
+                    }
+                }else {
+                    resUtil.resetUpdateRes(res,null,sysMsg.ADMIN_PAYMENT_NO_MSG);
+                    reject(sysMsg.ADMIN_PAYMENT_NO_MSG);
+                }
             }
-        });
-    }).then(()=>{
-        new Promise((resolve,reject)=>{
-            paymentDAO.getByOrderId(params,(error,rows)=>{
-                if(error){
-                    logger.error('getPaymentByOrderId' + error.message);
+        })
+    }).then(()=> {
+        new Promise((resolve, reject) => {
+            params.status = sysConsts.PAYMENT.status.paid;
+            params.paymentType = sysConsts.PAYMENT.paymentType.bankTransfer;
+            paymentDAO.updateBankStatus(params, (error, result) => {
+                if (error) {
+                    logger.error('updateBankStatus' + error.message);
                     resUtil.resInternalError(error, res, next);
                     reject(error);
-                }else{
-                    logger.info('getPaymentByOrderId' + 'success');
-                    for (let i in rows){
-                        realPaymentPrice += rows[i].total_fee;
-                    }
+                } else {
+                    logger.info('updateBankStatus' + 'success');
                     resolve();
                 }
             });
-        }).then(()=>{
-            params.realPaymentPrice = realPaymentPrice;
-            orderDAO.updateRealPaymentPrice(params,(error,result)=>{
-                if(error){
-                    logger.error('updateRealPaymentPrice' + error.message);
-                    resUtil.resInternalError(error, res, next);
-                }else{
-                    logger.info('updateRealPaymentPrice' + 'success');
-                    resUtil.resetUpdateRes(res,result,null);
-                    return next();
-                }
-            });
+        }).then(() => {
+            new Promise((resolve, reject) => {
+                paymentDAO.getByOrderId(params, (error, rows) => {
+                    if (error) {
+                        logger.error('getPaymentByOrderId' + error.message);
+                        resUtil.resInternalError(error, res, next);
+                        reject(error);
+                    } else {
+                        logger.info('getPaymentByOrderId' + 'success');
+                        for (let i in rows) {
+                            realPaymentPrice += rows[i].total_fee;
+                        }
+                        resolve();
+                    }
+                });
+            }).then(() => {
+                params.realPaymentPrice = realPaymentPrice;
+                orderDAO.updateRealPaymentPrice(params, (error, result) => {
+                    if (error) {
+                        logger.error('updateRealPaymentPrice' + error.message);
+                        resUtil.resInternalError(error, res, next);
+                    } else {
+                        logger.info('updateRealPaymentPrice' + 'success');
+                        resUtil.resetUpdateRes(res, result, null);
+                        return next();
+                    }
+                });
+            })
         })
     })
-
 
 }
 const addBankRefund = (req,res,next) => {

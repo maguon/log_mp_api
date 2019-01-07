@@ -6109,13 +6109,6 @@
             "description": "paymentId",
             "required": true,
             "type": "integer"
-          },
-          {
-            "name": "orderId",
-            "in": "query",
-            "description": "orderId",
-            "required": true,
-            "type": "integer"
           }
         ],
         "responses": {
