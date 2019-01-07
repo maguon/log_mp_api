@@ -1,6 +1,7 @@
 /**
  * Created by ling xue on 15-12-23.
  */
+'use strict';
 const sysError = require('./SystemError.js');
 const sysMsg= require('./SystemMsg.js');
 

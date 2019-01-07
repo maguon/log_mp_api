@@ -12,12 +12,12 @@ const addCity = (req,res,next) =>{
     cityInfoDAO.queryCity(params,(error,rows)=>{
         if(error){
             logger.error('queryCity' + error.message);
-            throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
+            resUtil.resInternalError(error,res,next);
         }else if(rows && rows.length < 1){
             cityInfoDAO.addCity(params,(error,result)=>{
                 if(error){
                     logger.error('addCity' + error.message);
-                    throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
+                    resUtil.resInternalError(error,res,next);
                 }else{
                     logger.info('addCity' + 'success');
                     resUtil.resetCreateRes(res,result,null);
@@ -36,7 +36,7 @@ const queryCity = (req,res,next) => {
     cityInfoDAO.queryCity(params,(error,result)=>{
         if(error){
             logger.error('queryCity' + error.message);
-            throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
+            resUtil.resInternalError(error,res,next);
         }else{
             logger.info('queryCity' + 'success');
             resUtil.resetQueryRes(res,result,null);
@@ -49,7 +49,7 @@ const updateCity = (req,res,next) =>{
     cityInfoDAO.updateCity(params,(error,result)=>{
         if(error){
             logger.error('updateCity' + error.message);
-            throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
+            resUtil.resInternalError(error,res,next);
         }else{
             logger.info('updateCity' + 'success');
             resUtil.resetUpdateRes(res,result,null);
@@ -57,9 +57,22 @@ const updateCity = (req,res,next) =>{
         }
     })
 }
-
+const queryCityAdmin = (req,res,next) => {
+    let params = req.params;
+    cityInfoDAO.queryCityAdmin(params,(error,result)=>{
+        if(error){
+            logger.error('queryCityAdmin' + error.message);
+            resUtil.resInternalError(error,res,next);
+        }else{
+            logger.info('queryCityAdmin' + 'success');
+            resUtil.resetQueryRes(res,result,null);
+            return next();
+        }
+    })
+}
 module.exports = {
     addCity,
     queryCity,
-    updateCity
+    updateCity,
+    queryCityAdmin
 }

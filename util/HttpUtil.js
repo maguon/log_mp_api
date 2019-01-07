@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 const http = require('http');
 const https = require('https');
 const qs = require('querystring');
@@ -57,7 +57,7 @@ const httpsRequest = (host,port,url,params,callback,method) => {
     }
     try{
         let req = https.request(options, (res) => {
-            var data = "";
+            let data = "";
             res.on('data', (d) =>{
                 data += d;
             });

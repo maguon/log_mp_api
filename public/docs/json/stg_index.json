@@ -24,6 +24,34 @@
       }
     },
     {
+      "name": "inquiryCar",
+      "description": "inquiryCar of log api"
+    },
+    {
+      "name": "inquiryBank",
+      "description": "inquiryBank of log api"
+    },
+    {
+      "name": "payment",
+      "description": "payment of log api"
+    },
+    {
+      "name": "admin",
+      "description": "admin of log api"
+    },
+    {
+      "name": "order",
+      "description": "order of log api"
+    },
+    {
+      "name": "orderItem",
+      "description": "orderItem of log api"
+    },
+    {
+      "name": "invoice",
+      "description": "Invoice of log api"
+    },
+    {
       "name": "user",
       "description": "User of log api"
     },
@@ -38,18 +66,33 @@
     {
       "name": "inquiry",
       "description":"inquiry of log api"
+    },{
+      "name": "userAddress",
+      "description":"userAddress of log api"
     },
     {
-      "name": "inquiryUser",
-      "description":"inquiryUser of log api"
+      "name": "address",
+      "description":"address of log api"
     },
     {
-      "name": "inquiryManage",
-      "description":"inquiryManage of log api"
+      "name": "addressContact",
+      "description":"addressContact of log api"
     },
     {
       "name": "supplier",
       "description":"supplier of log api"
+    },
+    {
+      "name": "supplierBank",
+      "description":"supplierBank of log api"
+    },
+    {
+      "name": "supplierContact",
+      "description":"supplierContact of log api"
+    },
+    {
+      "name": "transAndInsurePrice",
+      "description":"transAndInsurePrice of log api"
     },
     {
       "name": "accountConfirmEmail",
@@ -61,31 +104,207 @@
   ],
 
   "paths": {
-    "/user/{userId}/wechat": {
-      "post": {
+    "/wechat/{code}/openid": {
+      "get": {
         "tags": [
           "wechat"
         ],
-        "summary": "wechat unifiedOrder",
-        "description": "wechat unifiedOrder",
+        "summary": "wechat user do login",
+        "description": "",
+        "operationId": "wechat login",
+        "consumes": [
+          "application/json"
+        ],
         "produces": [
           "application/json"
         ],
         "parameters": [
           {
-            "name": "userId",
+            "name": "code",
             "in": "path",
-            "description": "wechat unifiedOrder",
+            "description": "wechat",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/createAdmin": {
+      "post": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "createAdmin",
+        "description": "createAdmin",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "createAdmin",
+            "in": "body",
+            "description": "createAdmin",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/createAdmin"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/createAdmin"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/do/login": {
+      "post": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "Admin user do login",
+        "description": "",
+        "operationId": "admin login",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Admin base info ",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin"
+            }
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}": {
+      "get": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "query admin user info",
+        "description": "Get admin user info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "admin Id",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/admin"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "update admin user info",
+        "description": "update admin user info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "admin Id",
             "required": true,
             "type": "integer"
           },
           {
-            "name": "user",
+            "name": "admin",
             "in": "body",
-            "description": "user info",
+            "description": "admin base info:name,phone and remark is needed .",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/wechat"
+              "$ref": "#/definitions/admin"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/admin"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/password": {
+      "put": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "update admin user password",
+        "description": "update admin user password",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "admin Id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "password",
+            "in": "body",
+            "description": "admin base info:origin and new password is needed .",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/adminPassword"
             }
           }
         ],
@@ -121,84 +340,84 @@
             "in": "query",
             "description": "user id",
             "required": false,
-            "type":"integer"
+            "type": "integer"
           },
           {
             "name": "wechatAccount",
             "in": "query",
             "description": "wechatAccount",
             "required": false,
-            "type":"string"
+            "type": "string"
           },
           {
             "name": "userName",
             "in": "query",
             "description": "user name",
             "required": false,
-            "type":"string"
+            "type": "string"
           },
           {
             "name": "phone",
             "in": "query",
             "description": "user phone",
             "required": false,
-            "type":"string"
+            "type": "string"
           },
           {
             "name": "wechatStatus",
             "in": "query",
             "description": "user wechatStatus",
             "required": false,
-            "type":"integer"
+            "type": "integer"
           },
           {
             "name": "createdOnStart",
             "in": "query",
             "description": "user createdOnStart",
             "required": false,
-            "type":"integer"
+            "type": "integer"
           },
           {
             "name": "createdOnEnd",
             "in": "query",
             "description": "user createdOnEnd",
             "required": false,
-            "type":"integer"
+            "type": "integer"
           },
           {
             "name": "authStartTime",
             "in": "query",
             "description": "user authStartTime",
             "required": false,
-            "type":"integer"
+            "type": "integer"
           },
           {
             "name": "authEndTime",
             "in": "query",
             "description": "user authEndTime",
             "required": false,
-            "type":"integer"
+            "type": "integer"
           },
           {
             "name": "authStatus",
             "in": "query",
             "description": "authStatus",
             "required": false,
-            "type":"integer"
+            "type": "integer"
           },
           {
             "name": "start",
             "in": "query",
             "description": "start",
             "required": false,
-            "type":"integer"
+            "type": "integer"
           },
           {
             "name": "size",
             "in": "query",
             "description": "size",
             "required": false,
-            "type":"integer"
+            "type": "integer"
           }
         ],
         "responses": {
@@ -207,7 +426,126 @@
             "schema": {
               "type": "object",
               "items": {
-                "$ref": "#/definitions/password"
+                "$ref": "#/definitions/userInfo"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/user": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "query user",
+        "description": "query user",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "admin id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "user id",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "wechatName",
+            "in": "query",
+            "description": "wechatName",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "userName",
+            "in": "query",
+            "description": "user name",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "phone",
+            "in": "query",
+            "description": "user phone",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "wechatStatus",
+            "in": "query",
+            "description": "user wechatStatus",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "createdOnStart",
+            "in": "query",
+            "description": "user createdOnStart",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "createdOnEnd",
+            "in": "query",
+            "description": "user createdOnEnd",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "authStartTime",
+            "in": "query",
+            "description": "user authStartTime",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "authEndTime",
+            "in": "query",
+            "description": "user authEndTime",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "authStatus",
+            "in": "query",
+            "description": "authStatus",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/userInfo"
               }
             }
           },
@@ -342,7 +680,7 @@
         }
       }
     },
-    "/admin/{admin}/user/{id}/wechatStatus/{wechatStatus}": {
+    "/admin/{adminId}/user/{id}/wechatStatus/{wechatStatus}": {
       "put": {
         "tags": [
           "user"
@@ -363,7 +701,7 @@
           {
             "name": "id",
             "in": "path",
-            "description": "user info",
+            "description": "user id",
             "required": true,
             "type": "integer"
           },
@@ -381,7 +719,7 @@
             "schema": {
               "type": "object",
               "items": {
-                "$ref": "#/definitions/status"
+                "$ref": "#/definitions/wechatStatus"
               }
             }
           },
@@ -391,7 +729,7 @@
         }
       }
     },
-    "/user/{id}/phone/{phone}": {
+    "/user/{userId}/phone/{phone}/code/{code}": {
       "put": {
         "tags": [
           "user"
@@ -403,16 +741,23 @@
         ],
         "parameters": [
           {
-            "name": "id",
+            "name": "userId",
             "in": "path",
-            "description": "user info",
+            "description": "user id",
             "required": true,
             "type": "integer"
           },
           {
             "name": "phone",
             "in": "path",
-            "description": "user info",
+            "description": "user phone",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "code",
+            "in": "path",
+            "description": "code",
             "required": true,
             "type": "string"
           }
@@ -428,18 +773,141 @@
             }
           },
           "400": {
-            "description": "Invalid token value or invalid admin id"
+            "description": "Invalid token value or invalid user id"
           }
         }
       }
     },
-    "/admin/{adminId}/user": {
+    "/user/{userId}/userInfo": {
+      "put": {
+        "tags": [
+          "user"
+        ],
+        "summary": "user update info",
+        "description": "user update info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "user info",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "userInfo",
+            "in": "body",
+            "description": "user info",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/userInfo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/userInfo"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/transAndInsurePrice": {
+      "post": {
+        "tags": [
+          "transAndInsurePrice"
+        ],
+        "summary": "find transAndInsurePrice",
+        "description": "find transAndInsurePrice",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "transAndInsurePrice",
+            "in": "body",
+            "description": "transAndInsurePrice",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/transAndInsurePrice"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/transAndInsurePrice"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/phone/{phone}/userPhoneSms": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "userPhoneSms",
+        "description": "userPhoneSms",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "user info",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "phone",
+            "in": "path",
+            "description": "user phone",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/phone"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/inquiry": {
       "get": {
         "tags": [
-          "inquiryUser"
+          "inquiry"
         ],
-        "summary": "adminUser query",
-        "description": "adminUser query",
+        "summary": "query by user id and inquiryId look inquiry",
+        "description": "query by user id look and inquiryId inquiry",
         "produces": [
           "application/json"
         ],
@@ -459,11 +927,53 @@
             "type": "integer"
           },
           {
-            "name": "userName",
+            "name": "inquiryId",
             "in": "query",
-            "description": "userName",
+            "description": "inquiryId",
             "required": false,
-            "type": "string"
+            "type": "integer"
+          },
+          {
+            "name": "serviceType",
+            "in": "query",
+            "description": "serviceType",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "modelId",
+            "in": "query",
+            "description": "modelId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "oldCar",
+            "in": "query",
+            "description": "oldCar",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "routeStart",
+            "in": "query",
+            "description": "routeStart",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "routeEnd",
+            "in": "query",
+            "description": "routeEnd",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "status",
+            "required": false,
+            "type": "integer"
           },
           {
             "name": "phone",
@@ -473,44 +983,44 @@
             "type": "string"
           },
           {
-            "name": "wechatStatus",
+            "name": "startCity",
             "in": "query",
-            "description": "wechatStatus",
+            "description": "startCity",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "endCity",
+            "in": "query",
+            "description": "endCity",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "startCityId",
+            "in": "query",
+            "description": "startCityId",
             "required": false,
             "type": "integer"
           },
           {
-            "name": "createdOnStart",
+            "name": "endCityId",
             "in": "query",
-            "description": "createdOnStart",
+            "description": "endCityId",
             "required": false,
             "type": "integer"
           },
           {
-            "name": "createdOnEnd",
+            "name": "inquiryTimeStart",
             "in": "query",
-            "description": "createdOnEnd",
+            "description": "inquiryTimeStart",
             "required": false,
             "type": "integer"
           },
           {
-            "name": "authTimeStart",
+            "name": "inquiryTimeEnd",
             "in": "query",
-            "description": "authTimeStart",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "authTimeEnd",
-            "in": "query",
-            "description": "authTimeEnd",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "authStatus",
-            "in": "query",
-            "description": "authStatus",
+            "description": "inquiryTimeEnd",
             "required": false,
             "type": "integer"
           },
@@ -545,83 +1055,13 @@
         }
       }
     },
-    "/inquiryUser/{userId}": {
+    "/user/{userId}/inquiryCar": {
       "get": {
         "tags": [
-          "inquiryUser"
+          "inquiryCar"
         ],
-        "summary": "query by user id",
-        "description": "query by user id",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "userId",
-            "required": true,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/inquiryUser"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/inquiryUser/{userId}/inquiry": {
-      "get": {
-        "tags": [
-          "inquiryUser"
-        ],
-        "summary": "query by user id look inquiry",
-        "description": "query by user id look inquiry",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "userId",
-            "required": true,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/inquiryUser"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/inquiryUser/{userId}/inquiry/{inquiryId}/": {
-      "get": {
-        "tags": [
-          "inquiryUser"
-        ],
-        "summary": "query by user id and inquiryId look inquiry",
-        "description": "query by user id look and inquiryId inquiry",
+        "summary": " query by routeId look car",
+        "description": " query routeId id look car",
         "produces": [
           "application/json"
         ],
@@ -635,9 +1075,30 @@
           },
           {
             "name": "inquiryId",
-            "in": "path",
+            "in": "query",
             "description": "inquiryId",
-            "required": true,
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "inquiryCarId",
+            "in": "query",
+            "description": "inquiryCarId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "type",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "status",
+            "required": false,
             "type": "integer"
           }
         ],
@@ -657,10 +1118,10 @@
         }
       }
     },
-    "/inquiryUser/{userId}/inquiry/{inquiryId}/route": {
-      "get": {
+    "/user/{userId}/inquiry/{inquiryId}/inquiryCar": {
+      "post": {
         "tags": [
-          "inquiryUser"
+          "inquiryCar"
         ],
         "summary": " query by routeId look car",
         "description": " query routeId id look car",
@@ -681,6 +1142,236 @@
             "description": "inquiryId",
             "required": true,
             "type": "integer"
+          },
+          {
+            "name": "inquiryCar",
+            "in": "body",
+            "description": "inquiryCar",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/inquiryCar"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryCar"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/inquiryCar/{inquiryCarId}/status/{status}": {
+      "put": {
+        "tags": [
+          "inquiryCar"
+        ],
+        "summary": " query by routeId look car",
+        "description": " query routeId id look car",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "inquiryCarId",
+            "in": "path",
+            "description": "inquiryCarId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "path",
+            "description": "status",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryCar"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/orderItem/{orderItemId}/actFeeAndSafePrice": {
+      "put": {
+        "tags": [
+          "orderItem"
+        ],
+        "summary": " query by routeId look car",
+        "description": " query routeId id look car",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderItemId",
+            "in": "path",
+            "description": "orderItemId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "actFeeAndSafePrice",
+            "in": "body",
+            "description": "actFeeAndSafePrice",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/actFeeAndSafePrice"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/actFeeAndSafePrice"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/orderItem/{orderItemId}/orderItemInfo": {
+      "put": {
+        "tags": [
+          "orderItem"
+        ],
+        "summary": " query by routeId look car",
+        "description": " query routeId id look car",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderItemId",
+            "in": "path",
+            "description": "orderItemId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderItemInfo",
+            "in": "body",
+            "description": "orderItemInfo",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/orderItemInfo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/orderItemInfo"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/inquiryCar": {
+      "get": {
+        "tags": [
+          "inquiryCar"
+        ],
+        "summary": " query by routeId look car",
+        "description": " query routeId id look car",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "userId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "inquiryId",
+            "in": "query",
+            "description": "inquiryId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "inquiryCarId",
+            "in": "query",
+            "description": "inquiryCarId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "status",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "type",
+            "required": false,
+            "type": "integer"
           }
         ],
         "responses": {
@@ -699,13 +1390,391 @@
         }
       }
     },
-    "/inquiryUser/{userId}/inquiry/{inquiryId}/order": {
+    "/user/{userId}/order": {
       "get": {
         "tags": [
-          "inquiryUser"
+          "order"
         ],
         "summary": " query by routeId look order",
         "description": " query by routeId id look order",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "inquiryId",
+            "in": "query",
+            "description": "inquiryId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "query",
+            "description": "orderId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "userName",
+            "in": "query",
+            "description": "userName",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "phone",
+            "in": "query",
+            "description": "phone",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "startCityId",
+            "in": "query",
+            "description": "startCityId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "endCityId",
+            "in": "query",
+            "description": "endCityId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "serviceType",
+            "in": "query",
+            "description": "serviceType",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "createdType",
+            "in": "query",
+            "description": "createdType",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "status",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "paymentStatus",
+            "in": "query",
+            "description": "paymentStatus",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "logStatus",
+            "in": "query",
+            "description": "logStatus",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "createdOnStart",
+            "in": "query",
+            "description": "createdOnStart",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "createdOnEnd",
+            "in": "query",
+            "description": "createdOnEnd",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryUser"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/order": {
+      "post": {
+        "tags": [
+          "order"
+        ],
+        "summary": "inquiryManageOrder query by inquiryManageId",
+        "description": "inquiryManageOrder query by inquiryManageId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderNew",
+            "in": "body",
+            "description": "orderNew",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/orderNew"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryManage"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "order"
+        ],
+        "summary": " query by routeId look order",
+        "description": " query by routeId id look order",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "userId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "inquiryId",
+            "in": "query",
+            "description": "inquiryId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "query",
+            "description": "orderId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "realName",
+            "in": "query",
+            "description": "realName",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "userName",
+            "in": "query",
+            "description": "userName",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "phone",
+            "in": "query",
+            "description": "phone",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "startCityId",
+            "in": "query",
+            "description": "startCityId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "endCityId",
+            "in": "query",
+            "description": "endCityId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "serviceType",
+            "in": "query",
+            "description": "serviceType",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "createdType",
+            "in": "query",
+            "description": "createdType",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "status",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "paymentStatus",
+            "in": "query",
+            "description": "paymentStatus",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "logStatus",
+            "in": "query",
+            "description": "logStatus",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "createdOnStart",
+            "in": "query",
+            "description": "createdOnStart",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "createdOnEnd",
+            "in": "query",
+            "description": "createdOnEnd",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryUser"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/inquiry/{inquiryId}/order": {
+      "post": {
+        "tags": [
+          "order"
+        ],
+        "summary": "inquiryManageOrder query by inquiryManageId",
+        "description": "inquiryManageOrder query by inquiryManageId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "inquiryId",
+            "in": "path",
+            "description": "inquiryId",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryManage"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/inquiry/{inquiryId}/order": {
+      "post": {
+        "tags": [
+          "order"
+        ],
+        "summary": "inquiryManageOrder query by inquiryManageId",
+        "description": "inquiryManageOrder query by inquiryManageId",
         "produces": [
           "application/json"
         ],
@@ -731,128 +1800,23 @@
             "schema": {
               "type": "object",
               "items": {
-                "$ref": "#/definitions/inquiryUser"
+                "$ref": "#/definitions/inquiryManage"
               }
             }
           },
           "400": {
-            "description": "Invalid token value or invalid admin id"
+            "description": "Invalid token value or invalid user id"
           }
         }
       }
     },
-    "/inquiryUser/{userId}/contact": {
+    "/admin/{adminId}/inquiryBank": {
       "get": {
         "tags": [
-          "inquiryUser"
-        ],
-        "summary": " query by user id look contact",
-        "description": " query by user id look contact",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "userId",
-            "required": true,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/inquiryUser"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/inquiryUser/{userId}/bank": {
-      "get": {
-        "tags": [
-          "inquiryUser"
+          "inquiryBank"
         ],
         "summary": " query by user id look bank",
         "description": " query by user id look bank",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "userId",
-            "required": true,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/inquiryUser"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/inquiryUser/{userId}/invoice": {
-      "get": {
-        "tags": [
-          "inquiryUser"
-        ],
-        "summary": " query by user id look invoice",
-        "description": " query by user id look invoice",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "userId",
-            "required": true,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/inquiryUser"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/userInfo": {
-      "get": {
-        "tags": [
-          "inquiry"
-        ],
-        "summary": "adminUser query",
-        "description": "adminUser query",
         "produces": [
           "application/json"
         ],
@@ -872,6 +1836,265 @@
             "type": "integer"
           },
           {
+            "name": "inquiryBankId",
+            "in": "query",
+            "description": "inquiryBankId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "status",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryBank"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/inquiryBank": {
+      "get": {
+        "tags": [
+          "inquiryBank"
+        ],
+        "summary": " query by user id look bank",
+        "description": " query by user id look bank",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "inquiryBankId",
+            "in": "query",
+            "description": "inquiryBankId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "status",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryUser"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "inquiryBank"
+        ],
+        "summary": " add by user id look bank",
+        "description": " add by user id look bank",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "inquiryBank",
+            "in": "body",
+            "description": "inquiryBank",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/inquiryBank"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryBank"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/inquiryBank/{inquiryBankId}/status/{status}": {
+      "put": {
+        "tags": [
+          "inquiryBank"
+        ],
+        "summary": " query by user id look bank",
+        "description": " query by user id look bank",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "inquiryBankId",
+            "in": "path",
+            "description": "inquiryBankId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "path",
+            "description": "status",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryBank"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/inquiryBank/{userBankId}": {
+      "delete": {
+        "tags": [
+          "inquiryBank"
+        ],
+        "summary": " delete a bank msg by id",
+        "description": " delete a bank msg by id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "userBankId",
+            "in": "path",
+            "description": "userBankId",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryUser"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/invoice": {
+      "get": {
+        "tags": [
+          "invoice"
+        ],
+        "summary": " query by user id look invoice",
+        "description": " query by user id look invoice",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "userId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "inquiryInvoiceId",
+            "in": "query",
+            "description": "inquiryInvoiceId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "companyName",
+            "in": "query",
+            "description": "companyName",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "taxNumber",
+            "in": "query",
+            "description": "taxNumber",
+            "required": false,
+            "type": "string"
+          },
+          {
             "name": "userName",
             "in": "query",
             "description": "userName",
@@ -879,58 +2102,9 @@
             "type": "string"
           },
           {
-            "name": "wechatAccount",
+            "name": "status",
             "in": "query",
-            "description": "wechatAccount",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "phone",
-            "in": "query",
-            "description": "phone",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "wechatStatus",
-            "in": "query",
-            "description": "wechatStatus",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "createdOnStart",
-            "in": "query",
-            "description": "createdOnStart",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "createdOnEnd",
-            "in": "query",
-            "description": "createdOnEnd",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "authTimeStart",
-            "in": "query",
-            "description": "authTimeStart",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "authTimeEnd",
-            "in": "query",
-            "description": "authTimeEnd",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "authStatus",
-            "in": "query",
-            "description": "authStatus",
+            "description": "status",
             "required": false,
             "type": "integer"
           },
@@ -955,7 +2129,219 @@
             "schema": {
               "type": "object",
               "items": {
-                "$ref": "#/definitions/inquiry"
+                "$ref": "#/definitions/inquiryInvoice"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/invoice": {
+      "get": {
+        "tags": [
+          "invoice"
+        ],
+        "summary": " query by user id look invoice",
+        "description": " query by user id look invoice",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "inquiryInvoiceId",
+            "in": "query",
+            "description": "inquiryInvoiceId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "companyName",
+            "in": "query",
+            "description": "companyName",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "taxNumber",
+            "in": "query",
+            "description": "taxNumber",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "userName",
+            "in": "query",
+            "description": "userName",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "status",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryInvoice"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "invoice"
+        ],
+        "summary": " add by user id look invoice",
+        "description": " add by user id look invoice",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "inquiryInvoice",
+            "in": "body",
+            "description": "inquiryInvoice",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/inquiryInvoice"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryInvoice"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/invoice/{invoiceId}/status/{status}": {
+      "put": {
+        "tags": [
+          "invoice"
+        ],
+        "summary": " put by user id look invoice",
+        "description": " put by user id look invoice",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "inquiryInvoiceId",
+            "in": "path",
+            "description": "inquiryInvoiceId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "path",
+            "description": "status",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryInvoice"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/order/{orderId}/invoiceApply": {
+      "post": {
+        "tags": [
+          "invoice"
+        ],
+        "summary": " admin apply an order invoice",
+        "description": "admin apply an order invoice",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "applyMsg",
+            "in": "body",
+            "description": "applyMsg",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/invoiceApply"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/invoiceApply"
               }
             }
           },
@@ -966,6 +2352,123 @@
       }
     },
     "/user/{userId}/inquiry": {
+      "get": {
+        "tags": [
+          "inquiry"
+        ],
+        "summary": "query by user id and inquiryId look inquiry",
+        "description": "query by user id look and inquiryId inquiry",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "inquiryId",
+            "in": "query",
+            "description": "inquiryId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "serviceType",
+            "in": "query",
+            "description": "serviceType",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "modelId",
+            "in": "query",
+            "description": "modelId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "oldCar",
+            "in": "query",
+            "description": "oldCar",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "routeStart",
+            "in": "query",
+            "description": "routeStart",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "routeEnd",
+            "in": "query",
+            "description": "routeEnd",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "status",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "startCity",
+            "in": "query",
+            "description": "startCity",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "endCity",
+            "in": "query",
+            "description": "endCity",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "phone",
+            "in": "query",
+            "description": "phone",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "inquiryTimeStart",
+            "in": "query",
+            "description": "inquiryTimeStart",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "inquiryTimeEnd",
+            "in": "query",
+            "description": "inquiryTimeEnd",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryUser"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      },
       "post": {
         "tags": [
           "inquiry"
@@ -1004,98 +2507,44 @@
             }
           },
           "400": {
-            "description": "Invalid token value or invalid admin id"
+            "description": "Invalid token value or invalid user id"
           }
         }
       }
     },
-    "/admin/{adminId}/inquiryManage": {
-      "get": {
+    "/admin/{adminId}/inquiry/{inquiryId}/cancel": {
+      "put": {
         "tags": [
-          "inquiryManage"
+          "inquiry"
         ],
-        "summary": "inquiryManage query",
-        "description": "inquiryManage query",
+        "summary": "inquiryManage update",
+        "description": "inquiryManage update",
         "produces": [
           "application/json"
         ],
         "parameters": [
           {
             "name": "adminId",
-            "in": "query",
+            "in": "path",
             "description": "adminId",
             "required": true,
-            "type": "string"
-          },
-          {
-            "name": "userId",
-            "in": "query",
-            "description": "userId",
-            "required": false,
             "type": "integer"
           },
           {
-            "name": "phone",
-            "in": "query",
-            "description": "phone",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "routeStart",
-            "in": "query",
-            "description": "routeStart",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "routeEnd",
-            "in": "query",
-            "description": "routeEnd",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "serviceType",
-            "in": "query",
-            "description": "serviceType",
-            "required": false,
+            "name": "inquiryId",
+            "in": "path",
+            "description": "inquiryId",
+            "required": true,
             "type": "integer"
           },
           {
-            "name": "inquiryTimeStart",
-            "in": "query",
-            "description": "inquiryTimeStart",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "inquiryTimeEnd",
-            "in": "query",
-            "description": "inquiryTimeEnd",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "status",
-            "in": "query",
-            "description": "status",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "start",
-            "in": "query",
-            "description": "start",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "size",
-            "in": "query",
-            "description": "size",
-            "required": false,
-            "type": "integer"
+            "name": "inquiryStatus",
+            "in": "body",
+            "description": "inquiryStatus",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/inquiryStatus"
+            }
           }
         ],
         "responses": {
@@ -1104,7 +2553,7 @@
             "schema": {
               "type": "object",
               "items": {
-                "$ref": "#/definitions/inquiryManage"
+                "$ref": "#/definitions/cancel"
               }
             }
           },
@@ -1114,52 +2563,10 @@
         }
       }
     },
-    "/user/{userId}/inquiryManage/{inquiryManageId}": {
-      "get": {
-        "tags": [
-          "inquiryManage"
-        ],
-        "summary": "inquiryManage query by id",
-        "description": "inquiryManage query by id",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "userId",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "inquiryManageId",
-            "in": "path",
-            "description": "inquiryManageId",
-            "required": true,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/inquiryManage"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/user/{userId}/inquiryManage/{inquiryManageId}/status/{status}": {
+    "/user/{userId}/inquiry/{inquiryId}/cancel": {
       "put": {
         "tags": [
-          "inquiryManage"
+          "inquiry"
         ],
         "summary": "inquiryManage update",
         "description": "inquiryManage update",
@@ -1175,9 +2582,51 @@
             "type": "integer"
           },
           {
-            "name": "inquiryManageId",
+            "name": "inquiryId",
             "in": "path",
-            "description": "inquiryManageId",
+            "description": "inquiryId",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/cancel"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/inquiry/{inquiryId}/inquiryStatus/{status}": {
+      "put": {
+        "tags": [
+          "inquiry"
+        ],
+        "summary": "inquiryManage update",
+        "description": "inquiryManage update",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "inquiryId",
+            "in": "path",
+            "description": "inquiryId",
             "required": true,
             "type": "integer"
           },
@@ -1205,13 +2654,13 @@
         }
       }
     },
-    "/user/{userId}/inquiryManage/{inquiryManageId}/inquiryManageCar": {
-      "get": {
+    "/user/{userId}/inquiry/{inquiryId}/inquiryStatus/{status}": {
+      "put": {
         "tags": [
-          "inquiryManage"
+          "inquiry"
         ],
-        "summary": "inquiryManageCar query by inquiryManageId",
-        "description": "inquiryManageCar query by inquiryManageId",
+        "summary": "inquiryManage update",
+        "description": "inquiryManage update",
         "produces": [
           "application/json"
         ],
@@ -1224,9 +2673,16 @@
             "type": "integer"
           },
           {
-            "name": "inquiryManageId",
+            "name": "inquiryId",
             "in": "path",
-            "description": "inquiryManageId",
+            "description": "inquiryId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "path",
+            "description": "status",
             "required": true,
             "type": "integer"
           }
@@ -1247,17 +2703,24 @@
         }
       }
     },
-    "/user/{userId}/inquiryManage/{inquiryManageId}/inquiryManageOrder": {
-      "post": {
+    "/admin/{adminId}/user/{userId}/inquiry/{inquiryId}/feePrice": {
+      "put": {
         "tags": [
-          "inquiryManage"
+          "inquiry"
         ],
-        "summary": "inquiryManageOrder query by inquiryManageId",
-        "description": "inquiryManageOrder query by inquiryManageId",
+        "summary": "inquiry update",
+        "description": "inquiry update",
         "produces": [
           "application/json"
         ],
         "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
           {
             "name": "userId",
             "in": "path",
@@ -1266,9 +2729,60 @@
             "type": "integer"
           },
           {
-            "name": "inquiryManageId",
+            "name": "inquiryId",
             "in": "path",
-            "description": "inquiryManageId",
+            "description": "inquiryId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "feePrice",
+            "in": "body",
+            "description": "feePrice",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/feePrice"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiry"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/order/{orderId}/oraPrice": {
+      "put": {
+        "tags": [
+          "order"
+        ],
+        "summary": "inquiryManageOrder query by inquiryManageId",
+        "description": "inquiryManageOrder query by inquiryManageId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
             "required": true,
             "type": "integer"
           },
@@ -1293,18 +2807,18 @@
             }
           },
           "400": {
-            "description": "Invalid token value or invalid admin id"
+            "description": "Invalid token value or invalid user id"
           }
         }
       }
     },
-    "/user/{userId}/inquiryManage/{inquiryManageId}/inquiryManageOrderQuery": {
-      "get": {
+    "/user/{userId}/order/{orderId}/receiveInfo": {
+      "put": {
         "tags": [
-          "inquiryManage"
+          "order"
         ],
-        "summary": "inquiryManageOrderQuery",
-        "description": "inquiryManageOrderQuery",
+        "summary": "inquiryManageOrder query by inquiryManageId",
+        "description": "inquiryManageOrder query by inquiryManageId",
         "produces": [
           "application/json"
         ],
@@ -1317,9 +2831,373 @@
             "type": "integer"
           },
           {
-            "name": "inquiryManageId",
+            "name": "orderId",
             "in": "path",
-            "description": "inquiryManageId",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "receiveInfo",
+            "in": "body",
+            "description": "receiveInfo",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/receiveInfo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/receiveInfo"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/order/{orderId}/receiveInfo": {
+      "put": {
+        "tags": [
+          "order"
+        ],
+        "summary": "inquiryManageOrder query by inquiryManageId",
+        "description": "inquiryManageOrder query by inquiryManageId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "receiveInfo",
+            "in": "body",
+            "description": "receiveInfo",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/receiveInfo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/receiveInfo"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/order/{orderId}/sendInfo": {
+      "put": {
+        "tags": [
+          "order"
+        ],
+        "summary": "inquiryManageOrder query by inquiryManageId",
+        "description": "inquiryManageOrder query by inquiryManageId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "sendInfo",
+            "in": "body",
+            "description": "sendInfo",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/sendInfo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/sendInfo"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/order/{orderId}/sendInfo": {
+      "put": {
+        "tags": [
+          "order"
+        ],
+        "summary": "inquiryManageOrder query by inquiryManageId",
+        "description": "inquiryManageOrder query by inquiryManageId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "sendInfo",
+            "in": "body",
+            "description": "sendInfo",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/sendInfo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/sendInfo"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/order/{orderId}/totalTransInsurePrice": {
+      "put": {
+        "tags": [
+          "order"
+        ],
+        "summary": "inquiryManageOrder query by inquiryManageId",
+        "description": "inquiryManageOrder query by inquiryManageId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "totalTransInsurePrice",
+            "in": "body",
+            "description": "totalTransInsurePrice",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/totalTransInsurePrice"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/receiveInfo"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/order/{orderId}/cancel": {
+      "put": {
+        "tags": [
+          "order"
+        ],
+        "summary": "inquiryManageOrder query by inquiryManageId",
+        "description": "inquiryManageOrder query by inquiryManageId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderCancel",
+            "in": "body",
+            "description": "orderCancel",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/orderCancel"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/orderCancel"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/order/{orderId}/cancel": {
+      "put": {
+        "tags": [
+          "order"
+        ],
+        "summary": "inquiryManageOrder query by inquiryManageId",
+        "description": "inquiryManageOrder query by inquiryManageId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderCancel",
+            "in": "body",
+            "description": "orderCancel",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/orderCancel"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/receiveInfo"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/order/{orderId}/status/{status}": {
+      "put": {
+        "tags": [
+          "order"
+        ],
+        "summary": "inquiryManageOrder query by inquiryManageId",
+        "description": "inquiryManageOrder query by inquiryManageId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "path",
+            "description": "status",
             "required": true,
             "type": "integer"
           }
@@ -1330,7 +3208,514 @@
             "schema": {
               "type": "object",
               "items": {
-                "$ref": "#/definitions/inquiryManage"
+                "$ref": "#/definitions/receiveInfo"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/order/{orderId}/status/{status}": {
+      "put": {
+        "tags": [
+          "order"
+        ],
+        "summary": "inquiryManageOrder query by inquiryManageId",
+        "description": "inquiryManageOrder query by inquiryManageId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "path",
+            "description": "status",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/receiveInfo"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/order/{orderId}/car": {
+      "post": {
+        "tags": [
+          "orderItem"
+        ],
+        "summary": "inquiryManageOrder query by inquiryManageId",
+        "description": "inquiryManageOrder query by inquiryManageId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "carInfo",
+            "in": "body",
+            "description": "carInfo",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/carInfo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/carInfo"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/order/{orderId}/carAdmin": {
+      "post": {
+        "tags": [
+          "orderItem"
+        ],
+        "summary": "inquiryManageOrder query by inquiryManageId",
+        "description": "inquiryManageOrder query by inquiryManageId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "carAdmin",
+            "in": "body",
+            "description": "carAdmin",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/carAdmin"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/carAdmin"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/orderItem": {
+      "get": {
+        "tags": [
+          "orderItem"
+        ],
+        "summary": " query by routeId look order",
+        "description": " query by routeId id look order",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "query",
+            "description": "orderId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "orderItemId",
+            "in": "query",
+            "description": "orderItemId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "type",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/orderItem"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/orderItem": {
+      "get": {
+        "tags": [
+          "orderItem"
+        ],
+        "summary": " query by routeId look order",
+        "description": " query by routeId id look order",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "userId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "query",
+            "description": "orderId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "orderItemId",
+            "in": "query",
+            "description": "orderItemId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "type",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/orderItem"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/orderItem/{orderItemId}": {
+      "delete": {
+        "tags": [
+          "orderItem"
+        ],
+        "summary": " query by routeId look order",
+        "description": " query by routeId id look order",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderItemId",
+            "in": "path",
+            "description": "orderItemId",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/orderItem"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/orderItem/{orderItemId}": {
+      "delete": {
+        "tags": [
+          "orderItem"
+        ],
+        "summary": " query by routeId look order",
+        "description": " query by routeId id look order",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderItemId",
+            "in": "path",
+            "description": "orderItemId",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/orderItem"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/order/{orderId}/orderMark": {
+      "put": {
+        "tags": [
+          "order"
+        ],
+        "summary": "inquiryManageOrder query by inquiryManageId",
+        "description": "inquiryManageOrder query by inquiryManageId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderMark",
+            "in": "body",
+            "description": "orderMark",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/orderMark"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/orderMark"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/order/{orderId}/adminMark": {
+      "put": {
+        "tags": [
+          "order"
+        ],
+        "summary": "inquiryManageOrder query by inquiryManageId",
+        "description": "inquiryManageOrder query by inquiryManageId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "adminMark",
+            "in": "body",
+            "description": "adminMark",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/adminMark"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/adminMark"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/order/{orderId}/paymentRemark": {
+      "put": {
+        "tags": [
+          "order"
+        ],
+        "summary": "update paymentRemark in an order",
+        "description": "update paymentRemark in an order",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "paymentRemark",
+            "in": "body",
+            "description": "paymentRemark",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/paymentRemark"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/adminMark"
               }
             }
           },
@@ -1382,9 +3767,7 @@
             "description": "Invalid token value or invalid admin id"
           }
         }
-      }
-    },
-    "/city": {
+      },
       "get": {
         "tags": [
           "city"
@@ -1395,6 +3778,13 @@
           "application/json"
         ],
         "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
           {
             "name": "cityId",
             "in": "query",
@@ -1422,6 +3812,111 @@
             "description": "city info",
             "required": false,
             "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/city"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/city": {
+      "get": {
+        "tags": [
+          "city"
+        ],
+        "summary": "city query",
+        "description": "city query",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "cityId",
+            "in": "query",
+            "description": "cityId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "cityName",
+            "in": "query",
+            "description": "city info",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "city info",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "city info",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/city"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "city"
+        ],
+        "summary": "city add",
+        "description": "city add",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "city",
+            "in": "body",
+            "description": "city info",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/city"
+            }
           }
         ],
         "responses": {
@@ -1649,7 +4144,7 @@
         }
       }
     },
-    "/user/{userId}/supplier": {
+    "/admin/{adminId}/supplier": {
       "post": {
         "tags": [
           "supplier"
@@ -1661,9 +4156,9 @@
         ],
         "parameters": [
           {
-            "name": "userId",
+            "name": "adminId",
             "in": "path",
-            "description": "userId",
+            "description": "adminId",
             "required": true,
             "type": "integer"
           },
@@ -1691,9 +4186,7 @@
             "description": "Invalid token value or invalid admin id"
           }
         }
-      }
-    },
-    "/user/{userId}/querySupplier": {
+      },
       "get": {
         "tags": [
           "supplier"
@@ -1705,10 +4198,17 @@
         ],
         "parameters": [
           {
-            "name": "userId",
+            "name": "adminId",
             "in": "path",
-            "description": "userId",
+            "description": "adminId",
             "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "supplierId",
+            "in": "query",
+            "description": "supplierId",
+            "required": false,
             "type": "integer"
           },
           {
@@ -1724,13 +4224,6 @@
             "description": "supplierFull",
             "required": false,
             "type": "string"
-          },
-          {
-            "name": "setType",
-            "in": "query",
-            "description": "setType",
-            "required": false,
-            "type": "integer"
           },
           {
             "name": "transType",
@@ -1770,7 +4263,7 @@
         }
       }
     },
-    "/user/{userId}/supplier/{supplierId}": {
+    "/admin/{adminId}/supplier/{supplierId}/supplierInfo": {
       "put": {
         "tags": [
           "supplier"
@@ -1782,9 +4275,9 @@
         ],
         "parameters": [
           {
-            "name": "userId",
+            "name": "adminId",
             "in": "path",
-            "description": "userId",
+            "description": "adminId",
             "required": true,
             "type": "integer"
           },
@@ -1821,52 +4314,10 @@
         }
       }
     },
-    "/user/{userId}/delSupplier/{supplierId}": {
-      "delete": {
-        "tags": [
-          "supplier"
-        ],
-        "summary": "supplier del",
-        "description": "supplier del",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "userId",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "supplierId",
-            "in": "path",
-            "description": "supplierId",
-            "required": true,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/supplier"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/user/{userId}/supplier/{supplierId}/bank": {
+    "/admin/{adminId}/supplier/{supplierId}/bank": {
       "post": {
         "tags": [
-          "supplier"
+          "supplierBank"
         ],
         "summary": "supplierBank add",
         "description": "supplierBank add",
@@ -1875,9 +4326,9 @@
         ],
         "parameters": [
           {
-            "name": "userId",
+            "name": "adminId",
             "in": "path",
-            "description": "userId",
+            "description": "adminId",
             "required": true,
             "type": "integer"
           },
@@ -1912,12 +4363,10 @@
             "description": "Invalid token value or invalid admin id"
           }
         }
-      }
-    },
-    "/user/{userId}/supplier/{supplierId}/queryBank": {
+      },
       "get": {
         "tags": [
-          "supplier"
+          "supplierBank"
         ],
         "summary": "supplierBank query",
         "description": "supplierBank query",
@@ -1926,9 +4375,9 @@
         ],
         "parameters": [
           {
-            "name": "userId",
+            "name": "adminId",
             "in": "path",
-            "description": "userId",
+            "description": "adminId",
             "required": true,
             "type": "integer"
           },
@@ -1977,10 +4426,10 @@
         }
       }
     },
-    "/user/{userId}/supplier/{supplierId}/bank/{bankId}": {
+    "/admin/{adminId}/supplier/{supplierId}/bank/{bankId}": {
       "delete": {
         "tags": [
-          "supplier"
+          "supplierBank"
         ],
         "summary": "supplierBank del",
         "description": "supplierBank del",
@@ -1989,9 +4438,9 @@
         ],
         "parameters": [
           {
-            "name": "userId",
+            "name": "adminId",
             "in": "path",
-            "description": "userId",
+            "description": "adminId",
             "required": true,
             "type": "integer"
           },
@@ -2026,10 +4475,10 @@
         }
       }
     },
-    "/user/{userId}/supplier/{supplierId}/contact": {
+    "/admin/{adminId}/supplier/{supplierId}/contact": {
       "post": {
         "tags": [
-          "supplier"
+          "supplierContact"
         ],
         "summary": "supplierContact add",
         "description": "supplierContact add",
@@ -2038,9 +4487,9 @@
         ],
         "parameters": [
           {
-            "name": "userId",
+            "name": "adminId",
             "in": "path",
-            "description": "userId",
+            "description": "adminId",
             "required": true,
             "type": "integer"
           },
@@ -2075,12 +4524,10 @@
             "description": "Invalid token value or invalid admin id"
           }
         }
-      }
-    },
-    "/user/{userId}/supplier/{supplierId}/queryContact": {
+      },
       "get": {
         "tags": [
-          "supplier"
+          "supplierContact"
         ],
         "summary": "supplierContact query",
         "description": "supplierContact query",
@@ -2089,9 +4536,9 @@
         ],
         "parameters": [
           {
-            "name": "userId",
+            "name": "adminId",
             "in": "path",
-            "description": "userId",
+            "description": "adminId",
             "required": true,
             "type": "integer"
           },
@@ -2140,10 +4587,10 @@
         }
       }
     },
-    "/user/{userId}/supplier/{supplierId}/contact/{ContactId}": {
+    "/admin/{adminId}/supplier/{supplierId}/contact/{ContactId}": {
       "delete": {
         "tags": [
-          "supplier"
+          "supplierContact"
         ],
         "summary": "supplierContact del",
         "description": "supplierContact del",
@@ -2152,9 +4599,9 @@
         ],
         "parameters": [
           {
-            "name": "userId",
+            "name": "adminId",
             "in": "path",
-            "description": "userId",
+            "description": "adminId",
             "required": true,
             "type": "integer"
           },
@@ -2185,6 +4632,2486 @@
           },
           "400": {
             "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/userAddress": {
+      "get": {
+        "tags": [
+          "userAddress"
+        ],
+        "summary": "get userAddress",
+        "description": "get userAddress",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "userId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "addressId",
+            "in": "query",
+            "description": "addressId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "type",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/userAddress"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/userAddress": {
+      "get": {
+        "tags": [
+          "userAddress"
+        ],
+        "summary": "get userAddress",
+        "description": "get userAddress",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "addressId",
+            "in": "query",
+            "description": "addressId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "type 0:发车地址 1：收车地址",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/userAddress"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "userAddress"
+        ],
+        "summary": "get userAddress",
+        "description": "get userAddress",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "userAddress",
+            "in": "body",
+            "description": "userAddress",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/userAddress"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/userAddress"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/userAddress/{addressId}/type/{type}": {
+      "put": {
+        "tags": [
+          "userAddress"
+        ],
+        "summary": "put userAddress",
+        "description": "put userAddress",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "addressId",
+            "in": "path",
+            "description": "addressId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "type",
+            "in": "path",
+            "description": "1:发车；0:收车",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/userAddress"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/userAddress/{addressId}/address": {
+      "put": {
+        "tags": [
+          "userAddress"
+        ],
+        "summary": "put userAddress",
+        "description": "put userAddress",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "addressId",
+            "in": "path",
+            "description": "addressId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "userAddressInfo",
+            "in": "body",
+            "description": "userAddressInfo",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/userAddressInfo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/userAddress"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/userAddress/{addressId}": {
+      "delete": {
+        "tags": [
+          "userAddress"
+        ],
+        "summary": "del userAddress",
+        "description": "del userAddress",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "addressId",
+            "in": "path",
+            "description": "addressId",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/userAddress"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/address": {
+      "get": {
+        "tags": [
+          "address"
+        ],
+        "summary": "get address",
+        "description": "get address",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "userId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "name",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "city",
+            "in": "query",
+            "description": "city",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "addressId",
+            "in": "query",
+            "description": "addressId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "status",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "type",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/address"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "address"
+        ],
+        "summary": "add address",
+        "description": "add address",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "addressAdmin",
+            "in": "body",
+            "description": "addressAdmin",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/addressAdmin"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/addressAdmin"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/addressContact": {
+      "get": {
+        "tags": [
+          "addressContact"
+        ],
+        "summary": "get address",
+        "description": "get address",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "addressId",
+            "in": "query",
+            "description": "addressId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "userName",
+            "in": "query",
+            "description": "userName",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "addressContactId",
+            "in": "query",
+            "description": "addressContactId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "status",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "type",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/addressContact"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/addressContact": {
+      "get": {
+        "tags": [
+          "addressContact"
+        ],
+        "summary": "get address",
+        "description": "get address",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "userId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "addressId",
+            "in": "query",
+            "description": "addressId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "userName",
+            "in": "query",
+            "description": "userName",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "addressContactId",
+            "in": "query",
+            "description": "addressContactId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "status",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "type",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/addressContact"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "addressContact"
+        ],
+        "summary": "add address",
+        "description": "add address",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "addressContactAdmin",
+            "in": "body",
+            "description": "addressContactAdmin",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/addressContactAdmin"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/addressContactAdmin"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/addressContact/{addressContactId}": {
+      "delete": {
+        "tags": [
+          "addressContact"
+        ],
+        "summary": "get address",
+        "description": "get address",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "addressContactId",
+            "in": "path",
+            "description": "addressContactId",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/addressContact"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/address": {
+      "get": {
+        "tags": [
+          "address"
+        ],
+        "summary": "get address",
+        "description": "get address",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "userName",
+            "in": "query",
+            "description": "userName",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "name",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "city",
+            "in": "query",
+            "description": "city",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "addressId",
+            "in": "query",
+            "description": "addressId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "status",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "type",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/supplierContactDel"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "address"
+        ],
+        "summary": "add address",
+        "description": "add address",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "address",
+            "in": "body",
+            "description": "address",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/address"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/supplierContactDel"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/address/{addressId}/status/{status}": {
+      "put": {
+        "tags": [
+          "address"
+        ],
+        "summary": "put address",
+        "description": "put address",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "addressId",
+            "in": "path",
+            "description": "addressId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "path",
+            "description": "status",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/address"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/inquiryCar/{inquiryCarId}/inquiryCarInfo": {
+      "put": {
+        "tags": [
+          "inquiryCar"
+        ],
+        "summary": "put address",
+        "description": "put address",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "inquiryCarId",
+            "in": "path",
+            "description": "inquiryCarId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "inquiryCarInfo",
+            "in": "body",
+            "description": "inquiryCarInfo",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/inquiryCarInfo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryCarInfo"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/address/{addressId}/addressInfo": {
+      "put": {
+        "tags": [
+          "address"
+        ],
+        "summary": "put address",
+        "description": "put address",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "addressId",
+            "in": "path",
+            "description": "addressId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "addressInfo",
+            "in": "body",
+            "description": "addressInfo",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/addressInfo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/addressInfo"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/address/{addressId}/addressByAdmin": {
+      "put": {
+        "tags": [
+          "address"
+        ],
+        "summary": "put address",
+        "description": "put address",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "addressId",
+            "in": "path",
+            "description": "addressId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "addressByAdmin",
+            "in": "body",
+            "description": "addressByAdmin",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/addressByAdmin"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/addressByAdmin"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/payment": {
+      "get": {
+        "tags": [
+          "payment"
+        ],
+        "summary": "get payment",
+        "description": "get payment",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "user Id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "query",
+            "description": "order Id",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "phone",
+            "in": "query",
+            "description": "phone",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "userName",
+            "in": "query",
+            "description": "userName",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "type 0退款1支付",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "status 0未完成1已完成",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "paymentType",
+            "in": "query",
+            "description": "payment_type 1微信支付2··",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "createdOnStart",
+            "in": "query",
+            "description": "createdOnStart",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "createdOnEnd",
+            "in": "query",
+            "description": "createdOnEnd",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "paymentId",
+            "in": "query",
+            "description": "paymentId",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/payment"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/paymentStat": {
+      "get": {
+        "tags": [
+          "payment"
+        ],
+        "summary": "get payment",
+        "description": "get payment",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "admin Id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "user Id",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "query",
+            "description": "order Id",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "phone",
+            "in": "query",
+            "description": "phone",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "userName",
+            "in": "query",
+            "description": "userName",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "type 0退款1支付",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "status 0未完成1已完成",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "paymentType",
+            "in": "query",
+            "description": "payment_type 1微信支付2··",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "createdOnStart",
+            "in": "query",
+            "description": "createdOnStart",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "createdOnEnd",
+            "in": "query",
+            "description": "createdOnEnd",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "paymentId",
+            "in": "query",
+            "description": "paymentId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/payment"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/payment": {
+      "get": {
+        "tags": [
+          "payment"
+        ],
+        "summary": "get payment",
+        "description": "get payment",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "admin Id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "user Id",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "query",
+            "description": "order Id",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "paymentId",
+            "in": "query",
+            "description": "paymentId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "paymentType",
+            "in": "query",
+            "description": "1:微信;2:银行转账",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "type 0退款1支付",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "status 0未完成1已完成",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "createOrderUser",
+            "in": "query",
+            "description": "订单创建人",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "bank",
+            "in": "query",
+            "description": "bank",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "accountUser",
+            "in": "query",
+            "description": "accountUser",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "createdOnStart",
+            "in": "query",
+            "description": "格式：2018-09-23",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "createdOnEnd",
+            "in": "query",
+            "description": "格式：2018-09-23",
+            "required": false,
+            "type": "string"
+          },
+
+          {
+            "name": "start",
+            "in": "query",
+            "description": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/payment"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/paymentRefund": {
+      "get": {
+        "tags": [
+          "payment"
+        ],
+        "summary": "get payment",
+        "description": "get payment",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "admin Id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "paymentId",
+            "in": "query",
+            "description": "paymentId",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/payment"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/order/{orderId}/wechatPayment": {
+      "post": {
+        "tags": [
+          "payment"
+        ],
+        "summary": "put address",
+        "description": "put address",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "wechatPayment",
+            "in": "body",
+            "description": "wechatPayment",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/wechatPayment"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/wechatPayment"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/payment/{paymentId}/bankStatus": {
+      "put": {
+        "tags": [
+          "payment"
+        ],
+        "summary": "put status",
+        "description": "put status",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "paymentId",
+            "in": "path",
+            "description": "paymentId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "query",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/bankStatus"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/payment/{paymentId}/paymentReview": {
+      "put": {
+        "tags": [
+          "payment"
+        ],
+        "summary": "updateAmount",
+        "description": "updateAmount",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "paymentId",
+            "in": "path",
+            "description": "paymentId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "paymentReview",
+            "in": "body",
+            "description": "paymentReview",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/paymentReview"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/bankStatus"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/order/{orderId}/bankPayment": {
+      "post": {
+        "tags": [
+          "payment"
+        ],
+        "summary": "put address",
+        "description": "put address",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "bankPayment",
+            "in": "body",
+            "description": "bankPayment",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/bankPayment"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/bankPayment"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/order/{orderId}/bankPayment": {
+      "post": {
+        "tags": [
+          "payment"
+        ],
+        "summary": "put address",
+        "description": "put address",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "bankPayment",
+            "in": "body",
+            "description": "bankPayment",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/bankPayment"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/bankPayment"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/order/{orderId}/bankPayment/{paymentId}": {
+      "put": {
+        "tags": [
+          "payment"
+        ],
+        "summary": "put address",
+        "description": "update to be confirmed payment msg",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "paymentId",
+            "in": "path",
+            "description": "paymentId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "bankPayment",
+            "in": "body",
+            "description": "bankPayment",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/bankPayment"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/bankPayment"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/order/{orderId}/payment/{paymentId}/bankRefund": {
+      "post": {
+        "tags": [
+          "payment"
+        ],
+        "summary": "put address",
+        "description": "put address",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "paymentId",
+            "in": "path",
+            "description": "paymentId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "bankRefund",
+            "in": "body",
+            "description": "bankRefund",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/bankRefund"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/bankRefund"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/order/{orderId}/payment/{paymentId}/refundApply": {
+      "post": {
+        "tags": [
+          "refundApply"
+        ],
+        "summary": "refundApply",
+        "description": "refundApply",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "paymentId",
+            "in": "path",
+            "description": "paymentId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "refundApply",
+            "in": "body",
+            "description": "refundApply",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/refundApply"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/bankRefund"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/order/{orderId}/payment/{paymentId}/refundApply": {
+      "post": {
+        "tags": [
+          "refundApply"
+        ],
+        "summary": "refundApply",
+        "description": "refundApply",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "paymentId",
+            "in": "path",
+            "description": "paymentId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "refundApply",
+            "in": "body",
+            "description": "refundApply",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/refundApply"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/bankRefund"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/order/{orderId}/payment/{paymentId}/refundApply/{refundId}": {
+      "put": {
+        "tags": [
+          "refundApply"
+        ],
+        "summary": "refundApply",
+        "description": "update refundApply by id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "paymentId",
+            "in": "path",
+            "description": "paymentId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "refundId",
+            "in": "path",
+            "description": "refundId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "refundApply",
+            "in": "body",
+            "description": "refundApply",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/refundApply"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/bankRefund"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/order/{orderId}/payment/{paymentId}/deleteRefundApply/{refundApplyId}": {
+      "delete": {
+        "tags": [
+          "refundApply"
+        ],
+        "summary": "refundApply",
+        "description": "delete a refundApply",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "paymentId",
+            "in": "path",
+            "description": "paymentId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "refundApplyId",
+            "in": "path",
+            "description": "refundApplyId",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/bankRefund"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/refundApply": {
+      "get": {
+        "tags": [
+          "refundApply"
+        ],
+        "summary": "refundApply",
+        "description": "refundApply",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "query",
+            "description": "orderId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "paymentId",
+            "in": "query",
+            "description": "paymentId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "refundApplyId",
+            "in": "query",
+            "description": "refundApplyId",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/bankRefund"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/refundApply": {
+      "get": {
+        "tags": [
+          "refundApply"
+        ],
+        "summary": "refundApply",
+        "description": "get refundApply list",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "query",
+            "description": "orderId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "paymentId",
+            "in": "query",
+            "description": "paymentId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "refundApplyId",
+            "in": "query",
+            "description": "refundApplyId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "orderType",
+            "in": "query",
+            "description": "订单类型",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "refundMethod",
+            "in": "query",
+            "description": "退款方式",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "createOrderUser",
+            "in": "query",
+            "description": "订单创建人",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "createdOnStart",
+            "in": "query",
+            "description": "申请时间(始)格式：2018-09-23",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "createdOnEnd",
+            "in": "query",
+            "description": "申请时间(终)",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "updateOnStart",
+            "in": "query",
+            "description": "处理时间(始)格式：2018-09-23",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "updateOnEnd",
+            "in": "query",
+            "description": "处理时间(终)",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "状态",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/bankRefund"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/refundApplyStat": {
+      "get": {
+        "tags": [
+          "refundApply"
+        ],
+        "summary": "refundApply",
+        "description": "refundApply",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "query",
+            "description": "orderId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "paymentId",
+            "in": "query",
+            "description": "paymentId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "refundApplyId",
+            "in": "query",
+            "description": "refundApplyId",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/bankRefund"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/order/{orderId}/payment/{paymentId}/refundApply/{refundApplyId}/refuse": {
+      "put": {
+        "tags": [
+          "refundApply"
+        ],
+        "summary": "refundApply",
+        "description": "refuse with refundApply",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "refundApplyId",
+            "in": "path",
+            "description": "refundApplyId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "paymentId",
+            "in": "path",
+            "description": "paymentId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "refuseMsg",
+            "in": "body",
+            "description": "refuseStatus",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/refuseStatus"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/refuseStatus"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/order/{orderId}/payment/{paymentId}/refundApply/{refundApplyId}/agree": {
+      "put": {
+        "tags": [
+          "refundApply"
+        ],
+        "summary": "refundApply",
+        "description": "agree with refundApply",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "refundApplyId",
+            "in": "path",
+            "description": "refundApplyId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "paymentId",
+            "in": "path",
+            "description": "paymentId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "agreeMsg",
+            "in": "body",
+            "description": "refundStatus",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/refundStatus"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/refundStatus"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/user/{userId}/order/{orderId}/wechatRefund": {
+      "post": {
+        "tags": [
+          "payment"
+        ],
+        "summary": "refund",
+        "description": "refund",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "admin Id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "order Id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "user Id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "refund",
+            "in": "body",
+            "description": "refund",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/refund"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/refund"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/payment/{paymentId}/paymentRemark": {
+      "put": {
+        "tags": [
+          "payment"
+        ],
+        "summary": "payment",
+        "description": "payment",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "admin Id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "paymentId",
+            "in": "path",
+            "description": "paymentId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "paymentRemark",
+            "in": "body",
+            "description": "paymentRemark",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/paymentRemark"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/paymentRemark"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/payment/{paymentId}/RefundRemark": {
+      "put": {
+        "tags": [
+          "payment"
+        ],
+        "summary": "payment",
+        "description": "payment",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "paymentId",
+            "in": "path",
+            "description": "paymentId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "RefundRemark",
+            "in": "body",
+            "description": "RefundRemark",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RefundRemark"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/RefundRemark"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
           }
         }
       }
@@ -2305,38 +7232,98 @@
     }
   },
   "definitions": {
-    "userLogin": {
+    "createAdmin": {
       "type": "object",
       "properties": {
-        "id": {
-          "type": "integer"
-        },
         "userName": {
           "type": "string"
         },
-        "wechatAccount": {
-          "type": "string"
-        },
-        "wechatId": {
+        "realName": {
           "type": "string"
         },
         "password": {
           "type": "string"
         },
-        "gender": {
+        "phone": {
+          "type": "string"
+        },
+        "status": {
           "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "createAdmin"
+      }
+    },
+    "admin": {
+      "type": "object",
+      "required": [
+        "id",
+        "userName",
+        "password"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "userName": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "realName": {
+          "type": "string"
         },
         "phone": {
           "type": "string"
         },
-        "avatar": {
+        "status": {
+          "type": "integer",
+          "description": "admin status",
+          "enum": [
+            "0",
+            "1"
+          ]
+        }
+      },
+      "xml": {
+        "name": "admin"
+      }
+    },
+    "adminPassword": {
+      "type": "object",
+      "required": [
+        "originPassword",
+        "newPassword"
+      ],
+      "properties": {
+        "originPassword": {
           "type": "string"
         },
-        "wechatStatus": {
+        "newPassword": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "adminPassword"
+      }
+    },
+    "userLogin": {
+      "type": "object",
+      "properties": {
+        "wechatName": {
+          "type": "string"
+        },
+        "wechatId": {
+          "type": "string"
+        },
+        "gender": {
           "type": "integer"
         },
-        "authStatus": {
-          "type": "integer"
+        "avatar": {
+          "type": "string"
         }
       },
       "xml": {
@@ -2390,6 +7377,12 @@
       "properties": {
         "cityName": {
           "type": "string"
+        },
+        "cityPinYin": {
+          "type": "string"
+        },
+        "cityPY": {
+          "type": "string"
         }
       },
       "xml": {
@@ -2434,8 +7427,8 @@
         "oldCar": {
           "type": "integer"
         },
-        "phone": {
-          "type": "string"
+        "carNum": {
+          "type": "integer"
         },
         "inquiryName": {
           "type": "string"
@@ -2443,7 +7436,22 @@
         "plan": {
           "type": "integer"
         },
-        "fee": {
+        "startCity": {
+          "type": "string"
+        },
+        "endCity": {
+          "type": "string"
+        },
+        "startId": {
+          "type": "integer"
+        },
+        "endId": {
+          "type": "integer"
+        },
+        "safeStatus": {
+          "type": "integer"
+        },
+        "distance": {
           "type": "integer"
         }
       },
@@ -2454,18 +7462,26 @@
     "inquiryManageOrder": {
       "type": "object",
       "properties": {
-        "feePrice": {
+        "oraTransPrice": {
           "type": "integer"
         },
-        "freightPrice": {
+        "oraInsurePrice": {
           "type": "integer"
-        },
-        "mark": {
+        }
+      },
+      "xml": {
+        "name": "inquiryManageOrder"
+      }
+    },
+    "orderCancel": {
+      "type": "object",
+      "properties": {
+        "cancelMark": {
           "type": "string"
         }
       },
       "xml": {
-        "name": "inquiry"
+        "name": "orderCancel"
       }
     },
     "supplier": {
@@ -2476,9 +7492,6 @@
         },
         "supplierFull": {
           "type": "string"
-        },
-        "setType": {
-          "type": "integer"
         },
         "transType": {
           "type": "integer"
@@ -2534,6 +7547,729 @@
       },
       "xml": {
         "name": "wechat"
+      }
+    },
+    "userInfo": {
+      "type": "object",
+      "properties": {
+        "userName": {
+          "type": "string"
+        },
+        "gender": {
+          "type": "integer"
+        },
+        "birth": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "userInfo"
+      }
+    },
+    "receiveInfo": {
+      "type": "object",
+      "properties": {
+        "recvName": {
+          "type": "string"
+        },
+        "recvPhone": {
+          "type": "string"
+        },
+        "recvAddress": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "receiveInfo"
+      }
+    },
+    "sendInfo": {
+      "type": "object",
+      "properties": {
+        "sendName": {
+          "type": "string"
+        },
+        "sendPhone": {
+          "type": "string"
+        },
+        "sendAddress": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "sendInfo"
+      }
+    },
+    "carInfo": {
+      "type": "object",
+      "properties": {
+        "vin": {
+          "type": "string"
+        },
+        "modelType": {
+          "type": "integer"
+        },
+        "oldCar": {
+          "type": "integer"
+        },
+        "valuation": {
+          "type": "integer"
+        },
+        "distance": {
+          "type": "integer"
+        },
+        "insuranceFlag": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "carInfo"
+      }
+    },
+    "carAdmin": {
+      "type": "object",
+      "properties": {
+        "vin": {
+          "type": "string"
+        },
+        "modelType": {
+          "type": "integer"
+        },
+        "oldCar": {
+          "type": "integer"
+        },
+        "valuation": {
+          "type": "integer"
+        },
+        "safeStatus": {
+          "type": "integer"
+        },
+        "actTransPrice": {
+          "type": "integer"
+        },
+        "actInsurePrice": {
+          "type": "integer"
+        },
+        "distance": {
+          "type": "integer"
+        },
+        "serviceType": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "carAdmin"
+      }
+    },
+    "orderMark": {
+      "type": "object",
+      "properties": {
+        "mark": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "orderMark"
+      }
+    },
+    "adminMark": {
+      "type": "object",
+      "properties": {
+        "adminMark": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "adminMark"
+      }
+    },
+    "inquiryCar": {
+      "type": "object",
+      "properties": {
+        "vin": {
+          "type": "string"
+        },
+        "modelId": {
+          "type": "integer"
+        },
+        "oldCar": {
+          "type": "integer"
+        },
+        "plan": {
+          "type": "integer"
+        },
+        "fee": {
+          "type": "integer"
+        },
+        "carNum": {
+          "type": "integer"
+        },
+        "safePrice": {
+          "type": "integer"
+        },
+        "safeStatus": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "inquiryCar"
+      }
+    },
+    "feePrice": {
+      "type": "object",
+      "properties": {
+        "feePrice": {
+          "type": "integer"
+        },
+        "totalInsurePrice": {
+          "type": "integer"
+        },
+        "mark": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "feePrice"
+      }
+    },
+    "address": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "city": {
+          "type": "integer"
+        },
+        "mark": {
+          "type": "string"
+        },
+        "type": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "address"
+      }
+    },
+    "addressContactAdmin": {
+      "type": "object",
+      "properties": {
+        "addressId": {
+          "type": "integer"
+        },
+        "userName": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "position": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "addressContactAdmin"
+      }
+    },
+    "addressAdmin": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "city": {
+          "type": "integer"
+        },
+        "mark": {
+          "type": "string"
+        },
+        "type": {
+          "type": "integer"
+        },
+        "lon": {
+          "type": "integer"
+        },
+        "lat": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "addressAdmin"
+      }
+    },
+    "addressInfo": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "city": {
+          "type": "integer"
+        },
+        "mark": {
+          "type": "string"
+        },
+        "type": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "addressInfo"
+      }
+    },
+    "addressByAdmin": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "city": {
+          "type": "integer"
+        },
+        "mark": {
+          "type": "string"
+        },
+        "lon": {
+          "type": "integer"
+        },
+        "lat": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "addressByAdmin"
+      }
+    },
+    "inquiryStatus": {
+      "type": "object",
+      "properties": {
+        "markReason": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "inquiryStatus"
+      }
+    },
+    "inquiryBank": {
+      "type": "object",
+      "properties": {
+        "bank": {
+          "type": "string"
+        },
+        "bankCode": {
+          "type": "string"
+        },
+        "accountName": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "inquiryBank"
+      }
+    },
+    "inquiryInvoice": {
+      "type": "object",
+      "properties": {
+        "companyName": {
+          "type": "string"
+        },
+        "taxNumber": {
+          "type": "string"
+        },
+        "companyAddress": {
+          "type": "string"
+        },
+        "bank": {
+          "type": "string"
+        },
+        "bankCode": {
+          "type": "string"
+        },
+        "companyPhone": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "inquiryInvoice"
+      }
+    },
+    "refund": {
+      "type": "object",
+      "properties": {
+        "refundFee": {
+          "type": "integer"
+        },
+        "remark": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "refund"
+      }
+    },
+    "wechatPayment": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "integer"
+        },
+        "openid": {
+          "type": "string"
+        },
+        "totalFee": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "wechatPayment"
+      }
+    },
+    "bankPayment": {
+      "type": "object",
+      "properties": {
+        "remark": {
+          "type": "string"
+        },
+        "bank": {
+          "type": "string"
+        },
+        "bankCode": {
+          "type": "string"
+        },
+        "accountName": {
+          "type": "string"
+        },
+        "totalFee": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "bankPayment"
+      }
+    },
+    "bankRefund": {
+      "type": "object",
+      "properties": {
+        "remark": {
+          "type": "string"
+        },
+        "totalFee": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "bankRefund"
+      }
+    },
+    "inquiryCarInfo": {
+      "type": "object",
+      "properties": {
+        "modelId": {
+          "type": "integer"
+        },
+        "oldCar": {
+          "type": "integer"
+        },
+        "plan": {
+          "type": "integer"
+        },
+        "fee": {
+          "type": "integer"
+        },
+        "carNum": {
+          "type": "integer"
+        },
+        "safePrice": {
+          "type": "integer"
+        },
+        "safeStatus": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "inquiryCarInfo"
+      }
+    },
+    "actFeeAndSafePrice": {
+      "type": "object",
+      "properties": {
+        "actFee": {
+          "type": "integer"
+        },
+        "safePrice": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "actFeeAndSafePrice"
+      }
+    },
+    "orderItemInfo": {
+      "type": "object",
+      "properties": {
+        "vin": {
+          "type": "string"
+        },
+        "modelType": {
+          "type": "integer"
+        },
+        "oldCar": {
+          "type": "integer"
+        },
+        "valuation": {
+          "type": "integer"
+        },
+        "actTransPrice": {
+          "type": "integer"
+        },
+        "safeStatus": {
+          "type": "integer"
+        },
+        "actInsurePrice": {
+          "type": "integer"
+        },
+        "distance": {
+          "type": "integer"
+        },
+        "serviceType": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "orderItemInfo"
+      }
+    },
+    "paymentRemark": {
+      "type": "object",
+      "properties": {
+        "remark": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "paymentRemark"
+      }
+    },
+    "RefundRemark": {
+      "type": "object",
+      "properties": {
+        "refundRemark": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "RefundRemark"
+      }
+    },
+    "orderNew": {
+      "type": "object",
+      "properties": {
+        "routeStartId": {
+          "type": "integer"
+        },
+        "routeEndId": {
+          "type": "integer"
+        },
+        "serviceType": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "orderNew"
+      }
+    },
+    "totalTransInsurePrice": {
+      "type": "object",
+      "properties": {
+        "feePrice": {
+          "type": "integer"
+        },
+        "totalInsurePrice": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "totalTransInsurePrice"
+      }
+    },
+    "transAndInsurePrice": {
+      "type": "object",
+      "properties": {
+        "distance": {
+          "type": "integer"
+        },
+        "modelType": {
+          "type": "integer"
+        },
+        "oldCar": {
+          "type": "integer"
+        },
+        "serviceType": {
+          "type": "integer"
+        },
+        "valuation": {
+          "type": "integer"
+        },
+        "insuranceFlag": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "transAndInsurePrice"
+      }
+    },
+    "userAddress": {
+      "type": "object",
+      "properties": {
+        "address": {
+          "type": "string"
+        },
+        "detailAddress": {
+          "type": "string"
+        },
+        "userName": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "type": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "userAddress"
+      }
+    },
+    "userAddressInfo": {
+      "type": "object",
+      "properties": {
+        "address": {
+          "type": "string"
+        },
+        "detailAddress": {
+          "type": "string"
+        },
+        "userName": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "type": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "userAddressInfo"
+      }
+    },
+    "refundApply": {
+      "type": "object",
+      "properties": {
+        "mark": {
+          "type": "string"
+        },
+        "applyFee": {
+          "type": "integer"
+        },
+        "bank": {
+          "type": "string"
+        },
+        "bankCode": {
+          "type": "string"
+        },
+        "accountName": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "refundApply"
+      }
+    },
+    "refuseStatus": {
+      "type": "object",
+      "properties": {
+        "refuseReason": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "refuseStatus"
+      }
+    },
+    "refundStatus": {
+      "type": "object",
+      "properties": {
+        "refundFee": {
+          "type": "integer"
+        },
+        "remark": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "refundStatus"
+      }
+    },
+    "paymentReview": {
+      "type": "object",
+      "properties": {
+        "totalFee": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "paymentReview"
+      }
+    },
+    "invoiceApply": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "taxNumber": {
+          "type": "string"
+        },
+        "bank": {
+          "type": "string"
+        },
+        "bankCode": {
+          "type": "string"
+        },
+        "companyPhone": {
+          "type": "string"
+        },
+        "companyAddress": {
+          "type": "string"
+        },
+        "remark": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "invoiceApply"
       }
     }
   }

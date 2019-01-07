@@ -1,61 +1,60 @@
 /**
  * Created by Ling Xue on 14-3-23.
  */
+'use strict';
+let crypto = require('crypto');
 
-var crypto = require('crypto');
+let md5Key = "mp".toString('ascii');
+let aceKey = "mission";
 
-var md5Key = "mp".toString('ascii');
-var aceKey = "mission";
-
-function encryptByMd5(clearText){
-    var md5 = crypto.createHmac('md5',md5Key);
+const encryptByMd5=(clearText)=>{
+    let md5 = crypto.createHmac('md5',md5Key);
     return md5.update(clearText).digest('hex').toUpperCase();
 }
 
-function encryptByMd5Key(clearText, key){
+const encryptByMd5Key=(clearText, key)=>{
     clearText = clearText + key;
 
     return crypto.createHash('md5').update(clearText, 'utf8').digest("hex");
 }
 
-function encryptByMd5NoKey(clearText){
-    var Buffer = require("buffer").Buffer;
-    var buf = new Buffer(clearText);
-    var str = buf.toString("binary");
-    var md5 = crypto.createHash('md5');
+const encryptByMd5NoKey=(clearText)=>{
+    let Buffer = require("buffer").Buffer;
+    let buf = new Buffer(clearText);
+    let str = buf.toString("binary");
+    let md5 = crypto.createHash('md5');
     return md5.update(str).digest('hex').toUpperCase();
 }
 
-function encryptByAES(plainText){
-    var cipher = crypto.createCipher('aes-256-cbc',aceKey);
-    var cipherText = cipher.update(plainText,'utf8','hex');
+const encryptByAES=(plainText)=>{
+    let cipher = crypto.createCipher('aes-256-cbc',aceKey);
+    let cipherText = cipher.update(plainText,'utf8','hex');
     cipherText += cipher.final('hex');
     return cipherText;
 }
 
-function decryptByAES(cipherText){
-    var decipher = crypto.createDecipher('aes-256-cbc',aceKey);
-    var dec = decipher.update(cipherText,'hex','utf8');
+const decryptByAES=(cipherText)=>{
+    let decipher = crypto.createDecipher('aes-256-cbc',aceKey);
+    let dec = decipher.update(cipherText,'hex','utf8');
     if(dec == null || dec.length<1){
         return null;
     }
     dec += decipher.final('utf8');
-
     return dec;
 }
 
-function createActiveCode(email,uid){
-    var plaintext = email + "|" +uid + "|" + (new Date().getTime());
+const createActiveCode=(email,uid)=>{
+    let plaintext = email + "|" +uid + "|" + (new Date().getTime());
     return encryptByAES(plaintext);
 }
 
-function resolveActiveCode(activeCode){
+const resolveActiveCode=(activeCode)=>{
     try{
-        var plaintext = decryptByAES(activeCode);
+        let plaintext = decryptByAES(activeCode);
         if(plaintext == null){
             return null;
         }else{
-            var paramArray = plaintext.split("|");
+            let paramArray = plaintext.split("|");
             if(paramArray != null && paramArray.length >0){
                 return paramArray;
             }else{
@@ -65,23 +64,21 @@ function resolveActiveCode(activeCode){
     }catch(e){
         return null;
     }
-
 }
 
-function createLoginEmailCode(originEmail,newEmail,uid){
-    var plaintext = originEmail + "|" + newEmail + "|" +uid + "|" + (new Date().getTime());
+const createLoginEmailCode=(originEmail,newEmail,uid)=>{
+    let plaintext = originEmail + "|" + newEmail + "|" +uid + "|" + (new Date().getTime());
     return encryptByAES(plaintext);
 }
 
-
-function resolveLoginEmailCode(loginEmailCode){
-    var plaintext = decryptByAES(loginEmailCode);
+const resolveLoginEmailCode=(loginEmailCode)=>{
+    let plaintext = decryptByAES(loginEmailCode);
     if(plaintext == null){
         return null;
     }else{
-        var paramArray = plaintext.split("|");
+        let paramArray = plaintext.split("|");
         if(paramArray != null && paramArray.length == 4){
-            var paramObj = {};
+            let paramObj = {};
             paramObj.originEmail = paramArray[0];
             paramObj.newEmail = paramArray[1];
             paramObj.uid = paramArray[2];
@@ -93,11 +90,11 @@ function resolveLoginEmailCode(loginEmailCode){
     }
 }
 
-function base64Encode(input) {
-    var output = "";
-    var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
-    var _keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+=";
-    var i = 0;
+const base64Encode=(input)=>{
+    let output = "";
+    let chr1, chr2, chr3, enc1, enc2, enc3, enc4;
+    let _keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+=";
+    let i = 0;
     input = utf8Encode(input);
     while (i < input.length) {
         chr1 = input.charCodeAt(i++);
@@ -117,7 +114,7 @@ function base64Encode(input) {
             _keyStr.charAt(enc3) + _keyStr.charAt(enc4);
     }
     if(output != null ){
-        var l = output.length%4;
+        let l = output.length%4;
         if(l>0){
             for(;l<5;l++){
                 output = output + '=';
@@ -127,13 +124,12 @@ function base64Encode(input) {
     return output;
 }
 
-
-function base64Decode(input){
-    var output = "";
-    var chr1, chr2, chr3;
-    var enc1, enc2, enc3, enc4;
-    var i = 0;
-    var _keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+=";
+const base64Decode=(input)=>{
+    let output = "";
+    let chr1, chr2, chr3;
+    let enc1, enc2, enc3, enc4;
+    let i = 0;
+    let _keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+=";
     input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
     while (i < input.length) {
         enc1 = _keyStr.indexOf(input.charAt(i++));
@@ -155,30 +151,32 @@ function base64Decode(input){
     return output;
 }
 
-function utf8Encode(string){
+const utf8Encode=(string)=>{
     string = string.replace(/\r\n/g,"\n");
-    var encodeText = "";
-    for (var n = 0; n < string.length; n++) {
-        var c = string.charCodeAt(n);
-        if (c < 128) {
+    let encodeText = "";
+    for(let n = 0; n < string.length; n++) {
+        let c = string.charCodeAt(n);
+        if(c < 128) {
             encodeText += String.fromCharCode(c);
-        } else if((c > 127) && (c < 2048)) {
+        }else if((c > 127) && (c < 2048)) {
             encodeText += String.fromCharCode((c >> 6) | 192);
             encodeText += String.fromCharCode((c & 63) | 128);
-        } else {
+        }else{
             encodeText += String.fromCharCode((c >> 12) | 224);
             encodeText += String.fromCharCode(((c >> 6) & 63) | 128);
             encodeText += String.fromCharCode((c & 63) | 128);
         }
-
     }
     return encodeText;
 }
 
-function utf8Decode(encodeText){
-    var string = "";
-    var i = 0;
-    var c = c1 = c2 = 0;
+const utf8Decode=(encodeText)=>{
+    let string = "";
+    let i = 0;
+    let c1;
+    let c2;
+    let c3;
+    let c = c1 = c2 = 0;
     while ( i < encodeText.length ) {
         c = encodeText.charCodeAt(i);
         if (c < 128) {
@@ -198,57 +196,73 @@ function utf8Decode(encodeText){
     return string;
 }
 
-function createGiftCode (custId,giftId,giftCode,orderId){
-    var plaintext = custId + "|" +giftId +"|"+giftCode+"|"+orderId;
+const createGiftCode=(custId,giftId,giftCode,orderId)=>{
+    let c1 = 0;
+    let plaintext = custId + "|" +giftId +"|"+giftCode+"|"+orderId;
     return encryptByAES(plaintext);
 }
 
-function resolveGiftCode(code){
-    var plaintext = decryptByAES(code);
+const resolveGiftCode=(code)=>{
+    let plaintext = decryptByAES(code);
     if(plaintext == null){
         return null;
     }else{
-        var paramArray = plaintext.split("|");
+        let paramArray = plaintext.split("|");
         if(paramArray != null && paramArray.length == 4){
             return paramArray;
         }else{
             return null;
         }
     }
-
 }
 
-function getGiftOrderCode(){
-    var t = (new Date()).getTime();
+const getGiftOrderCode=()=>{
+    let t = (new Date()).getTime();
     t = t-1000000000000;
     return t ;
 }
 
-function getNumberRandomKey(max,min){
-    var Range = max - min;
-    var Rand = Math.random();
+const getNumberRandomKey=(max,min)=>{
+    let Range = max - min;
+    let Rand = Math.random();
     return(min + Math.round(Rand * Range));
 }
 
-function getSmsRandomKey(){
+const getSmsRandomKey=()=>{
     return getNumberRandomKey(9999,1000);
 }
 
+const randomString=(e)=>{
+    e = e || 32;
+    let t = "ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678",
+        a = t.length,
+        n = "";
+    for (let i = 0; i < e; i++) n += t.charAt(Math.floor(Math.random() * a));
+    return n
+}
+
+const decryption=(reqInfo, md5Key)=>{
+    let reqStr = new Buffer(reqInfo, 'base64').toString('hex');
+    let dec, decipher;
+    decipher = crypto.createDecipheriv('aes-256-ecb', md5Key, '');
+    dec = decipher.update(reqStr, 'hex', 'utf8');
+    dec += decipher.final('utf8');
+    return dec;
+}
 module.exports = {
-    encryptByMd5 : encryptByMd5,
-    encryptByMd5Key : encryptByMd5Key ,
-    encryptByACE : encryptByAES,
-    decryptByACE : decryptByAES,
-    createActiveCode : createActiveCode,
-    resolveActiveCode : resolveActiveCode,
-    base64Decode : base64Decode,
-    base64Encode :  base64Encode,
-    createLoginEmailCode : createLoginEmailCode,
-    resolveLoginEmailCode : resolveLoginEmailCode,
-    encryptByMd5NoKey: encryptByMd5NoKey,
-    createGiftCode : createGiftCode ,
-    resolveGiftCode : resolveGiftCode,
-    getGiftOrderCode :getGiftOrderCode ,
-    encryptByMd5NoKey : encryptByMd5NoKey ,
-    getSmsRandomKey : getSmsRandomKey
+    encryptByMd5,
+    encryptByMd5Key,
+    createActiveCode,
+    resolveActiveCode,
+    base64Decode,
+    base64Encode,
+    createLoginEmailCode,
+    resolveLoginEmailCode,
+    encryptByMd5NoKey,
+    createGiftCode,
+    resolveGiftCode,
+    getGiftOrderCode,
+    getSmsRandomKey,
+    randomString,
+    decryption
 };

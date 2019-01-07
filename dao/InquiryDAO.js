@@ -6,77 +6,182 @@ const sysConfig = require("../config/SystemConfig");
 const httpUtil = require('../util/HttpUtil');
 const db = require('../db/connection/MysqlDb.js');
 
-const getAdminUserInfo = (params,callback) => {
-    let query = "select * from user_info where id is not null ";
-    let paramsArray = [],i=0;
-    if(params.userId){
-        paramsArray[i++] = params.userId;
-        query = query + " and id = ? ";
-    }
-    if(params.wechatAccount){
-        paramsArray[i++] = params.wechatAccount;
-        query = query + " and wechat_account = ? ";
-    }
-    if(params.userName){
-        paramsArray[i++] = params.userName;
-        query = query + " and user_name = ? ";
-    }
-    if(params.phone){
-        paramsArray[i++] = params.phone;
-        query = query + " and phone = ? ";
-    }
-    if(params.wechatStatus){
-        paramsArray[i++] = params.wechatStatus;
-        query = query + " and wechat_status = ? ";
-    }
-    if(params.createdOnStart){
-        paramsArray[i++] = params.createdOnStart;
-        query = query + " and created_on >= ? ";
-    }
-    if(params.createdOnEnd){
-        paramsArray[i++] = params.createdOnEnd;
-        query = query + " and created_on <= ? ";
-    }
-    if(params.authTimeStart){
-        paramsArray[i++] = params.authTimeStart;
-        query = query + " and auth_time >= ? ";
-    }
-    if(params.authTimeEnd){
-        paramsArray[i++] = params.authTimeEnd;
-        query = query + " and auth_time <= ? ";
-    }
-    if(params.authStatus){
-        paramsArray[i++] = params.authStatus;
-        query = query + " and auth_status = ? ";
-    }
-    if(params.start && params.size){
-        paramsArray[i++] = parseInt(params.start);
-        paramsArray[i++] = parseInt(params.size);
-        query = query + " limit  ?, ? ";
-    }
-    db.dbQuery(query,paramsArray,(error,rows)=>{
-        logger.debug('getAdminUserInfo');
-        callback(error,rows)
-    })
-}
 const addRouteInquiry = (params,callback) => {
-    let query = "insert into inquiry_info(user_id,route_id,service_type,model_id,old_car,phone,inquiry_name,plan,fee) values(?,?,?,?,?,?,?,?,?)";
+    let query = "insert into inquiry_info(distance,ora_trans_price,ora_insure_price,user_id,route_id,service_type,inquiry_name,start_id,end_id,start_city,end_city) values(?,0,0,?,?,?,?,?,?,?,?)";
     let paramsArray = [],i=0;
+    paramsArray[i++] = params.distance;
     paramsArray[i++] = params.userId;
     paramsArray[i++] = params.routeId;
     paramsArray[i++] = params.serviceType;
-    paramsArray[i++] = params.modelId;
-    paramsArray[i++] = params.oldCar;
-    paramsArray[i++] = params.phone;
     paramsArray[i++] = params.inquiryName;
-    paramsArray[i++] = params.plan;
-    paramsArray[i] = params.fee;
+    paramsArray[i++] = params.startId;
+    paramsArray[i++] = params.endId;
+    paramsArray[i++] = params.startCity;
+    paramsArray[i] = params.endCity;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('addRouteInquiry');
         callback(error,rows);
     })
 }
+const getInquiryByUserId = (params,callback) => {
+    let query = " select au.real_name as admin_user,ii.*,ui.user_name,ui.phone,cri.distance from inquiry_info ii " +
+                " left join city_route_info cri on cri.route_id=ii.route_id " +
+                " left join user_info ui on ui.id=ii.user_id " +
+                " left join admin_user au on au.id=ii.admin_id " +
+                " where ii.id is not null ";
+    let paramsArray = [],i=0;
+    if(params.userId){
+        paramsArray[i++] = params.userId;
+        query = query + " and ii.user_id = ? "
+    }
+    if(params.inquiryId){
+        paramsArray[i++] = params.inquiryId;
+        query = query + " and ii.id = ? "
+    }
+    if(params.serviceType){
+        paramsArray[i++] = params.serviceType;
+        query = query + " and ii.service_type = ? "
+    }
+    if(params.modelId){
+        paramsArray[i++] = params.modelId;
+        query = query + " and ii.model_id = ? ";
+    }
+    if(params.routStartId){
+        paramsArray[i++] = params.routStartId;
+        query = query + " and ii.start_id = ? ";
+    }
+    if(params.routEndId){
+        paramsArray[i++] = params.routEndId;
+        query = query + " and ii.end_id = ? ";
+    }
+    if(params.oldCar){
+        paramsArray[i++] = params.oldCar;
+        query = query + " and ii.old_car = ? ";
+    }
+    if(params.phone){
+        paramsArray[i++] = params.phone;
+        query = query + " and ui.phone = ? ";
+    }
+    if(params.routeStart){
+        paramsArray[i++] = params.routeStart;
+        query = query + " and cri.route_start_id = ? ";
+    }
+    if(params.routeEnd){
+        paramsArray[i++] = params.routeEnd;
+        query = query + " and cri.route_end_id = ? ";
+    }
+    if(params.startCityId){
+        paramsArray[i++] = params.startCityId;
+        query = query + " and ii.start_id = ? ";
+    }
+    if(params.endCityId){
+        paramsArray[i++] = params.endCityId;
+        query = query + " and ii.end_id = ? ";
+    }
+    if(params.serviceType){
+        paramsArray[i++] = params.serviceType;
+        query = query + " and ii.service_type = ? ";
+    }
+    if(params.inquiryTimeStart){
+        paramsArray[i++] = params.inquiryTimeStart + " 00:00:00";
+        query = query + " and ii.created_on >= ? ";
+    }
+    if(params.inquiryTimeEnd){
+        paramsArray[i++] = params.inquiryTimeEnd + " 23:59:59";
+        query = query + " and ii.created_on <= ? ";
+    }
+    if(params.status){
+        paramsArray[i++] = params.status;
+        query = query + " and ii.status = ? ";
+    }
+    if(params.start && params.size){
+        paramsArray[i++] = parseInt(params.start);
+        paramsArray[i] = parseInt(params.size);
+        query = query + " limit ? , ? ";
+    }
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('getInquiryByUserId');
+        callback(error,rows)
+    })
+}
+const updateInquiryStatus = (params,callback) => {
+    let query = "update inquiry_info set status = ? where id = ? ";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.status;
+    paramsArray[i] = params.inquiryId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('updateInquiryStatus');
+        callback(error,rows);
+    })
+}
+const updateFeePrice = (params,callback) => {
+    let query = "update inquiry_info set admin_id = ?,total_trans_price = ?,total_insure_price = ?,mark=?,inquiry_time=?,status=1 where id = ? ";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.adminId;
+    paramsArray[i++] = params.feePrice;
+    paramsArray[i++] = params.totalInsurePrice;
+    paramsArray[i++] = params.mark;
+    paramsArray[i++] = params.myDate;
+    paramsArray[i] = params.inquiryId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('updateFeePrice');
+        callback(error,rows);
+    })
+}
+const updateFee = (params,callback) => {
+    let query = "update inquiry_info set car_num = ?,ora_insure_price = ?,ora_trans_price = ? where id = ? ";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.carNum;
+    paramsArray[i++] = params.safePrice;
+    paramsArray[i++] = params.fee;
+    paramsArray[i] = params.inquiryId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('updateFee');
+        callback(error,rows);
+    })
+}
+const updateFeeByCar = (params,callback) => {
+    let query = "update inquiry_info set ora_insure_price = ?,ora_trans_price = ?,car_num=? where id = ? ";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.safePrice;
+    paramsArray[i++] = params.fee;
+    paramsArray[i++] = params.carNum;
+    paramsArray[i] = params.inquiryId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('updateFeeByCar');
+        callback(error,rows);
+    })
+}
+const cancelInquiry = (params,callback) => {
+    let query = "update inquiry_info set status = 3,cancel_reason=?,cancel_time=? where id = ? ";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.markReason;
+    paramsArray[i++] = params.myDate;
+    paramsArray[i] = params.inquiryId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('cancelInquiry');
+        callback(error,rows);
+    })
+}
+const updateCarNum = (params,callback) => {
+    let query = "update inquiry_info set car_num = ?,ora_trans_price = ?,ora_insure_price = ? where id = ? ";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.carNum;
+    paramsArray[i++] = params.oraTransPrice;
+    paramsArray[i++] = params.oraInsurePrice;
+    paramsArray[i] = params.inquiryId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('updateCarNum');
+        callback(error,rows);
+    })
+}
 module.exports = {
-    getAdminUserInfo,
-    addRouteInquiry
+    addRouteInquiry,
+    getInquiryByUserId,
+    updateInquiryStatus,
+    updateFeePrice,
+    updateFee,
+    updateFeeByCar,
+    cancelInquiry,
+    updateCarNum
 }

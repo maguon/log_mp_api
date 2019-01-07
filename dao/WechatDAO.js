@@ -10,9 +10,9 @@ const getUserIdByCode = (params,callback) => {
         appid : sysConfig.wechatConfig.mpAppId,
         secret : sysConfig.wechatConfig.mpSecret,
         js_code : params.code,
-        grant_type : 'authorization_code',
+        grant_type : 'authorization_code'
     }
-    httpUtil.httpsGet(sysConfig.wechatConfig.mphost,443,url,paramObj,(err,res)=>{
+    httpUtil.httpsGet(sysConfig.wechatConfig.mpHost,443,url,paramObj,(err,res)=>{
         logger.debug('getUserIdByCode');
         callback(err,res);
     })
