@@ -58,7 +58,7 @@ const delOrderCar = (params,callback) => {
     })
 }
 const addOrderCarAdmin = (params,callback) => {
-    let query = " insert into order_item(safe_status,order_id,vin,model_type,old_car,valuation,ora_trans_price,type,ora_insure_price,act_trans_price,act_insure_price) values(?,?,?,?,?,?,?,1,?,?,?) ";
+    let query = " insert into order_item(safe_status,order_id,vin,model_type,old_car,valuation,ora_trans_price,ora_insure_price,act_trans_price,act_insure_price) values(?,?,?,?,?,?,?,?,?,?) ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.safeStatus;
     paramsArray[i++] = params.orderId;
