@@ -6085,7 +6085,7 @@
         }
       }
     },
-    "/admin/{adminId}/payment/{paymentId}/bankStatus": {
+    "/admin/{adminId}/payment/{paymentId}/refundStatus": {
       "put": {
         "tags": [
           "payment"
@@ -6156,6 +6156,13 @@
             "name": "paymentId",
             "in": "path",
             "description": "paymentId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "query",
+            "description": "orderId",
             "required": true,
             "type": "integer"
           },
