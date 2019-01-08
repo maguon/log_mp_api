@@ -77,10 +77,39 @@ const updateInvoiceApplyMsg = (req,res,next)=>{
         }
     });
 }
+const getNoInvoiceOrderList = (req,res,next)=>{
+    let params = req.params;
+    orderInvoiceDAO.getOrderInvoice(params,(error,rows)=>{
+        if (error){
+            logger.error('getNoInvoiceOrderList:' + error.message);
+            resUtil.resInternalError(error,res,next);
+        } else {
+            logger.info('getNoInvoiceOrderList:' + 'success');
+            resUtil.resetQueryRes(res,rows,null);
+            return next();
+        }
+    });
+}
+const getInvoicedOrderList = (req,res,next)=>{
+    let params = req.params;
+    params.isApply = true;
+    orderInvoiceDAO.getOrderInvoice(params,(error,rows)=>{
+        if (error){
+            logger.error('getInvoicedOrderList:' + error.message);
+            resUtil.resInternalError(error,res,next);
+        } else {
+            logger.info('getInvoicedOrderList:' + 'success');
+            resUtil.resetQueryRes(res,rows,null);
+            return next();
+        }
+    });
+}
 module.exports={
     addByAdmin,
     getList,
     updateInvoiceStatus,
     updateInvoiceOrder,
-    updateInvoiceApplyMsg
+    updateInvoiceApplyMsg,
+    getNoInvoiceOrderList,
+    getInvoicedOrderList
 }

@@ -2259,6 +2259,207 @@
         }
       }
     },
+    "/admin/{adminId}/noInvoiceOrderList": {
+      "get": {
+        "tags": [
+          "invoiceApply"
+        ],
+        "summary": " get no invoiced list",
+        "description": " get no invoiced list",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "query",
+            "description": "orderId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "cityStart",
+            "in": "query",
+            "description": "起始城市",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "cityEnd",
+            "in": "query",
+            "description": "目的城市",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "paymentStatus",
+            "in": "query",
+            "description": "支付状态",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "createdOnStart",
+            "in": "query",
+            "description": "创建时间（始）",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "createdOnEnd",
+            "in": "query",
+            "description": "创建时间（终）",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "createOrderUser",
+            "in": "query",
+            "description": "创建人",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryInvoice"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/invoiceOrderList": {
+      "get": {
+        "tags": [
+          "invoiceApply"
+        ],
+        "summary": " get invoice apply list",
+        "description": " get invoice apply list",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "invoiceApplyId",
+            "in": "query",
+            "description": "invoiceApplyId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "taxNumber",
+            "in": "query",
+            "description": "taxNumber",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "title",
+            "in": "query",
+            "description": "title",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "createOrderUser",
+            "in": "query",
+            "description": "createOrderUser",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "orderId",
+            "in": "query",
+            "description": "orderId",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "invoiceApplyTime",
+            "in": "query",
+            "description": "开票时间（始）",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "invoicedTime",
+            "in": "query",
+            "description": "开票时间（终）",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "invoiceStatus",
+            "in": "query",
+            "description": "invoiceStatus",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryInvoice"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
     "/user/{userId}/invoice": {
       "get": {
         "tags": [
