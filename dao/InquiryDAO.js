@@ -115,7 +115,7 @@ const updateInquiryStatus = (params,callback) => {
     })
 }
 const updateFeePrice = (params,callback) => {
-    let query = "update inquiry_info set admin_id = ?,total_trans_price = ?,total_insure_price = ?,mark=?,inquiry_time=?,status=1 where id = ? ";
+    let query = "update inquiry_info set admin_id = ?,total_trans_price = ?,total_insure_price = ?,remark=?,inquiry_time=?,status=1 where id = ? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.adminId;
     paramsArray[i++] = params.feePrice;
