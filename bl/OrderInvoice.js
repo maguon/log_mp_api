@@ -5,6 +5,7 @@ const sysMsg = require('../util/SystemMsg.js');
 const sysError = require('../util/SystemError.js');
 const logger = serverLogger.createLogger('OrderInvoice.js');
 const orderInvoiceDAO = require('../dao/OrderInvoiceApplyDAO');
+const sysConsts = require("../util/SystemConst");
 
 const addByAdmin = (req,res,next)=>{
     let params = req.params;
@@ -20,7 +21,35 @@ const addByAdmin = (req,res,next)=>{
         }
     });
 }
-
+const getList = (req,res,next)=>{
+    let params = req.params;
+    orderInvoiceDAO.getInvoiceList(params,(error,rows)=>{
+        if (error){
+            logger.error('getInvoiceList:' + error.message);
+            resUtil.resInternalError(error,res,next);
+        } else {
+            logger.info('getInvoiceList:' + 'success');
+            resUtil.resetQueryRes(res,rows,null);
+            return next();
+        }
+    });
+}
+const updateInvoiceStatus = (req,res,next)=>{
+    let params = req.params;
+    params.status = sysConsts.ORDER_INVOICE_APPLY.status.invoiced;
+    orderInvoiceDAO.updateStatus(params,(error,rows)=>{
+        if (error){
+            logger.error('updateInvoiceStatus:' + error.message);
+            resUtil.resInternalError(error,res,next);
+        } else {
+            logger.info('updateInvoiceStatus:' + 'success');
+            resUtil.resetUpdateRes(res,rows,null);
+            return next();
+        }
+    });
+}
 module.exports={
-    addByAdmin
+    addByAdmin,
+    getList,
+    updateInvoiceStatus
 }

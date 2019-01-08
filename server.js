@@ -124,6 +124,8 @@ const createServer=()=>{
      * order_invoice_apply
      */
     server.post({path:'/api/admin/:adminId/order/:orderId/invoiceApply',contentType: 'application/json'},orderInvoice.addByAdmin);
+    server.get('/api/admin/:adminId/invoicesList',orderInvoice.getList);
+    server.put({path:'/api/admin/:adminId/controlInvoices/:invoiceApplyId/Invoiced',contentType: 'application/json'},orderInvoice.updateInvoiceStatus);
     /**
      inquiry_car
      */

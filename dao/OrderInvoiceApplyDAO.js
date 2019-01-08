@@ -21,7 +21,73 @@ const addOrderInvoiceApply = (params,callback) => {
         callback(error,rows)
     })
 }
-
+const getInvoiceList = (params,callback) => {
+    let query = " select oia.*,oi.real_payment_price,au.real_name from order_invoice_apply oia left join order_info oi on oia.order_id =oi.id  ";
+    query = query + " left join admin_user au on oi.admin_id = au.id where oia.id is not null";
+    let paramsArray = [],i=0;
+    if(params.invoiceApplyId){
+        paramsArray[i++] = params.invoiceApplyId;
+        query = query + " and oia.id = ? ";
+    }
+    if(params.orderId){
+        paramsArray[i++] = params.orderId;
+        query = query + " and oia.order_id = ? ";
+    }
+    if(params.taxNumber){
+        paramsArray[i++] = params.taxNumber;
+        query = query + " and oia.tax_number = ? ";
+    }
+    if(params.title){
+        paramsArray[i++] = params.title;
+        query = query + " and oia.title = ? ";
+    }
+    if(params.createOrderUser){
+        paramsArray[i++] = params.createOrderUser;
+        query = query + " and au.real_name = ? ";
+    }
+    if(params.createdOnStart){
+        paramsArray[i++] = params.createdOnStart;
+        query = query + " and date_format(oia.created_on,'%Y-%m-%d') >= ? ";
+    }
+    if(params.createdOnEnd){
+        paramsArray[i++] = params.createdOnEnd;
+        query = query + " and date_format(oia.created_on,'%Y-%m-%d') <= ? ";
+    }
+    if(params.updatedOnStart){
+        paramsArray[i++] = params.updatedOnStart;
+        query = query + " and date_format(oia.created_on,'%Y-%m-%d') >= ? ";
+    }
+    if(params.updatedOnEnd){
+        paramsArray[i++] = params.updatedOnEnd;
+        query = query + " and date_format(oia.created_on,'%Y-%m-%d') <= ? ";
+    }
+    if(params.status){
+        paramsArray[i++] = params.status;
+        query = query + " and oia.status = ? ";
+    }
+    query = query + " order by oia.created_on desc";
+    if(params.start && params.size){
+        paramsArray[i++] = parseInt(params.start);
+        paramsArray[i] = parseInt(params.size);
+        query = query + " limit ?,? ";
+    }
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('getInvoiceList');
+        callback(error,rows)
+    })
+}
+const updateStatus = (params,callback) => {
+    let query = " update order_invoice_apply set status = ? where id = ?";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.status;
+    paramsArray[i] = params.invoiceApplyId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('updateStatus');
+        callback(error,rows)
+    })
+}
 module.exports = {
-    addOrderInvoiceApply
+    addOrderInvoiceApply,
+    getInvoiceList,
+    updateStatus
 }

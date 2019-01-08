@@ -67,6 +67,12 @@ const USER_ADDRESS ={
         enable:1//启用地址
     }
 }
+const ORDER_INVOICE_APPLY = {
+    status:{
+        apply: 0,
+        invoiced:1
+    }
+}
 
 const transAndInsurePrice = (params,callback) => {
     let servicePrice = 0;
@@ -114,5 +120,6 @@ module.exports = {
     PAYMENT,
     REFUND_STATUS,
     ORDER,
-    USER_ADDRESS
+    USER_ADDRESS,
+    ORDER_INVOICE_APPLY
 }

@@ -48,8 +48,12 @@
       "description": "orderItem of log api"
     },
     {
-      "name": "invoice",
-      "description": "Invoice of log api"
+      "name": "invoiceApply",
+      "description": "invoiceApply of log api"
+    },
+    {
+      "name": "userInvoice",
+      "description": "userInvoice of log api"
     },
     {
       "name": "user",
@@ -2051,7 +2055,7 @@
     "/admin/{adminId}/invoice": {
       "get": {
         "tags": [
-          "invoice"
+          "userInvoice"
         ],
         "summary": " query by user id look invoice",
         "description": " query by user id look invoice",
@@ -2139,10 +2143,126 @@
         }
       }
     },
+    "/admin/{adminId}/invoicesList": {
+      "get": {
+        "tags": [
+          "invoiceApply"
+        ],
+        "summary": " get invoices list",
+        "description": " get control over invoices list",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "invoiceApplyId",
+            "in": "query",
+            "description": "发票编号",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "query",
+            "description": "订单编号",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "taxNumber",
+            "in": "query",
+            "description": "税号",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "title",
+            "in": "query",
+            "description": "发票抬头",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "createOrderUser",
+            "in": "query",
+            "description": "订单创建人",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "createdOnStart",
+            "in": "query",
+            "description": "申请时间（始）",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "createdOnEnd",
+            "in": "query",
+            "description": "申请时间（终）",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "updatedOnStart",
+            "in": "query",
+            "description": "开票时间（始）",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "updatedOnEnd",
+            "in": "query",
+            "description": "开票时间（终）",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "状态",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryInvoice"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
     "/user/{userId}/invoice": {
       "get": {
         "tags": [
-          "invoice"
+          "userInvoice"
         ],
         "summary": " query by user id look invoice",
         "description": " query by user id look invoice",
@@ -2210,7 +2330,7 @@
       },
       "post": {
         "tags": [
-          "invoice"
+          "userInvoice"
         ],
         "summary": " add by user id look invoice",
         "description": " add by user id look invoice",
@@ -2254,7 +2374,7 @@
     "/user/{userId}/invoice/{invoiceId}/status/{status}": {
       "put": {
         "tags": [
-          "invoice"
+          "userInvoice"
         ],
         "summary": " put by user id look invoice",
         "description": " put by user id look invoice",
@@ -2300,10 +2420,52 @@
         }
       }
     },
+    "/admin/{adminId}/controlInvoices/{invoiceApplyId}/Invoiced": {
+      "put": {
+        "tags": [
+          "invoiceApply"
+        ],
+        "summary": " status",
+        "description": " Confirm that the invoice has been issued",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "invoiceApplyId",
+            "in": "path",
+            "description": "发票编号",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryInvoice"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
     "/admin/{adminId}/order/{orderId}/invoiceApply": {
       "post": {
         "tags": [
-          "invoice"
+          "invoiceApply"
         ],
         "summary": " admin apply an order invoice",
         "description": "admin apply an order invoice",
