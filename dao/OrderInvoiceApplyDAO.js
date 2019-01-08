@@ -96,9 +96,31 @@ const updateOrderId = (params,callback) => {
         callback(error,rows)
     })
 }
+const updateById = (params,callback) => {
+    let query = " update order_invoice_apply set title = ? , tax_number = ? ,bank = ? ,bank_code = ? ,company_phone = ? ,company_address = ?";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.title;
+    paramsArray[i++] = params.taxNumber;
+    paramsArray[i++] = params.bank;
+    paramsArray[i++] = params.bankCode;
+    paramsArray[i++] = params.phone;
+    paramsArray[i++] = params.companyAddress;
+    if (params.remark && params.remark != ''){
+        paramsArray[i++] = params.remark;
+        query = query+ " ,remark = ? ";
+    }
+    paramsArray[i] = params.invoiceApplyId;
+    query = query + " where id = ?";
+
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('updateById');
+        callback(error,rows)
+    })
+}
 module.exports = {
     addOrderInvoiceApply,
     getInvoiceList,
     updateStatus,
-    updateOrderId
+    updateOrderId,
+    updateById
 }

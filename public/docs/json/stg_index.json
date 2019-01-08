@@ -2518,7 +2518,7 @@
         "tags": [
           "invoiceApply"
         ],
-        "summary": " status",
+        "summary": " orderId",
         "description": " delete Order By InvoiceId",
         "produces": [
           "application/json"
@@ -2537,6 +2537,106 @@
             "description": "发票编号",
             "required": true,
             "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryInvoice"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/controlInvoices/{invoiceApplyId}/fillInOrder/{orderId}": {
+      "put": {
+        "tags": [
+          "invoiceApply"
+        ],
+        "summary": " orderId",
+        "description": " Fill in the order number",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "invoiceApplyId",
+            "in": "path",
+            "description": "发票编号",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryInvoice"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/controlInvoices/{invoiceApplyId}/updateInvoiceMsg": {
+      "put": {
+        "tags": [
+          "invoiceApply"
+        ],
+        "summary": " invoice",
+        "description": " update Invoice msg",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "invoiceApplyId",
+            "in": "path",
+            "description": "发票编号",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "invoiceMsg",
+            "in": "body",
+            "description": "invoiceMsg",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/updateInvoiceMsg"
+            }
           }
         ],
         "responses": {
@@ -8533,6 +8633,35 @@
       },
       "xml": {
         "name": "carMsgOfOrderItem"
+      }
+    },
+    "updateInvoiceMsg": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "taxNumber": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "bank": {
+          "type": "string"
+        },
+        "bankCode": {
+          "type": "string"
+        },
+        "companyAddress": {
+          "type": "string"
+        },
+        "remark": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "updateInvoiceMsg"
       }
     }
   }
