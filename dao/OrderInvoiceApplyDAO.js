@@ -102,7 +102,7 @@ const getOrderInvoice = (params,callback) => {
         query = query + " and date_format(oia.created_on,'%Y-%m-%d') = ? ";
     }
     if(params.invoicedTime){
-        paramsArray[i++] = params.invoiceedTime;
+        paramsArray[i++] = params.invoicedTime;
         query = query + " and date_format(oia.updated_on,'%Y-%m-%d') = ? ";
     }
     if(params.invoiceStatus){
