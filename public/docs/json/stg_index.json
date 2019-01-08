@@ -2169,14 +2169,14 @@
             "type": "integer"
           },
           {
-            "name": "cityStart",
+            "name": "routeStartId",
             "in": "query",
             "description": "起始城市",
             "required": false,
             "type": "string"
           },
           {
-            "name": "cityEnd",
+            "name": "routeEndId",
             "in": "query",
             "description": "目的城市",
             "required": false,

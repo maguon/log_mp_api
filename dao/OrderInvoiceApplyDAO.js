@@ -109,13 +109,13 @@ const getOrderInvoice = (params,callback) => {
         paramsArray[i++] = params.invoiceStatus;
         query = query + " and oia.status= ? ";
     }
-    if (params.cityStart){
-        paramsArray[i++] = params.cityStart;
-        query = query + " and oi.route_start= ? ";
+    if (params.routeStartId){
+        paramsArray[i++] = params.routeStartId;
+        query = query + " and oi.route_start_id= ? ";
     }
-    if (params.cityEnd){
-        paramsArray[i++] = params.cityEnd;
-        query = query + " and oi.route_end= ? ";
+    if (params.routeEndId){
+        paramsArray[i++] = params.routeEndId;
+        query = query + " and oi.route_end_id= ? ";
     }
     if (params.paymentStatus){
         paramsArray[i++] = params.paymentStatus;
