@@ -124,9 +124,8 @@ const createServer=()=>{
      * order_invoice_apply
      */
     server.post({path:'/api/admin/:adminId/order/:orderId/invoiceApply',contentType: 'application/json'},orderInvoice.addByAdmin);
-    server.get('/api/admin/:adminId/invoicesList',orderInvoice.getList);
     server.get('/api/admin/:adminId/noInvoiceOrderList',orderInvoice.getNoInvoiceOrderList);
-    server.get('/api/admin/:adminId/invoiceOrderList',orderInvoice.getInvoicedOrderList);
+    server.get('/api/admin/:adminId/invoicesList',orderInvoice.getInvoicedOrderList);
     server.put({path:'/api/admin/:adminId/controlInvoices/:invoiceApplyId/Invoiced',contentType: 'application/json'},orderInvoice.updateInvoiceStatus);
     server.put({path:'/api/admin/:adminId/controlInvoices/:invoiceApplyId/deleteOrder',contentType: 'application/json'},orderInvoice.updateInvoiceOrder);
     server.put({path:'/api/admin/:adminId/controlInvoices/:invoiceApplyId/fillInOrder/:orderId',contentType: 'application/json'},orderInvoice.updateInvoiceOrder);

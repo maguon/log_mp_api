@@ -2143,122 +2143,6 @@
         }
       }
     },
-    "/admin/{adminId}/invoicesList": {
-      "get": {
-        "tags": [
-          "invoiceApply"
-        ],
-        "summary": " get invoices list",
-        "description": " get control over invoices list",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "invoiceApplyId",
-            "in": "query",
-            "description": "发票编号",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "orderId",
-            "in": "query",
-            "description": "订单编号",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "taxNumber",
-            "in": "query",
-            "description": "税号",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "title",
-            "in": "query",
-            "description": "发票抬头",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "createOrderUser",
-            "in": "query",
-            "description": "订单创建人",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "createdOnStart",
-            "in": "query",
-            "description": "申请时间（始）",
-            "required": false,
-            "type": "string"
-          },{
-            "name": "createdOnEnd",
-            "in": "query",
-            "description": "申请时间（终）",
-            "required": false,
-            "type": "string"
-          },{
-            "name": "updatedOnStart",
-            "in": "query",
-            "description": "开票时间（始）",
-            "required": false,
-            "type": "string"
-          },{
-            "name": "updatedOnEnd",
-            "in": "query",
-            "description": "开票时间（终）",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "status",
-            "in": "query",
-            "description": "状态",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "start",
-            "in": "query",
-            "description": "start",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "size",
-            "in": "query",
-            "description": "size",
-            "required": false,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/inquiryInvoice"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
     "/admin/{adminId}/noInvoiceOrderList": {
       "get": {
         "tags": [
@@ -2356,7 +2240,7 @@
         }
       }
     },
-    "/admin/{adminId}/invoiceOrderList": {
+    "/admin/{adminId}/invoicesList": {
       "get": {
         "tags": [
           "invoiceApply"

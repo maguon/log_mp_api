@@ -50,6 +50,15 @@ const ORDER ={
         complete:2,//支付完成
         unPaid:0,//未支付
         partial:1//部分支付
+    },
+    status:{
+        informationToBeImproved :0,//待完善信息
+        priceToBeImproved:1,//待完善价格
+        reqToBeGenerated:2,//待生成需求
+        carsToBeArranged:3,//带安排车辆
+        inExecution:4,//执行中
+        cancelled:8,//已取消
+        completed:9//已完成
     }
 }
 const REFUND_STATUS = {

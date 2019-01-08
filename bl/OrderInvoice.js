@@ -21,19 +21,6 @@ const addByAdmin = (req,res,next)=>{
         }
     });
 }
-const getList = (req,res,next)=>{
-    let params = req.params;
-    orderInvoiceDAO.getInvoiceList(params,(error,rows)=>{
-        if (error){
-            logger.error('getInvoiceList:' + error.message);
-            resUtil.resInternalError(error,res,next);
-        } else {
-            logger.info('getInvoiceList:' + 'success');
-            resUtil.resetQueryRes(res,rows,null);
-            return next();
-        }
-    });
-}
 const updateInvoiceStatus = (req,res,next)=>{
     let params = req.params;
     params.status = sysConsts.ORDER_INVOICE_APPLY.status.invoiced;
@@ -79,6 +66,7 @@ const updateInvoiceApplyMsg = (req,res,next)=>{
 }
 const getNoInvoiceOrderList = (req,res,next)=>{
     let params = req.params;
+    params.orderStatus = sysConsts.ORDER.status.completed;
     orderInvoiceDAO.getOrderInvoice(params,(error,rows)=>{
         if (error){
             logger.error('getNoInvoiceOrderList:' + error.message);
@@ -106,7 +94,6 @@ const getInvoicedOrderList = (req,res,next)=>{
 }
 module.exports={
     addByAdmin,
-    getList,
     updateInvoiceStatus,
     updateInvoiceOrder,
     updateInvoiceApplyMsg,
