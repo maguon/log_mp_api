@@ -22,10 +22,15 @@ const addOrderInvoiceApply = (params,callback) => {
     })
 }
 const updateStatus = (params,callback) => {
-    let query = " update order_invoice_apply set status = ? where id = ?";
+    let query = " update order_invoice_apply set status = ? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.status;
+    if (params.refuseReason) {
+        paramsArray[i++] = params.refuseReason;
+        query += " ,refuse_reason = ?"
+    }
     paramsArray[i] = params.invoiceApplyId;
+    query += " where id = ?";
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('updateStatus');
         callback(error,rows)
@@ -145,10 +150,30 @@ const getOrderInvoice = (params,callback) => {
         callback(error,rows)
     })
 }
+const deleteRevokeInvoice = (params,callback) => {
+    let query = " delete from order_invoice_apply where id = ?";
+    let paramsArray = [],i=0;
+    paramsArray[i] = params.invoiceApplyId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('deleteRevokeInvoice');
+        callback(error,rows)
+    })
+}
+const getById = (params,callback) => {
+    let query = " select * from order_invoice_apply where id = ?";
+    let paramsArray = [],i=0;
+    paramsArray[i] = params.invoiceApplyId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('getById');
+        callback(error,rows)
+    })
+}
 module.exports = {
     addOrderInvoiceApply,
     updateStatus,
     updateOrderId,
     updateById,
-    getOrderInvoice
+    getOrderInvoice,
+    deleteRevokeInvoice,
+    getById
 }

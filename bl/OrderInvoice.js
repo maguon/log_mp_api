@@ -115,11 +115,59 @@ const getInvoicedOrderList = (req,res,next)=>{
         }
     });
 }
+const delInvoiceApply = (req,res,next)=>{
+    let params = req.params;
+    let status = 0;
+    new Promise((resolve,reject)=>{
+        orderInvoiceDAO.getById(params,(error,rows)=>{
+            if (error){
+                logger.error('getInvoiceApplyById:' + error.message);
+                resUtil.resInternalError(error,res,next);
+                reject(error);
+            } else {
+                status = rows[0].status;
+                if (status == sysConsts.ORDER_INVOICE_APPLY.status.invoiced){
+                    resUtil.resetFailedRes(res,sysMsg.ADMIN_ORDER_INVOICE_APPLY_REVOKE);
+                    reject(error);
+                } else {
+                    resolve();
+                }
+            }
+        })
+    }).then(()=>{
+        orderInvoiceDAO.deleteRevokeInvoice(params,(error,result)=>{
+            if (error){
+                logger.error('deleteRevokeInvoice:' + error.message);
+                resUtil.resInternalError(error,res,next);
+            } else {
+                logger.info('deleteRevokeInvoice:' + 'success');
+                resUtil.resetUpdateRes(res,result,null);
+                return next();
+            }
+        })
+    })
+}
+const updateRefuseStatus = (req,res,next)=>{
+    let params = req.params;
+    params.status = sysConsts.ORDER_INVOICE_APPLY.status.refuse;
+    orderInvoiceDAO.updateStatus(params,(error,rows)=>{
+        if (error){
+            logger.error('updateInvoiceStatus:' + error.message);
+            resUtil.resInternalError(error,res,next);
+        } else {
+            logger.info('updateInvoiceStatus:' + 'success');
+            resUtil.resetUpdateRes(res,rows,null);
+            return next();
+        }
+    });
+}
 module.exports={
     addByAdmin,
     updateInvoiceStatus,
     updateInvoiceApplyMsg,
     getNoInvoiceOrderList,
     getInvoicedOrderList,
-    replaceOrderId
+    replaceOrderId,
+    delInvoiceApply,
+    updateRefuseStatus
 }

@@ -39,6 +39,11 @@ let ADMIN_LOGIN_USER_UNREGISTERED = "用户不存在"; //Customer use a email th
 let ADMIN_PAYMENT_UPDATE_PERMISSION = "只有银行转账才能操作";
 let ADMIN_PAYMENT_NO_MSG = "找不到该支付信息";
 
+/**
+ * The order invoice apply
+ */
+let ADMIN_ORDER_INVOICE_APPLY_REVOKE = "已经处理的发票不能被撤销呦";
+
 module.exports = {
     SYS_AUTH_TOKEN_ERROR,
     SYS_VALIDATE_EMAIL_ERROR,
@@ -62,5 +67,6 @@ module.exports = {
     CUST_CREATE_EXISTING,
     ADMIN_LOGIN_USER_UNREGISTERED,
     ADMIN_PAYMENT_UPDATE_PERMISSION,
-    ADMIN_PAYMENT_NO_MSG
+    ADMIN_PAYMENT_NO_MSG,
+    ADMIN_ORDER_INVOICE_APPLY_REVOKE
 }

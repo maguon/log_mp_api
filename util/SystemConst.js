@@ -79,7 +79,8 @@ const USER_ADDRESS ={
 const ORDER_INVOICE_APPLY = {
     status:{
         apply: 0,
-        invoiced:1
+        invoiced:1,
+        refuse:2
     }
 }
 

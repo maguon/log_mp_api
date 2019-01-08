@@ -2698,6 +2698,99 @@
         }
       }
     },
+    "/admin/{adminId}/controlInvoices/{invoiceApplyId}/revokeInvoice": {
+      "delete": {
+        "tags": [
+          "invoiceApply"
+        ],
+        "summary": " invoice",
+        "description": " 撤销发票",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "invoiceApplyId",
+            "in": "path",
+            "description": "发票编号",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryInvoice"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/controlInvoices/{invoiceApplyId}/refuseApply": {
+      "put": {
+        "tags": [
+          "invoiceApply"
+        ],
+        "summary": " invoice",
+        "description": " 驳回发票申请",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "invoiceApplyId",
+            "in": "path",
+            "description": "发票编号",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "refuseApplyMsg",
+            "in": "body",
+            "description": "驳回原因",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/refuseApplyMsg"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryInvoice"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
     "/user/{userId}/inquiry": {
       "get": {
         "tags": [
@@ -8705,6 +8798,17 @@
       },
       "xml": {
         "name": "updateInvoiceMsg"
+      }
+    },
+    "refuseApplyMsg": {
+      "type": "object",
+      "properties": {
+        "refuseReason": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "refuseApplyMsg"
       }
     }
   }
