@@ -2513,6 +2513,48 @@
         }
       }
     },
+    "/admin/{adminId}/controlInvoices/{invoiceApplyId}/deleteOrder": {
+      "put": {
+        "tags": [
+          "invoiceApply"
+        ],
+        "summary": " status",
+        "description": " delete Order By InvoiceId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "invoiceApplyId",
+            "in": "path",
+            "description": "发票编号",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryInvoice"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
     "/user/{userId}/inquiry": {
       "get": {
         "tags": [

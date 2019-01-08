@@ -86,8 +86,19 @@ const updateStatus = (params,callback) => {
         callback(error,rows)
     })
 }
+const updateOrderId = (params,callback) => {
+    let query = " update order_invoice_apply set order_id = ? where id = ?";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.orderId;
+    paramsArray[i] = params.invoiceApplyId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('updateOrderId');
+        callback(error,rows)
+    })
+}
 module.exports = {
     addOrderInvoiceApply,
     getInvoiceList,
-    updateStatus
+    updateStatus,
+    updateOrderId
 }
