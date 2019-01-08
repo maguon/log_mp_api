@@ -35,11 +35,34 @@ const updateInvoiceStatus = (req,res,next)=>{
         }
     });
 }
-const updateInvoiceOrder = (req,res,next)=>{
+const replaceOrderId =(req,res,next)=>{
     let params = req.params;
-    if (!params.orderId){
+    let orderId = params.orderId;
+    new Promise((resolve,reject)=>{
         params.orderId = 0;
-    }
+        orderInvoiceDAO.updateOrderId(params,(error,rows)=>{
+            if (error){
+                logger.error('updateInvoiceOrder:' + error.message);
+                resUtil.resInternalError(error,res,next);
+                reject(error);
+            } else {
+                logger.info('updateInvoiceOrder:' + 'success');
+                resolve();
+            }
+        });
+    }).then(()=>{
+        params.orderId = orderId;
+        orderInvoiceDAO.updateOrderId(params,(error,rows)=>{
+            if (error){
+                logger.error('updateInvoiceOrder:' + error.message);
+                resUtil.resInternalError(error,res,next);
+            } else {
+                logger.info('updateInvoiceOrder:' + 'success');
+                resUtil.resetUpdateRes(res,rows,null);
+                return next();
+            }
+        });
+    })
     orderInvoiceDAO.updateOrderId(params,(error,rows)=>{
         if (error){
             logger.error('updateInvoiceOrder:' + error.message);
@@ -95,8 +118,8 @@ const getInvoicedOrderList = (req,res,next)=>{
 module.exports={
     addByAdmin,
     updateInvoiceStatus,
-    updateInvoiceOrder,
     updateInvoiceApplyMsg,
     getNoInvoiceOrderList,
-    getInvoicedOrderList
+    getInvoicedOrderList,
+    replaceOrderId
 }
