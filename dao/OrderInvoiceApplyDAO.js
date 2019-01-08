@@ -121,18 +121,18 @@ const getOrderInvoice = (params,callback) => {
         paramsArray[i++] = params.paymentStatus;
         query = query + " and oi.payment_status= ? ";
     }
+    if(params.createdOnStart){
+        paramsArray[i++] = params.createdOnStart;
+        query = query + " and date_format(oi.created_on,'%Y-%m-%d') >= ? ";
+    }
+    if(params.createdOnEnd){
+        paramsArray[i++] = params.createdOnEnd;
+        query = query + " and date_format(oi.created_on,'%Y-%m-%d') <= ? ";
+    }
     if (params.isApply){
         query = query + " order by oia.created_on desc";
     } else {
         query = query + " order by oi.created_on desc";
-    }
-    if(params.createdOrderTime){
-        paramsArray[i++] = params.createdOrderTime;
-        query = query + " and date_format(oi.created_on,'%Y-%m-%d') >= ? ";
-    }
-    if(params.createdOrderEnd){
-        paramsArray[i++] = params.createdOrderEnd;
-        query = query + " and date_format(oi.created_on,'%Y-%m-%d') <= ? ";
     }
     if(params.start && params.size){
         paramsArray[i++] = parseInt(params.start);
