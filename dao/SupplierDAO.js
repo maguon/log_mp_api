@@ -7,7 +7,7 @@ const httpUtil = require('../util/HttpUtil');
 const db = require('../db/connection/MysqlDb.js');
 
 const addSupplier = (params,callback) => {
-    let query = "insert into supplier_info(supplier_short,supplier_full,trans_type,mark) values(?,?,?,?)";
+    let query = "insert into supplier_info(supplier_short,supplier_full,trans_type,remark) values(?,?,?,?)";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.supplierShort;
     paramsArray[i++] = params.supplierFull;
@@ -48,7 +48,7 @@ const querySupplier = (params,callback) => {
     })
 }
 const updateSupplier = (params,callback) => {
-    let query = "update supplier_info set supplier_short=?,supplier_full=?,trans_type=?,mark=? where id=? ";
+    let query = "update supplier_info set supplier_short=?,supplier_full=?,trans_type=?,remark=? where id=? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.supplierShort;
     paramsArray[i++] = params.supplierFull;
