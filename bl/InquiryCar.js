@@ -7,6 +7,7 @@ const sysError = require('../util/SystemError.js');
 const logger = serverLogger.createLogger('InquiryCar.js');
 const inquiryCarDAO = require('../dao/InquiryCarDAO.js');
 const inquiryDAO = require('../dao/InquiryDAO.js');
+const commonUtil = require("../util/CommonUtil");
 
 const getInquiryCarByInquiryId = (req,res,next) => {
     let params = req.params;
@@ -23,57 +24,37 @@ const getInquiryCarByInquiryId = (req,res,next) => {
 }
 const addCar = (req,res,next) => {
     let params = req.params;
+    let priceItem;
     new Promise((resolve,reject)=>{
-        inquiryCarDAO.addCar(params,(error,result)=>{
+        inquiryDAO.getById({inquiryId:params.inquiryId},(error,rows)=>{
             if(error){
-                logger.error('addRouteInquiry' + error.message);
+                logger.error('getInquiryById' + error.message);
                 reject(error);
-            }else if(result && result.insertId < 1){
-                logger.warn('addRouteInquiry'+'创建车辆估值失败');
-                resUtil.resetFailedRes(res,'创建车辆估值失败',null);
             }else{
-                logger.info('addRouteInquiry' + 'success');
-                resolve();
+                logger.info('getInquiryById' + 'success');
+                if (rows.length >0){
+                    params.distance = rows[0].distance;
+                    resolve();
+                } else {
+                    resUtil.resetFailedRes(res,sysMsg.USER_GET_NO_INQUIRY);
+                }
             }
         })
     }).then(()=>{
-        new Promise((resolve,reject)=>{
-            inquiryCarDAO.getInquiryCarByInquiryId({inquiryId:params.inquiryId},(error,rows)=>{
-                if(error){
-                    logger.error('getInquiryCarByInquiryId' + error.message);
-                    reject(error);
-                }else if(rows && rows.length < 1){
-                    logger.warn('getInquiryCarByInquiryId'+'没有此询价车辆估值信息');
-                    resUtil.resetFailedRes(res,'没有此询价车辆估值信息',null);
-                }else{
-                    logger.info('getInquiryCarByInquiryId' + 'success');
-                    let fee = 0;
-                    let carNum = 0;
-                    let safePrice = 0;
-                    for(let i = 0;i < rows.length; i++){
-                        fee = fee + rows[i].trans_price * rows[i].car_num;
-                        carNum = carNum + rows[i].car_num;
-                        safePrice = safePrice + rows[i].insure_price * rows[i].car_num;
-                    }
-                    params.fee = fee;
-                    params.carNum = carNum;
-                    params.safePrice = safePrice;
-                    resolve();
-                }
-            })
-        }).then(()=>{
-            new Promise((resolve,reject)=>{
-                inquiryDAO.updateFeeByCar({safePrice:params.safePrice,inquiryId:params.inquiryId,fee:params.fee,carNum:params.carNum},(error,result)=>{
-                    if(error){
-                        logger.error('updateFee' + error.message);
-                        reject(error);
-                    }else{
-                        logger.info('updateFee'+'success');
-                        resUtil.resetUpdateRes(res,result,null);
-                        return next();
-                    }
-                })
-            })
+        priceItem = commonUtil.calculatedAmount(params.serviceType,params.oldCar,params.modelId,params.distance,params.safeStatus,params.plan);
+        params.transPrice = params.carNum * priceItem.trans;
+        params.insurePrice = params.carNum * priceItem.insure;
+        inquiryCarDAO.addCar(params,(error,result)=>{
+            if(error){
+                logger.error('addInquiryCar' + error.message);
+            }else if(result && result.insertId < 1){
+                logger.warn('addInquiryCar'+'创建车辆估值失败');
+                resUtil.resetFailedRes(res,'创建车辆估值失败',null);
+            }else{
+                logger.info('addInquiryCar' + 'success');
+                resUtil.resetCreateRes(res,result,null);
+                return next();
+            }
         })
     }).catch((error)=>{
         resUtil.resInternalError(error,res,next);

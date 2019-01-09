@@ -8183,9 +8183,6 @@
     "inquiryCar": {
       "type": "object",
       "properties": {
-        "vin": {
-          "type": "string"
-        },
         "modelId": {
           "type": "integer"
         },
@@ -8195,16 +8192,13 @@
         "plan": {
           "type": "integer"
         },
-        "fee": {
-          "type": "integer"
-        },
         "carNum": {
           "type": "integer"
         },
-        "safePrice": {
+        "safeStatus": {
           "type": "integer"
         },
-        "safeStatus": {
+        "serviceType": {
           "type": "integer"
         }
       },

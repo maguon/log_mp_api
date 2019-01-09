@@ -45,6 +45,10 @@ let ADMIN_PAYMENT_NO_MSG = "找不到该支付信息";
 let ADMIN_ORDER_INVOICE_APPLY_REVOKE = "已经处理的发票不能被撤销呦";
 let ADMIN_ORDER_UNREGISTERED = "该订单不存在,请输入正确的订单编号";
 let ADMIN_ORDER_INVOICE_ONLYONE = "一个订单只能申请一张发票";
+/**
+ * The inquiry info
+ */
+let USER_GET_NO_INQUIRY = "找不到该询价信息,请输入正确的询价码";
 
 module.exports = {
     SYS_AUTH_TOKEN_ERROR,
@@ -72,5 +76,6 @@ module.exports = {
     ADMIN_PAYMENT_NO_MSG,
     ADMIN_ORDER_INVOICE_APPLY_REVOKE,
     ADMIN_ORDER_UNREGISTERED,
-    ADMIN_ORDER_INVOICE_ONLYONE
+    ADMIN_ORDER_INVOICE_ONLYONE,
+    USER_GET_NO_INQUIRY
 }

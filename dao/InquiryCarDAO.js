@@ -37,17 +37,17 @@ const getInquiryCarByInquiryId = (params,callback) => {
     })
 }
 const addCar = (params,callback) => {
-    let query = " insert into inquiry_car(insure_price,safe_status,user_id,inquiry_id,model_id,old_car,plan,trans_price,car_num) values(?,?,?,?,?,?,?,?,?)";
+    let query = " insert into inquiry_car(user_id,inquiry_id,model_id,old_car,plan,trans_price,insure_price,car_num,safe_status) values(?,?,?,?,?,?,?,?,?)";
     let paramsArray = [],i=0;
-    paramsArray[i++] = params.safePrice;
-    paramsArray[i++] = params.safeStatus;
     paramsArray[i++] = params.userId;
     paramsArray[i++] = params.inquiryId;
     paramsArray[i++] = params.modelId;
     paramsArray[i++] = params.oldCar;
     paramsArray[i++] = params.plan;
-    paramsArray[i++] = params.fee;
-    paramsArray[i] = params.carNum;
+    paramsArray[i++] = params.transPrice;
+    paramsArray[i++] = params.insurePrice;
+    paramsArray[i++] = params.carNum;
+    paramsArray[i] = params.safeStatus;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('addCar');
         callback(error,rows)
