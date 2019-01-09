@@ -53,7 +53,7 @@ const updateById = (params,callback) => {
     paramsArray[i++] = params.taxNumber;
     paramsArray[i++] = params.bank;
     paramsArray[i++] = params.bankCode;
-    paramsArray[i++] = params.phone;
+    paramsArray[i++] = params.companyPhone;
     paramsArray[i++] = params.companyAddress;
     if (params.remark && params.remark != ''){
         paramsArray[i++] = params.remark;
