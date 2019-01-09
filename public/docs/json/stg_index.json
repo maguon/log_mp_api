@@ -8751,7 +8751,7 @@
     "carMsgOfOrderItem": {
       "type": "object",
       "properties": {
-        "type": {
+        "modelType": {
           "type": "integer"
         },
         "vin": {
