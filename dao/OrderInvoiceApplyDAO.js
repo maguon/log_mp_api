@@ -103,13 +103,21 @@ const getOrderInvoice = (params,callback) => {
         paramsArray[i++] = params.orderId;
         query = query + " and oi.id= ? ";
     }
-    if(params.invoiceApplyTime){
-        paramsArray[i++] = params.invoiceApplyTime;
-        query = query + " and date_format(oia.created_on,'%Y-%m-%d') = ? ";
+    if(params.invoiceApplyTimeStart){
+        paramsArray[i++] = params.invoiceApplyTimeStart;
+        query = query + " and date_format(oia.created_on,'%Y-%m-%d') >= ? ";
     }
-    if(params.invoicedTime){
-        paramsArray[i++] = params.invoicedTime;
-        query = query + " and date_format(oia.updated_on,'%Y-%m-%d') = ? ";
+    if(params.invoiceApplyTimeEnd){
+        paramsArray[i++] = params.invoiceApplyTimeEnd;
+        query = query + " and date_format(oia.created_on,'%Y-%m-%d') <= ? ";
+    }
+    if(params.invoicedTimeStart){
+        paramsArray[i++] = params.invoicedTimeStart;
+        query = query + " and date_format(oia.updated_on,'%Y-%m-%d') >= ? ";
+    }
+    if(params.invoicedTimeEnd){
+        paramsArray[i++] = params.invoicedTimeEnd;
+        query = query + " and date_format(oia.updated_on,'%Y-%m-%d') <= ? ";
     }
     if(params.invoiceStatus){
         paramsArray[i++] = params.invoiceStatus;

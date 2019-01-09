@@ -2294,13 +2294,25 @@
             "type": "string"
           },
           {
-            "name": "invoiceApplyTime",
+            "name": "invoiceApplyTimeStart",
+            "in": "query",
+            "description": "申请时间（始）",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "invoiceApplyTimeEnd",
+            "in": "query",
+            "description": "申请时间（终）",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "invoicedTimeStart",
             "in": "query",
             "description": "开票时间（始）",
             "required": false,
             "type": "string"
           },{
-            "name": "invoicedTime",
+            "name": "invoicedTimeEnd",
             "in": "query",
             "description": "开票时间（终）",
             "required": false,
