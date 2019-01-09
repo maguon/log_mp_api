@@ -115,13 +115,13 @@ const updateInquiryStatus = (params,callback) => {
     })
 }
 const updateFeePrice = (params,callback) => {
-    let query = "update inquiry_info set admin_id = ?,total_trans_price = ?,total_insure_price = ?,remark=?,inquiry_time=?,status=1 where id = ? ";
+    let query = "update inquiry_info set total_trans_price = ?,total_insure_price = ?,remark=?,inquiry_time=?,status=? where id = ? ";
     let paramsArray = [],i=0;
-    paramsArray[i++] = params.adminId;
-    paramsArray[i++] = params.feePrice;
+    paramsArray[i++] = params.totalTransPrice;
     paramsArray[i++] = params.totalInsurePrice;
-    paramsArray[i++] = params.mark;
+    paramsArray[i++] = params.remark;
     paramsArray[i++] = params.myDate;
+    paramsArray[i++] = params.status;
     paramsArray[i] = params.inquiryId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('updateFeePrice');

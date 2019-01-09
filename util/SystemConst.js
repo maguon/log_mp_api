@@ -21,7 +21,6 @@ const CAR_MODEL ={
         ratio:1.01
     }
 }
-
 const PAYMENT = {
     paymentType:{
         wechat:1,
@@ -36,7 +35,6 @@ const PAYMENT = {
         paid:1
     }
 }
-
 const ORDER ={
     type :{
         internal :1,
@@ -83,7 +81,14 @@ const ORDER_INVOICE_APPLY = {
         refuse:2
     }
 }
-
+const INQUIRY = {
+    status:{
+        inquirying:0,
+        enquiryPrice:1,
+        getOrder:2,
+        cancelOrder:3
+    }
+}
 const transAndInsurePrice = (params,callback) => {
     let servicePrice = 0;
     let oldCarRatio = 0;
@@ -131,5 +136,6 @@ module.exports = {
     REFUND_STATUS,
     ORDER,
     USER_ADDRESS,
-    ORDER_INVOICE_APPLY
+    ORDER_INVOICE_APPLY,
+    INQUIRY
 }

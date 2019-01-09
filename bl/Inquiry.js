@@ -133,6 +133,7 @@ const updateInquiryStatus = (req,res,next) => {
 const updateFeePrice = (req,res,next) => {
     let params = req.params;
     params.myDate = new Date();
+    params.status = systemConst.INQUIRY.status.enquiryPrice;
     inquiryDAO.updateFeePrice(params,(error,result)=>{
         if(error){
             logger.error('updateFeePrice' + error.message);

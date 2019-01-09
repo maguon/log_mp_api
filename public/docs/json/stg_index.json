@@ -8203,13 +8203,13 @@
     "feePrice": {
       "type": "object",
       "properties": {
-        "feePrice": {
+        "totalTransPrice": {
           "type": "integer"
         },
         "totalInsurePrice": {
           "type": "integer"
         },
-        "mark": {
+        "remark": {
           "type": "string"
         }
       },
