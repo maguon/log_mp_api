@@ -168,6 +168,15 @@ const getById = (params,callback) => {
         callback(error,rows)
     })
 }
+const getByOrderId = (params,callback) => {
+    let query = " select * from order_invoice_apply where order_id = ?";
+    let paramsArray = [],i=0;
+    paramsArray[i] = params.orderId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('getByOrderId');
+        callback(error,rows)
+    })
+}
 module.exports = {
     addOrderInvoiceApply,
     updateStatus,
@@ -175,5 +184,6 @@ module.exports = {
     updateById,
     getOrderInvoice,
     deleteRevokeInvoice,
-    getById
+    getById,
+    getByOrderId
 }

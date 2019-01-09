@@ -6,6 +6,7 @@ const sysError = require('../util/SystemError.js');
 const logger = serverLogger.createLogger('OrderInvoice.js');
 const orderInvoiceDAO = require('../dao/OrderInvoiceApplyDAO');
 const sysConsts = require("../util/SystemConst");
+const orderInfoDAO = require("../dao/InquiryOrderDAO");
 
 const addByAdmin = (req,res,next)=>{
     let params = req.params;
@@ -39,40 +40,67 @@ const replaceOrderId =(req,res,next)=>{
     let params = req.params;
     let orderId = params.orderId;
     new Promise((resolve,reject)=>{
-        params.orderId = 0;
-        orderInvoiceDAO.updateOrderId(params,(error,rows)=>{
+        orderInfoDAO.getById({orderId:orderId},(error,rows)=>{
             if (error){
-                logger.error('updateInvoiceOrder:' + error.message);
+                logger.error('getOrderById:' + error.message);
                 resUtil.resInternalError(error,res,next);
                 reject(error);
             } else {
-                logger.info('updateInvoiceOrder:' + 'success');
-                resolve();
+                logger.info('getOrderById:' + 'success');
+                if (rows.length > 0){
+                    resolve();
+                } else {
+                    resUtil.resetFailedRes(res,sysMsg.ADMIN_ORDER_UNREGISTERED);
+                }
+
             }
-        });
+        })
     }).then(()=>{
-        params.orderId = orderId;
-        orderInvoiceDAO.updateOrderId(params,(error,rows)=>{
-            if (error){
-                logger.error('updateInvoiceOrder:' + error.message);
-                resUtil.resInternalError(error,res,next);
-            } else {
-                logger.info('updateInvoiceOrder:' + 'success');
-                resUtil.resetUpdateRes(res,rows,null);
-                return next();
-            }
-        });
+        new Promise((resolve,reject)=>{
+            orderInvoiceDAO.getByOrderId({orderId:orderId},(error,rows)=>{
+                if (error){
+                    logger.error('getInvoiceByOrderId:' + error.message);
+                    resUtil.resInternalError(error,res,next);
+                    reject(error);
+                } else {
+                    logger.info('getInvoiceByOrderId:' + 'success');
+                    if (rows.length > 0){
+                        resUtil.resetFailedRes(res,sysMsg.ADMIN_ORDER_INVOICE_ONLYONE);
+                    } else {
+                        resolve();
+                    }
+
+                }
+            })
+        }).then(()=>{
+            new Promise((resolve,reject)=>{
+                params.orderId = 0;
+                orderInvoiceDAO.updateOrderId(params,(error,rows)=>{
+                    if (error){
+                        logger.error('updateInvoiceOrder:' + error.message);
+                        resUtil.resInternalError(error,res,next);
+                        reject(error);
+                    } else {
+                        logger.info('updateInvoiceOrder:' + 'success');
+                        resolve();
+                    }
+                });
+            }).then(()=>{
+                params.orderId = orderId;
+                orderInvoiceDAO.updateOrderId(params,(error,rows)=>{
+                    if (error){
+                        logger.error('updateInvoiceOrder:' + error.message);
+                        resUtil.resInternalError(error,res,next);
+                    } else {
+                        logger.info('updateInvoiceOrder:' + 'success');
+                        resUtil.resetUpdateRes(res,rows,null);
+                        return next();
+                    }
+                });
+            })
+        })
     })
-    orderInvoiceDAO.updateOrderId(params,(error,rows)=>{
-        if (error){
-            logger.error('updateInvoiceOrder:' + error.message);
-            resUtil.resInternalError(error,res,next);
-        } else {
-            logger.info('updateInvoiceOrder:' + 'success');
-            resUtil.resetUpdateRes(res,rows,null);
-            return next();
-        }
-    });
+
 }
 const updateInvoiceApplyMsg = (req,res,next)=>{
     let params = req.params;
