@@ -8477,13 +8477,7 @@
         "plan": {
           "type": "integer"
         },
-        "fee": {
-          "type": "integer"
-        },
         "carNum": {
-          "type": "integer"
-        },
-        "safePrice": {
           "type": "integer"
         },
         "safeStatus": {
