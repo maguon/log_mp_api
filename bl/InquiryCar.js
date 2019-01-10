@@ -191,69 +191,86 @@ const updateStatus = (req,res,next) => {
 const updateInquiryCar = (req,res,next) => {
     let params = req.params;
     new Promise((resolve,reject)=>{
-        inquiryCarDAO.updateInquiryCar(params,(error,result)=>{
+        inquiryCarDAO.getInquiryCar({inquiryCarId:params.inquiryCarId},(error,rows)=>{
             if(error){
-                logger.error('updateInquiryCar' + error.message);
+                logger.error('getInquiryCar' + error.message);
                 reject(error);
+            }else if(rows && rows.length < 1){
+                logger.warn('getInquiryCar' + '查无此车辆信息');
+                resUtil.resetFailedRes(res,'查无此车辆信息',null);
             }else{
-                logger.info('updateInquiryCar' + 'success');
+                logger.info('getInquiryCar' + 'success');
+                params.inquiryId = rows[0].inquiry_id;
                 resolve();
             }
         })
     }).then(()=>{
         new Promise((resolve,reject)=>{
-            inquiryCarDAO.getInquiryCar({inquiryCarId:params.inquiryCarId},(error,rows)=>{
+            inquiryDAO.getById({inquiryId:params.inquiryId},(error,rows)=>{
                 if(error){
-                    logger.error('getInquiryCar' + error.message);
+                    logger.error('getById' + error.message);
                     reject(error);
-                }else if(rows && rows.length < 1){
-                    logger.warn('getInquiryCar' + '查无此车辆信息');
-                    resUtil.resetFailedRes(res,'查无此车辆信息',null);
                 }else{
-                    logger.info('getInquiryCar' + 'success');
-                    params.inquiryId = rows[0].inquiry_id;
+                    logger.info('getById' + 'success');
+                    params.serviceType = rows[0].service_type;
+                    params.distance = rows[0].distance;
                     resolve();
                 }
             })
         }).then(()=>{
             new Promise((resolve,reject)=>{
-                let options = {
-                    inquiryId:params.inquiryId,
-                    status :sysConsts.CAR.inquiryStatus.showInUser
-                }
-                inquiryCarDAO.getSumPrice(options,(error,rows)=>{
+                let priceItem = commonUtil.calculatedAmount(params.serviceType,params.oldCar,params.modelId,params.distance,params.safeStatus,params.plan);
+                params.fee = params.carNum * priceItem.trans;
+                params.safePrice = params.carNum * priceItem.insure;
+                inquiryCarDAO.updateInquiryCar(params,(error,result)=>{
                     if(error){
-                        logger.error('getSumPrice' + error.message);
+                        logger.error('updateInquiryCar' + error.message);
                         reject(error);
                     }else{
-                        logger.info('getSumPrice' + 'success');
-                        if (rows[0].trans_price) {
-                            params.fee = rows[0].trans_price;
-                        }else {
-                            params.fee = 0;
-                        }
-                        if (rows[0].insure_price) {
-                            params.safePrice = rows[0].insure_price;
-                        }else {
-                            params.safePrice = 0;
-                        }
-                        params.carNum = rows[0].sum_car_num;;
+                        logger.info('updateInquiryCar' + 'success');
                         resolve();
                     }
                 })
             }).then(()=>{
-                inquiryDAO.updateFee({carNum:params.carNum,inquiryId:params.inquiryId,fee:params.fee,safePrice:params.safePrice},(error,result)=>{
-                    if(error){
-                        logger.error('updateFee' + error.message);
-                        resUtil.resInternalError(error,res,next);
-                    }else{
-                        logger.info('updateFee'+'success');
-                        let updateMsg = [{
-                            inquiryId:params.inquiryCarId
-                        }]
-                        resUtil.resetQueryRes(res,updateMsg,null);
-                        return next();
+                new Promise((resolve,reject)=>{
+                    let options = {
+                        inquiryId:params.inquiryId,
+                        status :sysConsts.CAR.inquiryStatus.showInUser
                     }
+                    inquiryCarDAO.getSumPrice(options,(error,rows)=>{
+                        if(error){
+                            logger.error('getSumPrice' + error.message);
+                            reject(error);
+                        }else{
+                            logger.info('getSumPrice' + 'success');
+                            if (rows[0].trans_price) {
+                                params.fee = rows[0].trans_price;
+                            }else {
+                                params.fee = 0;
+                            }
+                            if (rows[0].insure_price) {
+                                params.safePrice = rows[0].insure_price;
+                            }else {
+                                params.safePrice = 0;
+                            }
+                            params.carNum = rows[0].sum_car_num;;
+                            resolve();
+                        }
+                    })
+                }).then(()=>{
+                    inquiryDAO.updateFee({carNum:params.carNum,inquiryId:params.inquiryId,fee:params.fee,safePrice:params.safePrice},(error,result)=>{
+                        if(error){
+                            logger.error('updateFee' + error.message);
+                            resUtil.resInternalError(error,res,next);
+                        }else{
+                            logger.info('updateFee'+'success');
+                            let updateMsg = [{
+                                inquiryId:params.inquiryCarId
+                            }]
+                            resUtil.resetQueryRes(res,updateMsg,null);
+                            return next();
+                        }
+                    })
                 })
             })
         })
