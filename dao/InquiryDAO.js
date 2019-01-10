@@ -137,11 +137,11 @@ const updateFee = (params,callback) => {
         paramsArray[i++] = params.carNum;
         query += " ,car_num = ?";
     }
-    if (params.safePrice){
+    if (params.safePrice || params.safePrice == 0){
         paramsArray[i++] = params.safePrice;
         query += " ,ora_insure_price = ?";
     }
-    if (params.fee){
+    if (params.fee || params.fee == 0){
         paramsArray[i++] = params.fee;
         query += " ,ora_trans_price = ?";
     }

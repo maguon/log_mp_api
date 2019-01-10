@@ -71,7 +71,7 @@ const addCarByOrder = (params,callback) => {
     })
 }
 const updateStatus = (params,callback) => {
-    let query = " update inquiry_car set status=? where id = ?";
+    let query = " update inquiry_car set status= ? where id = ?";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.status;
     paramsArray[i] = params.inquiryCarId;
@@ -127,11 +127,15 @@ const getInquiryCar = (params,callback) => {
     })
 }
 const getSumPrice = (params,callback) => {
-    let query = " select sum(trans_price) trans_price ,sum(insure_price) insure_price,sum(car_num) sum_car_num from inquiry_car where inquiry_id = ?";
+    let query = " select sum(trans_price) trans_price ,sum(insure_price) insure_price,sum(car_num) sum_car_num from inquiry_car where inquiry_id = ? ";
     let paramsArray = [],i=0;
-    paramsArray[i] = params.inquiryId;
+    paramsArray[i++] = params.inquiryId;
+    if (params.status){
+        paramsArray[i] = params.status;
+        query += " and status = ?"
+    }
     db.dbQuery(query,paramsArray,(error,rows)=>{
-        logger.debug('getAllPrice');
+        logger.debug('getSumPrice');
         callback(error,rows)
     })
 }

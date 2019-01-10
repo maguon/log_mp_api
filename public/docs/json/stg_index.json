@@ -1173,13 +1173,13 @@
         }
       }
     },
-    "/user/{userId}/inquiryCar/{inquiryCarId}/status/{status}": {
+    "/user/{userId}/inquiryCar/{inquiryCarId}/status": {
       "put": {
         "tags": [
           "inquiryCar"
         ],
-        "summary": " query by routeId look car",
-        "description": " query routeId id look car",
+        "summary": " inquiryCar",
+        "description": " delete inquiry car",
         "produces": [
           "application/json"
         ],
@@ -1195,13 +1195,6 @@
             "name": "inquiryCarId",
             "in": "path",
             "description": "inquiryCarId",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "status",
-            "in": "path",
-            "description": "status",
             "required": true,
             "type": "integer"
           }

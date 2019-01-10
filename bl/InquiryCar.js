@@ -91,7 +91,6 @@ const addCar = (req,res,next) => {
                     }
                 })
             })
-
         })
 
     }).catch((error)=>{
@@ -118,6 +117,7 @@ const addCarByOrder = (req,res,next) => {
 const updateStatus = (req,res,next) => {
     let params = req.params;
     new Promise((resolve,reject)=>{
+        params.status = sysConsts.CAR.inquiryStatus.unShowInUser;
         inquiryCarDAO.updateStatus(params,(error,result)=>{
             if(error){
                 logger.error('updateStatus' + error.message);
@@ -144,38 +144,43 @@ const updateStatus = (req,res,next) => {
             })
         }).then(()=>{
             new Promise((resolve,reject)=>{
-                inquiryCarDAO.getInquiryCarByInquiryId({inquiryId:params.inquiryId},(error,rows)=>{
+                let options = {
+                    inquiryId:params.inquiryId,
+                    status :sysConsts.CAR.inquiryStatus.showInUser
+                }
+                inquiryCarDAO.getSumPrice(options,(error,rows)=>{
                     if(error){
-                        logger.error('getInquiryCarByInquiryId' + error.message);
+                        logger.error('getSumPrice' + error.message);
                         reject(error);
-                    }else if(rows && rows.length < 1){
-                        logger.warn('getInquiryCarByInquiryId' + '查无此询价车辆信息');
-                        resUtil.resetFailedRes(res,'查无此询价车辆信息',null);
                     }else{
-                        logger.info('getInquiryCarByInquiryId' + 'success');
-                        params.carNum= 0;
-                        params.oraTransPrice = 0;
-                        params.oraInsurePrice = 0;
-                        for (let i = 0; i < rows.length; i++) {
-                            params.carNum = params.carNum + rows[i].car_num;
-                            params.oraTransPrice = params.oraTransPrice + rows[i].trans_price * rows[i].car_num;
-                            params.oraInsurePrice = params.oraInsurePrice + rows[i].insure_price * rows[i].car_num;
+                        logger.info('getSumPrice' + 'success');
+                        if (rows[0].trans_price) {
+                            params.fee = rows[0].trans_price;
+                        }else {
+                            params.fee = 0;
                         }
+                        if (rows[0].insure_price) {
+                            params.safePrice = rows[0].insure_price;
+                        }else {
+                            params.safePrice = 0;
+                        }
+                        params.carNum = rows[0].sum_car_num;;
                         resolve();
                     }
                 })
             }).then(()=>{
-                new Promise((resolve,reject)=>{
-                    inquiryDAO.updateCarNum(params,(error,result)=>{
-                        if(error){
-                            logger.error('updateCarNum' + error.message);
-                            reject(error);
-                        }else{
-                            logger.info('updateCarNum' + 'success');
-                            resUtil.resetUpdateRes(res,result,null);
-                            return next();
-                        }
-                    })
+                inquiryDAO.updateFee({carNum:params.carNum,inquiryId:params.inquiryId,fee:params.fee,safePrice:params.safePrice},(error,result)=>{
+                    if(error){
+                        logger.error('updateFee' + error.message);
+                        resUtil.resInternalError(error,res,next);
+                    }else{
+                        logger.info('updateFee'+'success');
+                        let updateMsg = [{
+                            inquiryId:params.inquiryCarId
+                        }]
+                        resUtil.resetQueryRes(res,updateMsg,null);
+                        return next();
+                    }
                 })
             })
         })
