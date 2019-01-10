@@ -9,7 +9,7 @@ const db = require('../db/connection/MysqlDb.js');
 const getInquiryCarByInquiryId = (params,callback) => {
     let query = " select ic.id,ic.inquiry_id,ic.model_id,ic.old_car,ic.plan,ic.trans_price,ic.car_num,ic.status,ic.safe_status,ic.insure_price,ic.created_on," +
                 " ic.updated_on,ic.trans_price*ic.car_num as trans_total,ic.plan*ic.car_num as plan_total from inquiry_car ic " +
-                " where ic.id is not null and ic.status = ?";
+                " where ic.id is not null ";
     let paramsArray = [],i=0;
     if(params.inquiryId){
         paramsArray[i++] = params.inquiryId;

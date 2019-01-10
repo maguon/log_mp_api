@@ -87,10 +87,6 @@ const INQUIRY = {
         enquiryPrice:1,
         getOrder:2,
         cancelOrder:3
-    },
-    carStatus:{
-        show :1,
-        delete :0
     }
 }
 const CAR = {

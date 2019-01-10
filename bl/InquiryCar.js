@@ -8,6 +8,7 @@ const logger = serverLogger.createLogger('InquiryCar.js');
 const inquiryCarDAO = require('../dao/InquiryCarDAO.js');
 const inquiryDAO = require('../dao/InquiryDAO.js');
 const commonUtil = require("../util/CommonUtil");
+const sysConsts = require("../util/SystemConst");
 
 const getInquiryCarByInquiryId = (req,res,next) => {
     let params = req.params;
