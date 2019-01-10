@@ -9,6 +9,7 @@ const inquiryDAO = require('../dao/InquiryDAO.js');
 const inquiryCarDAO = require('../dao/InquiryCarDAO.js');
 const moment = require('moment/moment.js');
 const systemConst = require('../util/SystemConst.js');
+const commonUtil = require("../util/CommonUtil");
 
 const addRouteInquiry = (req,res,next) => {
     let params = req.params;
@@ -41,16 +42,16 @@ const addRouteInquiry = (req,res,next) => {
                 params.safeStatus = safeStatus[i];
                 params.valuation = params.plan;
                 params.modelType = params.modelId;
-                systemConst.transAndInsurePrice(params,(rows)=>{
-                    params.fee = rows[0].trans;
-                    params.safePrice = rows[0].insure;
-                });
+                let price = commonUtil.calculatedAmount(params.serviceType,params.oldCar,params.modelType,params.distance,params.safeStatus, params.valuation);
+                params.transPrice = price.trans;
+                params.insurePrice = price.insure;
+                params.status = systemConst.INQUIRY.carStatus.show;
                 inquiryCarDAO.addCar(params,(error,result)=>{
                     if(error){
-                        logger.error('addRouteInquiry' + error.message);
+                        logger.error('addInquiryCar' + error.message);
                         reject(error);
                     }else{
-                        logger.info('addRouteInquiry'+ i + 'success');
+                        logger.info('addInquiryCar:'+ i + ':success');
                     }
                 })
             }
@@ -59,26 +60,18 @@ const addRouteInquiry = (req,res,next) => {
             },500);
         }).then(()=>{
             new Promise((resolve,reject)=>{
-                inquiryCarDAO.getInquiryCarByInquiryId({inquiryId:params.inquiryId,type:0},(error,rows)=>{
+                inquiryCarDAO.getSumPrice({inquiryId:params.inquiryId},(error,rows)=>{
                     if(error){
-                        logger.error('getInquiryCarByInquiryId' + error.message);
+                        logger.error('getSumPrice' + error.message);
                         reject(error);
                     }else if(rows && rows.length < 1){
-                        logger.warn('getInquiryCarByInquiryId'+'查无此车辆估值信息');
+                        logger.warn('getSumPrice'+'查无此车辆估值信息');
                         resUtil.resetFailedRes(res,'查无此车辆估值信息',null);
                     }else{
-                        logger.info('getInquiryCarByInquiryId'+'success');
-                        let fee = 0;
-                        let safePrice = 0;
-                        let count = 0;
-                        for(let i = 0;i<rows.length;i++){
-                            fee = fee + rows[i].trans_price * rows[i].car_num;
-                            safePrice = safePrice + rows[i].insure_price * rows[i].car_num;
-                            count = count + rows[i].car_num;
-                        }
-                        params.fee = fee;
-                        params.safePrice = safePrice;
-                        params.carNum = count;
+                        logger.info('getSumPrice'+'success');
+                        params.fee = rows[0].trans_price;
+                        params.safePrice = rows[0].insure_price;
+                        params.carNum = rows[0].sum_car_num;;
                         resolve();
                     }
                 })
