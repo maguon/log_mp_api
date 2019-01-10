@@ -7,7 +7,7 @@ const httpUtil = require('../util/HttpUtil');
 const db = require('../db/connection/MysqlDb.js');
 
 const addRouteInquiry = (params,callback) => {
-    let query = "insert into inquiry_info(distance,ora_trans_price,ora_insure_price,user_id,route_id,service_type,inquiry_name,start_id,end_id,start_city,end_city) values(?,0,0,?,?,?,?,?,?,?,?)";
+    let query = "insert into inquiry_info(distance,user_id,route_id,service_type,inquiry_name,start_id,end_id,start_city,end_city) values(?,?,?,?,?,?,?,?,?)";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.distance;
     paramsArray[i++] = params.userId;
@@ -130,12 +130,24 @@ const updateFeePrice = (params,callback) => {
     })
 }
 const updateFee = (params,callback) => {
-    let query = "update inquiry_info set car_num = ?,ora_insure_price = ?,ora_trans_price = ? where id = ? ";
+    let query = "update inquiry_info set id = ? ";
     let paramsArray = [],i=0;
-    paramsArray[i++] = params.carNum;
-    paramsArray[i++] = params.safePrice;
-    paramsArray[i++] = params.fee;
+    paramsArray[i++] = params.inquiryId;
+    if (params.carNum){
+        paramsArray[i++] = params.carNum;
+        query += " ,car_num = ?";
+    }
+    if (params.safePrice){
+        paramsArray[i++] = params.safePrice;
+        query += " ,ora_insure_price = ?";
+    }
+    if (params.fee){
+        paramsArray[i++] = params.fee;
+        query += " ,ora_trans_price = ?";
+    }
     paramsArray[i] = params.inquiryId;
+    query += "  where id = ? ";
+
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('updateFee');
         callback(error,rows);

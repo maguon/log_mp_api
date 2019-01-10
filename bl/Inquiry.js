@@ -34,6 +34,7 @@ const addRouteInquiry = (req,res,next) => {
         })
     }).then(()=>{
         new Promise((resolve,reject)=>{
+            let x =0;
             for (let i = 0; i < modelId.length; i++) {
                 params.modelId = modelId[i];
                 params.oldCar = oldCar[i];
@@ -45,19 +46,22 @@ const addRouteInquiry = (req,res,next) => {
                 let price = commonUtil.calculatedAmount(params.serviceType,params.oldCar,params.modelType,params.distance,params.safeStatus, params.valuation);
                 params.transPrice = price.trans;
                 params.insurePrice = price.insure;
-                params.status = systemConst.INQUIRY.carStatus.show;
+                params.status = systemConst.CAR.inquiryStatus.showInUser;
                 inquiryCarDAO.addCar(params,(error,result)=>{
                     if(error){
                         logger.error('addInquiryCar' + error.message);
                         reject(error);
                     }else{
                         logger.info('addInquiryCar:'+ i + ':success');
+                        x++;
+                        if (x == modelId.length){
+                            setTimeout(()=>{
+                                resolve();
+                            },500);
+                        }
                     }
                 })
             }
-            setTimeout(()=>{
-                resolve();
-            },500);
         }).then(()=>{
             new Promise((resolve,reject)=>{
                 inquiryCarDAO.getSumPrice({inquiryId:params.inquiryId},(error,rows)=>{
