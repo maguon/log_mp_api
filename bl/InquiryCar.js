@@ -61,7 +61,7 @@ const addCar = (req,res,next) => {
             })
         }).then(()=>{
             new Promise((resolve,reject)=>{
-                inquiryCarDAO.getSumPrice({inquiryId:params.inquiryId},(error,rows)=>{
+                inquiryCarDAO.getSumPrice({inquiryId:params.inquiryId,status:sysConsts.CAR.inquiryStatus.showInUser},(error,rows)=>{
                     if(error){
                         logger.error('getSumPrice' + error.message);
                         reject(error);
