@@ -44,8 +44,8 @@ const addRouteInquiry = (req,res,next) => {
                 params.valuation = params.plan;
                 params.modelType = params.modelId;
                 let price = commonUtil.calculatedAmount(params.serviceType,params.oldCar,params.modelType,params.distance,params.safeStatus, params.valuation);
-                params.transPrice = price.trans;
-                params.insurePrice = price.insure;
+                params.transPrice = price.trans * carNum[i];
+                params.insurePrice = price.insure * carNum[i];
                 params.status = systemConst.CAR.inquiryStatus.showInUser;
                 inquiryCarDAO.addCar(params,(error,result)=>{
                     if(error){

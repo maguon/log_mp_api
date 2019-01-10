@@ -42,21 +42,58 @@ const addCar = (req,res,next) => {
             }
         })
     }).then(()=>{
-        priceItem = commonUtil.calculatedAmount(params.serviceType,params.oldCar,params.modelId,params.distance,params.safeStatus,params.plan);
-        params.transPrice = params.carNum * priceItem.trans;
-        params.insurePrice = params.carNum * priceItem.insure;
-        inquiryCarDAO.addCar(params,(error,result)=>{
-            if(error){
-                logger.error('addInquiryCar' + error.message);
-            }else if(result && result.insertId < 1){
-                logger.warn('addInquiryCar'+'创建车辆估值失败');
-                resUtil.resetFailedRes(res,'创建车辆估值失败',null);
-            }else{
-                logger.info('addInquiryCar' + 'success');
-                resUtil.resetCreateRes(res,result,null);
-                return next();
-            }
+        new Promise((resolve,reject)=>{
+            priceItem = commonUtil.calculatedAmount(params.serviceType,params.oldCar,params.modelId,params.distance,params.safeStatus,params.plan);
+            params.transPrice = params.carNum * priceItem.trans;
+            params.insurePrice = params.carNum * priceItem.insure;
+            inquiryCarDAO.addCar(params,(error,result)=>{
+                if(error){
+                    logger.error('addInquiryCar' + error.message);
+                    reject(error);
+                }else if(result && result.insertId < 1){
+                    logger.warn('addInquiryCar'+'创建车辆估值失败');
+                    resUtil.resetFailedRes(res,'创建车辆估值失败',null);
+                    reject(error);
+                }else{
+                    logger.info('addInquiryCar' + 'success');
+                    resolve();
+                }
+            })
+        }).then(()=>{
+            new Promise((resolve,reject)=>{
+                inquiryCarDAO.getSumPrice({inquiryId:params.inquiryId},(error,rows)=>{
+                    if(error){
+                        logger.error('getSumPrice' + error.message);
+                        reject(error);
+                    }else if(rows && rows.length < 1){
+                        logger.warn('getSumPrice'+'查无此车辆估值信息');
+                        resUtil.resetFailedRes(res,'查无此车辆估值信息',null);
+                    }else{
+                        logger.info('getSumPrice'+'success');
+                        params.fee = rows[0].trans_price;
+                        params.safePrice = rows[0].insure_price;
+                        params.carNum = rows[0].sum_car_num;;
+                        resolve();
+                    }
+                })
+            }).then(()=>{
+                inquiryDAO.updateFee({carNum:params.carNum,inquiryId:params.inquiryId,fee:params.fee,safePrice:params.safePrice},(error,result)=>{
+                    if(error){
+                        logger.error('updateFee' + error.message);
+                        resUtil.resInternalError(error,res,next);
+                    }else{
+                        logger.info('updateFee'+'success');
+                        let inquiry_id = [{
+                            inquiryId:params.inquiryId
+                        }]
+                        resUtil.resetQueryRes(res,inquiry_id,null);
+                        return next();
+                    }
+                })
+            })
+
         })
+
     }).catch((error)=>{
         resUtil.resInternalError(error,res,next);
     })

@@ -127,11 +127,11 @@ const getInquiryCar = (params,callback) => {
     })
 }
 const getSumPrice = (params,callback) => {
-    let query = " select sum(trans_price * car_num) trans_price ,sum(insure_price*car_num) insure_price,sum(car_num) sum_car_num from inquiry_car where inquiry_id = ?";
+    let query = " select sum(trans_price) trans_price ,sum(insure_price) insure_price,sum(car_num) sum_car_num from inquiry_car where inquiry_id = ?";
     let paramsArray = [],i=0;
     paramsArray[i] = params.inquiryId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
-        logger.debug('getSumPrice');
+        logger.debug('getAllPrice');
         callback(error,rows)
     })
 }
