@@ -9,7 +9,7 @@ const db = require('../db/connection/MysqlDb.js');
 const addOrderCar = (params,callback) => {
     let query = " insert into order_item(safe_status,user_id,order_id,vin,model_type,old_car,valuation,ora_trans_price,ora_insure_price) values(?,?,?,?,?,?,?,?,?) ";
     let paramsArray = [],i=0;
-    paramsArray[i++] = params.insuranceFlag;
+    paramsArray[i++] = params.safeStatus;
     paramsArray[i++] = params.userId;
     paramsArray[i++] = params.orderId;
     paramsArray[i++] = params.vin;
@@ -120,6 +120,16 @@ const updateCarType = (params,callback) => {
         callback(error,rows)
     })
 }
+const getPriceSum = (params,callback) => {
+    let query = " select sum(ora_trans_price) sum_ora_trans_price ,sum(ora_insure_price) sum_ora_insure_price,";
+    query += " sum(act_trans_price) sum_act_trans_price,sum(act_insure_price) sum_act_insure_price,count(id) sum_car_num from order_item where order_id = ?"
+    let paramsArray = [],i=0;
+    paramsArray[i] = params.orderId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('getPriceSum');
+        callback(error,rows)
+    })
+}
 module.exports = {
     addOrderCar,
     getOrderCar,
@@ -127,5 +137,6 @@ module.exports = {
     addOrderCarAdmin,
     updateActFee,
     updateOrderItemInfo,
-    updateCarType
+    updateCarType,
+    getPriceSum
 }

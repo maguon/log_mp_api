@@ -77,15 +77,17 @@ const putFreightPrice = (params,callback) => {
         callback(error,rows);
     })
 }
-const putNewPrice = (params,callback) => {
-    let query = " update order_info set total_trans_price=?,total_insure_price=?,car_num=? where id = ? ";
+const updatePrice = (params,callback) => {
+    let query = " update order_info set ora_trans_price = ? ,ora_insure_price = ?,total_trans_price=?,total_insure_price=?,car_num=? where id = ? ";
     let paramsArray = [],i=0;
-    paramsArray[i++] = params.feePrice;
+    paramsArray[i++] = params.oraTransPrice;
+    paramsArray[i++] = params.oraInsurePrice;
+    paramsArray[i++] = params.totalTransPrice;
     paramsArray[i++] = params.totalInsurePrice;
     paramsArray[i++] = params.carNum;
     paramsArray[i] = params.orderId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
-        logger.debug('putNewPrice');
+        logger.debug('updatePrice');
         callback(error,rows);
     })
 }
@@ -451,7 +453,7 @@ module.exports = {
     putSafePrice,
     addOrder,
     getOrderNew,
-    putNewPrice,
+    updatePrice,
     updatePaymentRemark,
     updateRealPaymentPrice,
     getById
