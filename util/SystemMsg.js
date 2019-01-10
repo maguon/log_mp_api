@@ -49,6 +49,7 @@ let ADMIN_ORDER_INVOICE_ONLYONE = "一个订单只能申请一张发票";
  * The inquiry info
  */
 let USER_GET_NO_INQUIRY = "找不到该询价信息,请输入正确的询价码";
+let GET_TRANS_AND_INSURE_PRICE = "未算出单价";
 
 module.exports = {
     SYS_AUTH_TOKEN_ERROR,
@@ -77,5 +78,6 @@ module.exports = {
     ADMIN_ORDER_INVOICE_APPLY_REVOKE,
     ADMIN_ORDER_UNREGISTERED,
     ADMIN_ORDER_INVOICE_ONLYONE,
-    USER_GET_NO_INQUIRY
+    USER_GET_NO_INQUIRY,
+    GET_TRANS_AND_INSURE_PRICE
 }

@@ -97,6 +97,10 @@ const CAR = {
     insureFlag:{
         yes:1,
         no:0
+    },
+    inquiryStatus:{
+        showInUser:1,
+        unShowInUser:0
     }
 }
 module.exports = {

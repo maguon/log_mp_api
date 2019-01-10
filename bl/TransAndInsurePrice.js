@@ -3,21 +3,19 @@
 const serverLogger = require('../util/ServerLogger.js');
 const resUtil = require('../util/ResponseUtil.js');
 const logger = serverLogger.createLogger('TransAndInsurePrice.js');
-const systemConst = require('../util/SystemConst.js');
-
+const commonUtil = require("../util/CommonUtil");
+const sysMsg = require("../util/SystemMsg")
 
 const transAndInsurePrice = (req,res,next) => {
     let params = req.params;
-    systemConst.transAndInsurePrice({insuranceFlag:params.insuranceFlag,distance:params.distance,modelType:params.modelType,oldCar:params.oldCar,serviceType:params.serviceType,valuation:params.valuation},(rows)=>{
-        if(rows.length < 1){
-            logger.warn('transAndInsurePrice' + '计算错误');
-            resUtil.resetFailedRes(res,'计算错误',next);
-        }else{
-            logger.info('transAndInsurePrice' + 'success');
-            resUtil.resetQueryRes(res,rows,null);
-            return next();
-        }
-    })
+    let price = commonUtil.calculatedAmount(params.serviceType,params.oldCar,params.modelType,params.distance,params.safeStatus,params.valuation);
+    if (!price){
+        resUtil.resetFailedRes(res,sysMsg.GET_TRANS_AND_INSURE_PRICE);
+    } else {
+        logger.info('transAndInsurePrice' + 'success');
+        resUtil.resetQueryRes(res,price,null);
+        return next();
+    }
 }
 module.exports = {
     transAndInsurePrice
