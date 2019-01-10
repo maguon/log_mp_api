@@ -208,19 +208,68 @@ const updateActFee = (req,res,next) => {
 }
 const updateOrderItemInfo = (req,res,next) => {
     let params = req.params;
-    systemConst.transAndInsurePrice(params,(rows)=>{
-        params.oraTransPrice = rows[0].trans;
-        params.oraInsurePrice = rows[0].insure;
-    });
-    orderItemDAO.updateOrderItemInfo(params,(error,result)=>{
-        if(error){
-            logger.error('updateOrderItemInfo' + error.message);
-            resUtil.resInternalError(error,res,next);
-        }else{
-            logger.info('updateOrderItemInfo' + 'success');
-            resUtil.resetUpdateRes(res,result,null);
-            return next();
-        }
+    let price = commonUtil.calculatedAmount(params.serviceType,params.oldCar,params.modelType,params.distance,params.safeStatus, params.valuation);
+    params.oraTransPrice = price.trans;
+    params.oraInsurePrice = price.insure;
+    new Promise((resolve,reject)=>{
+        orderItemDAO.updateOrderItemInfo(params,(error,result)=>{
+            if(error){
+                logger.error('updateOrderItemInfo' + error.message);
+                resUtil.resInternalError(error,res,next);
+                reject(error);
+            }else{
+                logger.info('updateOrderItemInfo' + 'success');
+                resolve();
+                resUtil.resetUpdateRes(res,result,null);
+                return next();
+            }
+        })
+    }).then(()=>{
+        new Promise((resolve,reject)=>{
+            orderItemDAO.getOrderCar({orderItemId:params.orderItemId},(error,rows)=>{
+                if(error){
+                    logger.error('getOrderCar' + error.message);
+                    reject(error);
+                }else{
+                    logger.info('getOrderCar' + 'success');
+                    params.orderId = rows[0].order_id;
+                    resolve();
+                }
+            })
+        }).then(()=>{
+            new Promise((resolve,reject)=>{
+                orderItemDAO.getPriceSum({orderId:params.orderId},(error,rows)=>{
+                    if(error){
+                        logger.error('getPriceSum' + error.message);
+                        reject(error);
+                    }else{
+                        logger.info('getPriceSum' + 'success');
+                        params.oraTransPrice = rows[0].sum_ora_trans_price;
+                        params.oraInsurePrice = rows[0].sum_ora_insure_price;
+                        params.totalTransPrice = rows[0].sum_act_trans_price;
+                        params.totalInsurePrice = rows[0].sum_act_insure_price;
+                        params.carNum = rows[0].sum_car_num;
+                        resolve();
+                    }
+                })
+            }).then(()=>{
+                orderDAO.updatePrice(params,(error,result)=>{
+                    if(error) {
+                        logger.error('updatePrice' + error.message);
+                        resUtil.resInternalError(error,res,next);
+                    }else{
+                        logger.info('updatePrice' + 'success');
+                        let result_id = [{
+                            orderItemId
+                        }]
+                        resUtil.resetQueryRes(res,result_id,null);
+                        return next();
+                    }
+                })
+            })
+        })
+    }).catch((error)=>{
+        resUtil.resInternalError(error,res,next);
     })
 }
 const updateCarType = (req,res,next) => {
