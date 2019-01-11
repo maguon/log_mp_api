@@ -101,6 +101,10 @@
     {
       "name": "accountConfirmEmail",
       "description":"accountConfirmEmail of log api"
+    },
+    {
+      "name": "statisticsMsg",
+      "description":"statisticsMsg of log api"
     }
   ],
   "schemes": [
@@ -7609,6 +7613,55 @@
               "type": "object",
               "items": {
                 "$ref": "#/definitions/queryMailRecord"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/statisticsOrderCountsByMonth": {
+      "get": {
+        "tags": [
+          "statisticsMsg"
+        ],
+        "summary": "",
+        "description": "通过月份统计订单笔数（日期默认当前月份-12个月前）",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "startMonth",
+            "in": "query",
+            "description": "格式：2016-12",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "endMonth",
+            "in": "query",
+            "description": "格式：2016-12",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/statisticsMsg"
               }
             }
           },

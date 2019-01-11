@@ -30,6 +30,7 @@ const userAddress = require('./bl/UserAddress.js');
 const refundApply = require('./bl/RefundApply.js');
 const orderInvoice = require("./bl/OrderInvoice");
 //const email = require('./bl/Email.js');
+const statistics = require("./bl/Statistics");
 
 
 /**
@@ -300,6 +301,11 @@ const createServer=()=>{
      */
     //server.post({path:'/api/accountConfirmEmail',contentType: 'application/json'},email.sendAccountConfirmEmail);
     //server.get('/api/queryMailRecord',email.queryMailRecord);
+    /**
+     * Statistics
+     */
+    server.get('/api/admin/:adminId/statisticsOrderCountsByMonth',statistics.orderCountsByMonths);
+
     server.on('NotFound', function (req, res ,next) {
         logger.warn(req.url + " not found");
         res.send(404,{success:false,msg:" service not found !"});

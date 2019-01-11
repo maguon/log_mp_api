@@ -499,6 +499,18 @@ const updateById =(params,callback) => {
         callback(error,rows);
     })
 }
+const statisticsCountsByMounths =(params,callback) => {
+    let query = " select date_format(created_on,'%Y-%m') day_month,count(id) order_counts from order_info";
+    query += " where date_format(created_on,'%Y-%m') >= ? and date_format(created_on,'%Y-%m') <= ?";
+    query += " group by date_format(created_on,'%Y-%m')";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.startMonth;
+    paramsArray[i] = params.endMonth;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('statisticsCountsByMounths');
+        callback(error,rows);
+    })
+}
 module.exports = {
     getInquiryOrder,
     addInquiryOrder,
@@ -516,5 +528,6 @@ module.exports = {
     updatePaymentRemark,
     updateRealPaymentPrice,
     getById,
-    updateById
+    updateById,
+    statisticsCountsByMounths
 }
