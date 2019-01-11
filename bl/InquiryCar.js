@@ -12,12 +12,12 @@ const sysConsts = require("../util/SystemConst");
 
 const getInquiryCarByInquiryId = (req,res,next) => {
     let params = req.params;
-    inquiryCarDAO.getInquiryCarByInquiryId(params,(error,result)=>{
+    inquiryCarDAO.getByInquiryId(params,(error,result)=>{
         if(error){
-            logger.error('getInquiryCarByInquiryId' + error.message);
+            logger.error('getByInquiryId' + error.message);
             resUtil.resInternalError(error,res,next);
         }else{
-            logger.info('getInquiryCarByInquiryId' + 'success');
+            logger.info('getByInquiryId' + 'success');
             resUtil.resetQueryRes(res,result,null);
             return next();
         }

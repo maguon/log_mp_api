@@ -139,6 +139,35 @@ const getSumPrice = (params,callback) => {
         callback(error,rows)
     })
 }
+const getByInquiryId = (params,callback) => {
+    let query = " select *,ROUND(trans_price/car_num,2) one_trans_price,ROUND(insure_price/car_num,2) one_insure_price,plan*car_num plan_total from inquiry_car ";
+    query += " where id is not null";
+    let paramsArray = [],i=0;
+    if(params.inquiryId){
+        paramsArray[i++] = params.inquiryId;
+        query = query + " and inquiry_id = ? "
+    }
+    if(params.userId){
+        paramsArray[i++] = params.userId;
+        query = query + " and user_id = ? "
+    }
+    if(params.inquiryCarId){
+        paramsArray[i++] = params.inquiryCarId;
+        query = query + " and id = ? "
+    }
+    if(params.type){
+        paramsArray[i++] = params.type;
+        query = query + " and type = ? "
+    }
+    if(params.status){
+        paramsArray[i] = params.status;
+        query = query + " and status = ? "
+    }
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('getByInquiryId');
+        callback(error,rows)
+    })
+}
 module.exports = {
     getInquiryCarByInquiryId,
     addCar,
@@ -146,5 +175,6 @@ module.exports = {
     updateStatus,
     updateInquiryCar,
     getInquiryCar,
-    getSumPrice
+    getSumPrice,
+    getByInquiryId
 }
