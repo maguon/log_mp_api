@@ -199,7 +199,7 @@ const putInquiryOrder = (req,res,next) => {
 }
 const putReceiveInfo = (req,res,next) => {
     let params = req.params;
-    inquiryOrderDAO.putReceiveInfo(params,(error,result)=>{
+    inquiryOrderDAO.updateById(params,(error,result)=>{
         if(error){
             logger.error('putReceiveInfo' + error.message);
             resUtil.resInternalError(error,res,next);
@@ -225,12 +225,12 @@ const putFreightPrice = (req,res,next) => {
 }
 const putStatus = (req,res,next) => {
     let params = req.params;
-    inquiryOrderDAO.putStatus(params,(error,result)=>{
+    inquiryOrderDAO.updateById(params,(error,result)=>{
         if(error){
-            logger.error('putStatus' + error.message);
+            logger.error('updateStatus' + error.message);
             resUtil.resInternalError(error,res,next);
         }else{
-            logger.info('putStatus' + 'success');
+            logger.info('updateStatus' + 'success');
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
@@ -258,19 +258,6 @@ const getOrderByUser = (req,res,next) => {
         }else{
             logger.info('getOrderByUser' + 'success');
             resUtil.resetQueryRes(res,result,null);
-            return next();
-        }
-    })
-}
-const putMark = (req,res,next) => {
-    let params = req.params;
-    inquiryOrderDAO.putMark(params,(error,result)=>{
-        if(error){
-            logger.error('putMark' + error.message);
-            resUtil.resInternalError(error,res,next);
-        }else{
-            logger.info('putMark' + 'success');
-            resUtil.resetUpdateRes(res,result,null);
             return next();
         }
     })
@@ -304,7 +291,7 @@ const cancelOrder = (req,res,next) => {
 }
 const putSendInfo = (req,res,next) => {
     let params = req.params;
-    inquiryOrderDAO.putSendInfo(params,(error,result)=>{
+    inquiryOrderDAO.updateById(params,(error,result)=>{
         if(error){
             logger.error('putSendInfo' + error.message);
             resUtil.resInternalError(error,res,next);
@@ -437,7 +424,6 @@ module.exports = {
     putFreightPrice,
     putStatus,
     getOrder,
-    putMark,
     putAdminMark,
     cancelOrder,
     putSendInfo,

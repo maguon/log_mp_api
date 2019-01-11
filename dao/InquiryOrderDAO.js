@@ -54,18 +54,6 @@ const putInquiryOrder = (params,callback) => {
         callback(error,rows);
     })
 }
-const putReceiveInfo = (params,callback) => {
-    let query = " update order_info set recv_name=?,recv_phone=?,recv_address=? where id = ? ";
-    let paramsArray = [],i=0;
-    paramsArray[i++] = params.recvName;
-    paramsArray[i++] = params.recvPhone;
-    paramsArray[i++] = params.recvAddress;
-    paramsArray[i] = params.orderId;
-    db.dbQuery(query,paramsArray,(error,rows)=>{
-        logger.debug('putReceiveInfo');
-        callback(error,rows);
-    })
-}
 const putFreightPrice = (params,callback) => {
     let query = " update order_info set total_trans_price=?,total_insure_price=? where id = ? ";
     let paramsArray = [],i=0;
@@ -99,16 +87,6 @@ const putSafePrice = (params,callback) => {
     paramsArray[i] = params.orderId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('putSafePrice');
-        callback(error,rows);
-    })
-}
-const putStatus = (params,callback) => {
-    let query = " update order_info set status=? where id = ? ";
-    let paramsArray = [],i=0;
-    paramsArray[i++] = params.status;
-    paramsArray[i] = params.orderId;
-    db.dbQuery(query,paramsArray,(error,rows)=>{
-        logger.debug('putStatus');
         callback(error,rows);
     })
 }
@@ -338,16 +316,6 @@ const getOrderByUser = (params,callback) => {
         callback(error,rows);
     })
 }
-const putMark = (params,callback) => {
-    let query = " update order_info set mark=? where id = ? ";
-    let paramsArray = [],i=0;
-    paramsArray[i++] = params.mark;
-    paramsArray[i] = params.orderId;
-    db.dbQuery(query,paramsArray,(error,rows)=>{
-        logger.debug('putMark');
-        callback(error,rows);
-    })
-}
 const putAdminMark = (params,callback) => {
     let query = " update order_info set admin_mark=? where id = ? ";
     let paramsArray = [],i=0;
@@ -376,18 +344,6 @@ const cancelOrder = (params,callback) => {
     paramsArray[i] = params.orderId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('cancelOrder');
-        callback(error,rows);
-    })
-}
-const putSendInfo = (params,callback) => {
-    let query = "update order_info set send_name = ?,send_phone=?,send_address=? where id=? ";
-    let paramsArray = [],i=0;
-    paramsArray[i++] = params.sendName;
-    paramsArray[i++] = params.sendPhone;
-    paramsArray[i++] = params.sendAddress;
-    paramsArray[i] = params.orderId;
-    db.dbQuery(query,paramsArray,(error,rows)=>{
-        logger.debug('putSendInfo');
         callback(error,rows);
     })
 }
@@ -547,14 +503,10 @@ module.exports = {
     getInquiryOrder,
     addInquiryOrder,
     putInquiryOrder,
-    putReceiveInfo,
     putFreightPrice,
-    putStatus,
     getOrder,
-    putMark,
     updateOrderPaymengStatusByOrderId,
     cancelOrder,
-    putSendInfo,
     putAdminMark,
     getOrderByUser,
     putSafePrice,
