@@ -9,6 +9,7 @@ const inquiryOrderDAO = require('../dao/InquiryOrderDAO.js');
 const inquiryDAO = require('../dao/InquiryDAO.js');
 const cityDAO = require('../dao/CityInfoDAO.js');
 const routeDAO = require('../dao/RouteDAO.js');
+const sysConsts = require("../util/SystemConst");
 
 const addInquiryOrderByUser = (req,res,next) => {
     let params = req.params;
@@ -414,6 +415,20 @@ const updatePaymentRemark = (req,res,next) => {
         }
     })
 }
+const improveInformation = (req,res,next) => {
+    let params = req.params;
+    params.status = sysConsts.ORDER.status.priceToBeImproved;
+    inquiryOrderDAO.updateById(params,(error,result)=>{
+        if(error){
+            logger.error('updateById:' + error.message);
+            resUtil.resInternalError(error,res,next);
+        }else{
+            logger.info('updateById:' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
+}
 module.exports = {
     addInquiryOrderByAdmin,
     addInquiryOrderByUser,
@@ -429,6 +444,7 @@ module.exports = {
     getOrderByUser,
     addOrder,
     getOrderNew,
-    updatePaymentRemark
+    updatePaymentRemark,
+    improveInformation
 }
 

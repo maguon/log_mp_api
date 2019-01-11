@@ -436,6 +436,113 @@ const updateRealPaymentPrice =(params,callback) => {
         callback(error,rows);
     })
 }
+const updateById =(params,callback) => {
+    let query = " update order_info set id = ? ";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.orderId;
+    if (params.routeId) {
+        paramsArray[i++] = params.routeId;
+        query += " ,route_id = ?"
+    }
+    if (params.routeStartId) {
+        paramsArray[i++] = params.routeStartId;
+        query += " ,route_start_id = ?"
+    }
+    if (params.routeEndId) {
+        paramsArray[i++] = params.routeEndId;
+        query += " ,route_end_id = ?"
+    }
+    if (params.distance) {
+        paramsArray[i++] = params.distance;
+        query += " ,distance = ?"
+    }
+    if (params.serviceType) {
+        paramsArray[i++] = params.serviceType;
+        query += " ,service_type = ?"
+    }
+    if (params.createdType) {
+        paramsArray[i++] = params.createdType;
+        query += " ,created_type = ?"
+    }
+    if (params.oraTransPrice) {
+        paramsArray[i++] = params.oraTransPrice;
+        query += " ,ora_trans_price = ?"
+    }
+    if (params.oraInsurePrice) {
+        paramsArray[i++] = params.oraInsurePrice;
+        query += " ,ora_insure_price = ?"
+    }
+    if (params.totalTransPrice) {
+        paramsArray[i++] = params.totalTransPrice;
+        query += " ,total_trans_price = ?"
+    }
+    if (params.totalInsurePrice) {
+        paramsArray[i++] = params.totalInsurePrice;
+        query += " ,total_insure_price = ?"
+    }
+    if (params.realPaymentPrice) {
+        paramsArray[i++] = params.realPaymentPrice;
+        query += " ,real_payment_price = ?"
+    }
+    if (params.carNum) {
+        paramsArray[i++] = params.carNum;
+        query += " ,car_num = ?"
+    }
+    if (params.recvName) {
+        paramsArray[i++] = params.recvName;
+        query += " ,recv_name = ?"
+    }
+    if (params.recvPhone) {
+        paramsArray[i++] = params.recvPhone;
+        query += " ,recv_phone = ?"
+    }
+    if (params.recvAddress) {
+        paramsArray[i++] = params.recvAddress;
+        query += " ,recv_address = ?"
+    }
+    if (params.sendName) {
+        paramsArray[i++] = params.sendName;
+        query += " ,send_name = ?"
+    }
+    if (params.sendPhone) {
+        paramsArray[i++] = params.sendPhone;
+        query += " ,send_phone = ?"
+    }
+    if (params.sendAddress) {
+        paramsArray[i++] = params.sendAddress;
+        query += " ,send_address = ?"
+    }
+    if (params.paymentStatus) {
+        paramsArray[i++] = params.paymentStatus;
+        query += " ,payment_status = ?"
+    }
+    if (params.status) {
+        paramsArray[i++] = params.status;
+        query += " ,status = ?"
+    }
+    if (params.remark) {
+        paramsArray[i++] = params.remark;
+        query += " ,remark = ?"
+    }
+    if (params.adminRemark) {
+        paramsArray[i++] = params.adminRemark;
+        query += " ,admin_mark = ?"
+    }
+    if (params.paymentRemark) {
+        paramsArray[i++] = params.paymentRemark;
+        query += " ,payment_remark = ?"
+    }
+    if (params.cancelReason) {
+        paramsArray[i++] = params.cancelReason;
+        query += " ,cancel_reason = ?"
+    }
+    paramsArray[i] = params.orderId;
+    query += " where id = ? ";
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('updateById');
+        callback(error,rows);
+    })
+}
 module.exports = {
     getInquiryOrder,
     addInquiryOrder,
@@ -456,5 +563,6 @@ module.exports = {
     updatePrice,
     updatePaymentRemark,
     updateRealPaymentPrice,
-    getById
+    getById,
+    updateById
 }

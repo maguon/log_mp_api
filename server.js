@@ -147,20 +147,21 @@ const createServer=()=>{
     server.post({path:'/api/admin/:adminId/inquiry/:inquiryId/order',contentType: 'application/json'},inquiryOrder.addInquiryOrderByAdmin);
     server.post({path:'/api/admin/:adminId/order',contentType: 'application/json'},inquiryOrder.addOrder);
     server.put({path:'/api/admin/:adminId/order/:orderId/oraPrice',contentType: 'application/json'},inquiryOrder.putInquiryOrder);
-    server.put({path:'/api/user/:userId/order/:orderId/receiveInfo',contentType: 'application/json'},inquiryOrder.putReceiveInfo);
-    server.put({path:'/api/user/:userId/order/:orderId/sendInfo',contentType: 'application/json'},inquiryOrder.putSendInfo);
+    //server.put({path:'/api/user/:userId/order/:orderId/receiveInfo',contentType: 'application/json'},inquiryOrder.putReceiveInfo);
+    //server.put({path:'/api/user/:userId/order/:orderId/sendInfo',contentType: 'application/json'},inquiryOrder.putSendInfo);
     server.put({path:'/api/admin/:adminId/order/:orderId/receiveInfo',contentType: 'application/json'},inquiryOrder.putReceiveInfo);
     server.put({path:'/api/admin/:adminId/order/:orderId/sendInfo',contentType: 'application/json'},inquiryOrder.putSendInfo);
     server.put({path:'/api/admin/:adminId/order/:orderId/totalTransInsurePrice',contentType: 'application/json'},inquiryOrder.putFreightPrice);
-    server.put({path:'/api/user/:userId/order/:orderId/status/:status',contentType: 'application/json'},inquiryOrder.putStatus);
+    //server.put({path:'/api/user/:userId/order/:orderId/status/:status',contentType: 'application/json'},inquiryOrder.putStatus);
     server.put({path:'/api/admin/:adminId/order/:orderId/status/:status',contentType: 'application/json'},inquiryOrder.putStatus);
     server.put({path:'/api/user/:userId/order/:orderId/cancel',contentType: 'application/json'},inquiryOrder.cancelOrder);
     server.put({path:'/api/admin/:adminId/order/:orderId/cancel',contentType: 'application/json'},inquiryOrder.cancelOrder);
     server.get('/api/user/:userId/order',inquiryOrder.getOrderByUser);
     server.get('/api/admin/:adminId/order',inquiryOrder.getOrder);
-    server.put({path:'/api/user/:userId/order/:orderId/orderMark',contentType: 'application/json'},inquiryOrder.putMark);
+    //server.put({path:'/api/user/:userId/order/:orderId/orderMark',contentType: 'application/json'},inquiryOrder.putMark);
     server.put({path:'/api/admin/:adminId/order/:orderId/adminMark',contentType: 'application/json'},inquiryOrder.putAdminMark);
     server.put({path:'/api/admin/:adminId/order/:orderId/paymentRemark',contentType: 'application/json'},inquiryOrder.updatePaymentRemark);
+    server.put({path:'/api/user/:userId/order/:orderId/improveInformation',contentType: 'application/json'},inquiryOrder.improveInformation);
     /**
      order_item
      */
