@@ -6,36 +6,6 @@ const sysConfig = require("../config/SystemConfig");
 const httpUtil = require('../util/HttpUtil');
 const db = require('../db/connection/MysqlDb.js');
 
-const getInquiryCarByInquiryId = (params,callback) => {
-    let query = " select ic.id,ic.inquiry_id,ic.model_id,ic.old_car,ic.plan,ic.trans_price,ic.car_num,ic.status,ic.safe_status,ic.insure_price,ic.created_on," +
-                " ic.updated_on,ic.trans_price*ic.car_num as trans_total,ic.plan*ic.car_num as plan_total from inquiry_car ic " +
-                " where ic.id is not null ";
-    let paramsArray = [],i=0;
-    if(params.inquiryId){
-        paramsArray[i++] = params.inquiryId;
-        query = query + " and ic.inquiry_id = ? "
-    }
-    if(params.userId){
-        paramsArray[i++] = params.userId;
-        query = query + " and ic.user_id = ? "
-    }
-    if(params.inquiryCarId){
-        paramsArray[i++] = params.inquiryCarId;
-        query = query + " and ic.id = ? "
-    }
-    if(params.type){
-        paramsArray[i++] = params.type;
-        query = query + " and ic.type = ? "
-    }
-    if(params.status){
-        paramsArray[i] = params.status;
-        query = query + " and ic.status = ? "
-    }
-    db.dbQuery(query,paramsArray,(error,rows)=>{
-        logger.debug('getInquiryCarByInquiryId');
-        callback(error,rows)
-    })
-}
 const addCar = (params,callback) => {
     let query = " insert into inquiry_car(user_id,inquiry_id,model_id,old_car,plan,trans_price,insure_price,car_num,safe_status) values(?,?,?,?,?,?,?,?,?)";
     let paramsArray = [],i=0;
@@ -169,12 +139,10 @@ const getByInquiryId = (params,callback) => {
     })
 }
 module.exports = {
-    getInquiryCarByInquiryId,
     addCar,
     addCarByOrder,
     updateStatus,
     updateInquiryCar,
-    getInquiryCar,
     getSumPrice,
     getByInquiryId
 }

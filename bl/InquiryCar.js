@@ -129,7 +129,7 @@ const updateStatus = (req,res,next) => {
         })
     }).then(()=>{
         new Promise((resolve,reject)=>{
-            inquiryCarDAO.getInquiryCar({inquiryCarId:params.inquiryCarId},(error,rows)=>{
+            inquiryCarDAO.getByInquiryId({inquiryCarId:params.inquiryCarId},(error,rows)=>{
                 if(error){
                     logger.error('getInquiryCar' + error.message);
                     reject(error);
@@ -191,7 +191,7 @@ const updateStatus = (req,res,next) => {
 const updateInquiryCar = (req,res,next) => {
     let params = req.params;
     new Promise((resolve,reject)=>{
-        inquiryCarDAO.getInquiryCar({inquiryCarId:params.inquiryCarId},(error,rows)=>{
+        inquiryCarDAO.getByInquiryId({inquiryCarId:params.inquiryCarId},(error,rows)=>{
             if(error){
                 logger.error('getInquiryCar' + error.message);
                 reject(error);
