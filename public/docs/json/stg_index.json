@@ -7863,6 +7863,48 @@
           }
         }
       }
+    },
+    "/admin/{adminId}/statisticsInvoiceMsgByDay": {
+      "get": {
+        "tags": [
+          "statisticsMsg"
+        ],
+        "summary": "",
+        "description": "统计每天的发票笔数(近30天或10天内)",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "selectDays",
+            "in": "query",
+            "description": "近30天:30 ;近10天:10",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/statisticsMsg"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
     }
   },
   "definitions": {

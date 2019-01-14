@@ -207,6 +207,27 @@ const statisticsByMonths =(params,callback) => {
         callback(error,rows);
     })
 }
+const statisticsByDays =(params,callback) => {
+    let paramsArray = [],i=0;
+    let query = " select db.id ,count(oia.id) as invoice_count,IFNULL(sum(oi.real_payment_price),0) invoice_price";
+    query += " from date_base db left join order_invoice_apply oia on db.id=oia.date_id  ";
+    query += " left join order_info oi on oia.order_id = oi.id";
+    if (params.createdType){
+        paramsArray[i++] = params.createdType;
+        query += " and oi.created_type = ?";
+    }
+    query += " where 1=1";
+    if (params.startMonth && params.endMonth) {
+        paramsArray[i++] = params.startMonth;
+        paramsArray[i] = params.endMonth;
+        query += " and db.id between ? and ? ";
+    }
+    query += " group by db.id  order by db.id desc";
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('statisticsByDays');
+        callback(error,rows);
+    })
+}
 module.exports = {
     addOrderInvoiceApply,
     updateStatus,
@@ -216,5 +237,6 @@ module.exports = {
     deleteRevokeInvoice,
     getById,
     getByOrderId,
-    statisticsByMonths
+    statisticsByMonths,
+    statisticsByDays
 }

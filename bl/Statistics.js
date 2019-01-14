@@ -157,8 +157,56 @@ const invoiceMsgByMonths =(req,res,next) => {
         })
     })
 }
+const invoiceMsgByDays =(req,res,next) => {
+    let invoiceList = {};
+    let params = req.params;
+    params.startDay = moment().subtract(params.selectDays,"days").format("YYYYMMDD");
+    params.endDay = moment().format("YYYYMMDD");
+    new Promise((resolve,reject)=>{
+        invoiceApplyDAO.statisticsByMonths(params,(error,rows)=>{
+            if(error){
+                logger.error('allInvoiceMsgByDays' + error.message);
+                resUtil.resetFailedRes(error,res,next);
+                reject(error);
+            }else{
+                logger.info('allInvoiceMsgByDays' + 'success');
+                invoiceList.all = rows;
+                resolve();
+            }
+        })
+    }).then(()=>{
+        new Promise((resolve,reject)=>{
+            params.createdType = sysConsts.ORDER.type.internal;
+            invoiceApplyDAO.statisticsByMonths(params,(error,rows)=>{
+                if(error){
+                    logger.error('internalInvoiceMsgByDays' + error.message);
+                    resUtil.resetFailedRes(error,res,next);
+                    reject(error);
+                }else{
+                    logger.info('internalInvoiceMsgByDays' + 'success');
+                    invoiceList.internal = rows;
+                    resolve();
+                }
+            });
+        }).then(()=>{
+            params.createdType = sysConsts.ORDER.type.extrnal;
+            invoiceApplyDAO.statisticsByMonths(params,(error,rows)=>{
+                if(error){
+                    logger.error('extrnalInvoiceMsgByDays' + error.message);
+                    resUtil.resetFailedRes(error,res,next);
+                }else{
+                    logger.info('extrnalInvoiceMsgByDays' + 'success');
+                    invoiceList.extrnal = rows;
+                    resUtil.resetQueryRes(res,invoiceList,null);
+                    return next();
+                }
+            });
+        })
+    })
+}
 module.exports = {
     orderMsgByMonths,
     orderMsgByDay,
-    invoiceMsgByMonths
+    invoiceMsgByMonths,
+    invoiceMsgByDays
 }
