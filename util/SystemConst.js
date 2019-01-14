@@ -103,6 +103,12 @@ const CAR = {
         unShowInUser:0
     }
 }
+const STASTICS = {
+    byDay:{
+        thirty:0,
+        ten:1
+    }
+}
 module.exports = {
     CAR_MODEL,
     PAYMENT,
@@ -111,5 +117,6 @@ module.exports = {
     USER_ADDRESS,
     ORDER_INVOICE_APPLY,
     INQUIRY,
-    CAR
+    CAR,
+    STASTICS
 }

@@ -7821,6 +7821,90 @@
           }
         }
       }
+    },
+    "/admin/{adminId}/statisticsOrderCountsByDay": {
+      "get": {
+        "tags": [
+          "statisticsMsg"
+        ],
+        "summary": "",
+        "description": "统计每天的订单笔数(近30天或10天内)",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "selectDays",
+            "in": "query",
+            "description": "近30天:0 ;近10天:1",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/statisticsMsg"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/statisticsOrderPriceByDay": {
+      "get": {
+        "tags": [
+          "statisticsMsg"
+        ],
+        "summary": "",
+        "description": "统计每天的订单金额(近30天或10天内)",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "selectDays",
+            "in": "query",
+            "description": "近30天:0 ;近10天:1",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/statisticsMsg"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
     }
   },
   "definitions": {

@@ -541,6 +541,26 @@ const statisticsPriceByMounths =(params,callback) => {
         callback(error,rows);
     })
 }
+const statisticsCountsByDays =(params,callback) => {
+    let paramsArray = [],i=0;
+    let query = " select db.id ,count(oi.id) as order_counts";
+    query += " from date_base db left join order_info oi on db.id = oi.date_id";
+    if (params.createdType){
+        paramsArray[i++] = params.createdType;
+        query += " and oi.created_type = ?";
+    }
+    query += " where 1=1";
+    if (params.startDay && params.endDay) {
+        paramsArray[i++] = params.startDay;
+        paramsArray[i] = params.endDay;
+        query += " and db.id between ? and ? ";
+    }
+    query += " group by db.id order by db.id desc";
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('statisticsCountsByDays');
+        callback(error,rows);
+    })
+}
 module.exports = {
     getInquiryOrder,
     addInquiryOrder,
@@ -560,5 +580,6 @@ module.exports = {
     getById,
     updateById,
     statisticsCountsByMounths,
-    statisticsPriceByMounths
+    statisticsPriceByMounths,
+    statisticsCountsByDays
 }
