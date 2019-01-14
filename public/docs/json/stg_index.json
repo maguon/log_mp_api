@@ -7745,14 +7745,14 @@
           {
             "name": "startMonth",
             "in": "query",
-            "description": "格式：2016-12",
+            "description": "格式：201612",
             "required": false,
             "type": "string"
           },
           {
             "name": "endMonth",
             "in": "query",
-            "description": "格式：2016-12",
+            "description": "格式：201612",
             "required": false,
             "type": "string"
           }
@@ -7794,9 +7794,58 @@
           {
             "name": "selectDays",
             "in": "query",
-            "description": "近30天:0 ;近10天:1",
+            "description": "近30天:30 ;近10天:10",
             "required": true,
             "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/statisticsMsg"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/statisticsInvoiceMsgByMonth": {
+      "get": {
+        "tags": [
+          "statisticsMsg"
+        ],
+        "summary": "",
+        "description": "通过月份统计发票笔数（日期默认当前月份-12个月前）",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "startMonth",
+            "in": "query",
+            "description": "格式：201612",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "endMonth",
+            "in": "query",
+            "description": "格式：201612",
+            "required": false,
+            "type": "string"
           }
         ],
         "responses": {

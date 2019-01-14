@@ -4,11 +4,12 @@ const logger = serverLogger.createLogger('OrderInvoiceApplyDAO.js');
 const db = require('../db/connection/MysqlDb.js');
 
 const addOrderInvoiceApply = (params,callback) => {
-    let query = " insert into  order_invoice_apply (user_id,admin_id,order_id,title,tax_number,bank,bank_code,company_phone,company_address,remark) values (?,?,?,?,?,?,?,?,?,?)";
+    let query = " insert into  order_invoice_apply (user_id,admin_id,order_id,date_id,title,tax_number,bank,bank_code,company_phone,company_address,remark) values (?,?,?,?,?,?,?,?,?,?)";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.userId;
     paramsArray[i++] = params.adminId;
     paramsArray[i++] = params.orderId;
+    paramsArray[i++] = params.dateId;
     paramsArray[i++] = params.title;
     paramsArray[i++] = params.taxNumber;
     paramsArray[i++] = params.bank;
@@ -185,6 +186,26 @@ const getByOrderId = (params,callback) => {
         callback(error,rows)
     })
 }
+const statisticsByMonths =(params,callback) => {
+    let paramsArray = [],i=0;
+    let query = " select db.y_month ,count(oi.id) as invoice_counts, IFNULL(sum(oi.total_trans_price + oi.total_insure_price),0) as order_price";
+    query += " from date_base db left join order_info oi on db.id=oi.date_id  ";
+    if (params.createdType){
+        paramsArray[i++] = params.createdType;
+        query += " and oi.created_type = ?";
+    }
+    query += " where 1=1";
+    if (params.startMonth && params.endMonth) {
+        paramsArray[i++] = params.startMonth;
+        paramsArray[i] = params.endMonth;
+        query += " and db.y_month between ? and ? ";
+    }
+    query += " group by db.y_month  order by db.y_month desc";
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('statisticsCountsByMounths');
+        callback(error,rows);
+    })
+}
 module.exports = {
     addOrderInvoiceApply,
     updateStatus,
@@ -193,5 +214,6 @@ module.exports = {
     getOrderInvoice,
     deleteRevokeInvoice,
     getById,
-    getByOrderId
+    getByOrderId,
+    statisticsByMonths
 }
