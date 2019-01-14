@@ -501,7 +501,7 @@ const updateById =(params,callback) => {
 }
 const statisticsCountsByMounths =(params,callback) => {
     let paramsArray = [],i=0;
-    let query = " select date_format(created_on,'%Y-%m') day_month,count(id) order_counts from order_info";
+    let query = " select date_format(created_on,'%Y-%m') day_month,count(id) data_num from order_info";
     query += " where date_format(created_on,'%Y-%m') >= ? and date_format(created_on,'%Y-%m') <= ?";
     paramsArray[i++] = params.startMonth;
     paramsArray[i++] = params.endMonth;
@@ -512,6 +512,22 @@ const statisticsCountsByMounths =(params,callback) => {
     query += " group by date_format(created_on,'%Y-%m')";
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('statisticsCountsByMounths');
+        callback(error,rows);
+    })
+}
+const statisticsPriceByMounths =(params,callback) => {
+    let paramsArray = [],i=0;
+    let query = " select date_format(created_on,'%Y-%m') day_month,sum(total_trans_price+total_insure_price) data_num from order_info";
+    query += " where date_format(created_on,'%Y-%m') >= ? and date_format(created_on,'%Y-%m') <= ?";
+    paramsArray[i++] = params.startMonth;
+    paramsArray[i++] = params.endMonth;
+    if (params.createdType){
+        paramsArray[i] = params.createdType;
+        query += " and created_type = ?";
+    }
+    query += " group by date_format(created_on,'%Y-%m')";
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('statisticsPriceByMounths');
         callback(error,rows);
     })
 }
@@ -533,5 +549,6 @@ module.exports = {
     updateRealPaymentPrice,
     getById,
     updateById,
-    statisticsCountsByMounths
+    statisticsCountsByMounths,
+    statisticsPriceByMounths
 }

@@ -307,6 +307,7 @@ const createServer=()=>{
      * Statistics
      */
     server.get('/api/admin/:adminId/statisticsOrderCountsByMonth',statistics.orderCountsByMonths);
+    server.get('/api/admin/:adminId/statisticsOrderPriceByMonth',statistics.orderPriceByMonths);
 
     server.on('NotFound', function (req, res ,next) {
         logger.warn(req.url + " not found");
