@@ -500,12 +500,16 @@ const updateById =(params,callback) => {
     })
 }
 const statisticsCountsByMounths =(params,callback) => {
+    let paramsArray = [],i=0;
     let query = " select date_format(created_on,'%Y-%m') day_month,count(id) order_counts from order_info";
     query += " where date_format(created_on,'%Y-%m') >= ? and date_format(created_on,'%Y-%m') <= ?";
-    query += " group by date_format(created_on,'%Y-%m')";
-    let paramsArray = [],i=0;
     paramsArray[i++] = params.startMonth;
-    paramsArray[i] = params.endMonth;
+    paramsArray[i++] = params.endMonth;
+    if (params.createdType){
+        paramsArray[i] = params.createdType;
+        query += " and created_type = ?";
+    }
+    query += " group by date_format(created_on,'%Y-%m')";
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('statisticsCountsByMounths');
         callback(error,rows);

@@ -37,12 +37,12 @@ const PAYMENT = {
 }
 const ORDER ={
     type :{
-        internal :1,
-        extrnal :2
+        internal :1,//内部订单
+        extrnal :2//外部订单
     },
     serviceType:{
-        doorToDoor :1,
-        selfMention :2
+        doorToDoor :1,//上门提货
+        selfMention :2//自提
     },
     paymentStatus:{
         complete:2,//支付完成
