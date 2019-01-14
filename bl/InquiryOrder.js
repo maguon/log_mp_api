@@ -402,9 +402,8 @@ const updatePaymentRemark = (req,res,next) => {
         }
     })
 }
-const improveInformation = (req,res,next) => {
+const updateById = (req,res,next) => {
     let params = req.params;
-    params.status = sysConsts.ORDER.status.priceToBeImproved;
     inquiryOrderDAO.updateById(params,(error,result)=>{
         if(error){
             logger.error('updateById:' + error.message);
@@ -431,6 +430,6 @@ module.exports = {
     addOrder,
     getOrderNew,
     updatePaymentRemark,
-    improveInformation
+    updateById
 }
 

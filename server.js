@@ -159,7 +159,9 @@ const createServer=()=>{
     server.get('/api/admin/:adminId/order',inquiryOrder.getOrder);
     server.put({path:'/api/admin/:adminId/order/:orderId/adminMark',contentType: 'application/json'},inquiryOrder.putAdminMark);
     server.put({path:'/api/admin/:adminId/order/:orderId/paymentRemark',contentType: 'application/json'},inquiryOrder.updatePaymentRemark);
-    server.put({path:'/api/user/:userId/order/:orderId/improveInformation',contentType: 'application/json'},inquiryOrder.improveInformation);
+    server.put({path:'/api/user/:userId/order/:orderId/remark',contentType: 'application/json'},inquiryOrder.updateById);
+    server.put({path:'/api/user/:userId/order/:orderId/sendMsg',contentType: 'application/json'},inquiryOrder.updateById);
+    server.put({path:'/api/user/:userId/order/:orderId/recvMsg',contentType: 'application/json'},inquiryOrder.updateById);
     /**
      order_item
      */

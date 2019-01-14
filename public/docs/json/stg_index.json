@@ -3565,13 +3565,13 @@
         }
       }
     },
-    "/user/{userId}/order/{orderId}/improveInformation": {
+    "/user/{userId}/order/{orderId}/remark": {
       "put": {
         "tags": [
           "order"
         ],
         "summary": "update",
-        "description": "Improving Order Information",
+        "description": "update remark",
         "produces": [
           "application/json"
         ],
@@ -3591,12 +3591,114 @@
             "type": "integer"
           },
           {
-            "name": "information",
+            "name": "remark",
             "in": "body",
-            "description": "information",
+            "description": "remark",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/improveInformation"
+              "$ref": "#/definitions/orderRemark"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/receiveInfo"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/order/{orderId}/sendMsg": {
+      "put": {
+        "tags": [
+          "order"
+        ],
+        "summary": "update",
+        "description": "update sendMsg",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "sendMsg",
+            "in": "body",
+            "description": "sendMsg",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/orderSendMsg"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/receiveInfo"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/order/{orderId}/recvMsg": {
+      "put": {
+        "tags": [
+          "order"
+        ],
+        "summary": "update",
+        "description": "update recvMsg",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "recvMsg",
+            "in": "body",
+            "description": "recvMsg",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/orderReceiveMsg"
             }
           }
         ],
@@ -8755,21 +8857,20 @@
         "name": "refuseApplyMsg"
       }
     },
-    "improveInformation": {
+    "orderRemark": {
       "type": "object",
       "properties": {
         "remark": {
           "type": "string"
-        },
-        "recvName": {
-          "type": "string"
-        },
-        "recvPhone": {
-          "type": "string"
-        },
-        "recvAddress": {
-          "type": "string"
-        },
+        }
+      },
+      "xml": {
+        "name": "orderRemark"
+      }
+    },
+    "orderSendMsg": {
+      "type": "object",
+      "properties": {
         "sendName": {
           "type": "string"
         },
@@ -8781,7 +8882,24 @@
         }
       },
       "xml": {
-        "name": "improveInformation"
+        "name": "orderSendMsg"
+      }
+    },
+    "orderReceiveMsg": {
+      "type": "object",
+      "properties": {
+        "recvName": {
+          "type": "string"
+        },
+        "recvPhone": {
+          "type": "string"
+        },
+        "recvAddress": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "orderReceiveMsg"
       }
     }
   }
