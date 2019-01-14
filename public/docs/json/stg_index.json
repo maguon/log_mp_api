@@ -7724,7 +7724,7 @@
         }
       }
     },
-    "/admin/{adminId}/statisticsOrderCountsByMonth": {
+    "/admin/{adminId}/statisticsOrderMsgByMonth": {
       "get": {
         "tags": [
           "statisticsMsg"
@@ -7773,104 +7773,13 @@
         }
       }
     },
-    "/admin/{adminId}/statisticsOrderPriceByMonth": {
-      "get": {
-        "tags": [
-          "statisticsMsg"
-        ],
-        "summary": "",
-        "description": "通过月份统计订单应付金额（日期默认当前月份-12个月前）",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "startMonth",
-            "in": "query",
-            "description": "格式：2016-12",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "endMonth",
-            "in": "query",
-            "description": "格式：2016-12",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/statisticsMsg"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/statisticsOrderCountsByDay": {
+    "/admin/{adminId}/statisticsOrderMsgByDay": {
       "get": {
         "tags": [
           "statisticsMsg"
         ],
         "summary": "",
         "description": "统计每天的订单笔数(近30天或10天内)",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "selectDays",
-            "in": "query",
-            "description": "近30天:0 ;近10天:1",
-            "required": true,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/statisticsMsg"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/statisticsOrderPriceByDay": {
-      "get": {
-        "tags": [
-          "statisticsMsg"
-        ],
-        "summary": "",
-        "description": "统计每天的订单金额(近30天或10天内)",
         "produces": [
           "application/json"
         ],

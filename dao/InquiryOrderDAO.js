@@ -501,10 +501,10 @@ const updateById =(params,callback) => {
         callback(error,rows);
     })
 }
-const statisticsCountsByMounths =(params,callback) => {
+const statisticsMonths =(params,callback) => {
     let paramsArray = [],i=0;
-    let query = " select db.y_month ,count(oi.id) as order_counts from date_base db";
-    query += " left join order_info oi on db.id=oi.date_id  ";
+    let query = " select db.y_month ,count(oi.id) as order_counts, IFNULL(sum(oi.total_trans_price + oi.total_insure_price),0) as order_price";
+    query += " from date_base db left join order_info oi on db.id=oi.date_id  ";
     if (params.createdType){
         paramsArray[i++] = params.createdType;
         query += " and oi.created_type = ?";
@@ -521,29 +521,9 @@ const statisticsCountsByMounths =(params,callback) => {
         callback(error,rows);
     })
 }
-const statisticsPriceByMounths =(params,callback) => {
+const statisticsByDays =(params,callback) => {
     let paramsArray = [],i=0;
-    let query = " select db.y_month ,IFNULL(sum(oi.total_trans_price + oi.total_insure_price),0) as order_price";
-    query += " from date_base db left join order_info oi on db.id=oi.date_id";
-    if (params.createdType){
-        paramsArray[i++] = params.createdType;
-        query += " and oi.created_type = ?";
-    }
-    query += " where 1=1";
-    if (params.startMonth && params.endMonth) {
-        paramsArray[i++] = params.startMonth;
-        paramsArray[i] = params.endMonth;
-        query += " and db.y_month between ? and ? ";
-    }
-    query += " group by db.y_month order by db.y_month desc";
-    db.dbQuery(query,paramsArray,(error,rows)=>{
-        logger.debug('statisticsPriceByMounths');
-        callback(error,rows);
-    })
-}
-const statisticsCountsByDays =(params,callback) => {
-    let paramsArray = [],i=0;
-    let query = " select db.id ,count(oi.id) as order_counts";
+    let query = " select db.id ,count(oi.id) as order_counts , IFNULL(sum(oi.total_trans_price + oi.total_insure_price),0) as order_price";
     query += " from date_base db left join order_info oi on db.id = oi.date_id";
     if (params.createdType){
         paramsArray[i++] = params.createdType;
@@ -557,7 +537,7 @@ const statisticsCountsByDays =(params,callback) => {
     }
     query += " group by db.id order by db.id desc";
     db.dbQuery(query,paramsArray,(error,rows)=>{
-        logger.debug('statisticsCountsByDays');
+        logger.debug('statisticsByDays');
         callback(error,rows);
     })
 }
@@ -579,7 +559,6 @@ module.exports = {
     updateRealPaymentPrice,
     getById,
     updateById,
-    statisticsCountsByMounths,
-    statisticsPriceByMounths,
-    statisticsCountsByDays
+    statisticsMonths,
+    statisticsByDays
 }

@@ -9,7 +9,7 @@ const sysConsts = require("../util/SystemConst");
 const moment = require('moment/moment.js');
 const orderInfoDAO = require("../dao/InquiryOrderDAO");
 
-const orderCountsByMonths =(req,res,next) => {
+const orderMsgByMonths =(req,res,next) => {
     let orderCountsList = {};
     let params = req.params;
     if (!params.endMonth){
@@ -19,13 +19,13 @@ const orderCountsByMonths =(req,res,next) => {
         params.startMonth = moment().subtract(11,'months').format("YYYYMM");;
     }
     new Promise((resolve,reject)=>{
-        orderInfoDAO.statisticsCountsByMounths({startMonth:params.startMonth,endMonth:params.endMonth},(error,rows)=>{
+        orderInfoDAO.statisticsMonths(params,(error,rows)=>{
             if(error){
-                logger.error('allOrderCountsByMonths' + error.message);
+                logger.error('allOrderMsgByMonths' + error.message);
                 resUtil.resetFailedRes(error,res,next);
                 reject(error);
             }else{
-                logger.info('allOrderCountsByMonths' + 'success');
+                logger.info('allOrderMsgByMonths' + 'success');
                 orderCountsList.all = rows;
                 resolve();
             }
@@ -33,25 +33,25 @@ const orderCountsByMonths =(req,res,next) => {
     }).then(()=>{
         new Promise((resolve,reject)=>{
             params.createdType = sysConsts.ORDER.type.internal;
-            orderInfoDAO.statisticsCountsByMounths(params,(error,rows)=>{
+            orderInfoDAO.statisticsMonths(params,(error,rows)=>{
                 if(error){
-                    logger.error('internalOrderCountsByMonths' + error.message);
+                    logger.error('internalOrderMsgByMonths' + error.message);
                     resUtil.resetFailedRes(error,res,next);
                     reject(error);
                 }else{
-                    logger.info('internalOrderCountsByMonths' + 'success');
+                    logger.info('internalOrderMsgByMonths' + 'success');
                     orderCountsList.internal = rows;
                     resolve();
                 }
             });
         }).then(()=>{
             params.createdType = sysConsts.ORDER.type.extrnal;
-            orderInfoDAO.statisticsCountsByMounths(params,(error,rows)=>{
+            orderInfoDAO.statisticsMonths(params,(error,rows)=>{
                 if(error){
-                    logger.error('extrnalOrderCountsByMonths' + error.message);
+                    logger.error('extrnalOrderMsgByMonths' + error.message);
                     resUtil.resetFailedRes(error,res,next);
                 }else{
-                    logger.info('extrnalOrderCountsByMonths' + 'success');
+                    logger.info('extrnalOrderMsgByMonths' + 'success');
                     orderCountsList.extrnal = rows;
                     resUtil.resetQueryRes(res,orderCountsList,null);
                     return next();
@@ -60,58 +60,7 @@ const orderCountsByMonths =(req,res,next) => {
         })
     })
 }
-const orderPriceByMonths =(req,res,next) => {
-    let orderPriceList = {};
-    let params = req.params;
-    if (!params.endMonth){
-        params.endMonth = moment().format("YYYYMM");
-    }
-    if (!params.startMonth){
-        params.startMonth = moment().subtract(11,'months').format("YYYYMM");
-    }
-    new Promise((resolve,reject)=>{
-        orderInfoDAO.statisticsPriceByMounths(params,(error,rows)=>{
-            if(error){
-                logger.error('allOrderPriceByMonths' + error.message);
-                resUtil.resetFailedRes(error,res,next);
-                reject(error);
-            }else{
-                logger.info('allOrderPriceByMonths' + 'success');
-                orderPriceList.all = rows;
-                resolve();
-            }
-        })
-    }).then(()=>{
-        new Promise((resolve,reject)=>{
-            params.createdType = sysConsts.ORDER.type.internal;
-            orderInfoDAO.statisticsPriceByMounths(params,(error,rows)=>{
-                if(error){
-                    logger.error('internalOrderPriceByMonths' + error.message);
-                    resUtil.resetFailedRes(error,res,next);
-                    reject(error);
-                }else{
-                    logger.info('internalOrderPriceByMonths' + 'success');
-                    orderPriceList.internal = rows;
-                    resolve();
-                }
-            })
-        }).then(()=>{
-            params.createdType = sysConsts.ORDER.type.extrnal;
-            orderInfoDAO.statisticsPriceByMounths(params,(error,rows)=>{
-                if(error){
-                    logger.error('extrnalOrderPriceByMonths' + error.message);
-                    resUtil.resetFailedRes(error,res,next);
-                }else{
-                    logger.info('extrnalOrderPriceByMonths' + 'success');
-                    orderPriceList.extrnal = rows;
-                    resUtil.resetQueryRes(res,orderPriceList,null);
-                    return next();
-                }
-            });
-        })
-    });
-}
-const orderCountsByDay =(req,res,next) => {
+const orderMsgByDay =(req,res,next) => {
     let orderCountsList = {};
     let params = req.params;
     if (params.selectDays == sysConsts.STASTICS.byDay.thirty ){
@@ -122,7 +71,7 @@ const orderCountsByDay =(req,res,next) => {
         params.endDay = moment().format("YYYYMMDD");
     }
     new Promise((resolve,reject)=>{
-        orderInfoDAO.statisticsCountsByDays(params,(error,rows)=>{
+        orderInfoDAO.statisticsByDays(params,(error,rows)=>{
             if (error) {
                 logger.error('statisticsCountsByDays' + error.message);
                 resUtil.resetFailedRes(error,res,next);
@@ -135,7 +84,7 @@ const orderCountsByDay =(req,res,next) => {
     }).then(()=>{
         new Promise((resolve,reject)=>{
             params.createdType = sysConsts.ORDER.type.internal;
-            orderInfoDAO.statisticsCountsByDays(params,(error,rows)=>{
+            orderInfoDAO.statisticsByDays(params,(error,rows)=>{
                 if (error){
                     logger.error('statisticsCountsByDays' + error.message);
                     resUtil.resetFailedRes(error,res,next);
@@ -147,7 +96,7 @@ const orderCountsByDay =(req,res,next) => {
             });
         }).then(()=>{
             params.createdType = sysConsts.ORDER.type.extrnal;
-            orderInfoDAO.statisticsCountsByDays(params,(error,rows)=>{
+            orderInfoDAO.statisticsByDays(params,(error,rows)=>{
                 if (error){
                     logger.error('statisticsCountsByDays' + error.message);
                     resUtil.resetFailedRes(error,res,next);
@@ -162,7 +111,6 @@ const orderCountsByDay =(req,res,next) => {
 
 }
 module.exports = {
-    orderCountsByMonths,
-    orderPriceByMonths,
-    orderCountsByDay
+    orderMsgByMonths,
+    orderMsgByDay
 }
