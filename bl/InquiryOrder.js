@@ -10,6 +10,7 @@ const inquiryDAO = require('../dao/InquiryDAO.js');
 const cityDAO = require('../dao/CityInfoDAO.js');
 const routeDAO = require('../dao/RouteDAO.js');
 const sysConsts = require("../util/SystemConst");
+const moment = require('moment/moment.js');
 
 const addInquiryOrderByUser = (req,res,next) => {
     let params = req.params;
@@ -44,6 +45,7 @@ const addInquiryOrderByUser = (req,res,next) => {
         })
     }).then(()=>{
         new Promise((resolve,reject)=>{
+            params.dateId = moment().format("YYYYMMDD");
             inquiryOrderDAO.addInquiryOrder(params,(error,result)=>{
                 if(error){
                     logger.error('addInquiryOrder' + error.message);
@@ -119,6 +121,7 @@ const addInquiryOrderByAdmin = (req,res,next) => {
             })
         }).then(()=>{
             new Promise((resolve,reject)=>{
+                params.dateId = moment().format("YYYYMMDD");
                 inquiryOrderDAO.addInquiryOrder(params,(error,result)=>{
                     if(error){
                         logger.error('addInquiryOrder' + error.message);
@@ -359,6 +362,7 @@ const addOrder = (req,res,next) => {
                 })
             }).then(()=>{
                 new Promise((resolve,reject)=>{
+                    params.dateId = moment().format("YYYYMMDD");
                     inquiryOrderDAO.addOrder(params,(error,result)=>{
                         if(error){
                             logger.error('addOrder' + error.message);

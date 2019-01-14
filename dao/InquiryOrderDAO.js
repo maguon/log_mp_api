@@ -22,11 +22,12 @@ const getInquiryOrder = (params,callback) => {
     })
 }
 const addInquiryOrder = (params,callback) => {
-    let query = " insert into order_info(user_id,ora_insure_price,route_id,distance,route_start,route_end,route_start_id,route_end_id,admin_id,created_type,service_type,inquiry_id,ora_trans_price,car_num) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+    let query = " insert into order_info(user_id,ora_insure_price,route_id,date_id,distance,route_start,route_end,route_start_id,route_end_id,admin_id,created_type,service_type,inquiry_id,ora_trans_price,car_num) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.userId;
     paramsArray[i++] = params.oraInsurePrice;
     paramsArray[i++] = params.routeId;
+    paramsArray[i++] = params.dateId;
     paramsArray[i++] = params.distance;
     paramsArray[i++] = params.routeStart;
     paramsArray[i++] = params.routeEnd;
@@ -348,9 +349,10 @@ const cancelOrder = (params,callback) => {
     })
 }
 const addOrder = (params,callback) => {
-    let query = " insert into order_info(route_id,distance,route_start,route_end,created_type,admin_id,route_start_id,route_end_id,service_type) values(?,?,?,?,1,?,?,?,?) ";
+    let query = " insert into order_info(route_id,date_id,distance,route_start,route_end,created_type,admin_id,route_start_id,route_end_id,service_type) values(?,?,?,?,1,?,?,?,?) ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.routeId;
+    paramsArray[i++] = params.dateId;
     paramsArray[i++] = params.distance;
     paramsArray[i++] = params.routeStart;
     paramsArray[i++] = params.routeEnd;
@@ -501,15 +503,19 @@ const updateById =(params,callback) => {
 }
 const statisticsCountsByMounths =(params,callback) => {
     let paramsArray = [],i=0;
-    let query = " select date_format(created_on,'%Y-%m') day_month,count(id) data_num from order_info";
-    query += " where date_format(created_on,'%Y-%m') >= ? and date_format(created_on,'%Y-%m') <= ?";
-    paramsArray[i++] = params.startMonth;
-    paramsArray[i++] = params.endMonth;
+    let query = " select db.y_month ,count(oi.id) as order_counts from date_base db";
+    query += " left join order_info oi on db.id=oi.date_id  ";
     if (params.createdType){
-        paramsArray[i] = params.createdType;
-        query += " and created_type = ?";
+        paramsArray[i++] = params.createdType;
+        query += " and oi.created_type = ?";
     }
-    query += " group by date_format(created_on,'%Y-%m')";
+    query += " where 1=1";
+    if (params.startMonth && params.endMonth) {
+        paramsArray[i++] = params.startMonth;
+        paramsArray[i] = params.endMonth;
+        query += " and db.y_month between ? and ? ";
+    }
+    query += " group by db.y_month  order by db.y_month desc";
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('statisticsCountsByMounths');
         callback(error,rows);
@@ -517,15 +523,19 @@ const statisticsCountsByMounths =(params,callback) => {
 }
 const statisticsPriceByMounths =(params,callback) => {
     let paramsArray = [],i=0;
-    let query = " select date_format(created_on,'%Y-%m') day_month,sum(total_trans_price+total_insure_price) data_num from order_info";
-    query += " where date_format(created_on,'%Y-%m') >= ? and date_format(created_on,'%Y-%m') <= ?";
-    paramsArray[i++] = params.startMonth;
-    paramsArray[i++] = params.endMonth;
+    let query = " select db.y_month ,IFNULL(sum(oi.total_trans_price + oi.total_insure_price),0) as order_price";
+    query += " from date_base db left join order_info oi on db.id=oi.date_id";
     if (params.createdType){
-        paramsArray[i] = params.createdType;
-        query += " and created_type = ?";
+        paramsArray[i++] = params.createdType;
+        query += " and oi.created_type = ?";
     }
-    query += " group by date_format(created_on,'%Y-%m')";
+    query += " where 1=1";
+    if (params.startMonth && params.endMonth) {
+        paramsArray[i++] = params.startMonth;
+        paramsArray[i] = params.endMonth;
+        query += " and db.y_month between ? and ? ";
+    }
+    query += " group by db.y_month order by db.y_month desc";
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('statisticsPriceByMounths');
         callback(error,rows);

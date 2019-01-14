@@ -13,10 +13,10 @@ const orderCountsByMonths =(req,res,next) => {
     let orderCountsList = {};
     let params = req.params;
     if (!params.endMonth){
-        params.endMonth = moment().format("YYYY-MM");;
+        params.endMonth = moment().format("YYYYMM");;
     }
     if (!params.startMonth){
-        params.startMonth = moment().subtract(11,'months').format("YYYY-MM");;
+        params.startMonth = moment().subtract(11,'months').format("YYYYMM");;
     }
     allOrderCountsByMonths(params,(error,data)=>{
         if (error){
@@ -47,10 +47,10 @@ const orderPriceByMonths =(req,res,next) => {
     let orderPriceList = {};
     let params = req.params;
     if (!params.endMonth){
-        params.endMonth = moment().format("YYYY-MM");
+        params.endMonth = moment().format("YYYYMM");
     }
     if (!params.startMonth){
-        params.startMonth = moment().subtract(11,'months').format("YYYY-MM");
+        params.startMonth = moment().subtract(11,'months').format("YYYYMM");
     }
     allOrderPriceByMonths(params,(error,data)=>{
         if (error){
@@ -79,10 +79,10 @@ const orderPriceByMonths =(req,res,next) => {
 }
 const allOrderPriceByMonths =(params,callback) => {
     if (!params.endMonth){
-        params.endMonth = moment().format("YYYY-MM");;
+        params.endMonth = moment().format("YYYYMM");;
     }
     if (!params.startMonth){
-        params.startMonth = moment().subtract(11,'months').format("YYYY-MM");;
+        params.startMonth = moment().subtract(11,'months').format("YYYYMM");;
     }
     orderInfoDAO.statisticsPriceByMounths({startMonth:params.startMonth,endMonth:params.endMonth},(error,rows)=>{
         if(error){
@@ -90,24 +90,16 @@ const allOrderPriceByMonths =(params,callback) => {
             callback(error,null);
         }else{
             logger.info('allOrderPriceByMonths' + 'success');
-            let zeroResult = getZeroList(params.startMonth,params.endMonth);
-            for (let i in rows){
-                for (let j in zeroResult){
-                    if (rows[i].day_month == zeroResult[j].day_month){
-                        zeroResult[j].data_num = rows[i].data_num;
-                    }
-                }
-            }
-            callback(null,zeroResult);
+            callback(null,rows);
         }
     })
 }
 const internalOrderPriceByMonths =(params,callback) => {
     if (!params.endMonth){
-        params.endMonth = moment().format("YYYY-MM");
+        params.endMonth = moment().format("YYYYMM");
     }
     if (!params.startMonth){
-        params.startMonth = moment().subtract(11,'months').format("YYYY-MM");
+        params.startMonth = moment().subtract(11,'months').format("YYYYMM");
     }
     orderInfoDAO.statisticsPriceByMounths({startMonth:params.startMonth,endMonth:params.endMonth,createdType:sysConsts.ORDER.type.internal},(error,rows)=>{
         if(error){
@@ -115,24 +107,16 @@ const internalOrderPriceByMonths =(params,callback) => {
             callback(error,null);
         }else{
             logger.info('internalOrderCountsByMonths' + 'success');
-            let zeroResult = getZeroList(params.startMonth,params.endMonth);
-            for (let i in rows){
-                for (let j in zeroResult){
-                    if (rows[i].day_month == zeroResult[j].day_month){
-                        zeroResult[j].data_num = rows[i].data_num;
-                    }
-                }
-            }
-            callback(null,zeroResult);
+            callback(null,rows);
         }
     })
 }
 const extrnalOrderPriceByMonths =(params,callback) => {
     if (!params.endMonth){
-        params.endMonth = moment().format("YYYY-MM");;
+        params.endMonth = moment().format("YYYYMM");;
     }
     if (!params.startMonth){
-        params.startMonth = moment().subtract(11,'months').format("YYYY-MM");;
+        params.startMonth = moment().subtract(11,'months').format("YYYYMM");;
     }
     orderInfoDAO.statisticsPriceByMounths({startMonth:params.startMonth,endMonth:params.endMonth,createdType:sysConsts.ORDER.type.extrnal},(error,rows)=>{
         if(error){
@@ -140,24 +124,16 @@ const extrnalOrderPriceByMonths =(params,callback) => {
             callback(error,null);
         }else{
             logger.info('internalOrderCountsByMonths' + 'success');
-            let zeroResult = getZeroList(params.startMonth,params.endMonth);
-            for (let i in rows){
-                for (let j in zeroResult){
-                    if (rows[i].day_month == zeroResult[j].day_month){
-                        zeroResult[j].data_num = rows[i].data_num;
-                    }
-                }
-            }
-            callback(null,zeroResult);
+            callback(null,rows);
         }
     })
 }
 const allOrderCountsByMonths =(params,callback) => {
     if (!params.endMonth){
-        params.endMonth = moment().format("YYYY-MM");;
+        params.endMonth = moment().format("YYYYMM");;
     }
     if (!params.startMonth){
-        params.startMonth = moment().subtract(11,'months').format("YYYY-MM");;
+        params.startMonth = moment().subtract(11,'months').format("YYYYMM");;
     }
     orderInfoDAO.statisticsCountsByMounths({startMonth:params.startMonth,endMonth:params.endMonth},(error,rows)=>{
         if(error){
@@ -165,24 +141,16 @@ const allOrderCountsByMonths =(params,callback) => {
             callback(error,null);
         }else{
             logger.info('allOrderCountsByMonths' + 'success');
-            let zeroResult = getZeroList(params.startMonth,params.endMonth);
-            for (let i in rows){
-                for (let j in zeroResult){
-                    if (rows[i].day_month == zeroResult[j].day_month){
-                        zeroResult[j].data_num = rows[i].data_num;
-                    }
-                }
-            }
-            callback(null,zeroResult);
+            callback(null,rows);
         }
     })
 }
 const internalOrderCountsByMonths =(params,callback) => {
     if (!params.endMonth){
-        params.endMonth = moment().format("YYYY-MM");;
+        params.endMonth = moment().format("YYYYMM");;
     }
     if (!params.startMonth){
-        params.startMonth = moment().subtract(11,'months').format("YYYY-MM");;
+        params.startMonth = moment().subtract(11,'months').format("YYYYMM");;
     }
     orderInfoDAO.statisticsCountsByMounths({startMonth:params.startMonth,endMonth:params.endMonth,createdType:sysConsts.ORDER.type.internal},(error,rows)=>{
         if(error){
@@ -190,24 +158,16 @@ const internalOrderCountsByMonths =(params,callback) => {
             callback(error,null);
         }else{
             logger.info('internalOrderCountsByMonths' + 'success');
-            let zeroResult = getZeroList(params.startMonth,params.endMonth);
-            for (let i in rows){
-                for (let j in zeroResult){
-                    if (rows[i].day_month == zeroResult[j].day_month){
-                        zeroResult[j].data_num = rows[i].data_num;
-                    }
-                }
-            }
-            callback(null,zeroResult);
+            callback(null,rows);
         }
     })
 }
 const extrnalOrderCountsByMonths =(params,callback) => {
     if (!params.endMonth){
-        params.endMonth = moment().format("YYYY-MM");;
+        params.endMonth = moment().format("YYYYMM");;
     }
     if (!params.startMonth){
-        params.startMonth = moment().subtract(11,'months').format("YYYY-MM");;
+        params.startMonth = moment().subtract(11,'months').format("YYYYMM");;
     }
     orderInfoDAO.statisticsCountsByMounths({startMonth:params.startMonth,endMonth:params.endMonth,createdType:sysConsts.ORDER.type.extrnal},(error,rows)=>{
         if(error){
@@ -215,33 +175,9 @@ const extrnalOrderCountsByMonths =(params,callback) => {
             callback(error,null);
         }else{
             logger.info('internalOrderCountsByMonths' + 'success');
-            let zeroResult = getZeroList(params.startMonth,params.endMonth);
-            for (let i in rows){
-                for (let j in zeroResult){
-                    if (rows[i].day_month == zeroResult[j].day_month){
-                        zeroResult[j].data_num = rows[i].data_num;
-                    }
-                }
-            }
-            callback(null,zeroResult);
+            callback(null,rows);
         }
     })
-}
-const getZeroList = (startDate,endDate)=>{
-    let start = startDate.split("-"), end = endDate.split("-");
-    let sYear = parseInt(start[0]) , sMonth = parseInt(start[1]) ,
-        eYear = parseInt(end[0]) , eMonth = parseInt(end[1]) ,
-        months = (eYear - sYear) * 12 + (eMonth-sMonth) + 1;
-    let result = new Array();
-    for(let i =0;i<months;i++){
-        let selectMonth = moment(startDate).add(i,'months').format("YYYY-MM");
-        let options = {
-            day_month:selectMonth,
-            data_num: 0
-        }
-        result.push(options);
-    }
-    return result;
 }
 
 module.exports = {
