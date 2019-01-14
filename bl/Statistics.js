@@ -8,6 +8,7 @@ const commonUtil = require("../util/CommonUtil");
 const sysConsts = require("../util/SystemConst");
 const moment = require('moment/moment.js');
 const orderInfoDAO = require("../dao/InquiryOrderDAO");
+const invoiceApplyDAO = require("../dao/OrderInvoiceApplyDAO");
 
 const orderMsgByMonths =(req,res,next) => {
     let orderCountsList = {};
@@ -106,7 +107,7 @@ const orderMsgByDay =(req,res,next) => {
 
 }
 const invoiceMsgByMonths =(req,res,next) => {
-    let orderCountsList = {};
+    let invoiceList = {};
     let params = req.params;
     if (!params.endMonth){
         params.endMonth = moment().format("YYYYMM");;
@@ -115,41 +116,41 @@ const invoiceMsgByMonths =(req,res,next) => {
         params.startMonth = moment().subtract(11,'months').format("YYYYMM");;
     }
     new Promise((resolve,reject)=>{
-        orderInfoDAO.statisticsMonths(params,(error,rows)=>{
+        invoiceApplyDAO.statisticsByMonths(params,(error,rows)=>{
             if(error){
-                logger.error('allOrderMsgByMonths' + error.message);
+                logger.error('allInvoiceMsgByMonths' + error.message);
                 resUtil.resetFailedRes(error,res,next);
                 reject(error);
             }else{
-                logger.info('allOrderMsgByMonths' + 'success');
-                orderCountsList.all = rows;
+                logger.info('allInvoiceMsgByMonths' + 'success');
+                invoiceList.all = rows;
                 resolve();
             }
         })
     }).then(()=>{
         new Promise((resolve,reject)=>{
             params.createdType = sysConsts.ORDER.type.internal;
-            orderInfoDAO.statisticsMonths(params,(error,rows)=>{
+            invoiceApplyDAO.statisticsByMonths(params,(error,rows)=>{
                 if(error){
-                    logger.error('internalOrderMsgByMonths' + error.message);
+                    logger.error('internalInvoiceMsgByMonths' + error.message);
                     resUtil.resetFailedRes(error,res,next);
                     reject(error);
                 }else{
-                    logger.info('internalOrderMsgByMonths' + 'success');
-                    orderCountsList.internal = rows;
+                    logger.info('internalInvoiceMsgByMonths' + 'success');
+                    invoiceList.internal = rows;
                     resolve();
                 }
             });
         }).then(()=>{
             params.createdType = sysConsts.ORDER.type.extrnal;
-            orderInfoDAO.statisticsMonths(params,(error,rows)=>{
+            invoiceApplyDAO.statisticsByMonths(params,(error,rows)=>{
                 if(error){
-                    logger.error('extrnalOrderMsgByMonths' + error.message);
+                    logger.error('extrnalInvoiceMsgByMonths' + error.message);
                     resUtil.resetFailedRes(error,res,next);
                 }else{
-                    logger.info('extrnalOrderMsgByMonths' + 'success');
-                    orderCountsList.extrnal = rows;
-                    resUtil.resetQueryRes(res,orderCountsList,null);
+                    logger.info('extrnalInvoiceMsgByMonths' + 'success');
+                    invoiceList.extrnal = rows;
+                    resUtil.resetQueryRes(res,invoiceList,null);
                     return next();
                 }
             });

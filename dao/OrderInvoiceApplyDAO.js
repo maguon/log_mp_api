@@ -188,8 +188,9 @@ const getByOrderId = (params,callback) => {
 }
 const statisticsByMonths =(params,callback) => {
     let paramsArray = [],i=0;
-    let query = " select db.y_month ,count(oi.id) as invoice_counts, IFNULL(sum(oi.total_trans_price + oi.total_insure_price),0) as order_price";
-    query += " from date_base db left join order_info oi on db.id=oi.date_id  ";
+    let query = " select db.y_month ,count(oia.id) as invoice_count,IFNULL(sum(oi.real_payment_price),0) invoice_price";
+    query += " from date_base db left join order_invoice_apply oia on db.id=oia.date_id  ";
+    query += " left join order_info oi on oia.order_id = oi.id";
     if (params.createdType){
         paramsArray[i++] = params.createdType;
         query += " and oi.created_type = ?";
@@ -202,7 +203,7 @@ const statisticsByMonths =(params,callback) => {
     }
     query += " group by db.y_month  order by db.y_month desc";
     db.dbQuery(query,paramsArray,(error,rows)=>{
-        logger.debug('statisticsCountsByMounths');
+        logger.debug('statisticsByMonths');
         callback(error,rows);
     })
 }
