@@ -7,10 +7,12 @@ const logger = serverLogger.createLogger('OrderInvoice.js');
 const orderInvoiceDAO = require('../dao/OrderInvoiceApplyDAO');
 const sysConsts = require("../util/SystemConst");
 const orderInfoDAO = require("../dao/InquiryOrderDAO");
+const moment = require('moment/moment.js');
 
 const addByAdmin = (req,res,next)=>{
     let params = req.params;
     params.userId = 0;
+    params.dateId = moment().format("YYYYMMDD");
     orderInvoiceDAO.addOrderInvoiceApply(params,(error,result)=>{
         if (error){
             logger.error('addOrderInvoiceApply:' + error.message);
