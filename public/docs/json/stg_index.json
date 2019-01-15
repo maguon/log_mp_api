@@ -8693,9 +8693,6 @@
     "wechatPayment": {
       "type": "object",
       "properties": {
-        "status": {
-          "type": "integer"
-        },
         "openid": {
           "type": "string"
         },

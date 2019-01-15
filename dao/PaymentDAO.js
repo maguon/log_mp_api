@@ -98,12 +98,12 @@ const getPayment = (params,callback) => {
     })
 }
 const addPayment = (params,callback) => {
-    let query = " insert into payment (user_id,order_id,total_fee,remark,status,payment_type,type) values(?,?,?,?,?,?,?)";
+    let query = " insert into payment_info (user_id,order_id,total_fee,nonce_str,status,payment_type,type) values(?,?,?,?,?,?,?)";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.userId;
     paramsArray[i++] = params.orderId;
     paramsArray[i++] = params.totalFee;
-    paramsArray[i++] = params.remark;
+    paramsArray[i++] = params.nonceStr;
     paramsArray[i++] = params.status;
     paramsArray[i++] = params.paymentType;
     paramsArray[i] = params.type;
@@ -129,10 +129,11 @@ const addRefund = (params,callback) => {
     })
 }
 const updateWechatPayment = (params,callback) => {
-    let query = " update payment_info set total_fee=?,status=? where id = ? ";
+    let query = " update payment_info set total_fee=?,status=?,transaction_id=? where id = ? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.totalFee;
     paramsArray[i++] = params.status;
+    paramsArray[i++] = params.transactionId;
     paramsArray[i] = params.paymentId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('updateWechatPayment');

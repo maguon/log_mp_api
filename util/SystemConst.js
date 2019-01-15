@@ -53,11 +53,18 @@ const ORDER ={
         informationToBeImproved :0,//待完善信息
         priceToBeImproved:1,//待完善价格
         reqToBeGenerated:2,//待生成需求
-        carsToBeArranged:3,//带安排车辆
+        carsToBeArranged:3,//待安排车辆
         inExecution:4,//执行中
         cancelled:8,//已取消
         completed:9//已完成
+    },
+    logStatus:{
+        //待安排0
+        //待发运1
+        //运输中2
+        //已送达3
     }
+
 }
 const REFUND_STATUS = {
     refuse:0,

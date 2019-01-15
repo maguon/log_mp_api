@@ -45,6 +45,7 @@ let ADMIN_PAYMENT_NO_MSG = "找不到该支付信息";
 let ADMIN_ORDER_INVOICE_APPLY_REVOKE = "已经处理的发票不能被撤销呦";
 let ADMIN_ORDER_UNREGISTERED = "该订单不存在,请输入正确的订单编号";
 let ADMIN_ORDER_INVOICE_ONLYONE = "一个订单只能申请一张发票";
+let ORDER_PAYMENT_STATUS_COMPLETE = "完成支付的订单无需再支付";
 /**
  * The inquiry info
  */
@@ -79,5 +80,6 @@ module.exports = {
     ADMIN_ORDER_UNREGISTERED,
     ADMIN_ORDER_INVOICE_ONLYONE,
     USER_GET_NO_INQUIRY,
-    GET_TRANS_AND_INSURE_PRICE
+    GET_TRANS_AND_INSURE_PRICE,
+    ORDER_PAYMENT_STATUS_COMPLETE
 }

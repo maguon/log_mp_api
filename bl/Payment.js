@@ -13,6 +13,7 @@ const encrypt = require('../util/Encrypt.js');
 const moment = require('moment/moment.js');
 const https = require('https');
 const sysConsts = require("../util/SystemConst");
+const sysConfig = require("../config/SystemConfig");
 
 const addWechatPayment = (req,res,next) => {
     let params = req.params;
@@ -170,7 +171,7 @@ const addWechatPayment = (req,res,next) => {
         resUtil.resInternalError(error,res,next);
     })
 }
-const updateWechatPayment=(req,res,next) => {
+const uateWechatPayment=(req,res,next) => {
     let xmlParser = new xml2js.Parser({explicitArray : false, ignoreAttrs : true});
     xmlParser.parseString(req.body,(err,result)=>{
         let resString = JSON.stringify(result);
@@ -870,6 +871,193 @@ const updateBankInfo = (req,res,next)=>{
         }
     });
 }
+const wechatPayment =(req,res,next)=>{
+    let params = req.params;
+    let ourString = encrypt.randomString();
+    params.nonceStr = ourString;
+    let myDate = new Date();
+    params.dateId = moment(myDate).format('YYYYMMDD');
+    new Promise((resolve,reject)=>{
+        orderDAO.getById({orderId:params.orderId},(error,rows)=>{
+            if(error){
+                logger.error('getOrderById' + error.message);
+                resUtil.resInternalError(error, res, next);
+                reject(error);
+            }else{
+                logger.info('getOrderById' + 'success');
+                if (rows[0].payment_status == sysConsts.ORDER.paymentStatus.complete) {
+                    resUtil.resetFailedRes(res,sysMsg.ORDER_PAYMENT_STATUS_COMPLETE);
+                }else {
+                    resolve();
+                }
+            }
+        });
+    }).then(()=>{
+        doGetPrepayId(req,res,params,(error,paymentJson)=>{
+            if (error){
+                logger.error('doGetPrepayId' + error.message);
+                resUtil.resInternalError(error, res, next);
+            } else {
+                logger.error('doGetPrepayId' + "success");
+                params.status = sysConsts.PAYMENT.status.unPaid;
+                params.paymentType = sysConsts.PAYMENT.paymentType.wechat;
+                params.type = sysConsts.PAYMENT.type.payment;
+                paymentDAO.addPayment(params,(error,result)=>{
+                    if(error){
+                        logger.error('addPayment' + error.message);
+                    }else if(result && result.insertId < 1){
+                        logger.warn('addPayment'+'创建支付信息失败');
+                        resUtil.resetFailedRes(res,'创建支付信息失败',null);
+                    }else{
+                        logger.info('addPayment'+'success');
+                        resUtil.resetQueryRes(res,paymentJson,null);
+                        return next();
+                    }
+                })
+            }
+        });
+    }).catch((error)=>{
+        resUtil.resInternalError(error, res, next);
+    })
+}
+const updateWechatPayment=(req,res,next) => {
+    let xmlParser = new xml2js.Parser({explicitArray : false, ignoreAttrs : true});
+    xmlParser.parseString(req.body,(err,result)=>{
+        let resString = JSON.stringify(result);
+        let evalJson = eval('(' + resString + ')');
+        logger.info("paymentResult166"+resString);
+        logger.info("paymentResult1666"+req.body);
+        let prepayIdJson = {
+            nonceStr: evalJson.xml.nonce_str,
+            openid: evalJson.xml.openid,
+            orderId: evalJson.xml.out_trade_no,
+            transactionId: evalJson.xml.transaction_id,
+            timeEnd: evalJson.xml.time_end,
+            totalFee:evalJson.xml.total_fee / 100,
+            status: sysConsts.PAYMENT.status.paid,
+            type:sysConsts.PAYMENT.type.payment
+        };
+        new Promise((resolve,reject)=>{
+            paymentDAO.getPaymentByOrderId({orderId:prepayIdJson.orderId},(error,rows)=>{
+                if(error){
+                    logger.error('getPaymentByOrderId' + error.message);
+                    reject();
+                }else if(rows && rows.length < 1){
+                    logger.warn('getPaymentByOrderId' + '没有此支付信息');
+                    resUtil.resetFailedRes(res,'没有此支付信息',null);
+                }else{
+                    prepayIdJson.paymentId = rows[0].id;
+                    resolve();
+                }
+            })
+        }).then(()=>{
+            new Promise((resolve,reject)=>{
+                paymentDAO.updateWechatPayment(prepayIdJson,(error,result)=>{
+                    if(error){
+                        logger.error('updateWechatPayment' + error.message);
+                        reject(error);
+                    }else{
+                        logger.info('updateWechatPayment' + 'success');
+                        resolve();
+                    }
+                });
+            }).then(()=>{
+                let params ={
+                    orderId: evalJson.xml.out_trade_no,
+                }
+                updateOrderMsgByPrice(params,(error,result)=>{
+                    if (error){
+                        logger.error('updateOrderMsgByPrice:' + error.message);
+                        resUtil.resInternalError(error, res, next);
+                    } else {
+                        logger.info('updateOrderMsgByPrice' + 'success');
+                        resUtil.resetUpdateRes(res,result,null);
+                        return next();
+                    }
+                })
+            })
+        }).catch((error)=>{
+            resUtil.resInternalError(error, res, next);
+        })
+    });
+}
+const doGetPrepayId =(req,res,params,callback)=>{
+    let xmlParser = new xml2js.Parser({explicitArray : false, ignoreAttrs : true});
+    let body = 'test';
+    let jsa = 'JSAPI';
+    let requestIp = req.connection.remoteAddress.replace('::ffff:','');
+    let signStr =
+        "appid="+sysConfig.wechatConfig.mpAppId
+        + "&body="+body
+        + "&mch_id="+sysConfig.wechatConfig.mchId
+        + "&nonce_str="+params.nonceStr
+        + "&notify_url="+sysConfig.wechatConfig.notifyUrl
+        + "&openid="+params.openid
+        + "&out_trade_no="+params.orderId
+        + "&spbill_create_ip="+requestIp
+        + "&total_fee=" +params.totalFee * 100
+        + "&trade_type="+jsa
+        + "&key="+sysConfig.wechatConfig.paymentKey;
+    let signByMd = encrypt.encryptByMd5NoKey(signStr);
+    let reqBody =
+        '<xml><appid>'+sysConfig.wechatConfig.mpAppId+'</appid>' +
+        '<body>'+body+'</body>' +
+        '<mch_id>'+sysConfig.wechatConfig.mchId+'</mch_id>' +
+        '<nonce_str>'+params.nonceStr+'</nonce_str>' +
+        '<notify_url>'+sysConfig.wechatConfig.notifyUrl+'</notify_url>' +
+        '<openid>'+params.openid+'</openid>' +
+        '<out_trade_no>'+params.orderId+'</out_trade_no>' +
+        '<spbill_create_ip>'+requestIp+'</spbill_create_ip>' +
+        '<total_fee>'+params.totalFee * 100 + '</total_fee>' +
+        '<trade_type>'+jsa+'</trade_type>' +
+        '<sign>'+signByMd+'</sign></xml>';
+    let url="/pay/unifiedorder";
+    let options = {
+        host: 'api.mch.weixin.qq.com',
+        port: 443,
+        path: url,
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Content-Length' : Buffer.byteLength(reqBody, 'utf8')
+        }
+    }
+    let httpsReq = https.request(options,(result)=>{
+        let data = "";
+        result.on('data',(d)=>{
+            data += d;
+        }).on('end',()=>{
+            xmlParser.parseString(data,(err,result)=>{
+                //将返回的结果再次格式化
+                let resString = JSON.stringify(result);
+                let evalJson = eval('(' + resString + ')');
+                let myDate = new Date();
+                let myDateStr = myDate.getTime()/1000;
+                let parseIntDate = parseInt(myDateStr);
+                let paySignMD5 = encrypt.encryptByMd5NoKey('appId='+sysConfig.wechatConfig.mpAppId+'&nonceStr='+evalJson.xml.nonce_str+'&package=prepay_id='+evalJson.xml.prepay_id+'&signType=MD5&timeStamp='+parseIntDate+'&key=a7c5c6cd22d89a3eea6c739a1a3c74d1');
+                let paymentJson = [{
+                    nonce_str: evalJson.xml.nonce_str,
+                    prepay_id: evalJson.xml.prepay_id,
+                    sign:evalJson.xml.sign,
+                    timeStamp: parseIntDate,
+                    paySign: paySignMD5
+                }];
+                logger.info("paymentResult"+resString);
+                callback(null,paymentJson);
+            });
+            res.send(200,data);
+        }).on('error', (e)=>{
+            logger.info('wechatPayment '+ e.message);
+            res.send(500,e);
+        });
+    });
+    httpsReq.write(reqBody,"utf-8");
+    httpsReq.end();
+    httpsReq.on('error',(e)=>{
+        logger.info('wechatPayment '+ e.message);
+        res.send(500,e);
+    });
+}
 module.exports = {
     addWechatPayment,
     updateWechatPayment,
@@ -887,5 +1075,6 @@ module.exports = {
     updatePaymentById,
     updateTotalFee,
     deletePayment,
-    updateBankInfo
+    updateBankInfo,
+    wechatPayment
 }
