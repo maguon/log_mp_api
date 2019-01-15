@@ -479,6 +479,66 @@ const getByOrderId =(params,callback)=>{
         callback(error,rows)
     })
 }
+const deleteById =(params,callback)=>{
+    let query = " delete from payment_info where id = ?";
+    let paramsArray = [],i=0;
+    paramsArray[i] = params.paymentId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('deleteById');
+        callback(error,rows)
+    })
+}
+const updateById = (params,callback)=>{
+    let query = " update payment_info set id = ? ";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.paymentId;
+    if (params.totalFee){
+        paramsArray[i++] = params.totalFee;
+        query += " , total_fee = ?"
+    }
+    if (params.remark){
+        paramsArray[i++] = params.remark;
+        query += " , remark = ?"
+    }
+    if (params.status){
+        paramsArray[i++] = params.status;
+        query += " , status = ?"
+    }
+    if (params.paymentType){
+        paramsArray[i++] = params.totalFee;
+        query += " , payment_type = ?"
+    }
+    if (params.type){
+        paramsArray[i++] = params.type;
+        query += " , type = ?"
+    }
+    if (params.bank){
+        paramsArray[i++] = params.bank;
+        query += " , bank = ?"
+    }
+    if (params.bankCode){
+        paramsArray[i++] = params.bankCode;
+        query += " , bank_code = ?"
+    }
+    if (params.accountName){
+        paramsArray[i++] = params.accountName;
+        query += " , account_name = ?"
+    }
+    if (params.transactionId){
+        paramsArray[i++] = params.transactionId;
+        query += " , transaction_id = ?"
+    }
+    if (params.nonceStr){
+        paramsArray[i++] = params.nonceStr;
+        query += " , nonce_str = ?"
+    }
+    paramsArray[i] = params.paymentId;
+    query += " where id = ?"
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('updateById');
+        callback(error,rows)
+    })
+}
 module.exports = {
     getPayment,
     addPayment,
@@ -503,5 +563,6 @@ module.exports = {
     updateTotalFee,
     getById,
     addRefundPayment,
-    getByOrderId
+    getByOrderId,
+    deleteById,updateById
 }

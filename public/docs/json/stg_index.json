@@ -7610,6 +7610,99 @@
         }
       }
     },
+    "/user/{userId}/payment/{paymentId}": {
+      "delete": {
+        "tags": [
+          "payment"
+        ],
+        "summary": "delete",
+        "description": "delete a payment msg",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "paymentId",
+            "in": "path",
+            "description": "paymentId",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/RefundRemark"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/payment/{paymentId}/bankInfo": {
+      "put": {
+        "tags": [
+          "payment"
+        ],
+        "summary": "update",
+        "description": "update bank msg and totalFee",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "paymentId",
+            "in": "path",
+            "description": "paymentId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "bankInfo",
+            "in": "body",
+            "description": "bankInfo",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/bankInfo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/RefundRemark"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
     "/accountConfirmEmail": {
       "post": {
         "tags": [
@@ -9033,6 +9126,26 @@
       },
       "xml": {
         "name": "orderReceiveMsg"
+      }
+    },
+    "bankInfo": {
+      "type": "object",
+      "properties": {
+        "bank": {
+          "type": "string"
+        },
+        "bankCode": {
+          "type": "string"
+        },
+        "accountName": {
+          "type": "string"
+        },
+        "totalFee": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "bankInfo"
       }
     }
   }

@@ -844,6 +844,32 @@ const updateOrderMsgByPrice = (params,callback)=>{
         })
     })
 }
+const deletePayment = (req,res,next)=>{
+    let params = req.params;
+    paymentDAO.deleteById(params,(error,result)=>{
+        if(error){
+            logger.error('deleteById' + error.message);
+            resUtil.resInternalError(error, res, next);
+        }else{
+            logger.info('deleteById' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    });
+}
+const updateBankInfo = (req,res,next)=>{
+    let params = req.params;
+    paymentDAO.updateById(params,(error,result)=>{
+        if(error){
+            logger.error('updateBankInfo' + error.message);
+            resUtil.resInternalError(error, res, next);
+        }else{
+            logger.info('updateBankInfo' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    });
+}
 module.exports = {
     addWechatPayment,
     updateWechatPayment,
@@ -859,5 +885,7 @@ module.exports = {
     getPaymentPrice,
     addBankPaymentByadmin,
     updatePaymentById,
-    updateTotalFee
+    updateTotalFee,
+    deletePayment,
+    updateBankInfo
 }
