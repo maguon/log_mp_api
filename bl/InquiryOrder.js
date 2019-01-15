@@ -91,7 +91,7 @@ const addInquiryOrderByAdmin = (req,res,next) => {
                 count = count + rows[0].car_num;
                 params.userId = rows[0].user_id;
                 params.feePrice = feePrice;
-                params.count = count;
+                params.carNum = count;
                 params.serviceType = rows[0].service_type;
                 params.createdType = 2;
                 params.routeStartId = rows[0].start_id;

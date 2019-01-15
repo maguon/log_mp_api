@@ -22,7 +22,8 @@ const getInquiryOrder = (params,callback) => {
     })
 }
 const addInquiryOrder = (params,callback) => {
-    let query = " insert into order_info(user_id,ora_insure_price,route_id,date_id,distance,route_start,route_end,route_start_id,route_end_id,admin_id,created_type,service_type,inquiry_id,ora_trans_price,car_num) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+    let query = " insert into order_info(user_id,ora_insure_price,route_id,date_id,distance,route_start,route_end,route_start_id,route_end_id,admin_id,created_type,service_type,inquiry_id,ora_trans_price,car_num) ";
+    query += " values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.userId;
     paramsArray[i++] = params.oraInsurePrice;
@@ -38,7 +39,7 @@ const addInquiryOrder = (params,callback) => {
     paramsArray[i++] = params.serviceType;
     paramsArray[i++] = params.inquiryId;
     paramsArray[i++] = params.oraTransPrice;
-    paramsArray[i] = params.count;
+    paramsArray[i] = params.carNum;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('addInquiryOrder');
         callback(error,rows);
