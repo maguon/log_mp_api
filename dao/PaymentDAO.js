@@ -30,7 +30,7 @@ const getPaymentPrice = (params,callback) => {
     })
 }
 const getPayment = (params,callback) => {
-    let query = " select admin_user.real_name createOrderUser,payment_info.* from payment_info"
+    let query = " select admin_user.real_name createOrderUser,payment_info.*,(total_trans_price+total_insure_price - real_payment_price) unpaid_price from payment_info"
                 +" left join order_info on payment_info.order_id = order_info.id"
                 +" left join admin_user on order_info.admin_id = admin_user.id"
                 +" where payment_info.id is not null";
