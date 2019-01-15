@@ -188,13 +188,15 @@ const getByOrderId = (params,callback) => {
 }
 const statisticsByMonths =(params,callback) => {
     let paramsArray = [],i=0;
-    let query = " select db.y_month ,count(oia.id) as invoice_count,IFNULL(sum(oi.real_payment_price),0) invoice_price";
-    query += " from date_base db left join order_invoice_apply oia on db.id=oia.date_id  ";
-    query += " left join order_info oi on oia.order_id = oi.id";
+    let query = " select db.y_month ,count(oioia.id) as invoice_count,IFNULL(sum(oioia.real_payment_price),0) invoice_price";
+    query += " from date_base db ";
+    query += " left join (select oia.id ,oi.created_type,oi.real_payment_price,oia.date_id from order_info oi inner join order_invoice_apply oia on oi.id = oia.order_id";
+    query += " where 1=1";
     if (params.createdType){
         paramsArray[i++] = params.createdType;
         query += " and oi.created_type = ?";
     }
+    query += " ) oioia on db.id = oioia.date_id"
     query += " where 1=1";
     if (params.startMonth && params.endMonth) {
         paramsArray[i++] = params.startMonth;
@@ -209,13 +211,15 @@ const statisticsByMonths =(params,callback) => {
 }
 const statisticsByDays =(params,callback) => {
     let paramsArray = [],i=0;
-    let query = " select db.id ,count(oia.id) as invoice_count,IFNULL(sum(oi.real_payment_price),0) invoice_price";
-    query += " from date_base db left join order_invoice_apply oia on db.id=oia.date_id  ";
-    query += " left join order_info oi on oia.order_id = oi.id";
+    let query = " select db.id ,count(oioia.id) as invoice_count,IFNULL(sum(oioia.real_payment_price),0) invoice_price";
+    query += " from date_base db ";
+    query += " left join (select oia.id ,oi.created_type,oi.real_payment_price,oia.date_id from order_info oi inner join order_invoice_apply oia on oi.id = oia.order_id";
+    query += " where 1=1";
     if (params.createdType){
         paramsArray[i++] = params.createdType;
         query += " and oi.created_type = ?";
     }
+    query += " ) oioia on db.id = oioia.date_id"
     query += " where 1=1";
     if (params.startMonth && params.endMonth) {
         paramsArray[i++] = params.startMonth;
