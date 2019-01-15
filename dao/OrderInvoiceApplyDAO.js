@@ -221,9 +221,9 @@ const statisticsByDays =(params,callback) => {
     }
     query += " ) oioia on db.id = oioia.date_id"
     query += " where 1=1";
-    if (params.startMonth && params.endMonth) {
-        paramsArray[i++] = params.startMonth;
-        paramsArray[i] = params.endMonth;
+    if (params.startDay && params.endDay) {
+        paramsArray[i++] = params.startDay;
+        paramsArray[i] = params.endDay;
         query += " and db.id between ? and ? ";
     }
     query += " group by db.id  order by db.id desc";
