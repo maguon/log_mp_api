@@ -463,7 +463,11 @@ const addRefundPayment = (params,callback) => {
 const getByOrderId =(params,callback)=>{
     let query = " select * from payment_info where order_id = ?";
     let paramsArray = [],i=0;
-    paramsArray[i] = params.orderId;
+    paramsArray[i++] = params.orderId;
+    if (params.status) {
+        paramsArray[i] = params.status;
+        query += " and status = ?";
+    }
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('getByOrderId');
         callback(error,rows)
@@ -529,6 +533,54 @@ const updateById = (params,callback)=>{
         callback(error,rows)
     })
 }
+const statisticsByMonths =(params,callback) => {
+    let paramsArray = [],i=0;
+    let query = " select db.y_month,IFNULL(sum(-pioi.total_fee) ,0)refund_price from date_base db";
+    query += " left join (";
+    query += " select pi.id,pi.total_fee,pi.type,pi.date_id,oi.created_type from payment_info pi left join order_info oi on oi.id = pi.order_id";
+    query += " where pi.type = ? ";
+    paramsArray[i++] = params.paymentType;
+    if (params.createdType){
+        paramsArray[i++] = params.createdType;
+        query += "and oi.created_type = ?";
+    }
+    query += " )pioi on db.id = pioi.date_id";
+    query += " where 1=1";
+    if (params.startMonth && params.endMonth) {
+        paramsArray[i++] = params.startMonth;
+        paramsArray[i] = params.endMonth;
+        query += " and db.y_month between ? and ? ";
+    }
+    query += " group by db.y_month  order by db.y_month desc";
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('statisticsByMonths');
+        callback(error,rows);
+    })
+}
+const statisticsByDays =(params,callback) => {
+    let paramsArray = [],i=0;
+    let query = " select db.id,IFNULL(sum(-pioi.total_fee) ,0)refund_price from date_base db";
+    query += " left join (";
+    query += " select pi.id,pi.total_fee,pi.type,pi.date_id,oi.created_type from payment_info pi left join order_info oi on oi.id = pi.order_id";
+    query += " where pi.type = ? ";
+    paramsArray[i++] = params.paymentType;
+    if (params.createdType){
+        paramsArray[i++] = params.createdType;
+        query += "and oi.created_type = ?";
+    }
+    query += " )pioi on db.id = pioi.date_id";
+    query += " where 1=1";
+    if (params.startDay && params.endDay) {
+        paramsArray[i++] = params.startDay;
+        paramsArray[i] = params.endDay;
+        query += " and db.id between ? and ? ";
+    }
+    query += " group by db.id  order by db.id desc";
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('statisticsByDays');
+        callback(error,rows);
+    })
+}
 module.exports = {
     getPayment,
     addPayment,
@@ -553,5 +605,7 @@ module.exports = {
     getById,
     addRefundPayment,
     getByOrderId,
-    deleteById,updateById
+    deleteById,updateById,
+    statisticsByMonths,
+    statisticsByDays
 }
