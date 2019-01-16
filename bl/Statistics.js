@@ -217,6 +217,7 @@ const paymentRefundPriceByMonths =(req,res,next) => {
         params.startMonth = moment().subtract(11,'months').format("YYYYMM");;
     }
     params.paymentType = sysConsts.PAYMENT.type.refund;
+    params.status = sysConsts.PAYMENT.status.paid;
     new Promise((resolve,reject)=>{
         paymentInfoDAO.statisticsByMonths(params,(error,rows)=>{
             if(error){
@@ -377,6 +378,108 @@ const newUserCountByDay =(req,res,next) => {
         }
     });
 }
+const paymentPriceByMonth =(req,res,next) => {
+    let dataList = {};
+    let params = req.params;
+    if (!params.endMonth){
+        params.endMonth = moment().format("YYYYMM");;
+    }
+    if (!params.startMonth){
+        params.startMonth = moment().subtract(11,'months').format("YYYYMM");;
+    }
+    params.paymentType = sysConsts.PAYMENT.type.payment;
+    params.status = sysConsts.PAYMENT.status.paid;
+    new Promise((resolve,reject)=>{
+        paymentInfoDAO.statisticsByMonths(params,(error,rows)=>{
+            if(error){
+                logger.error('allPaymentPriceByMonths' + error.message);
+                resUtil.resetFailedRes(error,res,next);
+                reject(error);
+            }else{
+                logger.info('allPaymentPriceByMonths' + 'success');
+                dataList.all = rows;
+                resolve();
+            }
+        })
+    }).then(()=>{
+        new Promise((resolve,reject)=>{
+            params.createdType = sysConsts.ORDER.type.internal;
+            paymentInfoDAO.statisticsByMonths(params,(error,rows)=>{
+                if(error){
+                    logger.error('internalPaymentPriceByMonths' + error.message);
+                    resUtil.resetFailedRes(error,res,next);
+                    reject(error);
+                }else{
+                    logger.info('internalPaymentPriceByMonths' + 'success');
+                    dataList.internal = rows;
+                    resolve();
+                }
+            });
+        }).then(()=>{
+            params.createdType = sysConsts.ORDER.type.extrnal;
+            paymentInfoDAO.statisticsByMonths(params,(error,rows)=>{
+                if(error){
+                    logger.error('extrnalPaymentPriceByMonths' + error.message);
+                    resUtil.resetFailedRes(error,res,next);
+                }else{
+                    logger.info('extrnalPaymentPriceByMonths' + 'success');
+                    dataList.extrnal = rows;
+                    resUtil.resetQueryRes(res,dataList,null);
+                    return next();
+                }
+            });
+        })
+    })
+}
+const paymentPriceByDay =(req,res,next) => {
+    let dataList = {};
+    let params = req.params;
+    params.startDay = moment().subtract(params.selectDays,"days").format("YYYYMMDD");
+    params.endDay = moment().format("YYYYMMDD");
+    params.paymentType = sysConsts.PAYMENT.type.payment;
+    params.status = sysConsts.PAYMENT.status.paid;
+    new Promise((resolve,reject)=>{
+        paymentInfoDAO.statisticsByDays(params,(error,rows)=>{
+            if(error){
+                logger.error('allPaymentPriceByDays' + error.message);
+                resUtil.resetFailedRes(error,res,next);
+                reject(error);
+            }else{
+                logger.info('allPaymentPriceByDays' + 'success');
+                dataList.all = rows;
+                resolve();
+            }
+        })
+    }).then(()=>{
+        new Promise((resolve,reject)=>{
+            params.createdType = sysConsts.ORDER.type.internal;
+            paymentInfoDAO.statisticsByDays(params,(error,rows)=>{
+                if(error){
+                    logger.error('internalPaymentPriceByDays' + error.message);
+                    resUtil.resetFailedRes(error,res,next);
+                    reject(error);
+                }else{
+                    logger.info('internalPaymentPriceByDays' + 'success');
+                    dataList.internal = rows;
+                    resolve();
+                }
+            });
+        }).then(()=>{
+            params.createdType = sysConsts.ORDER.type.extrnal;
+            paymentInfoDAO.statisticsByDays(params,(error,rows)=>{
+                if(error){
+                    logger.error('extrnalPaymentPriceByDays' + error.message);
+                    resUtil.resetFailedRes(error,res,next);
+                }else{
+                    logger.info('extrnalPaymentPriceByDays' + 'success');
+                    dataList.extrnal = rows;
+                    resUtil.resetQueryRes(res,dataList,null);
+                    return next();
+                }
+            });
+        })
+    })
+}
 module.exports = {
     orderMsgByMonths,
     orderMsgByDay,
@@ -387,5 +490,7 @@ module.exports = {
     inquiryCountByMonth,
     inquiryCountByDay,
     newUserCountByMonth,
-    newUserCountByDay
+    newUserCountByDay,
+    paymentPriceByMonth,
+    paymentPriceByDay
 }

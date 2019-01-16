@@ -318,6 +318,8 @@ const createServer=()=>{
     server.get('/api/admin/:adminId/statisticsInquiryCountByDay',statistics.inquiryCountByDay);
     server.get('/api/admin/:adminId/statisticsNewUserByMonth',statistics.newUserCountByMonth);
     server.get('/api/admin/:adminId/statisticsNewUserByDay',statistics.newUserCountByDay);
+    server.get('/api/admin/:adminId/statisticsPaymentPriceByMonth',statistics.paymentPriceByMonth);
+    server.get('/api/admin/:adminId/statisticsPaymentPriceByDay',statistics.paymentPriceByDay);
 
     server.on('NotFound', function (req, res ,next) {
         logger.warn(req.url + " not found");

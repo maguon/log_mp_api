@@ -5,6 +5,7 @@ const logger = serverLogger.createLogger('PaymentDAO.js');
 const sysConfig = require("../config/SystemConfig");
 const httpUtil = require('../util/HttpUtil');
 const db = require('../db/connection/MysqlDb.js');
+const sysConsts = require("../util/SystemConst")
 
 const getPaymentPrice = (params,callback) => {
     let query = " select (uo.total_trans_price + uo.total_insure_price) as total_price,sum(pi.total_fee) as payment_price,(uo.total_trans_price + uo.total_insure_price - sum(pi.total_fee)) as surplus_price from payment_info pi " +
@@ -535,14 +536,23 @@ const updateById = (params,callback)=>{
 }
 const statisticsByMonths =(params,callback) => {
     let paramsArray = [],i=0;
-    let query = " select db.y_month,IFNULL(sum(-pioi.total_fee) ,0)refund_price from date_base db";
+    let query = " select db.y_month";
+    if (params.paymentType == sysConsts.PAYMENT.type.refund){
+        query += ",IFNULL(sum(-pioi.total_fee) ,0) refund_price from date_base db";
+    } else if (params.paymentType == sysConsts.PAYMENT.type.payment){
+        query += ",IFNULL(sum(pioi.total_fee) ,0) payment_price from date_base db";
+    }
     query += " left join (";
     query += " select pi.id,pi.total_fee,pi.type,pi.date_id,oi.created_type from payment_info pi left join order_info oi on oi.id = pi.order_id";
-    query += " where pi.type = ? ";
+    query += " where pi.type = ?";
     paramsArray[i++] = params.paymentType;
+    if (params.status){
+        paramsArray[i++] = params.status;
+        query += " and pi.status = ?";
+    }
     if (params.createdType){
         paramsArray[i++] = params.createdType;
-        query += "and oi.created_type = ?";
+        query += " and oi.created_type = ?";
     }
     query += " )pioi on db.id = pioi.date_id";
     query += " where 1=1";
@@ -559,14 +569,23 @@ const statisticsByMonths =(params,callback) => {
 }
 const statisticsByDays =(params,callback) => {
     let paramsArray = [],i=0;
-    let query = " select db.id,IFNULL(sum(-pioi.total_fee) ,0)refund_price from date_base db";
+    let query = " select db.id";
+    if (params.paymentType == sysConsts.PAYMENT.type.refund){
+        query += ",IFNULL(sum(-pioi.total_fee) ,0) refund_price from date_base db";
+    } else if (params.paymentType == sysConsts.PAYMENT.type.payment){
+        query += ",IFNULL(sum(pioi.total_fee) ,0) payment_price from date_base db";
+    }
     query += " left join (";
     query += " select pi.id,pi.total_fee,pi.type,pi.date_id,oi.created_type from payment_info pi left join order_info oi on oi.id = pi.order_id";
-    query += " where pi.type = ? ";
+    query += " where pi.type = ?";
     paramsArray[i++] = params.paymentType;
+    if (params.status){
+        paramsArray[i++] = params.status;
+        query += " and pi.status = ?";
+    }
     if (params.createdType){
         paramsArray[i++] = params.createdType;
-        query += "and oi.created_type = ?";
+        query += " and oi.created_type = ?";
     }
     query += " )pioi on db.id = pioi.date_id";
     query += " where 1=1";
