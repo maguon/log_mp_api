@@ -88,6 +88,7 @@ const updateRefundStatus = (req,res,next)=>{
                 params.status = sysConst.PAYMENT.status.paid;
                 params.paymentType = sysConst.PAYMENT.paymentType.bankTransfer;
                 params.type = sysConst.PAYMENT.type.refund;
+                params.dateId = moment().format("YYYYMMDD");
                 paymentDAO.addRefundPayment(params,(error,rows)=>{
                     if(error){
                         logger.error('addRefundPayment' + error.message);
