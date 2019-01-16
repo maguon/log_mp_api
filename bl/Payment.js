@@ -28,9 +28,11 @@ const wechatRefund = (req,res,next)=>{
             if(error){
                 logger.error('getPaymentByOrderId' + error.message);
                 resUtil.resInternalError(error, res, next);
+                reject(error);
             }else if(rows && rows.length < 1){
                 logger.warn('getPaymentByOrderId' + '请查看支付信息');
                 resUtil.resetFailedRes(res,'请查看支付信息',null);
+                reject(error);
             }else{
                 logger.info('getPaymentByOrderId' + 'success');
                 params.totalFee = rows[0].total_fee;
