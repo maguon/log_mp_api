@@ -140,6 +140,7 @@ const userLogin = (req,res,next)=>{
             }else if(rows && rows.length < 1){
                 logger.info('queryUser'+'该用户不存在');
                 params.userName = params.wechatName;
+                params.dateId = moment().format("YYYYMMDD");
                 userDao.createUser(params,(error,result)=>{
                     if(error){
                         logger.error('createUser' + error.message);

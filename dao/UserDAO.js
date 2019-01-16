@@ -64,8 +64,9 @@ const queryUser = (params,callback) => {
     })
 }
 const createUser = (params,callback)=>{
-    let query = "insert into user_info (user_name,wechat_name,wechat_id,gender,avatar) values(?,?,?,?,?) ";
+    let query = "insert into user_info (date_id,user_name,wechat_name,wechat_id,gender,avatar) values(?,?,?,?,?) ";
     let paramsArray = [],i=0;
+    paramsArray[i++]=params.dateId;
     paramsArray[i++]=params.wechatName;
     paramsArray[i++]=params.wechatName;
     paramsArray[i++]=params.wechatId;
