@@ -11,6 +11,7 @@ const orderInfoDAO = require("../dao/InquiryOrderDAO");
 const invoiceApplyDAO = require("../dao/OrderInvoiceApplyDAO");
 const paymentInfoDAO = require("../dao/PaymentDAO");
 const inquiryInfoDAO = require("../dao/InquiryDAO");
+const userInfoDAO = require("../dao/UserDAO");
 
 const orderMsgByMonths =(req,res,next) => {
     let orderCountsList = {};
@@ -341,6 +342,41 @@ const inquiryCountByDay =(req,res,next) => {
         }
     });
 }
+const newUserCountByMonth =(req,res,next) => {
+    let params = req.params;
+    if (!params.endMonth){
+        params.endMonth = moment().format("YYYYMM");
+    }
+    if (!params.startMonth){
+        params.startMonth = moment().subtract(11,'months').format("YYYYMM");
+    }
+    userInfoDAO.statisticsByMonths(params,(error,rows)=>{
+        if(error){
+            logger.error('newUserCountByMonth' + error.message);
+            resUtil.resetFailedRes(error,res,next);
+        }else{
+            logger.info('newUserCountByMonth' + 'success');
+            resUtil.resetQueryRes(res,rows,null);
+            return next();
+        }
+    });
+}
+const newUserCountByDay =(req,res,next) => {
+    let params = req.params;
+    params.startDay = moment().subtract(params.selectDays,"days").format("YYYYMMDD");
+    params.endDay = moment().format("YYYYMMDD");
+    params.paymentType = sysConsts.PAYMENT.type.refund;
+    userInfoDAO.statisticsByDays(params,(error,rows)=>{
+        if(error){
+            logger.error('newUserCountByDay' + error.message);
+            resUtil.resetFailedRes(error,res,next);
+        }else{
+            logger.info('newUserCountByDay' + 'success');
+            resUtil.resetQueryRes(res,rows,null);
+            return next();
+        }
+    });
+}
 module.exports = {
     orderMsgByMonths,
     orderMsgByDay,
@@ -349,5 +385,7 @@ module.exports = {
     paymentRefundPriceByMonths,
     paymentRefundPriceByDays,
     inquiryCountByMonth,
-    inquiryCountByDay
+    inquiryCountByDay,
+    newUserCountByMonth,
+    newUserCountByDay
 }
