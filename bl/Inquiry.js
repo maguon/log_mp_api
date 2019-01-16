@@ -19,6 +19,7 @@ const addRouteInquiry = (req,res,next) => {
     let plan = params.plan;
     let safeStatus = params.safeStatus;
     new Promise((resolve,reject)=>{
+        params.dateId = moment().format("YYYYMMDD");
         inquiryDAO.addRouteInquiry(params,(error,result)=>{
             if(error){
                 logger.error('addRouteInquiry' + error.message);
