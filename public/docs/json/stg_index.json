@@ -7823,7 +7823,7 @@
           "statisticsMsg"
         ],
         "summary": "",
-        "description": "通过月份统计订单笔数（日期默认当前月份-12个月前）",
+        "description": "通过月份统计订单笔数和金额（日期默认当前月份-12个月前）",
         "produces": [
           "application/json"
         ],
@@ -7872,7 +7872,7 @@
           "statisticsMsg"
         ],
         "summary": "",
-        "description": "统计每天的订单笔数(近30天或10天内)",
+        "description": "统计每天的订单笔数和金额(近30天或10天内)",
         "produces": [
           "application/json"
         ],
@@ -7914,7 +7914,7 @@
           "statisticsMsg"
         ],
         "summary": "",
-        "description": "通过月份统计发票笔数（日期默认当前月份-12个月前）",
+        "description": "通过月份统计发票笔数和金额（日期默认当前月份-12个月前）",
         "produces": [
           "application/json"
         ],
@@ -7963,7 +7963,189 @@
           "statisticsMsg"
         ],
         "summary": "",
-        "description": "统计每天的发票笔数(近30天或10天内)",
+        "description": "统计每天的发票笔数和金额(近30天或10天内)",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "selectDays",
+            "in": "query",
+            "description": "近30天:30 ;近10天:10",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/statisticsMsg"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/statisticsRefundPriceByMonth": {
+      "get": {
+        "tags": [
+          "statisticsMsg"
+        ],
+        "summary": "",
+        "description": "通过月份统计退款金额（日期默认当前月份-12个月前）",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "startMonth",
+            "in": "query",
+            "description": "格式：201612",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "endMonth",
+            "in": "query",
+            "description": "格式：201612",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/statisticsMsg"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/statisticsRefundPriceByDay": {
+      "get": {
+        "tags": [
+          "statisticsMsg"
+        ],
+        "summary": "",
+        "description": "统计每天的退款金额(近30天或10天内)",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "selectDays",
+            "in": "query",
+            "description": "近30天:30 ;近10天:10",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/statisticsMsg"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/statisticsInquiryCountByMonth": {
+      "get": {
+        "tags": [
+          "statisticsMsg"
+        ],
+        "summary": "",
+        "description": "按月统计询价订单数（日期默认当前月份-12个月前）",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "startMonth",
+            "in": "query",
+            "description": "格式：201612",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "endMonth",
+            "in": "query",
+            "description": "格式：201612",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/statisticsMsg"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/statisticsInquiryCountByDay": {
+      "get": {
+        "tags": [
+          "statisticsMsg"
+        ],
+        "summary": "",
+        "description": "按天统计询价订单数(近30天或10天内)",
         "produces": [
           "application/json"
         ],

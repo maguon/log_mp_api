@@ -9,6 +9,8 @@ const sysConsts = require("../util/SystemConst");
 const moment = require('moment/moment.js');
 const orderInfoDAO = require("../dao/InquiryOrderDAO");
 const invoiceApplyDAO = require("../dao/OrderInvoiceApplyDAO");
+const paymentInfoDAO = require("../dao/PaymentDAO");
+const inquiryInfoDAO = require("../dao/InquiryDAO");
 
 const orderMsgByMonths =(req,res,next) => {
     let orderCountsList = {};
@@ -204,9 +206,148 @@ const invoiceMsgByDays =(req,res,next) => {
         })
     })
 }
+const paymentRefundPriceByMonths =(req,res,next) => {
+    let dataList = {};
+    let params = req.params;
+    if (!params.endMonth){
+        params.endMonth = moment().format("YYYYMM");;
+    }
+    if (!params.startMonth){
+        params.startMonth = moment().subtract(11,'months').format("YYYYMM");;
+    }
+    params.paymentType = sysConsts.PAYMENT.type.refund;
+    new Promise((resolve,reject)=>{
+        paymentInfoDAO.statisticsByMonths(params,(error,rows)=>{
+            if(error){
+                logger.error('allPaymentRefundByMonths' + error.message);
+                resUtil.resetFailedRes(error,res,next);
+                reject(error);
+            }else{
+                logger.info('allPaymentRefundByMonths' + 'success');
+                dataList.all = rows;
+                resolve();
+            }
+        })
+    }).then(()=>{
+        new Promise((resolve,reject)=>{
+            params.createdType = sysConsts.ORDER.type.internal;
+            paymentInfoDAO.statisticsByMonths(params,(error,rows)=>{
+                if(error){
+                    logger.error('internalPaymentRefundByMonths' + error.message);
+                    resUtil.resetFailedRes(error,res,next);
+                    reject(error);
+                }else{
+                    logger.info('internalPaymentRefundByMonths' + 'success');
+                    dataList.internal = rows;
+                    resolve();
+                }
+            });
+        }).then(()=>{
+            params.createdType = sysConsts.ORDER.type.extrnal;
+            paymentInfoDAO.statisticsByMonths(params,(error,rows)=>{
+                if(error){
+                    logger.error('extrnalPaymentRefundByMonths' + error.message);
+                    resUtil.resetFailedRes(error,res,next);
+                }else{
+                    logger.info('extrnalPaymentRefundByMonths' + 'success');
+                    dataList.extrnal = rows;
+                    resUtil.resetQueryRes(res,dataList,null);
+                    return next();
+                }
+            });
+        })
+    })
+}
+const paymentRefundPriceByDays =(req,res,next) => {
+    let dataList = {};
+    let params = req.params;
+    params.startDay = moment().subtract(params.selectDays,"days").format("YYYYMMDD");
+    params.endDay = moment().format("YYYYMMDD");
+    params.paymentType = sysConsts.PAYMENT.type.refund;
+    new Promise((resolve,reject)=>{
+        paymentInfoDAO.statisticsByDays(params,(error,rows)=>{
+            if(error){
+                logger.error('allPaymentRefundByDays' + error.message);
+                resUtil.resetFailedRes(error,res,next);
+                reject(error);
+            }else{
+                logger.info('allPaymentRefundByDays' + 'success');
+                dataList.all = rows;
+                resolve();
+            }
+        })
+    }).then(()=>{
+        new Promise((resolve,reject)=>{
+            params.createdType = sysConsts.ORDER.type.internal;
+            paymentInfoDAO.statisticsByDays(params,(error,rows)=>{
+                if(error){
+                    logger.error('internalPaymentRefundByDays' + error.message);
+                    resUtil.resetFailedRes(error,res,next);
+                    reject(error);
+                }else{
+                    logger.info('internalPaymentRefundByDays' + 'success');
+                    dataList.internal = rows;
+                    resolve();
+                }
+            });
+        }).then(()=>{
+            params.createdType = sysConsts.ORDER.type.extrnal;
+            paymentInfoDAO.statisticsByDays(params,(error,rows)=>{
+                if(error){
+                    logger.error('extrnalPaymentRefundByDays' + error.message);
+                    resUtil.resetFailedRes(error,res,next);
+                }else{
+                    logger.info('extrnalPaymentRefundByDays' + 'success');
+                    dataList.extrnal = rows;
+                    resUtil.resetQueryRes(res,dataList,null);
+                    return next();
+                }
+            });
+        })
+    })
+}
+const inquiryCountByMonth =(req,res,next) => {
+    let params = req.params;
+    if (!params.endMonth){
+        params.endMonth = moment().format("YYYYMM");
+    }
+    if (!params.startMonth){
+        params.startMonth = moment().subtract(11,'months').format("YYYYMM");
+    }
+    inquiryInfoDAO.statisticsByMonths(params,(error,rows)=>{
+        if(error){
+            logger.error('inquiryCountByMonth' + error.message);
+            resUtil.resetFailedRes(error,res,next);
+        }else{
+            logger.info('inquiryCountByMonth' + 'success');
+            resUtil.resetQueryRes(res,rows,null);
+            return next();
+        }
+    });
+}
+const inquiryCountByDay =(req,res,next) => {
+    let params = req.params;
+    params.startDay = moment().subtract(params.selectDays,"days").format("YYYYMMDD");
+    params.endDay = moment().format("YYYYMMDD");
+    params.paymentType = sysConsts.PAYMENT.type.refund;
+    inquiryInfoDAO.statisticsByDays(params,(error,rows)=>{
+        if(error){
+            logger.error('inquiryCountByDay' + error.message);
+            resUtil.resetFailedRes(error,res,next);
+        }else{
+            logger.info('inquiryCountByDay' + 'success');
+            resUtil.resetQueryRes(res,rows,null);
+            return next();
+        }
+    });
+}
 module.exports = {
     orderMsgByMonths,
     orderMsgByDay,
     invoiceMsgByMonths,
-    invoiceMsgByDays
+    invoiceMsgByDays,
+    paymentRefundPriceByMonths,
+    paymentRefundPriceByDays,
+    inquiryCountByMonth,
+    inquiryCountByDay
 }

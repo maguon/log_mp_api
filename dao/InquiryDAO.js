@@ -198,6 +198,38 @@ const getById = (params,callback) => {
         callback(error,rows);
     })
 }
+const statisticsByMonths =(params,callback) => {
+    let paramsArray = [],i=0;
+    let query = " select db.y_month,count(ii.id) inquiry_counts from date_base db ";
+    query += " left join inquiry_info ii on db.id = ii.date_id";
+    query += " where 1=1";
+    if (params.startMonth && params.endMonth) {
+        paramsArray[i++] = params.startMonth;
+        paramsArray[i] = params.endMonth;
+        query += " and db.y_month between ? and ? ";
+    }
+    query += " group by db.y_month  order by db.y_month desc";
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('statisticsByMonths');
+        callback(error,rows);
+    })
+}
+const statisticsByDays =(params,callback) => {
+    let paramsArray = [],i=0;
+    let query = " select db.id,count(ii.id) inquiry_counts from date_base db ";
+    query += " left join inquiry_info ii on db.id = ii.date_id";
+    query += " where 1=1";
+    if (params.startDay && params.endDay) {
+        paramsArray[i++] = params.startDay;
+        paramsArray[i] = params.endDay;
+        query += " and db.id between ? and ? ";
+    }
+    query += " group by db.id  order by db.id desc";
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('statisticsByDays');
+        callback(error,rows);
+    })
+}
 module.exports = {
     addRouteInquiry,
     getInquiryByUserId,
@@ -207,5 +239,7 @@ module.exports = {
     updateFeeByCar,
     cancelInquiry,
     updateCarNum,
-    getById
+    getById,
+    statisticsByMonths,
+    statisticsByDays
 }

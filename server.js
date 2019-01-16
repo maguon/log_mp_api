@@ -312,6 +312,10 @@ const createServer=()=>{
     server.get('/api/admin/:adminId/statisticsOrderMsgByDay',statistics.orderMsgByDay);
     server.get('/api/admin/:adminId/statisticsInvoiceMsgByMonth',statistics.invoiceMsgByMonths);
     server.get('/api/admin/:adminId/statisticsInvoiceMsgByDay',statistics.invoiceMsgByDays);
+    server.get('/api/admin/:adminId/statisticsRefundPriceByMonth',statistics.paymentRefundPriceByMonths);
+    server.get('/api/admin/:adminId/statisticsRefundPriceByDay',statistics.paymentRefundPriceByDays);
+    server.get('/api/admin/:adminId/statisticsInquiryCountByMonth',statistics.inquiryCountByMonth);
+    server.get('/api/admin/:adminId/statisticsInquiryCountByDay',statistics.inquiryCountByDay);
 
     server.on('NotFound', function (req, res ,next) {
         logger.warn(req.url + " not found");
