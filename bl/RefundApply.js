@@ -13,6 +13,7 @@ const orderInfoDAO = require("../dao/InquiryOrderDAO");
 
 const addRefundApply = (req,res,next)=>{
     let params = req.params;
+    params.dateId = moment().format("YYYYMMDD");
     refundApplyDAO.addRefundApply(params,(error,result)=>{
         if(error){
             logger.error('addRefundApply' + error.message);
