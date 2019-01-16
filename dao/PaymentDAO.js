@@ -98,10 +98,11 @@ const getPayment = (params,callback) => {
     })
 }
 const addPayment = (params,callback) => {
-    let query = " insert into payment_info (user_id,order_id,total_fee,nonce_str,status,payment_type,type) values(?,?,?,?,?,?,?)";
+    let query = " insert into payment_info (user_id,order_id,date_id,total_fee,nonce_str,status,payment_type,type) values(?,?,?,?,?,?,?,?)";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.userId;
     paramsArray[i++] = params.orderId;
+    paramsArray[i++] = params.dateId;
     paramsArray[i++] = params.totalFee;
     paramsArray[i++] = params.nonceStr;
     paramsArray[i++] = params.status;
@@ -109,22 +110,6 @@ const addPayment = (params,callback) => {
     paramsArray[i] = params.type;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('addPayment');
-        callback(error,rows)
-    })
-}
-const addRefund = (params,callback) => {
-    let query = " insert into payment (user_id,order_id,total_fee,remark,status,payment_type,type,p_id) values(?,?,?,?,?,?,?,?)";
-    let paramsArray = [],i=0;
-    paramsArray[i++] = params.userId;
-    paramsArray[i++] = params.orderId;
-    paramsArray[i++] = params.totalFee;
-    paramsArray[i++] = params.remark;
-    paramsArray[i++] = params.status;
-    paramsArray[i++] = params.paymentType;
-    paramsArray[i++] = params.type;
-    paramsArray[i] = params.pId;
-    db.dbQuery(query,paramsArray,(error,rows)=>{
-        logger.debug('addRefund');
         callback(error,rows)
     })
 }
@@ -276,10 +261,11 @@ const updateRemark = (params,callback) => {
     })
 }
 const addBankPayment = (params,callback) => {
-    let query = " insert into payment_info(user_id,order_id,total_fee,remark,date_id,payment_type,type,bank,bank_code,account_name) values(?,?,?,?,?,?,?,?,?,?)";
+    let query = " insert into payment_info(user_id,order_id,date_id,total_fee,remark,date_id,payment_type,type,bank,bank_code,account_name) values(?,?,?,?,?,?,?,?,?,?)";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.userId;
     paramsArray[i++] = params.orderId;
+    paramsArray[i++] = params.dateId;
     paramsArray[i++] = params.totalFee;
     paramsArray[i++] = params.remark;
     paramsArray[i++] = params.dateId;
@@ -294,10 +280,11 @@ const addBankPayment = (params,callback) => {
     })
 }
 const addBankPaymentByadmin = (params,callback) => {
-    let query = " insert into payment_info(admin_id,order_id,total_fee,remark,date_id,payment_type,type,bank,bank_code,account_name) values(?,?,?,?,?,?,?,?,?,?)";
+    let query = " insert into payment_info(admin_id,order_id,date_id,total_fee,remark,date_id,payment_type,type,bank,bank_code,account_name) values(?,?,?,?,?,?,?,?,?,?)";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.adminId;
     paramsArray[i++] = params.orderId;
+    paramsArray[i++] = params.dateId;
     paramsArray[i++] = params.totalFee;
     paramsArray[i++] = params.remark;
     paramsArray[i++] = params.dateId;
@@ -323,10 +310,11 @@ const updateBankStatus = (params,callback) => {
     })
 }
 const addBankRefund = (params,callback) => {
-    let query = " insert into payment_info(user_id,order_id,total_fee,remark,date_id,payment_type,type,bank,bank_code,account_name,p_id) values(?,?,?,?,?,?,?,?,?,?,?)";
+    let query = " insert into payment_info(user_id,order_id,date_id,total_fee,remark,date_id,payment_type,type,bank,bank_code,account_name,p_id) values(?,?,?,?,?,?,?,?,?,?,?)";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.userId;
     paramsArray[i++] = params.orderId;
+    paramsArray[i++] = params.dateId;
     paramsArray[i++] = -params.totalFee;
     paramsArray[i++] = params.remark;
     paramsArray[i++] = params.dateId;
@@ -453,10 +441,11 @@ const getById =(params,callback)=>{
     })
 }
 const addRefundPayment = (params,callback) => {
-    let query = " insert into payment_info(admin_id,order_id,total_fee,date_id,status,payment_type,type,bank,bank_code,account_name,p_id) values(?,?,?,?,?,?,?,?,?,?,?)";
+    let query = " insert into payment_info(admin_id,order_id,date_id,total_fee,date_id,status,payment_type,type,bank,bank_code,account_name,p_id) values(?,?,?,?,?,?,?,?,?,?,?)";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.adminId;
     paramsArray[i++] = params.orderId;
+    paramsArray[i++] = params.dateId;
     paramsArray[i++] = params.totalFee;
     paramsArray[i++] = params.dateId;
     paramsArray[i++] = params.status;
@@ -543,7 +532,6 @@ const updateById = (params,callback)=>{
 module.exports = {
     getPayment,
     addPayment,
-    addRefund,
     updateWechatPayment,
     getPaymentByOrderId,
     getRefundByPaymentId,

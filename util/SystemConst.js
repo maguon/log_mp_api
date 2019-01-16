@@ -64,7 +64,6 @@ const ORDER ={
         //运输中2
         //已送达3
     }
-
 }
 const REFUND_STATUS = {
     refuse:0,

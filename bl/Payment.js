@@ -75,6 +75,7 @@ const addWechatPayment = (req,res,next) => {
                 })
             }).then(()=>{
                 new Promise((resolve,reject)=>{
+                    params.dateId = moment().format("YYYYMMDD");
                     paymentDAO.addPayment(params,(error,result)=>{
                         if(error){
                             logger.error('addPayment' + error.message);
@@ -474,6 +475,7 @@ const addBankPayment = (req,res,next) => {
         })
     }).then(()=>{
         new Promise((resolve,reject)=>{
+            params.dateId = moment().format("YYYYYMMDD");
             paymentDAO.addBankPayment(params,(error,result)=>{
                 if(error){
                     logger.error('addBankPayment' + error.message);
@@ -512,6 +514,7 @@ const addBankPaymentByadmin = (req,res,next) => {
         })
     }).then(()=>{
         new Promise((resolve,reject)=>{
+            params.dateId = moment().format("YYYYMMDD");
             paymentDAO.addBankPaymentByadmin(params,(error,result)=>{
                 if(error){
                     logger.error('addBankPaymentByadmin' + error.message);
@@ -659,6 +662,7 @@ const addBankRefund = (req,res,next) => {
                 })
             }).then(()=>{
                 new Promise((resolve,reject)=>{
+                    params.dateId = moment().format("YYYYMMDD");
                     paymentDAO.addBankRefund(params,(error,result)=>{
                         if(error){
                             logger.error('addBankRefund' + error.message);
@@ -902,6 +906,7 @@ const wechatPayment =(req,res,next)=>{
                 params.status = sysConsts.PAYMENT.status.unPaid;
                 params.paymentType = sysConsts.PAYMENT.paymentType.wechat;
                 params.type = sysConsts.PAYMENT.type.payment;
+                params.dateId = moment().format("YYYYMMDD");
                 paymentDAO.addPayment(params,(error,result)=>{
                     if(error){
                         logger.error('addPayment' + error.message);
