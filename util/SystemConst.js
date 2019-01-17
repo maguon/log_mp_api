@@ -59,10 +59,10 @@ const ORDER ={
         completed:9//已完成
     },
     logStatus:{
-        //待安排0
-        //待发运1
-        //运输中2
-        //已送达3
+        toArrange:0,//待安排0
+        tpShipped:1,//待发运1
+        inTransport:2,//运输中2
+        served:3//已送达3
     }
 }
 const REFUND_STATUS = {
