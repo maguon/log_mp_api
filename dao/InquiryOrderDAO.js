@@ -159,6 +159,7 @@ const getOrder = (params,callback) => {
         paramsArray[i++] = params.createdOnEnd + " 23:59:59";
         query = query + " and uo.created_on <= ? ";
     }
+    query += " order by uo.id desc";
     if(params.start && params.size){
         paramsArray[i++] = parseInt(params.start);
         paramsArray[i] = parseInt(params.size);
