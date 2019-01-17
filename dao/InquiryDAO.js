@@ -95,11 +95,13 @@ const getInquiryByUserId = (params,callback) => {
         paramsArray[i++] = params.status;
         query = query + " and ii.status = ? ";
     }
+    query += " order by ii.id desc";
     if(params.start && params.size){
         paramsArray[i++] = parseInt(params.start);
         paramsArray[i] = parseInt(params.size);
         query = query + " limit ? , ? ";
     }
+
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('getInquiryByUserId');
         callback(error,rows)
