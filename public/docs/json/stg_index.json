@@ -8693,6 +8693,9 @@
         },
         "birth": {
           "type": "string"
+        },
+        "avatar": {
+          "type": "integer"
         }
       },
       "xml": {

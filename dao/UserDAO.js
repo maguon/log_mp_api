@@ -129,12 +129,32 @@ const updateStatus=(params,callback)=>{
     });
 }
 const updateUserInfo=(params,callback)=>{
-    let query = "update user_info set user_name = ?,gender=?,birth=? where id = ? ";
+    let query = "update user_info set id = ?";
     let paramsArray =[],i=0;
-    paramsArray[i++] = params.userName;
-    paramsArray[i++] = params.gender;
-    paramsArray[i++] = params.birth;
+    paramsArray[i++] = params.userId;
+    if(params.userName){
+        paramsArray[i++] = params.userName;
+        query += ",user_name = ?";
+    }
+    if(params.gender){
+        paramsArray[i++] = params.gender;
+        query += ",gender=?";
+    }
+    if(params.birth){
+        paramsArray[i++] = params.birth;
+        query += ",birth=?";
+    }
+    if(params.gender){
+        paramsArray[i++] = params.gender;
+        query += ",gender=?";
+    }
+    if(params.avatar){
+        paramsArray[i++] = params.avatar;
+        query += ",avatar=?";
+    }
+    query += "  where id = ? ";
     paramsArray[i] = params.userId;
+
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('updateUserInfo');
         callback(error,rows);
