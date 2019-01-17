@@ -64,7 +64,7 @@ const queryUser = (params,callback) => {
     })
 }
 const createUser = (params,callback)=>{
-    let query = "insert into user_info (date_id,user_name,wechat_name,wechat_id,gender,avatar) values(?,?,?,?,?) ";
+    let query = "insert into user_info (date_id,user_name,wechat_name,wechat_id,gender,avatar) values(?,?,?,?,?,?) ";
     let paramsArray = [],i=0;
     paramsArray[i++]=params.dateId;
     paramsArray[i++]=params.wechatName;
@@ -92,7 +92,7 @@ const lastLoginOn=(params,callback)=>{
     let query = "update user_info set last_login_on = ? where wechat_id = ? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.lastLoginOn;
-    paramsArray[i++] = params.wechatId;
+    paramsArray[i] = params.wechatId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('lastLoginOn');
         callback(error,rows);
