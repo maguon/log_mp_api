@@ -93,7 +93,7 @@ const addInquiryOrderByAdmin = (req,res,next) => {
                 params.feePrice = feePrice;
                 params.carNum = count;
                 params.serviceType = rows[0].service_type;
-                params.createdType = 2;
+                params.createdType = sysConsts.ORDER.type.extrnal;
                 params.routeStartId = rows[0].start_id;
                 params.routeEndId = rows[0].end_id;
                 params.routeStart = rows[0].start_city;
