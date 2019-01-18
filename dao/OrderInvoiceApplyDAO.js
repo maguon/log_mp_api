@@ -60,9 +60,12 @@ const updateById = (params,callback) => {
         paramsArray[i++] = params.remark;
         query = query+ " ,remark = ? ";
     }
-    paramsArray[i] = params.invoiceApplyId;
+    paramsArray[i++] = params.invoiceApplyId;
     query = query + " where id = ?";
-
+    if (params.userId){
+        paramsArray[i] = params.userId;
+        query += " and user_id = ?";
+    }
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('updateById');
         callback(error,rows)

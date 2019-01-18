@@ -2870,6 +2870,57 @@
         }
       }
     },
+    "/user/{userId}/controlInvoices/{invoiceApplyId}/invoiceMsg": {
+      "put": {
+        "tags": [
+          "invoiceApply"
+        ],
+        "summary": " invoice",
+        "description": " update Invoice msg",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "invoiceApplyId",
+            "in": "path",
+            "description": "发票编号",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "invoiceMsg",
+            "in": "body",
+            "description": "invoiceMsg",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/updateInvoiceMsg"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryInvoice"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
     "/admin/{adminId}/controlInvoices/{invoiceApplyId}/revokeInvoice": {
       "delete": {
         "tags": [

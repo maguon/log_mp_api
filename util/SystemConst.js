@@ -66,9 +66,9 @@ const ORDER ={
     }
 }
 const REFUND_STATUS = {
-    refuse:0,
-    refunded:1,
-    applying:2
+    refuse:0,//已拒绝
+    refunded:1,//已退款
+    applying:2//申请中
 }
 const USER_ADDRESS ={
     type:{
