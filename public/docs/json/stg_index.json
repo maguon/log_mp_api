@@ -7026,6 +7026,71 @@
         }
       }
     },
+    "/user/{userId}/order/{orderId}/payment/{paymentId}/refundApply/{refundId}": {
+      "put": {
+        "tags": [
+          "refundApply"
+        ],
+        "summary": "refundApply",
+        "description": "update refundApply by id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "paymentId",
+            "in": "path",
+            "description": "paymentId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "refundId",
+            "in": "path",
+            "description": "refundId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "refundApply",
+            "in": "body",
+            "description": "refundApply",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/refundApply"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/bankRefund"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
     "/admin/{adminId}/order/{orderId}/payment/{paymentId}/deleteRefundApply/{refundApplyId}": {
       "delete": {
         "tags": [
