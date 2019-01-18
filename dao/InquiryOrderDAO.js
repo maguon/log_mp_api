@@ -351,7 +351,7 @@ const cancelOrder = (params,callback) => {
     })
 }
 const addOrder = (params,callback) => {
-    let query = " insert into order_info(route_id,date_id,distance,route_start,route_end,created_type,admin_id,route_start_id,route_end_id,service_type) values(?,?,?,?,1,?,?,?,?) ";
+    let query = " insert into order_info(route_id,date_id,distance,route_start,route_end,created_type,admin_id,route_start_id,route_end_id,service_type) values(?,?,?,?,1,?,?,?,?,?) ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.routeId;
     paramsArray[i++] = params.dateId;
