@@ -168,7 +168,11 @@ const getOrderInvoice = (params,callback) => {
 const deleteRevokeInvoice = (params,callback) => {
     let query = " delete from order_invoice_apply where id = ?";
     let paramsArray = [],i=0;
-    paramsArray[i] = params.invoiceApplyId;
+    paramsArray[i++] = params.invoiceApplyId;
+    if (params.userId) {
+        query += " and user_id =?"
+        paramsArray[i] = params.userId;
+    }
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('deleteRevokeInvoice');
         callback(error,rows)
