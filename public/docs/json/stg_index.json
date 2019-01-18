@@ -2353,6 +2353,118 @@
         }
       }
     },
+    "/user/{userId}/noInvoiceOrderList": {
+      "get": {
+        "tags": [
+          "invoiceApply"
+        ],
+        "summary": " get no invoiced list",
+        "description": " get no invoiced list",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "query",
+            "description": "orderId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryInvoice"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/invoicesList": {
+      "get": {
+        "tags": [
+          "invoiceApply"
+        ],
+        "summary": " get invoice apply list",
+        "description": " get invoice apply list",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "query",
+            "description": "orderId",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryInvoice"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
     "/user/{userId}/invoice": {
       "get": {
         "tags": [

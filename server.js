@@ -132,6 +132,8 @@ const createServer=()=>{
     server.put({path:'/api/admin/:adminId/controlInvoices/:invoiceApplyId/updateInvoiceMsg',contentType: 'application/json'},orderInvoice.updateInvoiceApplyMsg);
     server.del({path:'/api/admin/:adminId/controlInvoices/:invoiceApplyId/revokeInvoice',contentType: 'application/json'},orderInvoice.delInvoiceApply);
     server.put({path:'/api/admin/:adminId/controlInvoices/:invoiceApplyId/refuseApply',contentType: 'application/json'},orderInvoice.updateRefuseStatus);
+    server.get('/api/user/:userId/noInvoiceOrderList',orderInvoice.getUserNoInvoiceOrderList);
+    server.get('/api/user/:userId/invoicesList',orderInvoice.getInvoicedOrderList);
     /**
      inquiry_car
      */

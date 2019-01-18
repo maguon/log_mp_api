@@ -81,6 +81,8 @@ const getOrderInvoice = (params,callback) => {
         query = query + " and oia.id is not null ";
     }else {
         query = query + " and oia.id is null ";
+    }
+    if (params.orderStatus){
         paramsArray[i++] = params.orderStatus;
         query = query + " and oi.status = ? ";
     }
@@ -103,6 +105,10 @@ const getOrderInvoice = (params,callback) => {
     if(params.orderId){
         paramsArray[i++] = params.orderId;
         query = query + " and oi.id= ? ";
+    }
+    if(params.userId){
+        paramsArray[i++] = params.userId;
+        query = query + " and oi.user_id= ? ";
     }
     if(params.invoiceApplyTimeStart){
         paramsArray[i++] = params.invoiceApplyTimeStart;
