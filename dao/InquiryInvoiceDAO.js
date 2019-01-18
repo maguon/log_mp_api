@@ -79,9 +79,59 @@ const updateInquiryInvoiceStatusByUserId = (params,callback) => {
         callback(error,rows)
     })
 }
+const deleteById = (params,callback) => {
+    let query = " delete from user_invoice where 1=1 and id= ?" ;
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.userInvoiceId;
+    if(params.userId){
+        paramsArray[i] = params.userId;
+        query = query + " and user_id = ?";
+    }
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('deleteUserInvoiceById');
+        callback(error,rows)
+    })
+}
+const updateById = (params,callback) => {
+    let query = " update user_invoice set id = ? ";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.userInvoiceId;
+    if (params.title){
+        paramsArray[i++] = params.title;
+        query += " ,company_name = ? ";
+    }
+    if (params.taxNumber){
+        paramsArray[i++] = params.taxNumber;
+        query += " ,tax_number = ? ";
+    }
+    if (params.companyAddress){
+        paramsArray[i++] = params.companyAddress;
+        query += " ,company_address = ? ";
+    }
+    if (params.bank){
+        paramsArray[i++] = params.bank;
+        query += " ,bank = ? ";
+    }
+    if (params.bankCode){
+        paramsArray[i++] = params.bankCode;
+        query += " ,bank_code = ? ";
+    }
+    if (params.companyPhone){
+        paramsArray[i++] = params.companyPhone;
+        query += " ,company_phone = ? ";
+    }
+    query += " where id = ? ";
+    paramsArray[i] = params.userInvoiceId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('updateUserInvoiceById');
+        callback(error,rows)
+    })
+}
 module.exports = {
     getInquiryInvoice,
     addInquiryInvoice,
     updateInquiryInvoiceStatusByUserId,
-    updateInquiryInvoiceStatus
+    updateInquiryInvoiceStatus,
+    deleteById,
+    updateById
 }

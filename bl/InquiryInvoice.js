@@ -62,8 +62,36 @@ const updateInquiryInvoiceStatus = (req,res,next) => {
         resUtil.resInternalError(error,res,next);
     })
 }
+const deleteUserInvoice = (req,res,next) => {
+    let params = req.params;
+    inquiryInvoiceDAO.deleteById(params,(error,result)=>{
+        if(error){
+            logger.error('deleteUserInvoice' + error.message);
+            resUtil.resInternalError(error,res,next);
+        }else{
+            logger.info('deleteUserInvoice' + 'success');
+            resUtil.resetQueryRes(res,result,null);
+            return next();
+        }
+    })
+}
+const updateUserInvoice = (req,res,next) => {
+    let params = req.params;
+    inquiryInvoiceDAO.updateById(params,(error,result)=>{
+        if(error){
+            logger.error('updateUserInvoice' + error.message);
+            resUtil.resInternalError(error,res,next);
+        }else{
+            logger.info('updateUserInvoice'+'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
+}
 module.exports = {
     getInquiryInvoice,
     addInquiryInvoice,
-    updateInquiryInvoiceStatus
+    updateInquiryInvoiceStatus,
+    deleteUserInvoice,
+    updateUserInvoice
 }

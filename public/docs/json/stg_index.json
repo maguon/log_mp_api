@@ -2534,6 +2534,46 @@
           }
         }
       },
+      "delete": {
+        "tags": [
+          "userInvoice"
+        ],
+        "summary": " delete",
+        "description": " delete a user invoiceMsg",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "userInvoiceId",
+            "in": "query",
+            "description": "userInvoiceId",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryInvoice"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      },
       "post": {
         "tags": [
           "userInvoice"
@@ -2573,6 +2613,57 @@
           },
           "400": {
             "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/invoice/{userInvoiceId}": {
+      "put": {
+        "tags": [
+          "userInvoice"
+        ],
+        "summary": " update",
+        "description": " update user invoice",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "userInvoiceId",
+            "in": "path",
+            "description": "userInvoiceId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "invoiceMsg",
+            "in": "body",
+            "description": "invoiceMsg",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/invoiceMsg"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/inquiryInvoice"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
           }
         }
       }
@@ -9831,6 +9922,32 @@
       },
       "xml": {
         "name": "bankInfo"
+      }
+    },
+    "invoiceMsg": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "taxNumber": {
+          "type": "string"
+        },
+        "bank": {
+          "type": "string"
+        },
+        "bankCode": {
+          "type": "string"
+        },
+        "companyAddress": {
+          "type": "string"
+        },
+        "companyPhone": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "invoiceMsg"
       }
     }
   }
