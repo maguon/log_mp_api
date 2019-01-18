@@ -7550,6 +7550,64 @@
         }
       }
     },
+    "/user/{userId}/order/{orderId}/refundApply/{refundApplyId}": {
+      "put": {
+        "tags": [
+          "refundApply"
+        ],
+        "summary": "update",
+        "description": "update a refundApply",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "refundApplyId",
+            "in": "path",
+            "description": "refundApplyId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "refundApplyMsg",
+            "in": "body",
+            "description": "refundApplyMsg",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/refundApplyMsg"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/bankRefund"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
     "/user/{userId}/refundApply": {
       "get": {
         "tags": [
@@ -10004,6 +10062,23 @@
       },
       "xml": {
         "name": "invoiceMsg"
+      }
+    },
+    "refundApplyMsg": {
+      "type": "object",
+      "properties": {
+        "paymentId": {
+          "type": "integer"
+        },
+        "applyFee": {
+          "type": "integer"
+        },
+        "applyReason": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "refundApplyMsg"
       }
     }
   }

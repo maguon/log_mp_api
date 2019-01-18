@@ -172,6 +172,45 @@ const updatePaymentRefundId = (params,callback) => {
         callback(error,rows);
     })
 }
+const updateById = (params,callback) => {
+    let paramsArray = [],i=0;
+    let query = " update refund_apply set id = ? ";
+    paramsArray[i++] = params.refundApplyId;
+    if (params.paymentId){
+        paramsArray[i++] = params.paymentId;
+        query += ",payment_id = ?";
+    }
+    if (params.remark){
+        paramsArray[i++] = params.remark;
+        query += ",remark = ?";
+    }
+    if (params.applyReason){
+        paramsArray[i++] = params.applyReason;
+        query += ",apply_reason = ?";
+    }
+    if (params.refuseReason){
+        paramsArray[i++] = params.refuseReason;
+        query += ",refuse_reason = ?";
+    }
+    if (params.applyFee){
+        paramsArray[i++] = params.applyFee;
+        query += ",apply_fee = ?";
+    }
+    if (params.refundFee){
+        paramsArray[i++] = params.refundFee;
+        query += ",refund_fee = ?";
+    }
+    if (params.status){
+        paramsArray[i++] = params.status;
+        query += ",status = ?";
+    }
+    paramsArray[i] = params.refundApplyId;
+    query += " where id = ?";
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('updateById');
+        callback(error,rows);
+    })
+}
 module.exports = {
     addRefundApply,
     getRefundApply,
@@ -180,5 +219,6 @@ module.exports = {
     getRefundApplyStat,
     updateRefundById,
     deleteById,
-    updatePaymentRefundId
+    updatePaymentRefundId,
+    updateById
 }

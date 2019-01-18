@@ -301,6 +301,7 @@ const createServer=()=>{
     server.get('/api/admin/:adminId/refundApply' ,refundApply.getRefundApply);
     server.put({path:'/api/user/:userId/order/:orderId/payment/:paymentId/refundApply/:refundId',contentType: 'application/json'},refundApply.updateRefundById);
     server.del({path:'/api/user/:userId/order/:orderId/payment/:paymentId/refundApply/:refundApplyId',contentType: 'application/json'},refundApply.deleteById);
+    server.put({path:'/api/user/:userId/order/:orderId/refundApply/:refundApplyId',contentType: 'application/json'},refundApply.updateRefundApplyMsg);
     /**
      * sendPswdSms
      */

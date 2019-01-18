@@ -184,6 +184,36 @@ const deleteById = (req,res,next)=>{
         }
     });
 }
+const updateRefundApplyMsg = (req,res,next)=>{
+    let params = req.params;
+    new Promise((resolve,reject)=> {
+        paymentDAO.getById({paymentId:params.paymentId},(error,rows)=>{
+            if (error){
+                logger.info("getPaymentById"+error.message);
+                resUtil.resetFailedRes(res,error);
+                reject(error);
+            }else {
+                if (rows.length > 0){
+                    resolve();
+                } else {
+                    resUtil.resetFailedRes(res,sysMsg.ADMIN_PAYMENT_NO_MSG);
+                    reject(error);
+                }
+            }
+        })
+    }).then(()=>{
+        refundApplyDAO.updateById(params,(error,result)=>{
+            if(error){
+                logger.error('updateRefundApplyMsg:' + error.message);
+                resUtil.resInternalError(error, res, next);
+            }else{
+                logger.info('updateRefundApplyMsg:' + 'success');
+                resUtil.resetUpdateRes(res,result,null);
+                return next();
+            }
+        });
+    })
+}
 module.exports = {
     addRefundApply,
     getRefundApply,
@@ -191,5 +221,6 @@ module.exports = {
     updateRefundStatus,
     getRefundApplyStat,
     updateRefundById,
-    deleteById
+    deleteById,
+    updateRefundApplyMsg
 }
