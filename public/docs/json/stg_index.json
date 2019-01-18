@@ -2719,6 +2719,57 @@
         }
       }
     },
+    "/user/{userId}/order/{orderId}/invoiceApply": {
+      "post": {
+        "tags": [
+          "invoiceApply"
+        ],
+        "summary": " user apply an order invoice",
+        "description": "user apply an order invoice",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "applyMsg",
+            "in": "body",
+            "description": "applyMsg",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/invoiceApply"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/invoiceApply"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
     "/admin/{adminId}/controlInvoices/{invoiceApplyId}/replaceOrder/{orderId}": {
       "put": {
         "tags": [

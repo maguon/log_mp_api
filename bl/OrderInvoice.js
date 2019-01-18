@@ -204,6 +204,21 @@ const getUserNoInvoiceOrderList = (req,res,next)=>{
         }
     });
 }
+const addByUser = (req,res,next)=>{
+    let params = req.params;
+    params.adminId = 0;
+    params.dateId = moment().format("YYYYMMDD");
+    orderInvoiceDAO.addOrderInvoiceApply(params,(error,result)=>{
+        if (error){
+            logger.error('addOrderInvoiceApply:' + error.message);
+            resUtil.resInternalError(error,res,next);
+        } else {
+            logger.info('addOrderInvoiceApply:' + 'success');
+            resUtil.resetCreateRes(res,result,null);
+            return next();
+        }
+    });
+}
 module.exports={
     addByAdmin,
     updateInvoiceStatus,
@@ -213,5 +228,6 @@ module.exports={
     replaceOrderId,
     delInvoiceApply,
     updateRefuseStatus,
-    getUserNoInvoiceOrderList
+    getUserNoInvoiceOrderList,
+    addByUser
 }

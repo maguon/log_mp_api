@@ -134,6 +134,7 @@ const createServer=()=>{
     server.put({path:'/api/admin/:adminId/controlInvoices/:invoiceApplyId/refuseApply',contentType: 'application/json'},orderInvoice.updateRefuseStatus);
     server.get('/api/user/:userId/noInvoiceOrderList',orderInvoice.getUserNoInvoiceOrderList);
     server.get('/api/user/:userId/invoicesList',orderInvoice.getInvoicedOrderList);
+    server.post({path:'/api/user/:userId/order/:orderId/invoiceApply',contentType: 'application/json'},orderInvoice.addByUser);
     /**
      inquiry_car
      */
