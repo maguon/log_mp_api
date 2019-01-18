@@ -42,11 +42,12 @@ const unifiedOrder = (params,callback) => {
         limit_pay:600,//指定支付方式	limit_pay	否
         openid:600//用户标识	openid	否
     }
-    httpUtil.httpPost(sysConfig.wechatConfig.mphost,666,url,unifiedOrder,(err,rows)=>{
+    httpUtil.httpPost(sysConfig.wechatConfig.mpHost,666,url,unifiedOrder,(err,rows)=>{
         logger.debug('unifiedOrder');
         callback(err,rows);
     })
 }
+//delete
 const createUnifiedOrder = (params,callback) => {
     let query = "insert into wechat_unifiedorder(return_code,result_code,return_msg,appid,mch_id,device_info,nonce_str,sign,err_code,err_code_des,trade_type,prepay_id,code_url) values(?,?,?,?,?,?,?,?,?,?,?,?,? )";
     let paramsArray = [],i=0;
