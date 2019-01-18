@@ -2668,13 +2668,13 @@
         }
       }
     },
-    "/user/{userId}/invoice/{invoiceId}/status/{status}": {
+    "/user/{userId}/invoice/{userInvoiceId}/defaultInvoice": {
       "put": {
         "tags": [
           "userInvoice"
         ],
-        "summary": " put by user id look invoice",
-        "description": " put by user id look invoice",
+        "summary": " update",
+        "description": " update status",
         "produces": [
           "application/json"
         ],
@@ -2687,16 +2687,9 @@
             "type": "integer"
           },
           {
-            "name": "inquiryInvoiceId",
+            "name": "userInvoiceId",
             "in": "path",
-            "description": "inquiryInvoiceId",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "status",
-            "in": "path",
-            "description": "status",
+            "description": "userInvoiceId",
             "required": true,
             "type": "integer"
           }

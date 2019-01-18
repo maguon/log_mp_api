@@ -6,6 +6,7 @@ const sysMsg = require('../util/SystemMsg.js');
 const sysError = require('../util/SystemError.js');
 const logger = serverLogger.createLogger('InquiryInvoice.js');
 const inquiryInvoiceDAO = require('../dao/InquiryInvoiceDAO.js');
+const sysConsts = require("../util/SystemConst");
 
 const getInquiryInvoice = (req,res,next) => {
     let params = req.params;
@@ -36,6 +37,7 @@ const addInquiryInvoice = (req,res,next) => {
 const updateInquiryInvoiceStatus = (req,res,next) => {
     let params = req.params;
     new Promise((resolve,reject)=>{
+        params.status = sysConsts.USER_INVOICE.status.normal;
         inquiryInvoiceDAO.updateInquiryInvoiceStatusByUserId(params,(error,result)=>{
             if(error){
                 logger.error('updateInquiryInvoiceStatusByUserId' + error.message);
@@ -47,6 +49,7 @@ const updateInquiryInvoiceStatus = (req,res,next) => {
         })
     }).then(()=>{
         new Promise((resolve,reject)=>{
+            params.status = sysConsts.USER_INVOICE.status.default;
             inquiryInvoiceDAO.updateInquiryInvoiceStatus(params,(error,result)=>{
                 if(error){
                     logger.error('updateInquiryInvoiceStatus' + error.message);

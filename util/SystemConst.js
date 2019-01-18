@@ -109,6 +109,12 @@ const CAR = {
         unShowInUser:0
     }
 }
+const USER_INVOICE = {
+    status :{
+        default:1,//默认发票
+        normal:0
+    }
+}
 module.exports = {
     CAR_MODEL,
     PAYMENT,
@@ -117,5 +123,6 @@ module.exports = {
     USER_ADDRESS,
     ORDER_INVOICE_APPLY,
     INQUIRY,
-    CAR
+    CAR,
+    USER_INVOICE
 }

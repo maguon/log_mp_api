@@ -121,7 +121,7 @@ const createServer=()=>{
     server.get('/api/user/:userId/invoice',inquiryInvoice.getInquiryInvoice);
     server.del('/api/user/:userId/invoice',inquiryInvoice.deleteUserInvoice);
     server.get('/api/admin/:adminId/invoice',inquiryInvoice.getInquiryInvoice);
-    server.put({path:'/api/user/:userId/invoice/:invoiceId/status/:status',contentType: 'application/json'},inquiryInvoice.updateInquiryInvoiceStatus);
+    server.put({path:'/api/user/:userId/invoice/:userInvoiceId/defaultInvoice',contentType: 'application/json'},inquiryInvoice.updateInquiryInvoiceStatus);
     server.put({path:'/api/user/:userId/invoice/:userInvoiceId',contentType: 'application/json'},inquiryInvoice.updateUserInvoice);
     /**
      * order_invoice_apply

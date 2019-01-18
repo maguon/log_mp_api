@@ -64,15 +64,16 @@ const updateInquiryInvoiceStatus = (params,callback) => {
     let query = " update user_invoice set status = ? where id = ? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.status;
-    paramsArray[i] = params.inquiryInvoiceId;
+    paramsArray[i] = params.userInvoiceId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('updateInquiryInvoice');
         callback(error,rows)
     })
 }
 const updateInquiryInvoiceStatusByUserId = (params,callback) => {
-    let query = " update user_invoice set status = 0 where user_id = ? ";
+    let query = " update user_invoice set status = ? where user_id = ? ";
     let paramsArray = [],i=0;
+    paramsArray[i++] = params.status;
     paramsArray[i] = params.userId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('updateInquiryInvoiceStatusByUserId');
