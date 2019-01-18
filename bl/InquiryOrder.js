@@ -309,6 +309,7 @@ const addOrder = (req,res,next) => {
     let params = req.params;
     let routeStartId = "";
     let routeEndId = "";
+    params.createdType = sysConsts.ORDER.type.internal;
     routeStartId = routeStartId + params.routeStartId;
     routeEndId = routeEndId + params.routeEndId;
     if(params.routeStartId > params.routeEndId){
