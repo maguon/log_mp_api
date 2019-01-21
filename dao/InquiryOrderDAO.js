@@ -301,6 +301,10 @@ const getOrderByUser = (params,callback) => {
         paramsArray[i++] = params.status;
         query = query + " and uo.status = ? ";
     }
+    if(params.statusList){
+        paramsArray[i++] = params.statusList;
+        query = query + " and uo.status in (?) ";
+    }
     if(params.createdOnStart){
         paramsArray[i++] = params.createdOnStart + " 00:00:00";
         query = query + " and uo.created_on >= ? ";
