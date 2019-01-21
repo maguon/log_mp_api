@@ -104,6 +104,7 @@ const addRouteInquiry = (req,res,next) => {
 }
 const getInquiryByUserId = (req,res,next) => {
     let params = req.params;
+    params.statusList = params.statusList.split(",");
     inquiryDAO.getInquiryByUserId(params,(error,result)=>{
         if(error){
             logger.error('getInquiryByUserId' + error.message);

@@ -95,6 +95,10 @@ const getInquiryByUserId = (params,callback) => {
         paramsArray[i++] = params.status;
         query = query + " and ii.status = ? ";
     }
+    if(params.statusList){
+        paramsArray[i++] = params.statusList;
+        query = query + " and ii.status in (?) ";
+    }
     query += " order by ii.id desc";
     if(params.start && params.size){
         paramsArray[i++] = parseInt(params.start);

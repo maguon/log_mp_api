@@ -3208,6 +3208,13 @@
             "type": "integer"
           },
           {
+            "name": "statusList",
+            "in": "query",
+            "description": "statusList",
+            "required": false,
+            "type": "string"
+          },
+          {
             "name": "startCity",
             "in": "query",
             "description": "startCity",
