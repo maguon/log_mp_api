@@ -36,8 +36,8 @@ const getPayment = (params,callback) => {
                 +" left join admin_user on order_info.admin_id = admin_user.id"
                 +" where payment_info.id is not null";
     let paramsArray = [],i=0;
-    if(params.adminId){
-        paramsArray[i++] = params.adminId;
+    if(params.managerId){
+        paramsArray[i++] = params.managerId;
         query = query + " and payment_info.admin_id = ? ";
     }
     if(params.userId){
@@ -514,14 +514,6 @@ const updateById = (params,callback)=>{
     if (params.accountName){
         paramsArray[i++] = params.accountName;
         query += " , account_name = ?"
-    }
-    if (params.transactionId){
-        paramsArray[i++] = params.transactionId;
-        query += " , transaction_id = ?"
-    }
-    if (params.nonceStr){
-        paramsArray[i++] = params.nonceStr;
-        query += " , nonce_str = ?"
     }
     paramsArray[i] = params.paymentId;
     query += " where id = ?"
