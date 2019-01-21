@@ -23,15 +23,28 @@ const getInquiryInvoice = (req,res,next) => {
 }
 const addInquiryInvoice = (req,res,next) => {
     let params = req.params;
-    inquiryInvoiceDAO.addInquiryInvoice(params,(error,result)=>{
-        if(error){
-            logger.error('addInquiryInvoice' + error.message);
-            resUtil.resInternalError(error,res,next);
-        }else{
-            logger.info('addInquiryInvoice' + 'success');
-            resUtil.resetCreateRes(res,result,null);
-            return next();
-        }
+    new Promise((resolve,reject)=>{
+        params.status = sysConsts.USER_INVOICE.status.normal;
+        inquiryInvoiceDAO.updateInquiryInvoiceStatusByUserId(params,(error,result)=>{
+            if(error){
+                logger.error('updateInquiryInvoiceStatusByUserId' + error.message);
+                reject(error);
+            }else{
+                logger.info('updateInquiryInvoiceStatusByUserId'+'success');
+                resolve();
+            }
+        })
+    }).then(()=>{
+        inquiryInvoiceDAO.addInquiryInvoice(params,(error,result)=>{
+            if(error){
+                logger.error('addInquiryInvoice' + error.message);
+                resUtil.resInternalError(error,res,next);
+            }else{
+                logger.info('addInquiryInvoice' + 'success');
+                resUtil.resetCreateRes(res,result,null);
+                return next();
+            }
+        })
     })
 }
 const updateInquiryInvoiceStatus = (req,res,next) => {
