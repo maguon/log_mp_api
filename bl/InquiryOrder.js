@@ -254,7 +254,9 @@ const getOrder = (req,res,next) => {
 }
 const getOrderByUser = (req,res,next) => {
     let params = req.params;
-    params.statusList = params.statusList.split(",");
+    if (params.statusList){
+        params.statusList = params.statusList.split(",");
+    }
     inquiryOrderDAO.getOrderByUser(params,(error,result)=>{
         if(error){
             logger.error('getOrderByUser' + error.message);
