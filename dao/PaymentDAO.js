@@ -227,14 +227,15 @@ const delRefundFail = (params,callback) => {
     })
 }
 const addWechatRefund = (params,callback) => {
-    let query = " insert into payment_info(date_id,user_id,order_id,type,p_id,payment_type,total_fee) values(?,?,?,?,?,1,?)";
+    let query = " insert into payment_info(admin_id,date_id,order_id,type,p_id,payment_type,total_fee) values(?,?,?,?,?,?,?)";
     let paramsArray = [],i=0;
+    paramsArray[i++] = params.adminId;
     paramsArray[i++] = params.dateId;
-    paramsArray[i++] = params.userId;
     paramsArray[i++] = params.orderId;
-    paramsArray[i++] = 0;
+    paramsArray[i++] = params.type;
     paramsArray[i++] = params.paymentId;
-    paramsArray[i] = -params.refundFee;
+    paramsArray[i++] = params.paymentType;
+    paramsArray[i] = params.refundFee;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('addWechatRefund');
         callback(error,rows);

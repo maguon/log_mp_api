@@ -38,7 +38,7 @@ let ADMIN_LOGIN_USER_UNREGISTERED = "用户不存在"; //Customer use a email th
  */
 let ADMIN_PAYMENT_UPDATE_PERMISSION = "只有银行转账才能操作";
 let ADMIN_PAYMENT_NO_MSG = "找不到该支付信息";
-
+let ADMIN_PAYMENT_REFUND_PRICE = "退款金额不得大于支付金额";
 /**
  * The order invoice apply
  */
@@ -81,5 +81,6 @@ module.exports = {
     ADMIN_ORDER_INVOICE_ONLYONE,
     USER_GET_NO_INQUIRY,
     GET_TRANS_AND_INSURE_PRICE,
-    ORDER_PAYMENT_STATUS_COMPLETE
+    ORDER_PAYMENT_STATUS_COMPLETE,
+    ADMIN_PAYMENT_REFUND_PRICE
 }

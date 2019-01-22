@@ -95,14 +95,12 @@ const updateRefuseStatus = (params,callback) => {
     })
 }
 const updateRefundStatus = (params,callback) => {
-    let query = " update refund_apply set status = ?,refund_fee = ?,remark = ? where id = ? and order_id = ? and payment_id = ?";
+    let query = " update refund_apply set status = ?,refund_fee = ?,remark = ? where id = ?";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.status;
     paramsArray[i++] = params.refundFee;
     paramsArray[i++] = params.remark;
-    paramsArray[i++] = params.refundApplyId;
-    paramsArray[i++] = params.orderId;
-    paramsArray[i] = params.paymentId;
+    paramsArray[i] = params.refundApplyId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('updateRefundStatus');
         callback(error,rows);

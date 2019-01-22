@@ -604,9 +604,9 @@ const updateOrderMsgByPrice = (params,callback)=>{
             })
         }).then(()=>{
             new Promise((resolve,reject)=>{
-                if (totalPrice > realPaymentPrice ){
+                if (totalPrice > paymentPrice ){
                     params.paymentStatus = sysConsts.ORDER.paymentStatus.partial;
-                } else if (totalPrice <= realPaymentPrice){
+                } else if (totalPrice <= paymentPrice){
                     params.paymentStatus = sysConsts.ORDER.paymentStatus.complete;
                 }
                 orderDAO.updateOrderPaymengStatusByOrderId(params,(error,result)=>{
