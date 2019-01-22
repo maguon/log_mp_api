@@ -252,10 +252,7 @@ const updateRefundStatus = (req,res,next)=>{
             params.type = sysConst.PAYMENT.type.refund;
             params.dateId = moment().format("YYYYMMDD");
             if (paymentType == sysConst.PAYMENT.paymentType.wechat){
-                let ourString = encrypt.randomString();
-                params.nonceStr = ourString;
-                let xmlParser = new xml2js.Parser({explicitArray : false, ignoreAttrs : true});
-                let refundUrl = 'https://stg.myxxjs.com/api/wechatRefund';
+
                 params.paymentType = sysConst.PAYMENT.paymentType.wechat;
                 paymentDAO.addWechatRefund(params,(error,result)=>{
                     if(error){
@@ -264,44 +261,9 @@ const updateRefundStatus = (req,res,next)=>{
                     }else{
                         logger.info('addWechatRefund '+'success');
                         params.refundId = result.insertId;
-                        let signStr =
-                            "appid="+sysConfig.wechatConfig.mpAppId
-                            + "&mch_id="+sysConfig.wechatConfig.mchId
-                            + "&nonce_str="+params.nonceStr
-                            + "&notify_url="+refundUrl
-                            //+ "&openid="+params.openid
-                            + "&out_refund_no="+params.refundId
-                            + "&out_trade_no="+params.orderId
-                            + "&refund_fee="+params.refundFee * 100
-                            + "&total_fee=" +totalFee * 100
-                            + "&key="+sysConfig.wechatConfig.paymentKey;
-                        let signByMd = encrypt.encryptByMd5NoKey(signStr);
-                        let reqBody =
-                            '<xml><appid>'+sysConfig.wechatConfig.mpAppId+'</appid>' +
-                            '<mch_id>'+sysConfig.wechatConfig.mchId+'</mch_id>' +
-                            '<nonce_str>'+params.nonceStr+'</nonce_str>' +
-                            '<notify_url>'+refundUrl+'</notify_url>' +
-                            //'<openid>'+params.openid+'</openid>' +
-                            '<out_refund_no>'+params.refundId+'</out_refund_no>' +
-                            '<out_trade_no>'+params.orderId+'</out_trade_no>' +
-                            '<refund_fee>'+params.refundFee * 100+'</refund_fee>' +
-                            '<total_fee>'+totalFee * 100+'</total_fee>' +
-                            '<sign>'+signByMd+'</sign></xml>';
-                        let url="/secapi/pay/refund";
-                        let certFile = fs.readFileSync(sysConfig.wechatConfig.paymentCert);
-                        let options = {
-                            host: 'api.mch.weixin.qq.com',
-                            port: 443,
-                            path: url,
-                            method: 'POST',
-                            pfx: certFile ,
-                            passphrase : sysConfig.wechatConfig.mchId,
-                            headers: {
-                                'Content-Type': 'application/x-www-form-urlencoded',
-                                'Content-Length' : Buffer.byteLength(reqBody, 'utf8')
-                            }
-                        }
-                        let httpsReq = https.request(options,(result)=>{
+                        let xmlParser = new xml2js.Parser({explicitArray : false, ignoreAttrs : true});
+                        let getWechatParams = getParams(params,totalFee);
+                        let httpsReq = https.request(getWechatParams.options,(result)=>{
                             let data = "";
                             logger.info(result);
                             result.on('data',(d)=>{
@@ -322,7 +284,6 @@ const updateRefundStatus = (req,res,next)=>{
                                         reject();
                                     }
                                     // resUtil.resetQueryRes(res,evalJson.xml,null);
-                                    resolve();
                                 });
                                 res.send(200,data);
                                 return next();
@@ -332,8 +293,9 @@ const updateRefundStatus = (req,res,next)=>{
                                 return next();
                             });
                         });
-                        httpsReq.write(reqBody,"utf-8");
+                        httpsReq.write(getWechatParams.reqBody,"utf-8");
                         httpsReq.end();
+                        resolve();
                         httpsReq.on('error',(e)=>{
                             logger.info('wechatPayment '+ e.message);
                             res.send(500,e);
@@ -412,6 +374,54 @@ const updateRefundStatus = (req,res,next)=>{
     }).catch((error)=>{
         resUtil.resInternalError(error,res,next);
     })
+}
+
+const getParams = (params,totalFee)=>{
+    let result = {};
+    let ourString = encrypt.randomString();
+    params.nonceStr = ourString;
+
+    let refundUrl = 'https://stg.myxxjs.com/api/wechatRefund';
+    let signStr =
+        "appid="+sysConfig.wechatConfig.mpAppId
+        + "&mch_id="+sysConfig.wechatConfig.mchId
+        + "&nonce_str="+params.nonceStr
+        + "&notify_url="+refundUrl
+        //+ "&openid="+params.openid
+        + "&out_refund_no="+params.refundId
+        + "&out_trade_no="+params.orderId
+        + "&refund_fee="+params.refundFee * 100
+        + "&total_fee=" +totalFee * 100
+        + "&key="+sysConfig.wechatConfig.paymentKey;
+    let signByMd = encrypt.encryptByMd5NoKey(signStr);
+    let reqBody =
+        '<xml><appid>'+sysConfig.wechatConfig.mpAppId+'</appid>' +
+        '<mch_id>'+sysConfig.wechatConfig.mchId+'</mch_id>' +
+        '<nonce_str>'+params.nonceStr+'</nonce_str>' +
+        '<notify_url>'+refundUrl+'</notify_url>' +
+        //'<openid>'+params.openid+'</openid>' +
+        '<out_refund_no>'+params.refundId+'</out_refund_no>' +
+        '<out_trade_no>'+params.orderId+'</out_trade_no>' +
+        '<refund_fee>'+params.refundFee * 100+'</refund_fee>' +
+        '<total_fee>'+totalFee * 100+'</total_fee>' +
+        '<sign>'+signByMd+'</sign></xml>';
+    let url="/secapi/pay/refund";
+    let certFile = fs.readFileSync(sysConfig.wechatConfig.paymentCert);
+    let options = {
+        host: 'api.mch.weixin.qq.com',
+        port: 443,
+        path: url,
+        method: 'POST',
+        pfx: certFile ,
+        passphrase : sysConfig.wechatConfig.mchId,
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Content-Length' : Buffer.byteLength(reqBody, 'utf8')
+        }
+    }
+    result.reqBody = reqBody;
+    result.options = options;
+    return result;
 }
 module.exports = {
     addRefundApply,
