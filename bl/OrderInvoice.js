@@ -191,19 +191,6 @@ const updateRefuseStatus = (req,res,next)=>{
         }
     });
 }
-const getUserNoInvoiceOrderList = (req,res,next)=>{
-    let params = req.params;
-    orderInvoiceDAO.getOrderInvoice(params,(error,rows)=>{
-        if (error){
-            logger.error('getNoInvoiceOrderList:' + error.message);
-            resUtil.resInternalError(error,res,next);
-        } else {
-            logger.info('getNoInvoiceOrderList:' + 'success');
-            resUtil.resetQueryRes(res,rows,null);
-            return next();
-        }
-    });
-}
 const addByUser = (req,res,next)=>{
     let params = req.params;
     params.adminId = 0;
@@ -228,6 +215,5 @@ module.exports={
     replaceOrderId,
     delInvoiceApply,
     updateRefuseStatus,
-    getUserNoInvoiceOrderList,
     addByUser
 }
