@@ -5536,13 +5536,6 @@
             "description": "addressId",
             "required": false,
             "type": "integer"
-          },
-          {
-            "name": "type",
-            "in": "query",
-            "description": "type",
-            "required": false,
-            "type": "integer"
           }
         ],
         "responses": {
@@ -5583,13 +5576,6 @@
             "name": "addressId",
             "in": "query",
             "description": "addressId",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "type",
-            "in": "query",
-            "description": "type 0:发车地址 1：收车地址",
             "required": false,
             "type": "integer"
           }
@@ -5652,7 +5638,7 @@
         }
       }
     },
-    "/user/{userId}/userAddress/{addressId}/type/{type}": {
+    "/user/{userId}/userAddress/{addressId}/status": {
       "put": {
         "tags": [
           "userAddress"
@@ -5674,13 +5660,6 @@
             "name": "addressId",
             "in": "path",
             "description": "addressId",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "type",
-            "in": "path",
-            "description": "1:发车；0:收车",
             "required": true,
             "type": "integer"
           }
@@ -9834,9 +9813,6 @@
         },
         "phone": {
           "type": "string"
-        },
-        "type": {
-          "type": "integer"
         }
       },
       "xml": {
@@ -9857,9 +9833,6 @@
         },
         "phone": {
           "type": "string"
-        },
-        "type": {
-          "type": "integer"
         }
       },
       "xml": {
