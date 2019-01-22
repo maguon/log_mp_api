@@ -111,8 +111,10 @@ const updateOrderItemInfo = (params,callback) => {
     })
 }
 const updateCarType = (params,callback) => {
-    let query = " update order_item set model_type= ?,vin =? ,old_car =?, valuation =?,safe_status = ? where id =? and user_id =? and order_id =? ";
+    let query = " update order_item set brand = ?,brand_type = ?, model_type= ?,vin =? ,old_car =?, valuation =?,safe_status = ? where id =? and user_id =? and order_id =? ";
     let paramsArray = [],i=0;
+    paramsArray[i++] = params.brand;
+    paramsArray[i++] = params.brandType;
     paramsArray[i++] = params.modelType;
     paramsArray[i++] = params.vin;
     paramsArray[i++] = params.oldCar;

@@ -10125,6 +10125,12 @@
     "carMsgOfOrderItem": {
       "type": "object",
       "properties": {
+        "brand": {
+          "type": "string"
+        },
+        "brandType": {
+          "type": "string"
+        },
         "modelType": {
           "type": "integer"
         },
