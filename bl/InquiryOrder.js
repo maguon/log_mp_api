@@ -367,13 +367,13 @@ const addOrder = (req,res,next) => {
             }).then(()=>{
                 new Promise((resolve,reject)=>{
                     params.dateId = moment().format("YYYYMMDD");
-                    inquiryOrderDAO.addOrder(params,(error,result)=>{
+                    inquiryOrderDAO.addOrder(params,(error,rows)=>{
                         if(error){
                             logger.error('addOrder' + error.message);
                             reject(error);
                         }else{
                             logger.info('addOrder' + 'success');
-                            resUtil.resetCreateRes(res,result,null);
+                            resUtil.resetCreateRes(res,rows,null);
                             return next();
                         }
                     })
