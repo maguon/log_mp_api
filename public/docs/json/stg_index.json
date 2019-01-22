@@ -9465,6 +9465,12 @@
     "carInfo": {
       "type": "object",
       "properties": {
+        "brand": {
+          "type": "string"
+        },
+        "brandType": {
+          "type": "string"
+        },
         "vin": {
           "type": "string"
         },
@@ -9491,6 +9497,12 @@
     "carAdmin": {
       "type": "object",
       "properties": {
+        "brand": {
+          "type": "string"
+        },
+        "brandType": {
+          "type": "string"
+        },
         "vin": {
           "type": "string"
         },
@@ -9874,6 +9886,12 @@
     "orderItemInfo": {
       "type": "object",
       "properties": {
+        "brand": {
+          "type": "string"
+        },
+        "brandType": {
+          "type": "string"
+        },
         "vin": {
           "type": "string"
         },

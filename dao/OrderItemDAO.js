@@ -7,8 +7,10 @@ const httpUtil = require('../util/HttpUtil');
 const db = require('../db/connection/MysqlDb.js');
 
 const addOrderCar = (params,callback) => {
-    let query = " insert into order_item(safe_status,user_id,order_id,vin,model_type,old_car,valuation,ora_trans_price,ora_insure_price) values(?,?,?,?,?,?,?,?,?) ";
+    let query = " insert into order_item(brand,brand_type,safe_status,user_id,order_id,vin,model_type,old_car,valuation,ora_trans_price,ora_insure_price) values(?,?,?,?,?,?,?,?,?,?,?) ";
     let paramsArray = [],i=0;
+    paramsArray[i++] = params.brand;
+    paramsArray[i++] = params.brandType;
     paramsArray[i++] = params.safeStatus;
     paramsArray[i++] = params.userId;
     paramsArray[i++] = params.orderId;
@@ -58,8 +60,10 @@ const delOrderCar = (params,callback) => {
     })
 }
 const addOrderCarAdmin = (params,callback) => {
-    let query = " insert into order_item(safe_status,order_id,vin,model_type,old_car,valuation,ora_trans_price,ora_insure_price,act_trans_price,act_insure_price) values(?,?,?,?,?,?,?,?,?,?) ";
+    let query = " insert into order_item(brand,brand_type,safe_status,order_id,vin,model_type,old_car,valuation,ora_trans_price,ora_insure_price,act_trans_price,act_insure_price) values(?,?,?,?,?,?,?,?,?,?,?,?) ";
     let paramsArray = [],i=0;
+    paramsArray[i++] = params.brand;
+    paramsArray[i++] = params.brandType;
     paramsArray[i++] = params.safeStatus;
     paramsArray[i++] = params.orderId;
     paramsArray[i++] = params.vin;
@@ -87,8 +91,10 @@ const updateActFee = (params,callback) => {
     })
 }
 const updateOrderItemInfo = (params,callback) => {
-    let query = " update order_item set ora_trans_price=?,ora_insure_price=?,vin=?,model_type=?,old_car=?,valuation=?,act_trans_price=?,safe_status=?,act_insure_price=? where id = ?";
+    let query = " update order_item set brand = ?, brand_type =?,ora_trans_price=?,ora_insure_price=?,vin=?,model_type=?,old_car=?,valuation=?,act_trans_price=?,safe_status=?,act_insure_price=? where id = ?";
     let paramsArray = [],i=0;
+    paramsArray[i++] = params.brand;
+    paramsArray[i++] = params.brandType;
     paramsArray[i++] = params.oraTransPrice;
     paramsArray[i++] = params.oraInsurePrice;
     paramsArray[i++] = params.vin;
