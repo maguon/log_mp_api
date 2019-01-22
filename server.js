@@ -31,6 +31,7 @@ const refundApply = require('./bl/RefundApply.js');
 const orderInvoice = require("./bl/OrderInvoice");
 //const email = require('./bl/Email.js');
 const statistics = require("./bl/Statistics");
+const departmentInfo = require("./bl/DepartmentInfo");
 
 
 /**
@@ -330,6 +331,12 @@ const createServer=()=>{
     server.get('/api/admin/:adminId/statisticsNewUserByDay',statistics.newUserCountByDay);
     server.get('/api/admin/:adminId/statisticsPaymentPriceByMonth',statistics.paymentPriceByMonth);
     server.get('/api/admin/:adminId/statisticsPaymentPriceByDay',statistics.paymentPriceByDay);
+
+    /**
+     * department_info
+     */
+    server.post({path:'/api/admin/:adminId/department',contentType: 'application/json'},departmentInfo.addDepartmentInfo);
+    server.get('/api/admin/:adminId/department',departmentInfo.getDepartmentInfo);
 
     server.on('NotFound', function (req, res ,next) {
         logger.warn(req.url + " not found");

@@ -1,0 +1,40 @@
+'use strict';
+
+const serverLogger = require('../util/ServerLogger.js');
+const resUtil = require('../util/ResponseUtil.js');
+const sysMsg = require('../util/SystemMsg.js');
+const sysError = require('../util/SystemError.js');
+const logger = serverLogger.createLogger('DepartmentInfo.js');
+const sysConsts = require("../util/SystemConst");
+const departmentInfoDAO = require("../dao/DepartmentInfoDAO");
+
+const addDepartmentInfo =(req,res,next)=>{
+    let params = req.params;
+    departmentInfoDAO.add(params,(error,result)=>{
+        if (error){
+            logger.error('addDepartmentInfo:' + error.message);
+            resUtil.resInternalError(error, res, next);
+        } else {
+            logger.info('addDepartmentInfo:' + 'success');
+            resUtil.resetCreateRes(res,result, next);
+        }
+    })
+}
+
+const getDepartmentInfo =(req,res,next)=>{
+    let params = req.params;
+    departmentInfoDAO.get(params,(error,result)=>{
+        if (error){
+            logger.error('getDepartmentInfo:' + error.message);
+            resUtil.resInternalError(error, res, next);
+        } else {
+            logger.info('getDepartmentInfo:' + 'success');
+            resUtil.resetQueryRes(res,result, next);
+        }
+    })
+}
+
+module.exports = {
+    addDepartmentInfo,
+    getDepartmentInfo
+}

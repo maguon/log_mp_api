@@ -105,6 +105,10 @@
     {
       "name": "statisticsMsg",
       "description":"statisticsMsg of log api"
+    },
+    {
+      "name": "departmentManage",
+      "description":"departmentManage of log api"
     }
   ],
   "schemes": [
@@ -8902,6 +8906,90 @@
           }
         }
       }
+    },
+    "/admin/{adminId}/department": {
+      "post": {
+        "tags": [
+          "departmentManage"
+        ],
+        "summary": "add",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "departmentMsg",
+            "in": "body",
+            "description": "departmentMsg",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/departmentMsg"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/statisticsMsg"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "departmentManage"
+        ],
+        "summary": "",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "departmentId",
+            "in": "query",
+            "description": "departmentId",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/statisticsMsg"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -10087,6 +10175,17 @@
       },
       "xml": {
         "name": "refundApplyMsg"
+      }
+    },
+    "departmentMsg": {
+      "type": "object",
+      "properties": {
+        "departmentName": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "departmentMsg"
       }
     }
   }
