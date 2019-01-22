@@ -4,7 +4,7 @@ const logger = serverLogger.createLogger('DepartmentInfoDAO.js');
 const sysConfig = require("../config/SystemConfig");
 const db = require('../db/connection/MysqlDb.js');
 
-const add =(params,callback)=>{
+const insert =(params,callback)=>{
     let query = " insert into department_info (department_name,admin_id) values (?,?)";
     let paramsArray=[],i=0;
     paramsArray[i++]=params.departmentName;
@@ -26,8 +26,27 @@ const get =(params,callback)=>{
         return callback(error,rows);
     });
 }
-
+const updateById =(params,callback)=>{
+    let query = " update department_info set id = ? ";
+    let paramsArray=[],i=0;
+    paramsArray[i++]=params.departmentId;
+    if (params.departmentName){
+        paramsArray[i++]=params.departmentName;
+        query += ",department_name = ?";
+    }
+    if (params.status){
+        paramsArray[i++]=params.status;
+        query += ",status = ?";
+    }
+    paramsArray[i]=params.departmentId;
+    query += " where id = ?";
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug(' updateById ');
+        return callback(error,rows);
+    });
+}
 module.exports ={
-    add,
-    get
+    insert,
+    get,
+    updateById
 }

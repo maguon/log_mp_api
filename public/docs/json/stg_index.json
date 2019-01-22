@@ -8954,7 +8954,7 @@
         "tags": [
           "departmentManage"
         ],
-        "summary": "",
+        "summary": "get",
         "description": "",
         "produces": [
           "application/json"
@@ -8972,6 +8972,104 @@
             "in": "query",
             "description": "departmentId",
             "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/statisticsMsg"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/department/{departmentId}": {
+      "put": {
+        "tags": [
+          "departmentManage"
+        ],
+        "summary": "update",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "departmentId",
+            "in": "path",
+            "description": "departmentId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "departmentName",
+            "in": "query",
+            "description": "departmentName",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/statisticsMsg"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/department/{departmentId}/status/{status}": {
+      "put": {
+        "tags": [
+          "departmentManage"
+        ],
+        "summary": "update",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "departmentId",
+            "in": "path",
+            "description": "departmentId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "path",
+            "description": "status(0:启用，1:停用)",
+            "required": true,
             "type": "integer"
           }
         ],

@@ -20,7 +20,6 @@ const addDepartmentInfo =(req,res,next)=>{
         }
     })
 }
-
 const getDepartmentInfo =(req,res,next)=>{
     let params = req.params;
     departmentInfoDAO.get(params,(error,result)=>{
@@ -33,8 +32,20 @@ const getDepartmentInfo =(req,res,next)=>{
         }
     })
 }
-
+const updateDepartmentInfo =(req,res,next)=>{
+    let params = req.params;
+    departmentInfoDAO.updateById(params,(error,result)=>{
+        if (error){
+            logger.error('updateDepartmentName:' + error.message);
+            resUtil.resInternalError(error, res, next);
+        } else {
+            logger.info('updateDepartmentName:' + 'success');
+            resUtil.resetUpdateRes(res,result, next);
+        }
+    })
+}
 module.exports = {
     addDepartmentInfo,
-    getDepartmentInfo
+    getDepartmentInfo,
+    updateDepartmentInfo
 }
