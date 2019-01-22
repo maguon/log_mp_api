@@ -109,6 +109,10 @@
     {
       "name": "departmentManage",
       "description":"departmentManage of log api"
+    },
+    {
+      "name": "companyBank",
+      "description":"companyBank of log api"
     }
   ],
   "schemes": [
@@ -116,6 +120,159 @@
   ],
 
   "paths": {
+    "/admin/{adminId}/companyBank": {
+      "post": {
+        "tags": [
+          "companyBank"
+        ],
+        "summary": "insert",
+        "description": "",
+        "operationId": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "bankMsg",
+            "in": "body",
+            "description": "bankMsg",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/companyBankMsg"
+            }
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/companyBank/{companyBankId}": {
+      "put": {
+        "tags": [
+          "companyBank"
+        ],
+        "summary": "update",
+        "description": "",
+        "operationId": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "companyBankId",
+            "in": "path",
+            "description": "companyBankId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "bankMsg",
+            "in": "body",
+            "description": "bankMsg",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/companyBankMsg"
+            }
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/companyBank/{companyBankId}/status/{status}": {
+      "put": {
+        "tags": [
+          "companyBank"
+        ],
+        "summary": "update",
+        "description": "",
+        "operationId": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "companyBankId",
+            "in": "path",
+            "description": "companyBankId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "path",
+            "description": "0:启用，1:禁用",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/companyBank": {
+      "get": {
+        "tags": [
+          "companyBank"
+        ],
+        "summary": "select",
+        "description": "",
+        "operationId": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
     "/wechat/{code}/openid": {
       "get": {
         "tags": [
@@ -10308,6 +10465,23 @@
       },
       "xml": {
         "name": "departmentMsg"
+      }
+    },
+    "companyBankMsg": {
+      "type": "object",
+      "properties": {
+        "bank": {
+          "type": "string"
+        },
+        "bankCode": {
+          "type": "string"
+        },
+        "accountName": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "companyBankMsg"
       }
     }
   }

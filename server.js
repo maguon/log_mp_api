@@ -32,6 +32,7 @@ const orderInvoice = require("./bl/OrderInvoice");
 //const email = require('./bl/Email.js');
 const statistics = require("./bl/Statistics");
 const departmentInfo = require("./bl/DepartmentInfo");
+const companyBank = require("./bl/CompanyBank");
 
 
 /**
@@ -339,6 +340,15 @@ const createServer=()=>{
     server.get('/api/admin/:adminId/department',departmentInfo.getDepartmentInfo);
     server.put({path:'/api/admin/:adminId/department/:departmentId',contentType: 'application/json'},departmentInfo.updateDepartmentInfo);
     server.put({path:'/api/admin/:adminId/department/:departmentId/status/:status',contentType: 'application/json'},departmentInfo.updateDepartmentInfo);
+
+    /**
+     * company_bank
+     */
+    server.post({path:'/api/admin/:adminId/companyBank',contentType: 'application/json'},companyBank.addCompanyBank);
+    server.get('/api/companyBank',companyBank.getCompanyBank);
+    server.put({path:'/api/admin/:adminId/companyBank/:companyBankId',contentType: 'application/json'},companyBank.updateCompanyBank);
+    server.put({path:'/api/admin/:adminId/companyBank/:companyBankId/status/:status',contentType: 'application/json'},companyBank.updateCompanyBank);
+
     server.on('NotFound', function (req, res ,next) {
         logger.warn(req.url + " not found");
         res.send(404,{success:false,msg:" service not found !"});
