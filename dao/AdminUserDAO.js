@@ -94,11 +94,35 @@ const updatePassword = (params,callback) => {
     });
 
 }
-
+const add = (params,callback) => {
+    let query = " insert into admin_user (user_name,real_name,phone,password,type,gender) values (?,?,?,?,?,?)";
+    let paramsArray=[],i=0;
+    paramsArray[i++]=params.userName;
+    paramsArray[i++]=params.realName;
+    paramsArray[i++]=params.phone;
+    paramsArray[i++]=params.password;
+    paramsArray[i++]=params.department;
+    paramsArray[i]=params.gender;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug(' addAdminUser ');
+        return callback(error,rows);
+    });
+}
+const updateStatus = (params,callback) => {
+    let query = " update admin_user set status = ?  where id = ?";
+    let paramsArray=[],i=0;
+    paramsArray[i++] = params.status;
+    paramsArray[i] = params.adminId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug(' updateStatus ');
+        return callback(error,rows);
+    });
+}
 module.exports = {
     createAdminUser,
     queryAdminUser,
     queryAdminInfo,
     updateInfo,
-    updatePassword
+    updatePassword,add,
+    updateStatus
 }

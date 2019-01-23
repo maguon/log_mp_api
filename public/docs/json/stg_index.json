@@ -376,6 +376,50 @@
         }
       }
     },
+    "/admin/{adminId}": {
+      "put": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "update admin user info",
+        "description": "update admin user info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "admin Id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "admin",
+            "in": "body",
+            "description": "admin base info:name,phone and remark is needed .",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/admin"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
     "/adminUser": {
       "get": {
         "tags": [
@@ -445,30 +489,23 @@
           }
         }
       },
-      "put": {
+      "post": {
         "tags": [
           "admin"
         ],
-        "summary": "update admin user info",
-        "description": "update admin user info",
+        "summary": "insert",
+        "description": "insert adminUser",
         "produces": [
           "application/json"
         ],
         "parameters": [
           {
-            "name": "adminId",
-            "in": "path",
-            "description": "admin Id",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "admin",
+            "name": "adminUserMsg",
             "in": "body",
-            "description": "admin base info:name,phone and remark is needed .",
+            "description": "adminUserMsg",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/admin"
+              "$ref": "#/definitions/adminUser"
             }
           }
         ],
@@ -478,7 +515,7 @@
             "schema": {
               "type": "object",
               "items": {
-                "$ref": "#/definitions/admin"
+                "$ref": "#/definitions/password"
               }
             }
           },
@@ -514,6 +551,48 @@
             "schema": {
               "$ref": "#/definitions/adminPassword"
             }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/password"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/status/{status}": {
+      "put": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "update",
+        "description": "update admin user status",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "admin Id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "path",
+            "description": "状态(0-停用,1-可用)",
+            "required": true,
+            "type": "integer"
           }
         ],
         "responses": {
@@ -10608,6 +10687,29 @@
       },
       "xml": {
         "name": "noRouteInquiryInfo"
+      }
+    },
+    "adminUser": {
+      "type": "object",
+      "properties": {
+        "realName": {
+          "type": "string"
+        },
+        "gender": {
+          "type": "integer"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "department": {
+          "type": "integer"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "adminUser"
       }
     }
   }

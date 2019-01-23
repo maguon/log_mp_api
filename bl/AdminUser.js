@@ -155,10 +155,42 @@ const changeAdminPassword = (req,res,next) => {
         })
     })
 }
+const addAdminUser = (req,res,next) => {
+    let params = req.params;
+    params.userName = params.phone;
+    params.password = encrypt.encryptByMd5(params.password);
+    adminUserDao.add(params,(error,rows)=>{
+        if(error){
+            logger.error(' addAdminUser ' + error.message);
+            resUtil.resInternalError(error,res,next);
+        }else{
+            logger.info(' addAdminUser ' + 'success');
+             if (rows.insertId){
+                 resUtil.resetCreateRes(res,rows,null);
+                 return next;
+             }
+        }
+    })
+}
+const updateAdminStatus = (req,res,next) => {
+    let params = req.params;
+    adminUserDao.updateStatus(params,(error,result)=>{
+        if(error){
+            logger.error(' updateAdminStatus ' + error.message);
+            resUtil.resInternalError(error,res,next);
+        }else{
+            logger.info(' updateAdminStatus ' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
+}
 module.exports = {
     createAdminUser,
     adminUserLogin,
     getAdminUserInfo,
     updateAdminInfo,
-    changeAdminPassword
+    changeAdminPassword,
+    addAdminUser,
+    updateAdminStatus
 }
