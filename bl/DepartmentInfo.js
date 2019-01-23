@@ -10,7 +10,7 @@ const departmentInfoDAO = require("../dao/DepartmentInfoDAO");
 
 const addDepartmentInfo =(req,res,next)=>{
     let params = req.params;
-    departmentInfoDAO.add(params,(error,result)=>{
+    departmentInfoDAO.insert(params,(error,result)=>{
         if (error){
             logger.error('addDepartmentInfo:' + error.message);
             resUtil.resInternalError(error, res, next);
