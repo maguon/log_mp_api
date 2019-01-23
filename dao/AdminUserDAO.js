@@ -38,11 +38,34 @@ const queryAdminUser = (params,callback) => {
     });
 }
 const queryAdminInfo = (params,callback) => {
-    let query = " select * from admin_user where id is not null";
+    let query = " select au.*,di.department_name from admin_user au left join department_info di on au.type = di.id where au.id is not null";
+    query += " and di.status = 0";
     let paramsArray=[],i=0;
     if(params.adminId){
-        query = query + " and id = ? ";
+        query = query + " and au.id = ? ";
         paramsArray[i++]=params.adminId;
+    }
+    if(params.realName){
+        query = query + " and au.real_name = ? ";
+        paramsArray[i++]=params.realName;
+    }
+    if(params.gender){
+        query = query + " and au.gender = ? ";
+        paramsArray[i++]=params.gender;
+    }
+    if(params.status){
+        query = query + " and au.status = ? ";
+        paramsArray[i++]=params.status;
+    }
+    if(params.department){
+        query = query + " and au.type = ? ";
+        paramsArray[i]=params.department;
+    }
+    query = query + " order by created_on desc";
+    if(params.start && params.size){
+        paramsArray[i++] = parseInt(params.start);
+        paramsArray[i] = parseInt(params.size);
+        query = query + " limit ?,? ";
     }
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug(' queryUser ');

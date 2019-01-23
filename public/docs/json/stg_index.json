@@ -376,12 +376,12 @@
         }
       }
     },
-    "/admin/{adminId}": {
+    "/adminUser": {
       "get": {
         "tags": [
           "admin"
         ],
-        "summary": "query admin user info",
+        "summary": "select",
         "description": "Get admin user info",
         "produces": [
           "application/json"
@@ -389,9 +389,44 @@
         "parameters": [
           {
             "name": "adminId",
-            "in": "path",
+            "in": "query",
             "description": "admin Id",
-            "required": true,
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "realName",
+            "in": "query",
+            "description": "realName",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "gender",
+            "in": "query",
+            "description": "0:女 1:男",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "department",
+            "in": "query",
+            "description": "department",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "size",
+            "required": false,
             "type": "integer"
           }
         ],
@@ -9178,11 +9213,13 @@
             "type": "integer"
           },
           {
-            "name": "departmentName",
-            "in": "query",
+            "name": "departmentMsg",
+            "in": "body",
             "description": "departmentName",
             "required": true,
-            "type": "string"
+            "schema":{
+              "$ref":"#/definitions/departmentMsg"
+            }
           }
         ],
         "responses": {
