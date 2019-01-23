@@ -282,7 +282,7 @@
         "tags": [
           "wechat"
         ],
-        "summary": "wechat user do login",
+        "summary": "select",
         "description": "",
         "operationId": "wechat login",
         "consumes": [
@@ -312,7 +312,7 @@
         "tags": [
           "admin"
         ],
-        "summary": "createAdmin",
+        "summary": "insert",
         "description": "createAdmin",
         "produces": [
           "application/json"
@@ -349,7 +349,7 @@
         "tags": [
           "admin"
         ],
-        "summary": "Admin user do login",
+        "summary": "login",
         "description": "",
         "operationId": "admin login",
         "consumes": [
@@ -381,7 +381,7 @@
         "tags": [
           "admin"
         ],
-        "summary": "update admin user info",
+        "summary": "update",
         "description": "update admin user info",
         "produces": [
           "application/json"
@@ -530,7 +530,7 @@
         "tags": [
           "admin"
         ],
-        "summary": "update admin user password",
+        "summary": "update",
         "description": "update admin user password",
         "produces": [
           "application/json"
@@ -616,7 +616,7 @@
         "tags": [
           "user"
         ],
-        "summary": "query user",
+        "summary": "select",
         "description": "query user",
         "produces": [
           "application/json"
@@ -728,7 +728,7 @@
         "tags": [
           "user"
         ],
-        "summary": "query user",
+        "summary": "select",
         "description": "query user",
         "produces": [
           "application/json"
@@ -928,7 +928,7 @@
         "tags": [
           "user"
         ],
-        "summary": "user update password",
+        "summary": "update",
         "description": "user update password",
         "produces": [
           "application/json"
@@ -972,7 +972,7 @@
         "tags": [
           "user"
         ],
-        "summary": "user update status",
+        "summary": "update",
         "description": "user update status",
         "produces": [
           "application/json"
@@ -1021,7 +1021,7 @@
         "tags": [
           "user"
         ],
-        "summary": "user update phone",
+        "summary": "update",
         "description": "user update phone",
         "produces": [
           "application/json"
@@ -1070,7 +1070,7 @@
         "tags": [
           "user"
         ],
-        "summary": "user update info",
+        "summary": "update",
         "description": "user update info",
         "produces": [
           "application/json"
@@ -1114,7 +1114,7 @@
         "tags": [
           "transAndInsurePrice"
         ],
-        "summary": "find transAndInsurePrice",
+        "summary": "select",
         "description": "find transAndInsurePrice",
         "produces": [
           "application/json"
@@ -1151,7 +1151,7 @@
         "tags": [
           "user"
         ],
-        "summary": "userPhoneSms",
+        "summary": "insert",
         "description": "userPhoneSms",
         "produces": [
           "application/json"
@@ -1193,7 +1193,7 @@
         "tags": [
           "inquiry"
         ],
-        "summary": "query by user id and inquiryId look inquiry",
+        "summary": "select",
         "description": "query by user id look and inquiryId inquiry",
         "produces": [
           "application/json"
@@ -1347,7 +1347,7 @@
         "tags": [
           "inquiryCar"
         ],
-        "summary": " query by routeId look car",
+        "summary": "select",
         "description": " query routeId id look car",
         "produces": [
           "application/json"
@@ -1410,7 +1410,7 @@
         "tags": [
           "inquiryCar"
         ],
-        "summary": " query by routeId look car",
+        "summary": "insert",
         "description": " query routeId id look car",
         "produces": [
           "application/json"
@@ -1461,7 +1461,7 @@
         "tags": [
           "inquiryCar"
         ],
-        "summary": " inquiryCar",
+        "summary": "update",
         "description": " delete inquiry car",
         "produces": [
           "application/json"
@@ -1503,7 +1503,7 @@
         "tags": [
           "orderItem"
         ],
-        "summary": " query by routeId look car",
+        "summary": "update",
         "description": " query routeId id look car",
         "produces": [
           "application/json"
@@ -1554,7 +1554,7 @@
         "tags": [
           "orderItem"
         ],
-        "summary": " query by routeId look car",
+        "summary": " update",
         "description": " query routeId id look car",
         "produces": [
           "application/json"
@@ -1605,7 +1605,7 @@
         "tags": [
           "inquiryCar"
         ],
-        "summary": " query by routeId look car",
+        "summary": "select",
         "description": " query routeId id look car",
         "produces": [
           "application/json"
@@ -1675,7 +1675,7 @@
         "tags": [
           "order"
         ],
-        "summary": " query by routeId look order",
+        "summary": "select",
         "description": " query by routeId id look order",
         "produces": [
           "application/json"
@@ -1822,7 +1822,7 @@
         "tags": [
           "order"
         ],
-        "summary": "inquiryManageOrder query by inquiryManageId",
+        "summary": "insert",
         "description": "inquiryManageOrder query by inquiryManageId",
         "produces": [
           "application/json"
@@ -1864,7 +1864,7 @@
         "tags": [
           "order"
         ],
-        "summary": " query by routeId look order",
+        "summary": "select",
         "description": " query by routeId id look order",
         "produces": [
           "application/json"
@@ -2018,7 +2018,7 @@
         "tags": [
           "order"
         ],
-        "summary": "inquiryManageOrder query by inquiryManageId",
+        "summary": "insert",
         "description": "inquiryManageOrder query by inquiryManageId",
         "produces": [
           "application/json"
@@ -2060,7 +2060,7 @@
         "tags": [
           "order"
         ],
-        "summary": "inquiryManageOrder query by inquiryManageId",
+        "summary": "insert",
         "description": "inquiryManageOrder query by inquiryManageId",
         "produces": [
           "application/json"
@@ -2102,7 +2102,7 @@
         "tags": [
           "inquiryBank"
         ],
-        "summary": " query by user id look bank",
+        "summary": "select",
         "description": " query by user id look bank",
         "produces": [
           "application/json"
@@ -2158,7 +2158,7 @@
         "tags": [
           "inquiryBank"
         ],
-        "summary": " query by user id look bank",
+        "summary": "select",
         "description": " query by user id look bank",
         "produces": [
           "application/json"
@@ -2205,7 +2205,7 @@
         "tags": [
           "inquiryBank"
         ],
-        "summary": " add by user id look bank",
+        "summary": "insert",
         "description": " add by user id look bank",
         "produces": [
           "application/json"
@@ -2249,7 +2249,7 @@
         "tags": [
           "inquiryBank"
         ],
-        "summary": " query by user id look bank",
+        "summary": "update",
         "description": " query by user id look bank",
         "produces": [
           "application/json"
@@ -2298,7 +2298,7 @@
         "tags": [
           "inquiryBank"
         ],
-        "summary": " delete a bank msg by id",
+        "summary": " delete",
         "description": " delete a bank msg by id",
         "produces": [
           "application/json"
@@ -2340,7 +2340,7 @@
         "tags": [
           "userInvoice"
         ],
-        "summary": " query by user id look invoice",
+        "summary": "select",
         "description": " query by user id look invoice",
         "produces": [
           "application/json"
@@ -2431,7 +2431,7 @@
         "tags": [
           "invoiceApply"
         ],
-        "summary": " get no invoiced list",
+        "summary": "select",
         "description": " get no invoiced list",
         "produces": [
           "application/json"
@@ -2528,7 +2528,7 @@
         "tags": [
           "invoiceApply"
         ],
-        "summary": " get invoice apply list",
+        "summary": "select",
         "description": " get invoice apply list",
         "produces": [
           "application/json"
@@ -2644,7 +2644,7 @@
         "tags": [
           "invoiceApply"
         ],
-        "summary": " get no invoiced list",
+        "summary": "select",
         "description": " get no invoiced list",
         "produces": [
           "application/json"
@@ -2700,7 +2700,7 @@
         "tags": [
           "invoiceApply"
         ],
-        "summary": " get invoice apply list",
+        "summary": "select",
         "description": " get invoice apply list",
         "produces": [
           "application/json"
@@ -2756,7 +2756,7 @@
         "tags": [
           "userInvoice"
         ],
-        "summary": " query by user id look invoice",
+        "summary": "select",
         "description": " query by user id look invoice",
         "produces": [
           "application/json"
@@ -2864,7 +2864,7 @@
         "tags": [
           "userInvoice"
         ],
-        "summary": " add by user id look invoice",
+        "summary": "insert",
         "description": " add by user id look invoice",
         "produces": [
           "application/json"
@@ -3001,7 +3001,7 @@
         "tags": [
           "invoiceApply"
         ],
-        "summary": " status",
+        "summary": " update",
         "description": " Confirm that the invoice has been issued",
         "produces": [
           "application/json"
@@ -3043,7 +3043,7 @@
         "tags": [
           "invoiceApply"
         ],
-        "summary": " admin apply an order invoice",
+        "summary": "insert",
         "description": "admin apply an order invoice",
         "produces": [
           "application/json"
@@ -3094,7 +3094,7 @@
         "tags": [
           "invoiceApply"
         ],
-        "summary": " user apply an order invoice",
+        "summary": " insert",
         "description": "user apply an order invoice",
         "produces": [
           "application/json"
@@ -3145,7 +3145,7 @@
         "tags": [
           "invoiceApply"
         ],
-        "summary": " orderId",
+        "summary": " update",
         "description": " Fill in the order number",
         "produces": [
           "application/json"
@@ -3194,7 +3194,7 @@
         "tags": [
           "invoiceApply"
         ],
-        "summary": " invoice",
+        "summary": " update",
         "description": " update Invoice msg",
         "produces": [
           "application/json"
@@ -3245,7 +3245,7 @@
         "tags": [
           "invoiceApply"
         ],
-        "summary": " invoice",
+        "summary": " update",
         "description": " update Invoice msg",
         "produces": [
           "application/json"
@@ -3296,7 +3296,7 @@
         "tags": [
           "invoiceApply"
         ],
-        "summary": " invoice",
+        "summary": " delete",
         "description": " 撤销发票",
         "produces": [
           "application/json"
@@ -3338,7 +3338,7 @@
         "tags": [
           "invoiceApply"
         ],
-        "summary": " invoice",
+        "summary": " delete",
         "description": " 撤销发票",
         "produces": [
           "application/json"
@@ -3380,7 +3380,7 @@
         "tags": [
           "invoiceApply"
         ],
-        "summary": " invoice",
+        "summary": " update",
         "description": " 驳回发票申请",
         "produces": [
           "application/json"
@@ -3431,7 +3431,7 @@
         "tags": [
           "inquiry"
         ],
-        "summary": "query by user id and inquiryId look inquiry",
+        "summary": "select",
         "description": "query by user id look and inquiryId inquiry",
         "produces": [
           "application/json"
@@ -3569,7 +3569,7 @@
         "tags": [
           "inquiry"
         ],
-        "summary": "inquiry add",
+        "summary": "insert",
         "description": "inquiry add",
         "produces": [
           "application/json"
@@ -3613,7 +3613,7 @@
         "tags": [
           "inquiry"
         ],
-        "summary": "inquiryManage update",
+        "summary": "update",
         "description": "inquiryManage update",
         "produces": [
           "application/json"
@@ -3664,7 +3664,7 @@
         "tags": [
           "inquiry"
         ],
-        "summary": "inquiryManage update",
+        "summary": "update",
         "description": "inquiryManage update",
         "produces": [
           "application/json"
@@ -3706,7 +3706,7 @@
         "tags": [
           "inquiry"
         ],
-        "summary": "inquiryManage update",
+        "summary": "update",
         "description": "inquiryManage update",
         "produces": [
           "application/json"
@@ -3755,7 +3755,7 @@
         "tags": [
           "inquiry"
         ],
-        "summary": "inquiryManage update",
+        "summary": "update",
         "description": "inquiryManage update",
         "produces": [
           "application/json"
@@ -3804,7 +3804,7 @@
         "tags": [
           "inquiry"
         ],
-        "summary": "inquiry update",
+        "summary": "update",
         "description": "inquiry update",
         "produces": [
           "application/json"
@@ -3862,7 +3862,7 @@
         "tags": [
           "order"
         ],
-        "summary": "inquiryManageOrder query by inquiryManageId",
+        "summary": "update",
         "description": "inquiryManageOrder query by inquiryManageId",
         "produces": [
           "application/json"
@@ -3913,7 +3913,7 @@
         "tags": [
           "order"
         ],
-        "summary": "inquiryManageOrder query by inquiryManageId",
+        "summary": "update",
         "description": "inquiryManageOrder query by inquiryManageId",
         "produces": [
           "application/json"
