@@ -33,7 +33,7 @@ const orderInvoice = require("./bl/OrderInvoice");
 const statistics = require("./bl/Statistics");
 const departmentInfo = require("./bl/DepartmentInfo");
 const companyBank = require("./bl/CompanyBank");
-
+const noRouteInquiryInfo = require("./bl/NoRouteInquiryInfo");
 
 /**
  * Returns a server with all routes defined on it
@@ -348,6 +348,12 @@ const createServer=()=>{
     server.get('/api/companyBank',companyBank.getCompanyBank);
     server.put({path:'/api/admin/:adminId/companyBank/:companyBankId',contentType: 'application/json'},companyBank.updateCompanyBank);
     server.put({path:'/api/admin/:adminId/companyBank/:companyBankId/status/:status',contentType: 'application/json'},companyBank.updateCompanyBank);
+
+    /**
+     * noRoute_inquiry_info
+     */
+    server.post({path:'/api/user/:userId/noRouteInquiryInfo',contentType: 'application/json'},noRouteInquiryInfo.addNoRouteInquiry);
+
 
     server.on('NotFound', function (req, res ,next) {
         logger.warn(req.url + " not found");

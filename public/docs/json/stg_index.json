@@ -113,6 +113,10 @@
     {
       "name": "companyBank",
       "description":"companyBank of log api"
+    },
+    {
+      "name": "NoRouteInquiryManage",
+      "description":"NoRouteInquiryManage of log api"
     }
   ],
   "schemes": [
@@ -9245,6 +9249,50 @@
           }
         }
       }
+    },
+    "/user/{userId}/noRouteInquiryInfo": {
+      "post": {
+        "tags": [
+          "NoRouteInquiryManage"
+        ],
+        "summary": "insert",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "noRouteInquiryInfo",
+            "in": "body",
+            "description": "noRouteInquiryInfo",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/noRouteInquiryInfo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/statisticsMsg"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -10482,6 +10530,41 @@
       },
       "xml": {
         "name": "companyBankMsg"
+      }
+    },
+    "noRouteInquiryInfo": {
+      "type": "object",
+      "properties": {
+        "routeId": {
+          "type": "integer"
+        },
+        "startCity": {
+          "type": "string"
+        },
+        "endCity": {
+          "type": "string"
+        },
+        "startId": {
+          "type": "integer"
+        },
+        "endId": {
+          "type": "integer"
+        },
+        "serviceType": {
+          "type": "integer"
+        },
+        "oldCarFlag": {
+          "type": "integer"
+        },
+        "carNum": {
+          "type": "integer"
+        },
+        "valuation": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "noRouteInquiryInfo"
       }
     }
   }

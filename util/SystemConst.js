@@ -115,6 +115,12 @@ const USER_INVOICE = {
         normal:0
     }
 }
+const NOROUTE_INQUIRY ={
+    status:{
+        noRoute:0,
+        hasRoute:1
+    }
+}
 module.exports = {
     CAR_MODEL,
     PAYMENT,
@@ -124,5 +130,6 @@ module.exports = {
     ORDER_INVOICE_APPLY,
     INQUIRY,
     CAR,
-    USER_INVOICE
+    USER_INVOICE,
+    NOROUTE_INQUIRY
 }
