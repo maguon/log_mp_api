@@ -39,8 +39,11 @@ const queryAdminUser = (params,callback) => {
 }
 const queryAdminInfo = (params,callback) => {
     let query = " select au.*,di.department_name from admin_user au left join department_info di on au.type = di.id where au.id is not null";
-    query += " and di.status = 0";
     let paramsArray=[],i=0;
+    if(params.departmentStatus){
+        query += " and di.status = ?";
+        paramsArray[i++]=params.departmentStatus;
+    }
     if(params.adminId){
         query = query + " and au.id = ? ";
         paramsArray[i++]=params.adminId;
@@ -119,43 +122,11 @@ const updateStatus = (params,callback) => {
         return callback(error,rows);
     });
 }
-const getAllInfo = (params,callback) => {
-    let query = " select * from admin_user where id is not null";
-    let paramsArray=[],i=0;
-    if(params.adminId){
-        query = query + " and id = ? ";
-        paramsArray[i++]=params.adminId;
-    }
-    if(params.realName){
-        query = query + " and real_name = ? ";
-        paramsArray[i++]=params.realName;
-    }
-    if(params.gender){
-        query = query + " and gender = ? ";
-        paramsArray[i++]=params.gender;
-    }
-    if(params.status){
-        query = query + " and status = ? ";
-        paramsArray[i++]=params.status;
-    }
-    query = query + " order by created_on desc";
-    if(params.start && params.size){
-        paramsArray[i++] = parseInt(params.start);
-        paramsArray[i] = parseInt(params.size);
-        query = query + " limit ?,? ";
-
-    }
-    db.dbQuery(query,paramsArray,(error,rows)=>{
-        logger.debug(' queryUser ');
-        return callback(error,rows);
-    });
-}
 module.exports = {
     createAdminUser,
     queryAdminUser,
     queryAdminInfo,
     updateInfo,
     updatePassword,add,
-    updateStatus,
-    getAllInfo
+    updateStatus
 }

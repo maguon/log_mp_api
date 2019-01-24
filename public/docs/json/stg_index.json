@@ -509,58 +509,9 @@
             "type": "integer"
           },
           {
-            "name": "start",
+            "name": "departmentStatus",
             "in": "query",
-            "description": "",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "size",
-            "in": "query",
-            "description": "size",
-            "required": false,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/admin"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/allAdminUser": {
-      "get": {
-        "tags": [
-          "admin"
-        ],
-        "summary": "select",
-        "description": "Get admin user info",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "query",
-            "description": "admin Id",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "status",
-            "in": "query",
-            "description": "状态(0-停用,1-可用)",
+            "description": "部门状态",
             "required": false,
             "type": "integer"
           },
