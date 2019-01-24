@@ -10829,9 +10829,6 @@
     "wechatBindPhone": {
       "type": "object",
       "properties": {
-        "appId": {
-          "type": "string"
-        },
         "sessionKey": {
           "type": "string"
         },

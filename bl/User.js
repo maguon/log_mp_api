@@ -8,6 +8,7 @@ const userDao = require('../dao/UserDAO.js');
 const encrypt = require('../util/Encrypt.js');
 const moment = require('moment/moment.js');
 const oAuthUtil = require('../util/OAuthUtil.js');
+const sysConfig = require("../config/SystemConfig");
 
 const updateUser = (req,res,next)=>{
     let params = req.params;
@@ -200,7 +201,8 @@ const updateUserInfo=(req,res,next)=>{
 };
 const wechatBindPhone=(req,res,next)=>{
     let params = req.params;
-    let data = encrypt.WXBizDataCrypt(params.appId,params.sessionKey,params.encryptedData,params.iv);
+    let appId = sysConfig.wechatConfig.mpAppId;
+    let data = encrypt.WXBizDataCrypt(appId,params.sessionKey,params.encryptedData,params.iv);
     if (data.phoneNumber){
         params.phone = data.phoneNumber;
     }
