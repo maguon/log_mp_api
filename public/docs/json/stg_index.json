@@ -418,6 +418,48 @@
             "description": "Invalid token value or invalid admin id"
           }
         }
+      },
+      "post": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "insert",
+        "description": "insert adminUser",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "admin Id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "adminUserMsg",
+            "in": "body",
+            "description": "adminUserMsg",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/adminUser"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/password"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
       }
     },
     "/adminUser": {
@@ -488,41 +530,6 @@
               "type": "object",
               "items": {
                 "$ref": "#/definitions/admin"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "admin"
-        ],
-        "summary": "insert",
-        "description": "insert adminUser",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminUserMsg",
-            "in": "body",
-            "description": "adminUserMsg",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/adminUser"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/password"
               }
             }
           },
@@ -10766,11 +10773,14 @@
     "wechatBindPhone": {
       "type": "object",
       "properties": {
+        "appId": {
+          "type": "string"
+        },
         "sessionKey": {
           "type": "string"
         },
         "iv": {
-          "type": "integer"
+          "type": "string"
         },
         "encryptedData": {
           "type": "string"

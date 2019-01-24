@@ -225,7 +225,7 @@ const createServer=()=>{
     server.post({path:'/api/admin/do/login',contentType: 'application/json'},adminUser.adminUserLogin);
     server.put({path:'/api/admin/:adminId',contentType: 'application/json'} ,adminUser.updateAdminInfo);
     server.put({path:'/api/admin/:adminId/password',contentType: 'application/json'} ,adminUser.changeAdminPassword);
-    server.post({path:'/api/adminUser',contentType: 'application/json'},adminUser.addAdminUser);
+    server.post({path:'/api/admin/:adminId',contentType: 'application/json'},adminUser.addAdminUser);
     server.put({path:'/api/admin/:adminId/status/:status',contentType: 'application/json'} ,adminUser.updateAdminStatus);
     /**
      user_info
@@ -238,6 +238,7 @@ const createServer=()=>{
     server.put({path:'/api/admin/:adminId/user/:id/wechatStatus/:wechatStatus',contentType: 'application/json'},user.updateStatus);
     server.put({path:'/api/user/:userId/phone/:phone/code/:code',contentType: 'application/json'},user.updatePhone);
     server.put({path:'/api/user/:userId/userInfo',contentType: 'application/json'},user.updateUserInfo);
+    server.post({path:'/api/user/:userId/wechatBindPhone',contentType: 'application/json'},user.wechatBindPhone);
     /**
      city_info
      */

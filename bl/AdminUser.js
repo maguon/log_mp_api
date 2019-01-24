@@ -9,6 +9,7 @@ const oAuthUtil = require('../util/OAuthUtil.js');
 const adminUserDao = require('../dao/AdminUserDAO.js');
 const serverLogger = require('../util/ServerLogger.js');
 const logger = serverLogger.createLogger('AdminUser.js');
+const sysConsts = require("../util/SystemConst");
 
 const createAdminUser = (req,res,next) => {
     let params = req.params;
@@ -157,19 +158,36 @@ const changeAdminPassword = (req,res,next) => {
 }
 const addAdminUser = (req,res,next) => {
     let params = req.params;
-    params.userName = params.phone;
-    params.password = encrypt.encryptByMd5(params.password);
-    adminUserDao.add(params,(error,rows)=>{
-        if(error){
-            logger.error(' addAdminUser ' + error.message);
-            resUtil.resInternalError(error,res,next);
-        }else{
-            logger.info(' addAdminUser ' + 'success');
-             if (rows.insertId){
-                 resUtil.resetCreateRes(res,rows,null);
-                 return next;
-             }
-        }
+    new Promise((resolve,reject)=>{
+        adminUserDao.queryAdminUser({adminId:params.adminId},(error,rows)=>{
+            if(error){
+                logger.error(' getAdminUser ' + error.message);
+                resUtil.resInternalError(error,res,next);
+                reject(error);
+            }else{
+                logger.info(' getAdminUser ' + 'success');
+                if (rows[0].type == sysConsts.SUPER_ADMIN_TYPE){
+                    resolve();
+                }else {
+                    resUtil.resetFailedRes(res,sysMsg.ADMIN_SUPER_USER_CREATE);
+                }
+            }
+        })
+    }).then(()=>{
+        params.userName = params.phone;
+        params.password = encrypt.encryptByMd5(params.password);
+        adminUserDao.add(params,(error,rows)=>{
+            if(error){
+                logger.error(' addAdminUser ' + error.message);
+                resUtil.resInternalError(error,res,next);
+            }else{
+                logger.info(' addAdminUser ' + 'success');
+                if (rows.insertId){
+                    resUtil.resetCreateRes(res,rows,null);
+                    return next;
+                }
+            }
+        })
     })
 }
 const updateAdminStatus = (req,res,next) => {
