@@ -460,6 +460,13 @@
             "type": "integer"
           },
           {
+            "name": "status",
+            "in": "query",
+            "description": "状态(0-停用,1-可用)",
+            "required": false,
+            "type": "integer"
+          },
+          {
             "name": "start",
             "in": "query",
             "description": "",
@@ -1170,6 +1177,50 @@
             "description": "user phone",
             "required": true,
             "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/phone"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/wechatBindPhone": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "update",
+        "description": "bind phone",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "user info",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "msg",
+            "in": "body",
+            "description": "wechat binding phone",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/wechatBindPhone"
+            }
           }
         ],
         "responses": {
@@ -10710,6 +10761,23 @@
       },
       "xml": {
         "name": "adminUser"
+      }
+    },
+    "wechatBindPhone": {
+      "type": "object",
+      "properties": {
+        "sessionKey": {
+          "type": "string"
+        },
+        "iv": {
+          "type": "integer"
+        },
+        "encryptedData": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "wechatBindPhone"
       }
     }
   }
