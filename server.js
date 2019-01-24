@@ -342,7 +342,7 @@ const createServer=()=>{
     server.post({path:'/api/admin/:adminId/department',contentType: 'application/json'},departmentInfo.addDepartmentInfo);
     server.get('/api/admin/:adminId/department',departmentInfo.getDepartmentInfo);
     server.put({path:'/api/admin/:adminId/department/:departmentId',contentType: 'application/json'},departmentInfo.updateDepartmentInfo);
-    server.put({path:'/api/admin/:adminId/department/:departmentId/status/:status',contentType: 'application/json'},departmentInfo.updateDepartmentInfo);
+    // server.put({path:'/api/admin/:adminId/department/:departmentId/status/:status',contentType: 'application/json'},departmentInfo.updateDepartmentInfo);
 
     /**
      * company_bank
