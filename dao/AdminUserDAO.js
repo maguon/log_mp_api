@@ -38,7 +38,9 @@ const queryAdminUser = (params,callback) => {
     });
 }
 const queryAdminInfo = (params,callback) => {
-    let query = " select au.*,di.department_name from admin_user au left join department_info di on au.type = di.id where au.id is not null";
+    let query = " select au.id,au.user_name,au.real_name,au.gender,au.phone,au.status,au.type";
+    query += ",au.created_on,au.updated_on";
+    query += " ,di.department_name from admin_user au left join department_info di on au.type = di.id where au.id is not null";
     let paramsArray=[],i=0;
     if(params.departmentStatus){
         query += " and di.status = ?";
