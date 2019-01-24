@@ -6,6 +6,7 @@ let crypto = require('crypto');
 
 let md5Key = "mp".toString('ascii');
 let aceKey = "mission";
+const sysMsg = require("./SystemMsg");
 
 const encryptByMd5=(clearText)=>{
     let md5 = crypto.createHmac('md5',md5Key);
@@ -270,7 +271,7 @@ const WXBizDataCrypt=(appId, sessionKey,encryptedData, iv)=>{
         throw new Error('Illegal Buffer')
     }
 
-    if (decoded.watermark.appid !== this.appId) {
+    if (decoded.watermark.appid !== appId) {
         throw new Error(sysMsg.CUST_WECHAT_CHECK_IDENTITY);
     }
     return decoded;

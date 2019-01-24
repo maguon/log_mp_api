@@ -201,8 +201,19 @@ const updateUserInfo=(req,res,next)=>{
 const wechatBindPhone=(req,res,next)=>{
     let params = req.params;
     let data = encrypt.WXBizDataCrypt(params.appId,params.sessionKey,params.encryptedData,params.iv);
-    resUtil.resetQueryRes(res,data,null);
-    return next;
+    if (data.phoneNumber){
+        params.phone = data.phoneNumber;
+    }
+    userDao.updatePhone(params,(error,result)=>{
+        if(error){
+            logger.error('updateUserInfo' + error.message);
+            resUtil.resetFailedRes(error,res,next);
+        }else{
+            logger.info('updateUserInfo' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    });
 };
 module.exports ={
     queryUser,

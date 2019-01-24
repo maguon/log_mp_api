@@ -112,7 +112,7 @@ const updatePhone=(params,callback)=>{
     let query = "update user_info set phone = ? where id = ? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.phone;
-    paramsArray[i++] = params.userId;
+    paramsArray[i] = params.userId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('updatePhone');
         callback(error,rows);
