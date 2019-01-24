@@ -1,5 +1,4 @@
 'use strict';
-const wxBizDataCrypt = require("../util/WXBizDataCrypt");
 const serverLogger = require('../util/ServerLogger.js');
 const resUtil = require('../util/ResponseUtil.js');
 const sysMsg = require('../util/SystemMsg.js');
@@ -9,7 +8,6 @@ const userDao = require('../dao/UserDAO.js');
 const encrypt = require('../util/Encrypt.js');
 const moment = require('moment/moment.js');
 const oAuthUtil = require('../util/OAuthUtil.js');
-const encrypt = require("../util/Encrypt");
 
 const updateUser = (req,res,next)=>{
     let params = req.params;
