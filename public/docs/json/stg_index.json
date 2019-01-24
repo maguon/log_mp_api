@@ -509,13 +509,6 @@
             "type": "integer"
           },
           {
-            "name": "departmentStatus",
-            "in": "query",
-            "description": "部门状态",
-            "required": false,
-            "type": "integer"
-          },
-          {
             "name": "start",
             "in": "query",
             "description": "",
