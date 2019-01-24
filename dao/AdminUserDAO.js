@@ -59,7 +59,7 @@ const queryAdminInfo = (params,callback) => {
     }
     if(params.department){
         query = query + " and au.type = ? ";
-        paramsArray[i]=params.department;
+        paramsArray[i++]=params.department;
     }
     query = query + " order by created_on desc";
     if(params.start && params.size){
