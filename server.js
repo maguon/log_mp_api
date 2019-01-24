@@ -227,6 +227,7 @@ const createServer=()=>{
     server.put({path:'/api/admin/:adminId/password',contentType: 'application/json'} ,adminUser.changeAdminPassword);
     server.post({path:'/api/admin/:adminId',contentType: 'application/json'},adminUser.addAdminUser);
     server.put({path:'/api/admin/:adminId/status/:status',contentType: 'application/json'} ,adminUser.updateAdminStatus);
+    server.get('/api/allAdminUser' ,adminUser.getAllAdminUserInfo);
     /**
      user_info
      */

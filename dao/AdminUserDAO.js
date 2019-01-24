@@ -119,11 +119,43 @@ const updateStatus = (params,callback) => {
         return callback(error,rows);
     });
 }
+const getAllInfo = (params,callback) => {
+    let query = " select * from admin_user where id is not null";
+    let paramsArray=[],i=0;
+    if(params.adminId){
+        query = query + " and id = ? ";
+        paramsArray[i++]=params.adminId;
+    }
+    if(params.realName){
+        query = query + " and real_name = ? ";
+        paramsArray[i++]=params.realName;
+    }
+    if(params.gender){
+        query = query + " and gender = ? ";
+        paramsArray[i++]=params.gender;
+    }
+    if(params.status){
+        query = query + " and status = ? ";
+        paramsArray[i++]=params.status;
+    }
+    query = query + " order by created_on desc";
+    if(params.start && params.size){
+        paramsArray[i++] = parseInt(params.start);
+        paramsArray[i] = parseInt(params.size);
+        query = query + " limit ?,? ";
+
+    }
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug(' queryUser ');
+        return callback(error,rows);
+    });
+}
 module.exports = {
     createAdminUser,
     queryAdminUser,
     queryAdminInfo,
     updateInfo,
     updatePassword,add,
-    updateStatus
+    updateStatus,
+    getAllInfo
 }

@@ -203,6 +203,19 @@ const updateAdminStatus = (req,res,next) => {
         }
     })
 }
+const getAllAdminUserInfo = (req,res,next) => {
+    let params = req.params;
+    adminUserDao.getAllInfo(params,(error,result)=>{
+        if(error){
+            logger.error(' getAllAdminUserInfo ' + error.message);
+            resUtil.resInternalError(error,res,next);
+        }else{
+            logger.info(' getAllAdminUserInfo ' + 'success');
+            resUtil.resetQueryRes(res,result,null);
+            return next();
+        }
+    })
+}
 module.exports = {
     createAdminUser,
     adminUserLogin,
@@ -210,5 +223,6 @@ module.exports = {
     updateAdminInfo,
     changeAdminPassword,
     addAdminUser,
-    updateAdminStatus
+    updateAdminStatus,
+    getAllAdminUserInfo
 }
