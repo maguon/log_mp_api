@@ -27,6 +27,7 @@ let CUST_ACTIVE_STATE_ERROR = "The user is not actived" // User do active when u
 let CUST_FORBIDDEN_STATE_ERROR = "The user is forbidden" // User status is forbidden.
 let CUST_CHANGE_EMAIL_DATA_ERROR = "The change email url is not valid" // User do active when user state is active.
 let CUST_CREATE_EXISTING = "已经存在";
+let CUST_WECHAT_CHECK_IDENTITY = "用户身份校验失败";
 
 /**
  * The module for admin
@@ -51,6 +52,11 @@ let ORDER_PAYMENT_STATUS_COMPLETE = "完成支付的订单无需再支付";
  */
 let USER_GET_NO_INQUIRY = "找不到该询价信息,请输入正确的询价码";
 let GET_TRANS_AND_INSURE_PRICE = "未算出单价";
+
+/**
+ * The admin of user
+ */
+let ADMIN_SUPER_USER_CREATE = "该用户没有权限创建管理员";
 
 module.exports = {
     SYS_AUTH_TOKEN_ERROR,
@@ -82,5 +88,7 @@ module.exports = {
     USER_GET_NO_INQUIRY,
     GET_TRANS_AND_INSURE_PRICE,
     ORDER_PAYMENT_STATUS_COMPLETE,
-    ADMIN_PAYMENT_REFUND_PRICE
+    ADMIN_PAYMENT_REFUND_PRICE,
+    CUST_WECHAT_CHECK_IDENTITY,
+    ADMIN_SUPER_USER_CREATE
 }

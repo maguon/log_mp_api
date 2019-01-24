@@ -121,6 +121,7 @@ const NOROUTE_INQUIRY ={
         hasRoute:1
     }
 }
+const SUPER_ADMIN_TYPE = 99;
 module.exports = {
     CAR_MODEL,
     PAYMENT,
@@ -131,5 +132,6 @@ module.exports = {
     INQUIRY,
     CAR,
     USER_INVOICE,
-    NOROUTE_INQUIRY
+    NOROUTE_INQUIRY,
+    SUPER_ADMIN_TYPE
 }

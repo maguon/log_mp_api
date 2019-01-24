@@ -249,6 +249,32 @@ const decryption=(reqInfo, md5Key)=>{
     dec += decipher.final('utf8');
     return dec;
 }
+
+const WXBizDataCrypt=(appId, sessionKey,encryptedData, iv)=>{
+    // base64 decode
+    sessionKey = new Buffer(sessionKey, 'base64');
+    encryptedData = new Buffer(encryptedData, 'base64');
+    iv = new Buffer(iv, 'base64');
+    let decoded;
+    try {
+        // 解密
+        let decipher = crypto.createDecipheriv('aes-128-cbc', sessionKey, iv)
+        // 设置自动 padding 为 true，删除填充补位
+        decipher.setAutoPadding(true)
+        decoded = decipher.update(encryptedData, 'binary', 'utf8');
+        decoded += decipher.final('utf8');
+
+        decoded = JSON.parse(decoded);
+
+    } catch (err) {
+        throw new Error('Illegal Buffer')
+    }
+
+    if (decoded.watermark.appid !== this.appId) {
+        throw new Error(sysMsg.CUST_WECHAT_CHECK_IDENTITY);
+    }
+    return decoded;
+}
 module.exports = {
     encryptByMd5,
     encryptByMd5Key,
@@ -264,5 +290,6 @@ module.exports = {
     getGiftOrderCode,
     getSmsRandomKey,
     randomString,
-    decryption
+    decryption,
+    WXBizDataCrypt
 };
