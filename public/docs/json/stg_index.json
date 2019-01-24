@@ -9362,6 +9362,13 @@
             "description": "departmentId",
             "required": false,
             "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "status",
+            "required": false,
+            "type": "integer"
           }
         ],
         "responses": {

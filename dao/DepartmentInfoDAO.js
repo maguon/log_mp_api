@@ -18,8 +18,12 @@ const get =(params,callback)=>{
     let query = " select * from department_info where 1=1";
     let paramsArray=[],i=0;
     if (params.departmentId){
-        paramsArray[i]=params.departmentId;
+        paramsArray[i++]=params.departmentId;
         query += " and id = ?";
+    }
+    if (params.status){
+        paramsArray[i]=params.status;
+        query += " and status = ?";
     }
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug(' getDepartmentInfo ');
