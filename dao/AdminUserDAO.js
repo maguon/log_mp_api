@@ -44,7 +44,7 @@ const queryAdminInfo = (params,callback) => {
     let paramsArray=[],i=0;
     if (params.isSuperUserFlag == 1){
         query += " and di.id is NULL";
-    }else {
+    }else if(params.isSuperUserFlag == 0){
         query += " and di.id is not NULL";
     }
 
