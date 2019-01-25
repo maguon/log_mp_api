@@ -85,7 +85,7 @@ const queryAdminInfo = (params,callback) => {
     });
 }
 const updateInfo = (params,callback) => {
-    let query = " update admin_user set id = ?  where id = ?";
+    let query = " update admin_user set id = ? ";
     let paramsArray=[],i=0;
     paramsArray[i++] = params.id;
     if (params.realName){
