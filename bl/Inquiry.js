@@ -13,11 +13,6 @@ const commonUtil = require("../util/CommonUtil");
 
 const addRouteInquiry = (req,res,next) => {
     let params = req.params;
-    let modelId = params.modelId;
-    let oldCar = params.oldCar;
-    let carNum = params.carNum;
-    let plan = params.plan;
-    let safeStatus = params.safeStatus;
     new Promise((resolve,reject)=>{
         params.dateId = moment().format("YYYYMMDD");
         inquiryDAO.addRouteInquiry(params,(error,result)=>{
@@ -35,18 +30,17 @@ const addRouteInquiry = (req,res,next) => {
         })
     }).then(()=>{
         new Promise((resolve,reject)=>{
+            let carInfo = params.carInfo;
             let x =0;
-            for (let i = 0; i < modelId.length; i++) {
-                params.modelId = modelId[i];
-                params.oldCar = oldCar[i];
-                params.carNum = carNum[i];
-                params.plan = plan[i];
-                params.safeStatus = safeStatus[i];
-                params.valuation = params.plan;
-                params.modelType = params.modelId;
-                let price = commonUtil.calculatedAmount(params.serviceType,params.oldCar,params.modelType,params.distance,params.safeStatus, params.valuation);
-                params.transPrice = price.trans * carNum[i];
-                params.insurePrice = price.insure * carNum[i];
+            for (let i = 0; i < carInfo.length; i++) {
+                params.modelId = carInfo[i].modelId;
+                params.oldCar = carInfo[i].oldCar;
+                params.safeStatus = carInfo[i].safeStatus;
+                params.plan = carInfo[i].plan;
+                params.carNum = carInfo[i].carNum;
+                let price = commonUtil.calculatedAmount(params.serviceType,carInfo[i].oldCar,carInfo[i].modelId,params.distance,carInfo[i].safeStatus, carInfo[i].plan);
+                params.transPrice = price.trans * carInfo[i].carNum;
+                params.insurePrice = price.insure * carInfo[i].carNum;
                 params.status = systemConst.CAR.inquiryStatus.showInUser;
                 inquiryCarDAO.addCar(params,(error,result)=>{
                     if(error){
@@ -55,7 +49,7 @@ const addRouteInquiry = (req,res,next) => {
                     }else{
                         logger.info('addInquiryCar:'+ i + ':success');
                         x++;
-                        if (x == modelId.length){
+                        if (x == carInfo.length){
                             setTimeout(()=>{
                                 resolve();
                             },500);

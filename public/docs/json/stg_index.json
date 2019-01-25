@@ -9624,20 +9624,14 @@
         "serviceType": {
           "type": "integer"
         },
-        "modelId": {
-          "type": "integer"
-        },
-        "oldCar": {
-          "type": "integer"
-        },
-        "carNum": {
-          "type": "integer"
+        "carInfo": {
+          "type": "array",
+          "items":{
+            "$ref": "#/definitions/inquiryCarInfo"
+          }
         },
         "inquiryName": {
           "type": "string"
-        },
-        "plan": {
-          "type": "integer"
         },
         "startCity": {
           "type": "string"
@@ -9649,9 +9643,6 @@
           "type": "integer"
         },
         "endId": {
-          "type": "integer"
-        },
-        "safeStatus": {
           "type": "integer"
         },
         "distance": {
