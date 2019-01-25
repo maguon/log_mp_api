@@ -89,15 +89,15 @@ const updateInfo = (params,callback) => {
     let paramsArray=[],i=0;
     paramsArray[i++] = params.id;
     if (params.realName){
-        query += " and real_name = ?";
+        query += " , real_name = ?";
         paramsArray[i++] = params.realName;
     }
     if (params.gender){
-        query += " and gender = ?";
+        query += " , gender = ?";
         paramsArray[i++] = params.gender;
     }
     if (params.department){
-        query += " and type = ?";
+        query += " , type = ?";
         paramsArray[i++] = params.department;
     }
     query += " where id = ?";
