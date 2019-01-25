@@ -85,11 +85,23 @@ const queryAdminInfo = (params,callback) => {
     });
 }
 const updateInfo = (params,callback) => {
-    let query = " update admin_user set real_name = ? ,phone = ? where id = ?";
+    let query = " update admin_user set id = ?  where id = ?";
     let paramsArray=[],i=0;
-    paramsArray[i++] = params.realName;
-    paramsArray[i++] = params.phone;
-    paramsArray[i] = params.adminId;
+    paramsArray[i++] = params.id;
+    if (params.realName){
+        query += " and real_name = ?";
+        paramsArray[i++] = params.realName;
+    }
+    if (params.gender){
+        query += " and gender = ?";
+        paramsArray[i++] = params.gender;
+    }
+    if (params.department){
+        query += " and type = ?";
+        paramsArray[i++] = params.department;
+    }
+    query += " where id = ?";
+    paramsArray[i] = params.id;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug(' updateInfo ');
         return callback(error,rows);

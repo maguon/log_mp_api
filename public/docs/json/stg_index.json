@@ -9470,25 +9470,14 @@
           "type": "integer",
           "format": "int64"
         },
-        "userName": {
-          "type": "string"
-        },
-        "password": {
-          "type": "string"
-        },
         "realName": {
           "type": "string"
         },
-        "phone": {
-          "type": "string"
+        "gender": {
+          "type": "integer"
         },
-        "status": {
-          "type": "integer",
-          "description": "admin status",
-          "enum": [
-            "0",
-            "1"
-          ]
+        "department": {
+          "type": "integer"
         }
       },
       "xml": {

@@ -110,15 +110,32 @@ const getAdminUserInfo = (req,res,next) => {
 }
 const updateAdminInfo = (req,res,next) => {
     let params = req.params;
-    adminUserDao.updateInfo(params,(error,result)=>{
-        if(error){
-            logger.error(' updateAdminInfo ' + error.message);
-            resUtil.resInternalError(error,res,next);
-        }else{
-            logger.info(' updateAdminInfo ' + 'success');
-            resUtil.resetUpdateRes(res,result,null);
-            return next();
-        }
+    new Promise((resolve,reject)=>{
+        adminUserDao.queryAdminUser({adminId:params.id},(error,rows)=>{
+            if(error){
+                logger.error(' getAdminInfo ' + error.message);
+                resUtil.resInternalError(error,res,next);
+                reject(error);
+            }else{
+                logger.info(' getAdminInfo ' + 'success');
+                if(rows.length > 0){
+                    resolve();
+                }else {
+                    resUtil.resetFailedRes(res,sysMsg.ADMIN_NO_USER);
+                }
+            }
+        })
+    }).then(()=>{
+        adminUserDao.updateInfo(params,(error,result)=>{
+            if(error){
+                logger.error(' updateAdminInfo ' + error.message);
+                resUtil.resInternalError(error,res,next);
+            }else{
+                logger.info(' updateAdminInfo ' + 'success');
+                resUtil.resetUpdateRes(res,result,null);
+                return next();
+            }
+        })
     })
 }
 const changeAdminPassword = (req,res,next) => {
