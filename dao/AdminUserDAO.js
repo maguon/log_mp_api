@@ -42,10 +42,10 @@ const queryAdminInfo = (params,callback) => {
     query += ",au.created_on,au.updated_on";
     query += " ,di.department_name from admin_user au left join department_info di on au.type = di.id where au.id is not null";
     let paramsArray=[],i=0;
-    if (params.isSuperUserFlag == 0){
-        query += " and di.id is not NULL";
-    }else {
+    if (params.isSuperUserFlag == 1){
         query += " and di.id is NULL";
+    }else {
+        query += " and di.id is not NULL";
     }
 
     if(params.departmentStatus){
