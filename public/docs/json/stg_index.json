@@ -509,6 +509,13 @@
             "type": "integer"
           },
           {
+            "name": "isSuperUserFlag",
+            "in": "query",
+            "description": "状态(0-否,1-是)",
+            "required": false,
+            "type": "integer"
+          },
+          {
             "name": "start",
             "in": "query",
             "description": "",
