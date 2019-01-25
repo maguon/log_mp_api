@@ -88,13 +88,11 @@ const updateInfo = (params,callback) => {
     let query = " update admin_user set id = ? ";
     let paramsArray=[],i=0;
     paramsArray[i++] = params.id;
+    query += " , gender = ?";
+    paramsArray[i++] = params.gender;
     if (params.realName){
         query += " , real_name = ?";
         paramsArray[i++] = params.realName;
-    }
-    if (params.gender){
-        query += " , gender = ?";
-        paramsArray[i++] = params.gender;
     }
     if (params.department){
         query += " , type = ?";
