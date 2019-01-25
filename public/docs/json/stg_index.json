@@ -365,7 +365,7 @@
             "description": "Admin base info ",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/admin"
+              "$ref": "#/definitions/adminDoLogin"
             }
           }
         ],
@@ -10730,6 +10730,20 @@
       },
       "xml": {
         "name": "wechatBindPhone"
+      }
+    },
+    "adminDoLogin": {
+      "type": "object",
+      "properties": {
+        "userName": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "createAdmin"
       }
     }
   }
