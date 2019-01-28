@@ -10817,9 +10817,6 @@
         },
         "carModuleId": {
           "type": "integer"
-        },
-        "remark": {
-          "type": "string"
         }
       },
       "xml": {
