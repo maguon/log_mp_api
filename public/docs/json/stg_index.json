@@ -117,6 +117,10 @@
     {
       "name": "NoRouteInquiryManage",
       "description":"NoRouteInquiryManage of log api"
+    },
+    {
+      "name": "requireTask",
+      "description":"requireTask of log api"
     }
   ],
   "schemes": [
@@ -9532,9 +9536,82 @@
           }
         }
       }
+    },
+    "/admin/{adminId}/order/{orderId}/requireTask": {
+      "post": {
+        "tags": [
+          "requireTask"
+        ],
+        "summary": "insert",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },{
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "requireMsg",
+            "in": "body",
+            "description": "requireMsg",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/requireTask"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/statisticsMsg"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
     }
   },
   "definitions": {
+    "requireTask": {
+      "type": "object",
+      "properties": {
+        "routeStart": {
+          "type": "string"
+        },
+        "routeEnd": {
+          "type": "string"
+        },
+        "routeStartId": {
+          "type": "string"
+        },
+        "routeEndId": {
+          "type": "string"
+        },
+        "carNum": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "requireTask"
+      }
+    },
     "createAdmin": {
       "type": "object",
       "properties": {

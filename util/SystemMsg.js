@@ -62,7 +62,10 @@ let ADMIN_NO_USER = "该用户不存在";
  * The supplier info
  */
 let SUPPLIER_NOT_EXISTS ="该供应商不存在";
-
+/**
+ * order info
+ */
+let ADMIN_ADD_REQUIRE_ORDER_STATUS = "该订单已经是待安排车辆订单";
 module.exports = {
     SYS_AUTH_TOKEN_ERROR,
     SYS_VALIDATE_EMAIL_ERROR,
@@ -97,5 +100,6 @@ module.exports = {
     CUST_WECHAT_CHECK_IDENTITY,
     ADMIN_SUPER_USER_CREATE,
     ADMIN_NO_USER,
-    SUPPLIER_NOT_EXISTS
+    SUPPLIER_NOT_EXISTS,
+    ADMIN_ADD_REQUIRE_ORDER_STATUS
 }

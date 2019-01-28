@@ -34,6 +34,7 @@ const statistics = require("./bl/Statistics");
 const departmentInfo = require("./bl/DepartmentInfo");
 const companyBank = require("./bl/CompanyBank");
 const noRouteInquiryInfo = require("./bl/NoRouteInquiryInfo");
+const requireTask = require("./bl/RequireTask");
 
 /**
  * Returns a server with all routes defined on it
@@ -358,6 +359,10 @@ const createServer=()=>{
      * noRoute_inquiry_info
      */
     server.post({path:'/api/user/:userId/noRouteInquiryInfo',contentType: 'application/json'},noRouteInquiryInfo.addNoRouteInquiry);
+    /**
+     * require_task
+     */
+    server.post({path:'/api/admin/:adminId/order/:orderId/requireTask',contentType: 'application/json'},requireTask.addRequireTask);
 
 
     server.on('NotFound', function (req, res ,next) {
