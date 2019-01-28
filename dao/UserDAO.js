@@ -109,9 +109,11 @@ const updatePassword=(params,callback)=>{
     });
 };
 const updatePhone=(params,callback)=>{
-    let query = "update user_info set phone = ? where id = ? ";
+    let query = "update user_info set phone = ?,auth_status= ?,auth_time = ? where id = ? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.phone;
+    paramsArray[i++] = params.authStatus;
+    paramsArray[i++] = params.authTime;
     paramsArray[i] = params.userId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('updatePhone');
