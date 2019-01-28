@@ -76,9 +76,40 @@ const updateAdvancedSetting = (req,res,next) => {
         })
     })
 }
+const updateCloseFlag = (req,res,next) => {
+    let params = req.params;
+    new Promise((resolve,reject)=>{
+        supplierDAO.querySupplier(params,(error,rows)=>{
+            if(error){
+                logger.error('querySupplier' + error.message);
+                resUtil.resInternalError(error,res,next);
+                reject(error);
+            }else{
+                logger.info('querySupplier' + 'success');
+                if (rows.length<1){
+                    resUtil.resetFailedRes(res,sysMsg.SUPPLIER_NOT_EXISTS);
+                } else {
+                    resolve();
+                }
+            }
+        })
+    }).then(()=>{
+        supplierDAO.updateCloseFlag(params,(error,result)=>{
+            if(error){
+                logger.error('updateCloseFlag' + error.message);
+                resUtil.resInternalError(error,res,next);
+            }else{
+                logger.info('updateCloseFlag' + 'success');
+                resUtil.resetUpdateRes(res,result,null);
+                return next();
+            }
+        })
+    })
+}
 module.exports = {
     addSupplier,
     querySupplier,
     updateSupplier,
-    updateAdvancedSetting
+    updateAdvancedSetting,
+    updateCloseFlag
 }

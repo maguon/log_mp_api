@@ -5578,6 +5578,55 @@
         }
       }
     },
+    "/admin/{adminId}/supplier/{supplierId}/closeFlag/{closeFlag}": {
+      "put": {
+        "tags": [
+          "supplier"
+        ],
+        "summary": "update",
+        "description": "supplier update",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "supplierId",
+            "in": "path",
+            "description": "supplierId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "closeFlag",
+            "in": "path",
+            "description": "1:关闭高级设置 0:打开高级设置",
+            "required": true,
+            "type":"integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/supplier"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
     "/admin/{adminId}/supplier/{supplierId}/bank": {
       "post": {
         "tags": [

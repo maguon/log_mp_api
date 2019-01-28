@@ -122,6 +122,16 @@ const updateById = (params,callback) => {
         callback(error,rows);
     })
 }
+const updateCloseFlag = (params,callback) => {
+    let query = "update supplier_info set close_flag=? where id=? ";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.closeFlag;
+    paramsArray[i] = params.supplierId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('updateCloseFlag');
+        callback(error,rows);
+    })
+}
 module.exports = {
     addSupplier,
     querySupplier,
@@ -129,5 +139,6 @@ module.exports = {
     delBank,
     delContact,
     delSupplier,
-    updateById
+    updateById,
+    updateCloseFlag
 }

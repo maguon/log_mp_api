@@ -151,7 +151,7 @@ const createServer=()=>{
     server.put({path:'/api/user/:userId/inquiryCar/:inquiryCarId/inquiryCarInfo',contentType: 'application/json'},inquiryCar.updateInquiryCar);
 
     /**
-     user_order
+     order_info
      */
     server.post({path:'/api/user/:userId/inquiry/:inquiryId/order',contentType: 'application/json'},inquiryOrder.addInquiryOrderByUser);
     server.post({path:'/api/admin/:adminId/inquiry/:inquiryId/order',contentType: 'application/json'},inquiryOrder.addInquiryOrderByAdmin);
@@ -260,6 +260,7 @@ const createServer=()=>{
     server.get('/api/admin/:adminId/supplier',supplier.querySupplier);
     server.put({path:'/api/admin/:adminId/supplier/:supplierId/supplierInfo',contentType: 'application/json'},supplier.updateSupplier);
     server.put({path:'/api/admin/:adminId/supplier/:supplierId/advancedSetting',contentType: 'application/json'},supplier.updateAdvancedSetting);
+    server.put({path:'/api/admin/:adminId/supplier/:supplierId/closeFlag/:closeFlag',contentType: 'application/json'},supplier.updateCloseFlag);
     /**
      supplier_bank
      */
