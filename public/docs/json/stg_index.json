@@ -10800,23 +10800,26 @@
     "supplierSetting": {
       "type": "object",
       "properties": {
-        "anotherSupplierId": {
+        "appId": {
           "type": "integer"
         },
-        "supplierUrl": {
+        "appUrl": {
           "type": "string"
         },
-        "supplierSecret": {
+        "appSecret": {
           "type": "string"
         },
-        "despatchId": {
+        "baseAddrId": {
           "type": "integer"
         },
-        "dealerId": {
+        "receiveId": {
           "type": "integer"
         },
-        "brandId": {
+        "carModuleId": {
           "type": "integer"
+        },
+        "remark": {
+          "type": "string"
         }
       },
       "xml": {

@@ -91,29 +91,29 @@ const updateById = (params,callback) => {
     let query = "update supplier_info set id = ?";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.supplierId;
-    if (params.anotherSupplierId){
-        paramsArray[i++] = params.anotherSupplierId;
-        query += " ,supplier_id = ?";
+    if (params.appId){
+        paramsArray[i++] = params.appId;
+        query += " ,app_id = ?";
     }
-    if (params.supplierUrl){
-        paramsArray[i++] = params.supplierUrl;
-        query += " ,supplier_url = ?";
+    if (params.appUrl){
+        paramsArray[i++] = params.appUrl;
+        query += " ,app_url = ?";
     }
-    if (params.supplierSecret){
-        paramsArray[i++] = params.supplierSecret;
-        query += " ,supplier_secret = ?";
+    if (params.appSecret){
+        paramsArray[i++] = params.appSecret;
+        query += " ,app_secret = ?";
     }
-    if (params.despatchId){
-        paramsArray[i++] = params.despatchId;
-        query += " ,despatch_id = ?";
+    if (params.baseAddrId){
+        paramsArray[i++] = params.baseAddrId;
+        query += " ,base_addr_id = ?";
     }
-    if (params.dealerId){
-        paramsArray[i++] = params.dealerId;
-        query += " ,dealer_id = ?";
+    if (params.receiveId){
+        paramsArray[i++] = params.receiveId;
+        query += " ,receive_id = ?";
     }
-    if (params.brandId){
-        paramsArray[i++] = params.brandId;
-        query += " ,brand_id = ?";
+    if (params.carModuleId){
+        paramsArray[i++] = params.carModuleId;
+        query += " ,car_module_id = ?";
     }
     paramsArray[i] = params.supplierId;
     query += " where id = ?";
