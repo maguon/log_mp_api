@@ -9560,15 +9560,6 @@
             "description": "orderId",
             "required": true,
             "type": "integer"
-          },
-          {
-            "name": "requireMsg",
-            "in": "body",
-            "description": "requireMsg",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/requireTask"
-            }
           }
         ],
         "responses": {
@@ -9578,6 +9569,90 @@
               "type": "object",
               "items": {
                 "$ref": "#/definitions/statisticsMsg"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/requireTask": {
+      "get": {
+        "tags": [
+          "requireTask"
+        ],
+        "summary": "insert",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },{
+            "name": "orderId",
+            "in": "query",
+            "description": "orderId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "startCity",
+            "in": "query",
+            "description": "startCity",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "endCity",
+            "in": "query",
+            "description": "endCity",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "serviceType",
+            "in": "query",
+            "description": "serviceType",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "createOrderUser",
+            "in": "query",
+            "description": "createOrderUser",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "createdOnStart",
+            "in": "query",
+            "description": "需求创建时间(始)",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "createdOnEnd",
+            "in": "query",
+            "description": "需求创建时间(终)",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "status",
+            "in": "query",
+            "description": "状态",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/requireTask"
               }
             }
           },

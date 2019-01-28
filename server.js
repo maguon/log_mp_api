@@ -363,7 +363,7 @@ const createServer=()=>{
      * require_task
      */
     server.post({path:'/api/admin/:adminId/order/:orderId/requireTask',contentType: 'application/json'},requireTask.addRequireTask);
-
+    server.get('/api/admin/:adminId/requireTask',requireTask.getRequireOrder);
 
     server.on('NotFound', function (req, res ,next) {
         logger.warn(req.url + " not found");

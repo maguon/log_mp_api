@@ -19,8 +19,8 @@ const add = (params,callback) => {
         callback(error,rows);
     })
 }
-const updateById = (params,callback) => {
-    let query = "insert into dp_require_task (order_id,route_start,route_end,route_start_id,route_end_id,date_id,car_num)";
+const getRequireOrder = (params,callback) => {
+    let query = "select ";
     query += " values (?,?,?,?,?,?,?)";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.orderId;
@@ -37,5 +37,5 @@ const updateById = (params,callback) => {
 }
 module.exports={
     add,
-    updateById
+    getRequireOrder
 }
