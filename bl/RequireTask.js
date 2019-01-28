@@ -60,13 +60,13 @@ const addRequireTask = (req,res,next) => {
 }
 const getRequireOrder = (req,res,next) => {
     let params = req.params;
-    requireTask.add(params,(error,rows)=>{
+    requireTask.getRequireOrder(params,(error,rows)=>{
         if(error){
-            logger.error('addRequireTask' + error.message);
+            logger.error('getRequireOrder' + error.message);
             resUtil.resInternalError(error,res,next);
         }else{
-            logger.info('addRequireTask' + 'success');
-            resUtil.resetCreateRes(res,rows,null);
+            logger.info('getRequireOrder' + 'success');
+            resUtil.resetQueryRes(res,rows,null);
             return next;
         }
     })
