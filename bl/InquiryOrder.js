@@ -11,6 +11,7 @@ const cityDAO = require('../dao/CityInfoDAO.js');
 const routeDAO = require('../dao/RouteDAO.js');
 const sysConsts = require("../util/SystemConst");
 const moment = require('moment/moment.js');
+const requireTask = require("../dao/RequireTaskDAO");
 
 const addInquiryOrderByUser = (req,res,next) => {
     let params = req.params;
@@ -67,7 +68,7 @@ const addInquiryOrderByUser = (req,res,next) => {
                         return next();
                     }
                 })
-            })
+            });
         })
     }).catch((error)=>{
         resUtil.resInternalError(error,res,next);
@@ -228,14 +229,50 @@ const putFreightPrice = (req,res,next) => {
 }
 const putStatus = (req,res,next) => {
     let params = req.params;
-    inquiryOrderDAO.updateById(params,(error,result)=>{
-        if(error){
-            logger.error('updateStatus' + error.message);
-            resUtil.resInternalError(error,res,next);
-        }else{
-            logger.info('updateStatus' + 'success');
-            resUtil.resetUpdateRes(res,result,null);
-            return next();
+    new Promise((resolve,reject)=>{
+        inquiryOrderDAO.updateById(params,(error,rows)=>{
+            if(error){
+                logger.error('updateStatus' + error.message);
+                resUtil.resInternalError(error,res,next);
+                reject(error);
+            }else{
+                logger.info('updateStatus' + 'success');
+                if (rows.changedRows > 0){
+                    resolve();
+                }
+            }
+        })
+    }).then(()=>{
+        if (params.status == sysConsts.ORDER.status.carsToBeArranged) {
+            new Promise((resolve,reject)=>{
+                inquiryOrderDAO.getById({orderId:params.orderId},(error,rows)=>{
+                    if(error){
+                        logger.error('getOrderInfo' + error.message);
+                        resUtil.resInternalError(error,res,next);
+                        reject(error);
+                    }else{
+                        logger.info('getOrderInfo' + 'success');
+                        params.routeStart = rows[0].route_start;
+                        params.routeEnd = rows[0].route_end;
+                        params.routeStartId = rows[0].route_start_id;
+                        params.routeEndId = rows[0].route_end_id;
+                        params.carNum = rows[0].car_num;
+                        resolve();
+                    }
+                })
+            }).then(()=>{
+                params.dateId = moment().format("YYYMMDD");
+                requireTask.add(params,(error,rows)=>{
+                    if(error){
+                        logger.error('insertRequireTask' + error.message);
+                        resUtil.resInternalError(error,res,next);
+                    }else{
+                        logger.info('insertRequireTask' + 'success');
+                        resUtil.resetCreateRes(res,rows,null);
+                        return next();
+                    }
+                })
+            })
         }
     })
 }
