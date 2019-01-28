@@ -5527,6 +5527,57 @@
         }
       }
     },
+    "/admin/{adminId}/supplier/{supplierId}/advancedSetting": {
+      "put": {
+        "tags": [
+          "supplier"
+        ],
+        "summary": "update",
+        "description": "supplier update",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "supplierId",
+            "in": "path",
+            "description": "supplierId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "setting",
+            "in": "body",
+            "description": "setting",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/supplierSetting"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/supplier"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
     "/admin/{adminId}/supplier/{supplierId}/bank": {
       "post": {
         "tags": [
@@ -10744,6 +10795,32 @@
       },
       "xml": {
         "name": "createAdmin"
+      }
+    },
+    "supplierSetting": {
+      "type": "object",
+      "properties": {
+        "anotherSupplierId": {
+          "type": "integer"
+        },
+        "supplierUrl": {
+          "type": "string"
+        },
+        "supplierSecret": {
+          "type": "string"
+        },
+        "despatchId": {
+          "type": "integer"
+        },
+        "dealerId": {
+          "type": "integer"
+        },
+        "brandId": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "supplierSetting"
       }
     }
   }

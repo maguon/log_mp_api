@@ -58,6 +58,10 @@ let GET_TRANS_AND_INSURE_PRICE = "未算出单价";
  */
 let ADMIN_SUPER_USER_CREATE = "该用户没有权限创建管理员";
 let ADMIN_NO_USER = "该用户不存在";
+/**
+ * The supplier info
+ */
+let SUPPLIER_NOT_EXISTS ="该供应商不存在";
 
 module.exports = {
     SYS_AUTH_TOKEN_ERROR,
@@ -92,5 +96,6 @@ module.exports = {
     ADMIN_PAYMENT_REFUND_PRICE,
     CUST_WECHAT_CHECK_IDENTITY,
     ADMIN_SUPER_USER_CREATE,
-    ADMIN_NO_USER
+    ADMIN_NO_USER,
+    SUPPLIER_NOT_EXISTS
 }

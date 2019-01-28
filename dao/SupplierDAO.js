@@ -87,11 +87,47 @@ const delSupplier = (params,callback) => {
         callback(error,rows);
     })
 }
+const updateById = (params,callback) => {
+    let query = "update supplier_info set id = ?";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.supplierId;
+    if (params.anotherSupplierId){
+        paramsArray[i++] = params.anotherSupplierId;
+        query += " ,supplier_id = ?";
+    }
+    if (params.supplierUrl){
+        paramsArray[i++] = params.supplierUrl;
+        query += " ,supplier_url = ?";
+    }
+    if (params.supplierSecret){
+        paramsArray[i++] = params.supplierSecret;
+        query += " ,supplier_secret = ?";
+    }
+    if (params.despatchId){
+        paramsArray[i++] = params.despatchId;
+        query += " ,despatch_id = ?";
+    }
+    if (params.dealerId){
+        paramsArray[i++] = params.dealerId;
+        query += " ,dealer_id = ?";
+    }
+    if (params.brandId){
+        paramsArray[i++] = params.brandId;
+        query += " ,brand_id = ?";
+    }
+    paramsArray[i] = params.supplierId;
+    query += " where id = ?";
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('updateById');
+        callback(error,rows);
+    })
+}
 module.exports = {
     addSupplier,
     querySupplier,
     updateSupplier,
     delBank,
     delContact,
-    delSupplier
+    delSupplier,
+    updateById
 }

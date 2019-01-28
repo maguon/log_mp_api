@@ -259,6 +259,7 @@ const createServer=()=>{
     server.post({path:'/api/admin/:adminId/supplier',contentType: 'application/json'},supplier.addSupplier);
     server.get('/api/admin/:adminId/supplier',supplier.querySupplier);
     server.put({path:'/api/admin/:adminId/supplier/:supplierId/supplierInfo',contentType: 'application/json'},supplier.updateSupplier);
+    server.put({path:'/api/admin/:adminId/supplier/:supplierId/advancedSetting',contentType: 'application/json'},supplier.updateAdvancedSetting);
     /**
      supplier_bank
      */
