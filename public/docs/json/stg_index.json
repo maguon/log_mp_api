@@ -4950,6 +4950,57 @@
         }
       }
     },
+    "/admin/{adminId}/order/{orderId}/selfMentionAddress": {
+      "put": {
+        "tags": [
+          "order"
+        ],
+        "summary": "update",
+        "description": "update address",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "addressMsg",
+            "in": "body",
+            "description": "addressMsg",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/selfMentionAddress"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/adminMark"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
     "/user/{userId}/city": {
       "post": {
         "tags": [
@@ -11240,6 +11291,26 @@
       },
       "xml": {
         "name": "supplierSetting"
+      }
+    },
+    "selfMentionAddress": {
+      "type": "object",
+      "properties": {
+        "sendAddressPointId": {
+          "type": "integer"
+        },
+        "recvAddressPointId": {
+          "type": "integer"
+        },
+        "recvAddressPoint": {
+          "type": "string"
+        },
+        "sendAddressPoint": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "selfMentionAddress"
       }
     }
   }

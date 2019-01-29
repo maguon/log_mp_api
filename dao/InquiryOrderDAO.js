@@ -501,6 +501,22 @@ const updateById =(params,callback) => {
         paramsArray[i++] = params.cancelReason;
         query += " ,cancel_reason = ?"
     }
+    if (params.sendAddressPointId) {
+        paramsArray[i++] = params.sendAddressPointId;
+        query += " ,send_address_point_id = ?"
+    }
+    if (params.recvAddressPointId) {
+        paramsArray[i++] = params.recvAddressPointId;
+        query += " ,recv_address_point_id = ?"
+    }
+    if (params.recvAddressPoint) {
+        paramsArray[i++] = params.recvAddressPoint;
+        query += " ,recv_address_point = ?"
+    }
+    if (params.sendAddressPoint) {
+        paramsArray[i++] = params.sendAddressPoint;
+        query += " ,send_address_point = ?"
+    }
     paramsArray[i] = params.orderId;
     query += " where id = ? ";
     db.dbQuery(query,paramsArray,(error,rows)=>{

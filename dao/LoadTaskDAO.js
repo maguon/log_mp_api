@@ -59,6 +59,34 @@ const updateById =(params,callback) => {
         callback(error,rows);
     })
 }
+const getLoadTaskWithDetail = (params,callback) => {
+    let query = "select *  from dp_load_task dlt ";
+    query += " left join dp_load_task_detail dltd on dlt.id = dltd.dp_load_task_id";
+    let paramsArray = [],i=0;
+    if (params.loadTaskId){
+        paramsArray[i] = params.loadTaskId;
+        query += " and id = ?";
+    }
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('getLoadTaskWithDetail');
+        callback(error,rows);
+    })
+}
+const getLoadTaskOrder = (params,callback) => {
+    let query = "select dlt.*,oi.send_address,oi.recv_address ";
+    query += " from dp_load_task dlt left join order_info oi on dlt.order_id = oi.id";
+    let paramsArray = [],i=0;
+    if (params.loadTaskId){
+        paramsArray[i] = params.loadTaskId;
+        query += " and id = ?";
+    }
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('getLoadTaskOrder');
+        callback(error,rows);
+    })
+}
 module.exports={
-    add,getById,updateById
+    add,getById,updateById,
+    getLoadTaskWithDetail,
+    getLoadTaskOrder
 }

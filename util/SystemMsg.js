@@ -67,6 +67,7 @@ let SUPPLIER_NOT_EXISTS ="该供应商不存在";
  */
 let ADMIN_ADD_REQUIRE_ORDER_STATUS = "该订单已经是待安排车辆订单";
 let ORDER_NO_EXISTE = "该订单不存在";
+let ORDER_SERVICETYPE_SELFMENTION_UPDATE_ADDRESS = "只有当地自提的订单才能更新自提点地址";
 /**
  *The require Task
  */
@@ -114,5 +115,6 @@ module.exports = {
     ADMIN_ADD_REQUIRE_ORDER_STATUS,
     ORDER_NO_EXISTE,
     REQUIRE_NO_EXISTE,
-    LOAD_TASK_NO_EXISTS
+    LOAD_TASK_NO_EXISTS,
+    ORDER_SERVICETYPE_SELFMENTION_UPDATE_ADDRESS
 }

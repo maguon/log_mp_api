@@ -174,6 +174,7 @@ const createServer=()=>{
     server.put({path:'/api/user/:userId/order/:orderId/remark',contentType: 'application/json'},inquiryOrder.updateById);
     server.put({path:'/api/user/:userId/order/:orderId/sendMsg',contentType: 'application/json'},inquiryOrder.updateById);
     server.put({path:'/api/user/:userId/order/:orderId/recvMsg',contentType: 'application/json'},inquiryOrder.updateById);
+    server.put({path:'/api/admin/:adminId/order/:orderId/selfMentionAddress',contentType: 'application/json'},inquiryOrder.selfMentionAddress);
     /**
      order_item
      */
