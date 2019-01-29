@@ -71,6 +71,11 @@ let ORDER_NO_EXISTE = "该订单不存在";
  *The require Task
  */
 let REQUIRE_NO_EXISTE = "该需求不存在";
+/**
+ * The dp_Load_task
+ */
+let LOAD_TASK_NO_EXISTS = "该运输路线不存在";
+
 module.exports = {
     SYS_AUTH_TOKEN_ERROR,
     SYS_VALIDATE_EMAIL_ERROR,
@@ -108,5 +113,6 @@ module.exports = {
     SUPPLIER_NOT_EXISTS,
     ADMIN_ADD_REQUIRE_ORDER_STATUS,
     ORDER_NO_EXISTE,
-    REQUIRE_NO_EXISTE
+    REQUIRE_NO_EXISTE,
+    LOAD_TASK_NO_EXISTS
 }

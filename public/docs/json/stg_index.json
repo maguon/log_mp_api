@@ -9791,33 +9791,21 @@
     "loadTaskDetail": {
       "type": "object",
       "properties": {
-        "routeStart": {
-          "type": "string"
-        },
-        "routeEnd": {
-          "type": "string"
-        },
-        "routeStartId": {
+        "orderItemId": {
           "type": "integer"
         },
-        "routeEndId": {
-          "type": "integer"
-        },
-        "supplierId": {
-          "type": "integer"
-        },
-        "transType": {
-          "type": "integer"
-        },
-        "planDateId": {
+        "vin": {
           "type": "string"
         },
-        "remark": {
-          "type": "string"
+        "supplierTransPrice": {
+          "type": "integer"
+        },
+        "supplierInsurePrice": {
+          "type": "integer"
         }
       },
       "xml": {
-        "name": "loadTask"
+        "name": "loadTaskDetail"
       }
     },
     "loadTask": {

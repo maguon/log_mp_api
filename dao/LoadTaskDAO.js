@@ -32,7 +32,33 @@ const add = (params,callback) => {
         callback(error,rows);
     })
 }
-
+const getById = (params,callback) => {
+    let query = "select * from dp_load_task where 1=1";
+    let paramsArray = [],i=0;
+    if (params.loadTaskId){
+        paramsArray[i] = params.loadTaskId;
+        query += " and id = ?";
+    }
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('getLoadTaskById');
+        callback(error,rows);
+    })
+}
+const updateById =(params,callback) => {
+    let query = "update dp_load_task set id = ?";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.loadTaskId;
+    if (params.carNum){
+        paramsArray[i++] = params.carNum;
+        query += " ,car_count = ?";
+    }
+    paramsArray[i] = params.loadTaskId;
+    query += " where id = ?";
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('updateLoadTaskById');
+        callback(error,rows);
+    })
+}
 module.exports={
-    add
+    add,getById,updateById
 }
