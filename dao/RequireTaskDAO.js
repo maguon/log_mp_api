@@ -60,7 +60,6 @@ const getRequireOrder = (params,callback) => {
         paramsArray[i] = parseInt(params.size);
         query = query + " limit ?,? ";
     }
-    paramsArray[i] = params.carNum;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('getRequireOrder');
         callback(error,rows);
