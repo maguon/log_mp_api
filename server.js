@@ -370,6 +370,7 @@ const createServer=()=>{
      * dp_load_task
      */
     server.post({path:'/api/admin/:adminId/order/:orderId/require/:requireId/loadTask',contentType: 'application/json'},loadTask.addLoadTask);
+    server.post({path:'/api/admin/:adminId/loadTask/:loadTaskId/submitToSupplier',contentType: 'application/json'},loadTask.submitToSupplier);
     /**
      * dp_load_task_detail
      */

@@ -146,6 +146,11 @@ const sendCaptcha=(params,callback)=>{
     })
 }
 
+const saveLoadTaskToSupplier = (params,callback)=>{
+    httpUtil.httpPost(systemConfig.hosts.supplier,'/api/entrust/'+systemConfig.supplierConfig.appId+"/dpDemand",params.req,params.options,(error,result)=>{
+        callback(error,result)
+    })
+}
 module.exports = {
     createAccessToken,
     parseAccessToken,
@@ -153,5 +158,6 @@ module.exports = {
     parseAdminToken,
     saveUserPhoneCode,
     sendCaptcha,
-    getUserPhoneCode
+    getUserPhoneCode,
+    saveLoadTaskToSupplier
 };
