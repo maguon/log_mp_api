@@ -41,6 +41,10 @@ const getRequireOrder = (params,callback) => {
         paramsArray[i++] = params.serviceType;
         query += " and oi.service_type = ?";
     }
+    if (params.status){
+        paramsArray[i++] = params.status;
+        query += " and drt.status = ?";
+    }
     if (params.createOrderUserId){
         paramsArray[i++] = params.createOrderUserId;
         query += " and au.id = ?";
