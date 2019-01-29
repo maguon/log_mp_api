@@ -21,7 +21,7 @@ const add = (params,callback) => {
 }
 const getRequireOrder = (params,callback) => {
     let query = "select drt.*,oi.service_type,au.real_name ,oi.created_on order_created_on,oi.total_trans_price,oi.total_insure_price ";
-    query += " ,oi.send_address,oi.recv_address,oi.remark order_remark,oi.admin_remark";
+    query += " ,oi.send_address,oi.recv_address,oi.remark order_remark,oi.admin_mark";
     query += " from dp_require_task drt left join order_info oi on drt.order_id = oi.id";
     query += " left join admin_user au on oi.admin_id = au.id where 1=1";
     let paramsArray = [],i=0;
