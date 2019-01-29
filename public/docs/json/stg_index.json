@@ -121,6 +121,14 @@
     {
       "name": "requireTask",
       "description":"requireTask of log api"
+    },
+    {
+      "name": "loadTask",
+      "description":"loadTask of log api"
+    },
+    {
+      "name": "loadTaskDetail",
+      "description":"loadTaskDetail of log api"
     }
   ],
   "schemes": [
@@ -9673,9 +9681,177 @@
           }
         }
       }
+    },
+    "/admin/{adminId}/order/{orderId}/require/{requireId}/loadTask": {
+      "post": {
+        "tags": [
+          "loadTask"
+        ],
+        "summary": "insert",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },{
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },{
+            "name": "requireId",
+            "in": "path",
+            "description": "requireId",
+            "required": true,
+            "type": "integer"
+          },{
+            "name": "loadMsg",
+            "in": "body",
+            "description": "loadMsg",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/loadTask"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/loadTask"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/loadTask/{loadTaskId}/loadTaskDetail": {
+      "post": {
+        "tags": [
+          "loadTaskDetail"
+        ],
+        "summary": "insert",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },{
+            "name": "loadTaskId",
+            "in": "path",
+            "description": "loadTaskId",
+            "required": true,
+            "type": "integer"
+          },{
+            "name": "loadDetailMsg",
+            "in": "body",
+            "description": "loadDetailMsg",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/loadTaskDetail"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/loadTaskDetail"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
     }
   },
   "definitions": {
+    "loadTaskDetail": {
+      "type": "object",
+      "properties": {
+        "routeStart": {
+          "type": "string"
+        },
+        "routeEnd": {
+          "type": "string"
+        },
+        "routeStartId": {
+          "type": "integer"
+        },
+        "routeEndId": {
+          "type": "integer"
+        },
+        "supplierId": {
+          "type": "integer"
+        },
+        "transType": {
+          "type": "integer"
+        },
+        "planDateId": {
+          "type": "string"
+        },
+        "remark": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "loadTask"
+      }
+    },
+    "loadTask": {
+      "type": "object",
+      "properties": {
+        "routeStart": {
+          "type": "string"
+        },
+        "routeEnd": {
+          "type": "string"
+        },
+        "routeStartId": {
+          "type": "integer"
+        },
+        "routeEndId": {
+          "type": "integer"
+        },
+        "supplierId": {
+          "type": "integer"
+        },
+        "transType": {
+          "type": "integer"
+        },
+        "planDateId": {
+          "type": "string"
+        },
+        "remark": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "loadTask"
+      }
+    },
     "requireTask": {
       "type": "object",
       "properties": {

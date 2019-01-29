@@ -66,7 +66,32 @@ const getRequireOrder = (params,callback) => {
         callback(error,rows);
     })
 }
+const getById = (params,callback) => {
+    let query = "select * from dp_require_task where 1=1";
+    let paramsArray = [],i=0;
+    if (params.orderId){
+        paramsArray[i++] = params.orderId;
+        query += " and order_id = ?";
+    }
+    if (params.startCity){
+        paramsArray[i++] = params.startCity;
+        query += " and route_start = ?";
+    }
+    if (params.endCity){
+        paramsArray[i++] = params.endCity;
+        query += " and route_end = ?";
+    }
+    if (params.requireId){
+        paramsArray[i] = params.requireId;
+        query += " and id = ?";
+    }
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('getRequireTaskById');
+        callback(error,rows);
+    })
+}
 module.exports={
     add,
-    getRequireOrder
+    getRequireOrder,
+    getById
 }

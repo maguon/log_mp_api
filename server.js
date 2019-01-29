@@ -35,6 +35,7 @@ const departmentInfo = require("./bl/DepartmentInfo");
 const companyBank = require("./bl/CompanyBank");
 const noRouteInquiryInfo = require("./bl/NoRouteInquiryInfo");
 const requireTask = require("./bl/RequireTask");
+const loadTask = require("./bl/LoadTask");
 
 /**
  * Returns a server with all routes defined on it
@@ -364,6 +365,10 @@ const createServer=()=>{
      */
     server.post({path:'/api/admin/:adminId/order/:orderId/requireTask',contentType: 'application/json'},requireTask.addRequireTask);
     server.get('/api/admin/:adminId/requireTask',requireTask.getRequireOrder);
+    /**
+     * dp_load_task
+     */
+    server.post({path:'/api/admin/:adminId/order/:orderId/require/:requireId/loadTask',contentType: 'application/json'},loadTask.addLoadTask);
 
     server.on('NotFound', function (req, res ,next) {
         logger.warn(req.url + " not found");
