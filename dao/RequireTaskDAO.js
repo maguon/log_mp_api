@@ -29,21 +29,21 @@ const getRequireOrder = (params,callback) => {
         paramsArray[i++] = params.orderId;
         query += " and drt.order_id = ?";
     }
-    if (params.startCity){
-        paramsArray[i++] = params.startCity;
-        query += " and drt.route_start = ?";
+    if (params.routeStartId){
+        paramsArray[i++] = params.routeStartId;
+        query += " and drt.route_start_id = ?";
     }
-    if (params.endCity){
-        paramsArray[i++] = params.endCity;
-        query += " and drt.route_end = ?";
+    if (params.routeEndId){
+        paramsArray[i++] = params.routeEndId;
+        query += " and drt.route_end_id = ?";
     }
     if (params.serviceType){
         paramsArray[i++] = params.serviceType;
         query += " and oi.service_type = ?";
     }
-    if (params.createOrderUser){
-        paramsArray[i++] = params.createOrderUser;
-        query += " and au.real_name = ?";
+    if (params.createOrderUserId){
+        paramsArray[i++] = params.createOrderUserId;
+        query += " and au.id = ?";
     }
     if(params.createdOnStart){
         paramsArray[i++] = params.createdOnStart;
