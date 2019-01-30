@@ -154,7 +154,7 @@ const submitToSupplier = (req,res,next) => {
                                     routeStart: rows[i].route_start,
                                     baseAddrId: sysConfig.supplierConfig.baseAddrId,
                                     entrustId:sysConfig.supplierConfig.appId,
-                                    orderDate:moment(rows[i].date_id).format("YYYY-MM-DD")
+                                    orderDate:moment(rows[i].date_id.toString()).format("YYYY-MM-DD")
                                 }
                                 oAuthUtil.saveLoadTaskDetailToSupplier(params,(error,result)=>{
                                     if(error){
