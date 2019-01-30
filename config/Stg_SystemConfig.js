@@ -57,18 +57,9 @@ const hosts = {
     record : {
         host:"stg.myxxjs.com",
         port:9004
-    },
-    supplier : {
-        host:"stg.myxxjs.com",
-        port:9001
     }
 }
 
-const supplierConfig ={
-    appId:127,
-    baseAddrId:128,
-    makeId:116
-}
 
 module.exports = {
     mysqlConnectOptions,
@@ -77,6 +68,5 @@ module.exports = {
     mongoConfig,
     wechatConfig,
     accountMailConfig,
-    hosts,
-    supplierConfig
+    hosts
 }

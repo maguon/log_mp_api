@@ -129,6 +129,10 @@ const REQUIRE_TASK = {
         arranged:2//已安排
     }
 }
+const SUPPLIER_URL={
+    host:"stg.myxxjs.com",
+    port:9001
+}
 module.exports = {
     CAR_MODEL,
     PAYMENT,
@@ -141,5 +145,6 @@ module.exports = {
     USER_INVOICE,
     NOROUTE_INQUIRY,
     SUPER_ADMIN_TYPE,
-    REQUIRE_TASK
+    REQUIRE_TASK,
+    SUPPLIER_URL
 }

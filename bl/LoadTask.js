@@ -12,6 +12,7 @@ const orderInfoDAO = require("../dao/InquiryOrderDAO");
 const requireTaskDAO = require("../dao/RequireTaskDAO");
 const loadTaskDAO = require("../dao/LoadTaskDAO");
 const loadTaskDetailDAO = require("../dao/LoadTaskDetailDAO");
+const supplierInfo = require("../dao/SupplierDAO");
 
 const addLoadTask = (req,res,next) => {
     let params = req.params;
@@ -92,9 +93,9 @@ const submitToSupplier = (req,res,next) => {
             }else{
                 logger.info('getLoadTaskOrder' + 'success');
                 if (rows.length > 0){
+                    params.supplierId = rows[0].supplier_id;
                     params.options = {
                         routeStart:rows[0].route_start,
-                        baseAddrId:sysConfig.supplierConfig.baseAddrId,
                         routeEnd:rows[0].route_end,
                         receiveId:rows[0].route_end_id,
                         preCount:rows[0].car_count,
@@ -109,81 +110,102 @@ const submitToSupplier = (req,res,next) => {
         })
     }).then(()=>{
         new Promise((resolve,reject)=>{
-            params.req = req;
-            oAuthUtil.saveLoadTaskToSupplier(params,(error,result)=>{
+            supplierInfo.querySupplier({supplierId:params.supplierId},(error,rows)=>{
                 if(error){
-                    logger.error(' saveLoadTaskToSupplier ' + error.message);
+                    logger.error(' getSupplierById ' + error.message);
                     resUtil.resInternalError(error,res,next);
                     reject(error);
-                }else{
-                    logger.info('saveLoadTaskToSupplier' + 'success');
-                    if (result.success){
-                        params.hookId = result.id;
+                }else {
+                    logger.info('getSupplierById' + 'success');
+                    if (rows.length >0){
+                        params.appId = rows[0].app_id;
+                        params.baseAddrId = rows[0].base_addr_id;
+                        params.makeId = rows[0].car_module_id;
+                        params.options.baseAddrId = params.baseAddrId;
                         resolve();
-                    } else {
-                        resUtil.resetFailedRes(res,result.msg);
+                    }else {
+                        resUtil.resetFailedRes(res,sysMsg.SUPPLIER_NOT_EXISTS);
                     }
                 }
             })
         }).then(()=>{
             new Promise((resolve,reject)=>{
-                loadTaskDAO.updateById({loadTaskId:params.loadTaskId,hookId:params.hookId},(error,rows)=>{
+                params.req = req;
+                oAuthUtil.saveLoadTaskToSupplier(params,(error,result)=>{
                     if(error){
-                        logger.error(' updateLoadTaskHookId ' + error.message);
+                        logger.error(' saveLoadTaskToSupplier ' + error.message);
                         resUtil.resInternalError(error,res,next);
                         reject(error);
                     }else{
-                        logger.info('updateLoadTaskHookId' + 'success');
-                        resolve();
+                        logger.info('saveLoadTaskToSupplier' + 'success');
+                        if (result.success){
+                            params.hookId = result.id;
+                            resolve();
+                        } else {
+                            resUtil.resetFailedRes(res,result.msg);
+                        }
                     }
                 })
             }).then(()=>{
                 new Promise((resolve,reject)=>{
-                    loadTaskDAO.getLoadTaskWithDetail({loadTaskId:params.loadTaskId},(error,rows)=>{
+                    loadTaskDAO.updateById({loadTaskId:params.loadTaskId,hookId:params.hookId},(error,rows)=>{
                         if(error){
-                            logger.error(' getLoadTaskWithDetail ' + error.message);
+                            logger.error(' updateLoadTaskHookId ' + error.message);
                             resUtil.resInternalError(error,res,next);
                             reject(error);
                         }else{
-                            logger.info('getLoadTaskWithDetail' + 'success');
-                            for (let i in rows){
-                                params.req = req;
-                                params.options={
-                                    vin:rows[i].vin,
-                                    makeId:sysConfig.supplierConfig.makeId,
-                                    routeStart: rows[i].route_start,
-                                    baseAddrId: sysConfig.supplierConfig.baseAddrId,
-                                    entrustId:sysConfig.supplierConfig.appId,
-                                    orderDate:moment(rows[i].date_id.toString()).format("YYYY-MM-DD")
-                                }
-                                oAuthUtil.saveLoadTaskDetailToSupplier(params,(error,result)=>{
-                                    if(error){
-                                        logger.error(' saveLoadTaskDetailToSupplier ' + error.message);
-                                        resUtil.resInternalError(error,res,next);
-                                        reject(error);
-                                    }else{
-                                        logger.info('saveLoadTaskDetailToSupplier' + 'success');
-                                        if (result.success){
-                                            params.detailHookId = result.id;
-                                            loadTaskDetailDAO.updateById({detailHookId:result.id,loadTaskDetailId:rows[i].id},(error,result)=>{
-                                                if(error){
-                                                    logger.error(' updateLoadTaskDetailHookId ' + error.message);
-                                                    resUtil.resInternalError(error,res,next);
-                                                    reject(error);
-                                                }else{
-                                                    logger.info(' updateLoadTaskDetailHookId ' + 'success');
-                                                }
-                                            })
-                                        } else {
-                                            resUtil.resetFailedRes(res,result.msg);
-                                        }
-                                    }
-                                })
-                            }
-                            resUtil.resetQueryRes(res,params.hookId,null);
+                            logger.info('updateLoadTaskHookId' + 'success');
+                            resolve();
                         }
                     })
-                });
+                }).then(()=>{
+                    new Promise((resolve,reject)=>{
+                        loadTaskDAO.getLoadTaskWithDetail({loadTaskId:params.loadTaskId},(error,rows)=>{
+                            if(error){
+                                logger.error(' getLoadTaskWithDetail ' + error.message);
+                                resUtil.resInternalError(error,res,next);
+                                reject(error);
+                            }else{
+                                logger.info('getLoadTaskWithDetail' + 'success');
+                                for (let i in rows){
+                                    params.req = req;
+                                    params.options={
+                                        vin:rows[i].vin,
+                                        makeId:params.makeId,
+                                        routeStart: rows[i].route_start,
+                                        baseAddrId: params.baseAddrId,
+                                        entrustId:params.appId,
+                                        orderDate:moment(rows[i].date_id.toString()).format("YYYY-MM-DD")
+                                    }
+                                    oAuthUtil.saveLoadTaskDetailToSupplier(params,(error,result)=>{
+                                        if(error){
+                                            logger.error(' saveLoadTaskDetailToSupplier ' + error.message);
+                                            resUtil.resInternalError(error,res,next);
+                                            reject(error);
+                                        }else{
+                                            logger.info('saveLoadTaskDetailToSupplier' + 'success');
+                                            if (result.success){
+                                                params.detailHookId = result.id;
+                                                loadTaskDetailDAO.updateById({detailHookId:result.id,loadTaskDetailId:rows[i].id},(error,result)=>{
+                                                    if(error){
+                                                        logger.error(' updateLoadTaskDetailHookId ' + error.message);
+                                                        resUtil.resInternalError(error,res,next);
+                                                        reject(error);
+                                                    }else{
+                                                        logger.info(' updateLoadTaskDetailHookId ' + 'success');
+                                                    }
+                                                })
+                                            } else {
+                                                resUtil.resetFailedRes(res,result.msg);
+                                            }
+                                        }
+                                    })
+                                }
+                                resUtil.resetQueryRes(res,params.hookId,null);
+                            }
+                        })
+                    });
+                })
             })
         })
     })

@@ -8,6 +8,7 @@ let serverLogger = require('./ServerLogger.js');
 let logger = serverLogger.createLogger('OAuthUtil.js');
 let systemConfig = require('../config/SystemConfig.js');
 let httpUtil = require('./HttpUtil.js');
+let sysConsts = require("../util/SystemConst");
 
 let options ={
     crypt_key: 'mp',
@@ -147,12 +148,12 @@ const sendCaptcha=(params,callback)=>{
 }
 
 const saveLoadTaskToSupplier = (params,callback)=>{
-    httpUtil.httpPost(systemConfig.hosts.supplier,'/api/entrust/'+systemConfig.supplierConfig.appId+"/dpDemand",params.req,params.options,(error,result)=>{
+    httpUtil.httpPost(sysConsts.SUPPLIER_URL,'/api/entrust/'+params.appId+"/dpDemand",params.req,params.options,(error,result)=>{
         callback(error,result)
     })
 }
 const saveLoadTaskDetailToSupplier = (params,callback)=>{
-    httpUtil.httpPost(systemConfig.hosts.supplier,'/api/user/'+0+"/entrustCar",params.req,params.options,(error,result)=>{
+    httpUtil.httpPost(sysConsts.SUPPLIER_URL,'/api/user/'+0+"/entrustCar",params.req,params.options,(error,result)=>{
         callback(error,result)
     })
 }
