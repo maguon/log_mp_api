@@ -58,6 +58,10 @@ const updateById = (params,callback) => {
         paramsArray[i++] = params.supplierInsurePrice;
         query += " ,supplier_insure_price = ?";
     }
+    if (params.detailHookId){
+        paramsArray[i++] = params.detailHookId;
+        query += " ,hook_id = ?";
+    }
     paramsArray[i] = params.loadTaskDetailId;
     query += " where id = ?";
     db.dbQuery(query,paramsArray,(error,rows)=>{

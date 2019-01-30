@@ -52,6 +52,10 @@ const updateById =(params,callback) => {
         paramsArray[i++] = params.carNum;
         query += " ,car_count = ?";
     }
+    if (params.hookId){
+        paramsArray[i++] = params.hookId;
+        query += " ,hook_id = ?";
+    }
     paramsArray[i] = params.loadTaskId;
     query += " where id = ?";
     db.dbQuery(query,paramsArray,(error,rows)=>{
@@ -61,11 +65,11 @@ const updateById =(params,callback) => {
 }
 const getLoadTaskWithDetail = (params,callback) => {
     let query = "select *  from dp_load_task dlt ";
-    query += " left join dp_load_task_detail dltd on dlt.id = dltd.dp_load_task_id";
+    query += " left join dp_load_task_detail dltd on dlt.id = dltd.dp_load_task_id where 1=1";
     let paramsArray = [],i=0;
     if (params.loadTaskId){
         paramsArray[i] = params.loadTaskId;
-        query += " and id = ?";
+        query += " and dlt.id = ?";
     }
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('getLoadTaskWithDetail');
@@ -74,11 +78,11 @@ const getLoadTaskWithDetail = (params,callback) => {
 }
 const getLoadTaskOrder = (params,callback) => {
     let query = "select dlt.*,oi.send_address,oi.recv_address ";
-    query += " from dp_load_task dlt left join order_info oi on dlt.order_id = oi.id";
+    query += " from dp_load_task dlt left join order_info oi on dlt.order_id = oi.id where 1=1";
     let paramsArray = [],i=0;
     if (params.loadTaskId){
         paramsArray[i] = params.loadTaskId;
-        query += " and id = ?";
+        query += " and dlt.id = ?";
     }
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('getLoadTaskOrder');

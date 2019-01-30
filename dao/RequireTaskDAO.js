@@ -93,8 +93,24 @@ const getById = (params,callback) => {
         callback(error,rows);
     })
 }
+const updateById = (params,callback) => {
+    let paramsArray = [],i=0;
+    let query = "update dp_require_task id = ?";
+    paramsArray[i++] = params.requireId;
+    if (params.status){
+        paramsArray[i++] = params.status;
+        query += " , status = ?";
+    }
+    paramsArray[i] = params.requireId;
+    query += " where id = ?";
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('updateById');
+        callback(error,rows);
+    })
+}
 module.exports={
     add,
     getRequireOrder,
-    getById
+    getById,
+    updateById
 }

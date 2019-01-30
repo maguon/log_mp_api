@@ -151,6 +151,11 @@ const saveLoadTaskToSupplier = (params,callback)=>{
         callback(error,result)
     })
 }
+const saveLoadTaskDetailToSupplier = (params,callback)=>{
+    httpUtil.httpPost(systemConfig.hosts.supplier,'/api/user/'+0+"/entrustCar",params.req,params.options,(error,result)=>{
+        callback(error,result)
+    })
+}
 module.exports = {
     createAccessToken,
     parseAccessToken,
@@ -159,5 +164,6 @@ module.exports = {
     saveUserPhoneCode,
     sendCaptcha,
     getUserPhoneCode,
-    saveLoadTaskToSupplier
+    saveLoadTaskToSupplier,
+    saveLoadTaskDetailToSupplier
 };
