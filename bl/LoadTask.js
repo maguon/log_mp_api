@@ -94,7 +94,7 @@ const submitToSupplier = (req,res,next) => {
                 if (rows.length > 0){
                     params.options = {
                         routeStart:rows[0].route_start,
-                        baseAddrId:rows[0].route_start_id,
+                        baseAddrId:sysConfig.supplierConfig.baseAddrId,
                         routeEnd:rows[0].route_end,
                         receiveId:rows[0].route_end_id,
                         preCount:rows[0].car_count,
