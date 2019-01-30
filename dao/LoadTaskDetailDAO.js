@@ -46,7 +46,27 @@ const getArrangeLoadTaskDetail = (params,callback) => {
         callback(error,rows);
     })
 }
+const updateById = (params,callback) => {
+    let paramsArray = [],i=0;
+    let query = "update dp_load_task_detail set id = ? "
+    paramsArray[i++] = params.loadTaskDetailId;
+    if (params.supplierTransPrice){
+        paramsArray[i++] = params.supplierTransPrice;
+        query += " ,supplier_trans_price = ?";
+    }
+    if (params.supplierInsurePrice){
+        paramsArray[i++] = params.supplierInsurePrice;
+        query += " ,supplier_insure_price = ?";
+    }
+    paramsArray[i] = params.loadTaskDetailId;
+    query += " where id = ?";
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('updateById');
+        callback(error,rows);
+    })
+}
 module.exports={
     add,
-    getArrangeLoadTaskDetail
+    getArrangeLoadTaskDetail,
+    updateById
 }

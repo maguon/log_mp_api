@@ -9931,9 +9931,78 @@
           }
         }
       }
+    },
+    "/admin/{adminId}/loadTask/{loadTaskId}/loadTaskDetail/{loadTaskDetailId}": {
+      "put": {
+        "tags": [
+          "loadTaskDetail"
+        ],
+        "summary": "update",
+        "description": "update price",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },{
+            "name": "loadTaskId",
+            "in": "path",
+            "description": "loadTaskId",
+            "required": true,
+            "type": "integer"
+          },{
+            "name": "loadTaskDetailId",
+            "in": "path",
+            "description": "loadTaskDetailId",
+            "required": true,
+            "type": "integer"
+          },{
+            "name": "supplierPrice",
+            "in": "body",
+            "description": "supplierPrice",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/supplierPrice"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/loadTaskDetail"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
     }
   },
   "definitions": {
+    "supplierPrice": {
+      "type": "object",
+      "properties": {
+        "supplierTransPrice": {
+          "type": "integer"
+        },
+        "supplierInsurePrice": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "supplierPrice"
+      }
+    },
     "loadTaskDetail": {
       "type": "object",
       "properties": {

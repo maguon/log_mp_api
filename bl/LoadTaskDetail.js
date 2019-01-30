@@ -75,7 +75,25 @@ const getArrangeLoadTaskDetail = (req,res,next) => {
         }
     })
 }
+const updateLoadTaskDetail = (req,res,next) => {
+    let params = req.params;
+    if (!params.supplierTransPrice || !params.supplierInsurePrice) {
+        resUtil.resetFailedRes(res,sysMsg.LOADTASK_DETAIL_SUPPLIERPRICE_ZERO)
+    }else {
+        loadTaskDetailDAO.updateById(params,(error,rows)=>{
+            if(error){
+                logger.error('updateLoadTaskDetail' + error.message);
+                resUtil.resInternalError(error,res,next);
+            }else{
+                logger.info('updateLoadTaskDetail' + 'success');
+                resUtil.resetUpdateRes(res,rows,null);
+                return next;
+            }
+        })
+    }
+}
 module.exports={
     addLoadTaskDetail,
-    getArrangeLoadTaskDetail
+    getArrangeLoadTaskDetail,
+    updateLoadTaskDetail
 }
