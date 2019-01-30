@@ -99,7 +99,7 @@ const getById = (params,callback) => {
 }
 const updateById = (params,callback) => {
     let paramsArray = [],i=0;
-    let query = "update dp_require_task id = ?";
+    let query = "update dp_require_task set id = ?";
     paramsArray[i++] = params.requireId;
     if (params.status){
         paramsArray[i++] = params.status;

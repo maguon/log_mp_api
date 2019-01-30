@@ -86,11 +86,11 @@ const submitToSupplier = (req,res,next) => {
     new Promise((resolve,reject)=>{
         loadTaskDAO.getLoadTaskOrder({loadTaskId:params.loadTaskId},(error,rows)=>{
             if(error){
-                logger.error('getLoadTask' + error.message);
+                logger.error('getLoadTaskOrder' + error.message);
                 resUtil.resInternalError(error,res,next);
                 reject(error);
             }else{
-                logger.info('getLoadTask' + 'success');
+                logger.info('getLoadTaskOrder' + 'success');
                 if (rows.length > 0){
                     params.options = {
                         routeStart:rows[0].route_start,
@@ -163,16 +163,20 @@ const submitToSupplier = (req,res,next) => {
                                         reject(error);
                                     }else{
                                         logger.info('saveLoadTaskDetailToSupplier' + 'success');
-                                        params.detailHookId = result.id;
-                                        loadTaskDetailDAO.updateById({detailHookId:result.id,loadTaskDetailId:rows[i].id},(error,result)=>{
-                                            if(error){
-                                                logger.error(' updateLoadTaskDetailHookId ' + error.message);
-                                                resUtil.resInternalError(error,res,next);
-                                                reject(error);
-                                            }else{
-                                                logger.info(' updateLoadTaskDetailHookId ' + 'success');
-                                            }
-                                        })
+                                        if (result.success){
+                                            params.detailHookId = result.id;
+                                            loadTaskDetailDAO.updateById({detailHookId:result.id,loadTaskDetailId:rows[i].id},(error,result)=>{
+                                                if(error){
+                                                    logger.error(' updateLoadTaskDetailHookId ' + error.message);
+                                                    resUtil.resInternalError(error,res,next);
+                                                    reject(error);
+                                                }else{
+                                                    logger.info(' updateLoadTaskDetailHookId ' + 'success');
+                                                }
+                                            })
+                                        } else {
+                                            resUtil.resetFailedRes(res,result.msg);
+                                        }
                                     }
                                 })
                             }
