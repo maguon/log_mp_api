@@ -69,8 +69,34 @@ const updateById = (params,callback) => {
         callback(error,rows);
     })
 }
+const getById = (params,callback) => {
+    let query = "select * from dp_load_task_detail where 1=1";
+    let paramsArray = [],i=0;
+    if (params.loadTaskDetailId){
+        paramsArray[i] = params.loadTaskDetailId;
+        query += " and id = ?";
+    }
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('getLoadTaskDetailById');
+        callback(error,rows);
+    })
+}
+const deleteById = (params,callback) => {
+    let query = "delete from dp_load_task_detail where 1=1";
+    let paramsArray = [],i=0;
+    if (params.loadTaskDetailId){
+        paramsArray[i] = params.loadTaskDetailId;
+        query += " and id = ?";
+    }
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('deleteLoadTaskDetailById');
+        callback(error,rows);
+    })
+}
 module.exports={
     add,
     getArrangeLoadTaskDetail,
-    updateById
+    updateById,
+    getById,
+    deleteById
 }

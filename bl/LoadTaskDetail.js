@@ -92,8 +92,39 @@ const updateLoadTaskDetail = (req,res,next) => {
         })
     }
 }
+const deleteLoadTaskDetail = (req,res,next) => {
+    let params = req.params;
+    new Promise((resolve,reject)=>{
+        loadTaskDetailDAO.getById(params,(error,rows)=>{
+            if(error){
+                logger.error('getLoadTaskDetail' + error.message);
+                resUtil.resInternalError(error,res,next);
+                reject(error);
+            }else{
+                logger.info('getLoadTaskDetail' + 'success');
+                if (rows[0].hook_id == null){
+                    resolve();
+                }else {
+                    resUtil.resetFailedRes(res,sysMsg.LOCKDETAIL_DELETE_ALREADY_SYNC)
+                }
+            }
+        })
+    }).then(()=>{
+        loadTaskDetailDAO.deleteById(params,(error,rows)=>{
+            if(error){
+                logger.error('deleteLoadTaskDetail' + error.message);
+                resUtil.resInternalError(error,res,next);
+            }else{
+                logger.info('deleteLoadTaskDetail' + 'success');
+                resUtil.resetUpdateRes(res,rows,null);
+                return next;
+            }
+        })
+    })
+}
 module.exports={
     addLoadTaskDetail,
     getArrangeLoadTaskDetail,
-    updateLoadTaskDetail
+    updateLoadTaskDetail,
+    deleteLoadTaskDetail
 }

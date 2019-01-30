@@ -378,6 +378,7 @@ const createServer=()=>{
     server.post({path:'/api/admin/:adminId/loadTask/:loadTaskId/loadTaskDetail',contentType: 'application/json'},loadTaskDetail.addLoadTaskDetail);
     server.get('/api/admin/:adminId/order/:orderId/loadTask/:loadTaskId/loadTaskDetail',loadTaskDetail.getArrangeLoadTaskDetail);
     server.put({path:'/api/admin/:adminId/loadTask/:loadTaskId/loadTaskDetail/:loadTaskDetailId',contentType: 'application/json'},loadTaskDetail.updateLoadTaskDetail);
+    server.del({path:'/api/admin/:adminId/loadTask/:loadTaskId/loadTaskDetail/:loadTaskDetailId',contentType: 'application/json'},loadTaskDetail.deleteLoadTaskDetail);
 
     server.on('NotFound', function (req, res ,next) {
         logger.warn(req.url + " not found");
