@@ -72,7 +72,7 @@ const addLoadTask = (req,res,next) => {
                         resUtil.resInternalError(error,res,next);
                     }else{
                         logger.info('updateRequireStatus' + 'success');
-                        resUtil.resetCreateRes(res,insertId,null);
+                        resUtil.resetQueryRes(res,insertId,null);
                         return next;
                     }
                 })
