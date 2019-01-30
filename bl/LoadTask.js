@@ -118,11 +118,15 @@ const submitToSupplier = (req,res,next) => {
                 }else {
                     logger.info('getSupplierById' + 'success');
                     if (rows.length >0){
-                        params.appId = rows[0].app_id;
-                        params.baseAddrId = rows[0].base_addr_id;
-                        params.makeId = rows[0].car_module_id;
-                        params.options.baseAddrId = params.baseAddrId;
-                        resolve();
+                        if (rows[0].close_flag == sysConsts.SUPPLIER.closeFlag.close){
+                            resUtil.resetFailedRes(res,sysMsg.SUPPLIER_CLOSE_NOTALLOW_SYNC);
+                        } else if (rows[0].close_flag == sysConsts.SUPPLIER.closeFlag.open){
+                            params.appId = rows[0].app_id;
+                            params.baseAddrId = rows[0].base_addr_id;
+                            params.makeId = rows[0].car_module_id;
+                            params.options.baseAddrId = params.baseAddrId;
+                            resolve();
+                        }
                     }else {
                         resUtil.resetFailedRes(res,sysMsg.SUPPLIER_NOT_EXISTS);
                     }

@@ -133,6 +133,12 @@ const SUPPLIER_URL={
     host:"stg.myxxjs.com",
     port:9001
 }
+const SUPPLIER={
+    closeFlag:{
+        close:1,
+        open:0
+    }
+}
 module.exports = {
     CAR_MODEL,
     PAYMENT,
@@ -146,5 +152,6 @@ module.exports = {
     NOROUTE_INQUIRY,
     SUPER_ADMIN_TYPE,
     REQUIRE_TASK,
-    SUPPLIER_URL
+    SUPPLIER_URL,
+    SUPPLIER
 }

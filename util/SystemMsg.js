@@ -62,6 +62,7 @@ let ADMIN_NO_USER = "该用户不存在";
  * The supplier info
  */
 let SUPPLIER_NOT_EXISTS ="该供应商不存在";
+let SUPPLIER_CLOSE_NOTALLOW_SYNC ="关闭高级设置不允许同步到供应商";
 /**
  * order info
  */
@@ -119,5 +120,6 @@ module.exports = {
     LOAD_TASK_NO_EXISTS,
     ORDER_SERVICETYPE_SELFMENTION_UPDATE_ADDRESS,
     LOADTASK_DETAIL_SUPPLIERPRICE_ZERO,
-    LOADTASK_ADD_NULL
+    LOADTASK_ADD_NULL,
+    SUPPLIER_CLOSE_NOTALLOW_SYNC
 }
