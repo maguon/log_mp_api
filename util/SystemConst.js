@@ -122,6 +122,13 @@ const NOROUTE_INQUIRY ={
     }
 }
 const SUPER_ADMIN_TYPE = 99;
+const REQUIRE_TASK = {
+    status:{
+        toArrange:0,//待安排
+        inArrange:1,//安排中
+        arranged:2//已安排
+    }
+}
 module.exports = {
     CAR_MODEL,
     PAYMENT,
@@ -133,5 +140,6 @@ module.exports = {
     CAR,
     USER_INVOICE,
     NOROUTE_INQUIRY,
-    SUPER_ADMIN_TYPE
+    SUPER_ADMIN_TYPE,
+    REQUIRE_TASK
 }

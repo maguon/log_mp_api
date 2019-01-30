@@ -62,7 +62,20 @@ const addLoadTaskDetail = (req,res,next) => {
 
     })
 }
-
+const getArrangeLoadTaskDetail = (req,res,next) => {
+    let params = req.params;
+    loadTaskDetailDAO.getArrangeLoadTaskDetail(params,(error,rows)=>{
+        if(error){
+            logger.error('getArrangeLoadTaskDetail' + error.message);
+            resUtil.resInternalError(error,res,next);
+        }else{
+            logger.info('getArrangeLoadTaskDetail' + 'success');
+            resUtil.resetQueryRes(res,rows,null);
+            return next;
+        }
+    })
+}
 module.exports={
-    addLoadTaskDetail
+    addLoadTaskDetail,
+    getArrangeLoadTaskDetail
 }

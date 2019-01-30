@@ -21,7 +21,32 @@ const add = (params,callback) => {
         callback(error,rows);
     })
 }
-
+const getArrangeLoadTaskDetail = (params,callback) => {
+    let paramsArray = [],i=0;
+    let query = "select oi.id,oi.order_id,oi.vin,oi.model_type,oi.brand,oi.brand_type,oi.old_car,oi.safe_status,dltd.id load_task_detail_id";
+    query += " ,dltd.dp_load_task_id,dltd.supplier_trans_price,dltd.supplier_insure_price";
+    query += " from order_item oi left join dp_load_task_detail dltd on oi.id = dltd.order_item_id ";
+    if (params.loadTaskId){
+        paramsArray[i++] = params.loadTaskId;
+        query += "and dltd.dp_load_task_id = ?";
+    }
+    query += " where 1=1"
+    if (params.orderId){
+        paramsArray[i] = params.orderId;
+        query += " and oi.order_id = ?";
+    }
+    if (params.arrangeFlag == 1){
+        query += " and dltd.id is null ";
+    }else if (params.arrangeFlag == 2){
+        query += " and dltd.id is not null ";
+    }
+    query += " order by oi.created_on desc";
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('getArrangeLoadTaskDetail');
+        callback(error,rows);
+    })
+}
 module.exports={
-    add
+    add,
+    getArrangeLoadTaskDetail
 }

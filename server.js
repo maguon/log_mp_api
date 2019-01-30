@@ -376,6 +376,7 @@ const createServer=()=>{
      * dp_load_task_detail
      */
     server.post({path:'/api/admin/:adminId/loadTask/:loadTaskId/loadTaskDetail',contentType: 'application/json'},loadTaskDetail.addLoadTaskDetail);
+    server.get('/api/admin/:adminId/order/:orderId/loadTask/:loadTaskId/loadTaskDetail',loadTaskDetail.getArrangeLoadTaskDetail);
 
     server.on('NotFound', function (req, res ,next) {
         logger.warn(req.url + " not found");

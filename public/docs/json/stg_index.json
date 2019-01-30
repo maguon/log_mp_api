@@ -9878,6 +9878,59 @@
           }
         }
       }
+    },
+    "/admin/{adminId}/order/{orderId}/loadTask/{loadTaskId}/loadTaskDetail": {
+      "get": {
+        "tags": [
+          "loadTaskDetail"
+        ],
+        "summary": "select",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },{
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },{
+            "name": "loadTaskId",
+            "in": "path",
+            "description": "loadTaskId",
+            "required": true,
+            "type": "integer"
+          },{
+            "name": "arrangeFlag",
+            "in": "query",
+            "description": "1:未安排 2:已安排",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/loadTaskDetail"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
     }
   },
   "definitions": {
