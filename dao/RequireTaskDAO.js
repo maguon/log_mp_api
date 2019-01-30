@@ -29,6 +29,10 @@ const getRequireOrder = (params,callback) => {
         paramsArray[i++] = params.orderId;
         query += " and drt.order_id = ?";
     }
+    if (params.requireId){
+        paramsArray[i++] = params.requireId;
+        query += " and drt.id = ?";
+    }
     if (params.routeStartId){
         paramsArray[i++] = params.routeStartId;
         query += " and drt.route_start_id = ?";

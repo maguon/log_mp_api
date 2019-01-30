@@ -9660,6 +9660,12 @@
             "description": "orderId",
             "required": false,
             "type": "integer"
+          },{
+            "name": "requireId",
+            "in": "query",
+            "description": "requireId",
+            "required": false,
+            "type": "integer"
           },
           {
             "name": "routeStartId",
