@@ -373,6 +373,7 @@ const createServer=()=>{
     server.post({path:'/api/admin/:adminId/order/:orderId/require/:requireId/loadTask',contentType: 'application/json'},loadTask.addLoadTask);
     server.post({path:'/api/admin/:adminId/loadTask/:loadTaskId/submitToSupplier',contentType: 'application/json'},loadTask.submitToSupplier);
     server.get('/api/admin/:adminId/order/:orderId/require/:requireId/loadTask',loadTask.getLoadTaskWithDetail);
+    server.del({path:'/api/admin/:adminId/order/:orderId/require/:requireId/loadTask/:loadTaskId',contentType: 'application/json'},loadTask.delLoadTask);
     /**
      * dp_load_task_detail
      */

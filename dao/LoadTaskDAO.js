@@ -107,8 +107,21 @@ const getLoadTaskOrder = (params,callback) => {
         callback(error,rows);
     })
 }
+const deleteById = (params,callback) => {
+    let query = "delete from dp_load_task where 1=1";
+    let paramsArray = [],i=0;
+    if (params.loadTaskId){
+        paramsArray[i] = params.loadTaskId;
+        query += " and id = ?";
+    }
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('deleteLoadTaskById');
+        callback(error,rows);
+    })
+}
 module.exports={
     add,getById,updateById,
     getLoadTaskWithDetail,
-    getLoadTaskOrder
+    getLoadTaskOrder,
+    deleteById
 }

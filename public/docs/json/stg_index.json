@@ -9887,6 +9887,110 @@
         }
       }
     },
+    "/admin/{adminId}/order/{orderId}/require/{requireId}/loadTask/{loadTaskId}": {
+      "delete": {
+        "tags": [
+          "loadTask"
+        ],
+        "summary": "delete",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },{
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },{
+            "name": "requireId",
+            "in": "path",
+            "description": "requireId",
+            "required": true,
+            "type": "integer"
+          },{
+            "name": "loadTaskId",
+            "in": "path",
+            "description": "loadTaskId",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/loadTask"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "loadTask"
+        ],
+        "summary": "select",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },{
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },{
+            "name": "requireId",
+            "in": "path",
+            "description": "requireId",
+            "required": true,
+            "type": "integer"
+          },{
+            "name": "loadTaskId",
+            "in": "query",
+            "description": "loadTaskId",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/loadTask"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
     "/admin/{adminId}/loadTask/{loadTaskId}/loadTaskDetail": {
       "post": {
         "tags": [

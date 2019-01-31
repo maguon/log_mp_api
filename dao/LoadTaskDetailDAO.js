@@ -76,6 +76,10 @@ const getById = (params,callback) => {
         paramsArray[i] = params.loadTaskDetailId;
         query += " and id = ?";
     }
+    if (params.loadTaskId){
+        paramsArray[i] = params.loadTaskId;
+        query += " and dp_load_task_id = ?";
+    }
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('getLoadTaskDetailById');
         callback(error,rows);
@@ -87,6 +91,10 @@ const deleteById = (params,callback) => {
     if (params.loadTaskDetailId){
         paramsArray[i] = params.loadTaskDetailId;
         query += " and id = ?";
+    }
+    if (params.loadTaskId){
+        paramsArray[i] = params.loadTaskId;
+        query += " and dp_load_task_id = ?";
     }
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('deleteLoadTaskDetailById');
