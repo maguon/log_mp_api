@@ -110,15 +110,43 @@ const deleteLoadTaskDetail = (req,res,next) => {
             }
         })
     }).then(()=>{
-        loadTaskDetailDAO.deleteById(params,(error,rows)=>{
-            if(error){
-                logger.error('deleteLoadTaskDetail' + error.message);
-                resUtil.resInternalError(error,res,next);
-            }else{
-                logger.info('deleteLoadTaskDetail' + 'success');
-                resUtil.resetUpdateRes(res,rows,null);
-                return next;
-            }
+        new Promise((resolve,reject)=>{
+            loadTaskDetailDAO.deleteById(params,(error,rows)=>{
+                if(error){
+                    logger.error('deleteLoadTaskDetail' + error.message);
+                    resUtil.resInternalError(error,res,next);
+                    reject(error);
+                }else{
+                    logger.info('deleteLoadTaskDetail' + 'success');
+                    resolve();
+                }
+            })
+        }).then(()=>{
+            new Promise((resolve,reject)=>{
+                loadTaskDAO.getById(params,(error,rows)=>{
+                    if(error){
+                        logger.error('getLoadTask' + error.message);
+                        resUtil.resInternalError(error,res,next);
+                        reject(error);
+                    }else{
+                        logger.info('getLoadTask' + 'success');
+                        params.carCount = rows[0].car_count;
+                        resolve();
+                    }
+                })
+            }).then(()=>{
+                params.carNum = params.carCount - 1;
+                loadTaskDAO.updateById(params,(error,rows)=>{
+                    if(error){
+                        logger.error('updateLoadTaskCarNum' + error.message);
+                        resUtil.resInternalError(error,res,next);
+                    }else{
+                        logger.info('updateLoadTaskCarNum' + 'success');
+                        resUtil.resetUpdateRes(res,rows,null);
+                        return next;
+                    }
+                })
+            })
         })
     })
 }

@@ -48,7 +48,7 @@ const updateById =(params,callback) => {
     let query = "update dp_load_task set id = ?";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.loadTaskId;
-    if (params.carNum){
+    if (params.carNum || params.carNum == 0){
         paramsArray[i++] = params.carNum;
         query += " ,car_count = ?";
     }
