@@ -359,7 +359,83 @@ const delLoadTask = (req,res,next) => {
                         })
                     })
                 } else {
-                    resUtil.resetFailedRes(res,sysMsg.LOCKTASK_DELETE_ALREADY_SYNC)
+                    //调用外部取消接口
+                    resUtil.resetFailedRes(res,sysMsg.LOCKTASK_DELETE_ALREADY_SYNC);
+                }
+            })
+        })
+    })
+}
+const updateLoadTask = (req,res,next) => {
+    let params = req.params;
+    let loadTaskHookId = 0;
+    new Promise((resolve,reject)=>{
+        orderInfoDAO.getById({orderId:params.orderId},(error,rows)=>{
+            if(error){
+                logger.error('getOrder' + error.message);
+                resUtil.resInternalError(error,res,next);
+                reject(error);
+            }else{
+                logger.info('getOrder' + 'success');
+                if (rows.length > 0){
+                    resolve();
+                }else {
+                    resUtil.resetFailedRes(res,sysMsg.ORDER_NO_EXISTE);
+                }
+            }
+        })
+    }).then(()=>{
+        new Promise((resolve,reject)=>{
+            requireTaskDAO.getById({requireId:params.requireId},(error,rows)=>{
+                if(error){
+                    logger.error('getRequireTaskById' + error.message);
+                    resUtil.resInternalError(error,res,next);
+                    reject(error);
+                }else{
+                    logger.info('getRequireTaskById' + 'success');
+                    if (rows.length > 0){
+                        resolve();
+                    }else {
+                        resUtil.resetFailedRes(res,sysMsg.REQUIRE_NO_EXISTE);
+                    }
+                }
+            })
+        }).then(()=>{
+            new Promise((resolve,reject)=>{
+                loadTaskDAO.getById({loadTaskId:params.loadTaskId},(error,rows)=>{
+                    if(error){
+                        logger.error('getLoadTaskById' + error.message);
+                        resUtil.resInternalError(error,res,next);
+                        reject(error);
+                    }else{
+                        logger.info('getLoadTaskById' + 'success');
+                        if (rows.length > 0){
+                            loadTaskHookId = rows[0].hook_id;
+                            resolve();
+                        }else {
+                            resUtil.resetFailedRes(res,sysMsg.LOAD_TASK_NO_EXISTS)
+                        }
+                    }
+                })
+            }).then(()=>{
+                if (loadTaskHookId == null){
+                    params.planDateId = moment(params.planDateId.toString()).format("YYYYMMDD");
+                    loadTaskDAO.updateById(params,(error,rows)=>{
+                            if(error){
+                                logger.error('updateLoadTaskById' + error.message);
+                                resUtil.resInternalError(error,res,next);
+                            }else{
+                                logger.info('updateLoadTaskById' + 'success');
+                                if (rows.changedRows > 0){
+                                    resUtil.resetUpdateRes(res,rows,null);
+                                    return next;
+                                } else {
+                                    resUtil.resetFailedRes(res,sysMsg.LOADTASK_DELETE_FAIL);
+                                }
+                            }
+                        })
+                } else {
+                    resUtil.resetFailedRes(res,sysMsg.LOCKTASK_UPDATE_ALREADY_SYNC);
                 }
             })
         })
@@ -369,5 +445,6 @@ module.exports={
     addLoadTask,
     submitToSupplier,
     getLoadTaskWithDetail,
-    delLoadTask
+    delLoadTask,
+    updateLoadTask
 }

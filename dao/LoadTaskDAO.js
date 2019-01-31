@@ -64,6 +64,38 @@ const updateById =(params,callback) => {
         paramsArray[i++] = params.hookId;
         query += " ,hook_id = ?";
     }
+    if (params.routeStart){
+        paramsArray[i++] = params.routeStart;
+        query += " ,route_start = ?";
+    }
+    if (params.routeEnd){
+        paramsArray[i++] = params.routeEnd;
+        query += " ,route_end = ?";
+    }
+    if (params.routeStartId){
+        paramsArray[i++] = params.routeStartId;
+        query += " ,route_start_id = ?";
+    }
+    if (params.routeEndId){
+        paramsArray[i++] = params.routeEndId;
+        query += " ,route_end_id = ?";
+    }
+    if (params.supplierId){
+        paramsArray[i++] = params.supplierId;
+        query += " ,supplier_id = ?";
+    }
+    if (params.transType){
+        paramsArray[i++] = params.transType;
+        query += " ,trans_type = ?";
+    }
+    if (params.planDateId){
+        paramsArray[i++] = params.planDateId;
+        query += " ,plan_date_id = ?";
+    }
+    if (params.remark){
+        paramsArray[i++] = params.remark;
+        query += " ,remark = ?";
+    }
     paramsArray[i] = params.loadTaskId;
     query += " where id = ?";
     db.dbQuery(query,paramsArray,(error,rows)=>{

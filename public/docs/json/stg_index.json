@@ -9888,6 +9888,65 @@
       }
     },
     "/admin/{adminId}/order/{orderId}/require/{requireId}/loadTask/{loadTaskId}": {
+      "put": {
+        "tags": [
+          "loadTask"
+        ],
+        "summary": "update",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },{
+            "name": "orderId",
+            "in": "path",
+            "description": "orderId",
+            "required": true,
+            "type": "integer"
+          },{
+            "name": "requireId",
+            "in": "path",
+            "description": "requireId",
+            "required": true,
+            "type": "integer"
+          },{
+            "name": "loadTaskId",
+            "in": "path",
+            "description": "loadTaskId",
+            "required": true,
+            "type": "integer"
+          },{
+            "name": "loadMsg",
+            "in": "body",
+            "description": "loadMsg",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/loadTask"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/loadTask"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      },
       "delete": {
         "tags": [
           "loadTask"
@@ -9921,57 +9980,6 @@
             "in": "path",
             "description": "loadTaskId",
             "required": true,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/loadTask"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "loadTask"
-        ],
-        "summary": "select",
-        "description": "",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "integer"
-          },{
-            "name": "orderId",
-            "in": "path",
-            "description": "orderId",
-            "required": true,
-            "type": "integer"
-          },{
-            "name": "requireId",
-            "in": "path",
-            "description": "requireId",
-            "required": true,
-            "type": "integer"
-          },{
-            "name": "loadTaskId",
-            "in": "query",
-            "description": "loadTaskId",
-            "required": false,
             "type": "integer"
           }
         ],
