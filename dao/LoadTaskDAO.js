@@ -52,6 +52,14 @@ const updateById =(params,callback) => {
         paramsArray[i++] = params.carNum;
         query += " ,car_count = ?";
     }
+    if (params.supplierTransPrice || params.supplierTransPrice ==0){
+        paramsArray[i++] = params.supplierTransPrice;
+        query += " ,supplier_trans_price = ?";
+    }
+    if (params.supplierInsurePrice || params.supplierInsurePrice ==0){
+        paramsArray[i++] = params.supplierInsurePrice;
+        query += " ,supplier_insure_price = ?";
+    }
     if (params.hookId){
         paramsArray[i++] = params.hookId;
         query += " ,hook_id = ?";

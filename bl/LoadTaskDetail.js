@@ -8,10 +8,13 @@ const sysConsts = require("../util/SystemConst");
 const moment = require('moment/moment.js');
 const loadTaskDAO = require("../dao/LoadTaskDAO");
 const loadTaskDetailDAO = require("../dao/LoadTaskDetailDAO");
+const orderItemDAO = require("../dao/OrderItemDAO");
 
 const addLoadTaskDetail = (req,res,next) => {
     let params = req.params;
     let detailId =0;
+    let supplierTransPrice =0;
+    let supplierInsurePrice =0;
     new Promise((resolve,reject)=>{
         loadTaskDAO.getById({loadTaskId:params.loadTaskId},(error,rows)=>{
             if(error){
@@ -25,6 +28,8 @@ const addLoadTaskDetail = (req,res,next) => {
                     params.orderId = rows[0].order_id;
                     params.supplierId = rows[0].supplier_id;
                     params.carNum = rows[0].car_count;
+                    supplierTransPrice = rows[0].supplier_trans_price;
+                    supplierInsurePrice = rows[0].supplier_insure_price;
                     resolve();
                 } else {
                     resUtil.resetFailedRes(res,sysMsg.LOAD_TASK_NO_EXISTS);
@@ -33,33 +38,57 @@ const addLoadTaskDetail = (req,res,next) => {
         })
     }).then(()=>{
         new Promise((resolve,reject)=>{
-            params.dateId = moment().format("YYYYMMDD");
-            loadTaskDetailDAO.add(params,(error,rows)=>{
+            orderItemDAO.getOrderCar({orderItemId:params.orderItemId},(error,rows)=>{
                 if(error){
-                    logger.error('addLoadTaskDetail' + error.message);
+                    logger.error('getOrderItem' + error.message);
                     resUtil.resInternalError(error,res,next);
                     reject(error);
                 }else{
-                    logger.info('addLoadTaskDetail' + 'success');
-                    detailId = rows.insertId;
-                    resolve();
+                    logger.info('getOrderItem' + 'success');
+                    if (rows.length >0){
+                        resolve();
+                    } else {
+                        resUtil.resetFailedRes(res,sysMsg.ORDER_ITEM_NO_EXISTS);
+                    }
                 }
             })
         }).then(()=>{
-            let carNum =1;
-            carNum = params.carNum + carNum;
-            loadTaskDAO.updateById({carNum:carNum,loadTaskId: params.loadTaskId},(error,rows)=>{
-                if(error){
-                    logger.error('updateLoadTaskCarNum' + error.message);
-                    resUtil.resInternalError(error,res,next);
-                }else{
-                    logger.info('updateLoadTaskCarNum' + 'success');
-                    resUtil.resetQueryRes(res,detailId,null);
-                    return next;
+            new Promise((resolve,reject)=>{
+                params.dateId = moment().format("YYYYMMDD");
+                loadTaskDetailDAO.add(params,(error,rows)=>{
+                    if(error){
+                        logger.error('addLoadTaskDetail' + error.message);
+                        resUtil.resInternalError(error,res,next);
+                        reject(error);
+                    }else{
+                        logger.info('addLoadTaskDetail' + 'success');
+                        detailId = rows.insertId;
+                        params.supplierTransPrice = supplierTransPrice +params.supplierTransPrice;
+                        params.supplierInsurePrice = supplierInsurePrice +params.supplierInsurePrice;
+                        resolve();
+                    }
+                })
+            }).then(()=>{
+                let carNum =1;
+                carNum = params.carNum + carNum;
+                let options ={
+                    carNum:carNum,
+                    loadTaskId: params.loadTaskId,
+                    supplierTransPrice:params.supplierTransPrice,
+                    supplierInsurePrice:params.supplierInsurePrice
                 }
+                loadTaskDAO.updateById(options,(error,rows)=>{
+                    if(error){
+                        logger.error('updateLoadTaskCarNum' + error.message);
+                        resUtil.resInternalError(error,res,next);
+                    }else{
+                        logger.info('updateLoadTaskCarNum' + 'success');
+                        resUtil.resetQueryRes(res,detailId,null);
+                        return next;
+                    }
+                })
             })
         })
-
     })
 }
 const getArrangeLoadTaskDetail = (req,res,next) => {
@@ -94,6 +123,8 @@ const updateLoadTaskDetail = (req,res,next) => {
 }
 const deleteLoadTaskDetail = (req,res,next) => {
     let params = req.params;
+    let supplierTransPrice =0;
+    let supplierInsurePrice =0;
     new Promise((resolve,reject)=>{
         loadTaskDetailDAO.getById(params,(error,rows)=>{
             if(error){
@@ -103,6 +134,8 @@ const deleteLoadTaskDetail = (req,res,next) => {
             }else{
                 logger.info('getLoadTaskDetail' + 'success');
                 if (rows[0].hook_id == null){
+                    supplierTransPrice = rows[0].supplier_trans_price;
+                    supplierInsurePrice = rows[0].supplier_insure_price;
                     resolve();
                 }else {
                     resUtil.resetFailedRes(res,sysMsg.LOCKDETAIL_DELETE_ALREADY_SYNC)
@@ -131,6 +164,8 @@ const deleteLoadTaskDetail = (req,res,next) => {
                     }else{
                         logger.info('getLoadTask' + 'success');
                         params.carCount = rows[0].car_count;
+                        params.supplierTransPrice = rows[0].supplier_trans_price - supplierTransPrice;
+                        params.supplierInsurePrice = rows[0].supplier_insure_price - supplierInsurePrice;
                         resolve();
                     }
                 })
