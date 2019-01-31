@@ -441,10 +441,28 @@ const updateLoadTask = (req,res,next) => {
         })
     })
 }
+const updateLoadTaskStatus = (req,res,next) => {
+    let params = req.params;
+    loadTaskDAO.updateById(params,(error,rows)=>{
+        if(error){
+            logger.error('updateLoadTaskStatus' + error.message);
+            resUtil.resInternalError(error,res,next);
+        }else{
+            logger.info('updateLoadTaskStatus' + 'success');
+            if (rows.changedRows > 0){
+                resUtil.resetUpdateRes(res,rows,null);
+                return next;
+            } else {
+                resUtil.resetFailedRes(res,sysMsg.LOADTASK_DELETE_FAIL);
+            }
+        }
+    })
+}
 module.exports={
     addLoadTask,
     submitToSupplier,
     getLoadTaskWithDetail,
     delLoadTask,
-    updateLoadTask
+    updateLoadTask,
+    updateLoadTaskStatus
 }

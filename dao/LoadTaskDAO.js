@@ -96,6 +96,10 @@ const updateById =(params,callback) => {
         paramsArray[i++] = params.remark;
         query += " ,remark = ?";
     }
+    if (params.status){
+        paramsArray[i++] = params.status;
+        query += " ,load_task_status = ?";
+    }
     paramsArray[i] = params.loadTaskId;
     query += " where id = ?";
     db.dbQuery(query,paramsArray,(error,rows)=>{
