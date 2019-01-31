@@ -72,12 +72,22 @@ const updateById =(params,callback) => {
     })
 }
 const getLoadTaskWithDetail = (params,callback) => {
-    let query = "select *  from dp_load_task dlt ";
+    let query = "select dlt.*,dltd.id detail_id,dltd.order_item_id, dltd.vin,dltd.supplier_id,dltd.status,";
+    query += "dltd.supplier_trans_price detail_supplier_trans_price,dltd.supplier_insure_price detail_supplier_insure_price,dltd.hook_id detail_hook_id";
+    query += " from dp_load_task dlt";
     query += " left join dp_load_task_detail dltd on dlt.id = dltd.dp_load_task_id where 1=1";
     let paramsArray = [],i=0;
     if (params.loadTaskId){
-        paramsArray[i] = params.loadTaskId;
+        paramsArray[i++] = params.loadTaskId;
         query += " and dlt.id = ?";
+    }
+    if (params.orderId){
+        paramsArray[i++] = params.orderId;
+        query += " and dlt.order_id = ?";
+    }
+    if (params.requireId){
+        paramsArray[i] = params.requireId;
+        query += " and dlt.require_id = ?";
     }
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('getLoadTaskWithDetail');

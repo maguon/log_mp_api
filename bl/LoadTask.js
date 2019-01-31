@@ -214,7 +214,55 @@ const submitToSupplier = (req,res,next) => {
         })
     })
 }
+const getLoadTaskWithDetail = (req,res,next) => {
+    let params = req.params;
+    new Promise((resolve,reject)=>{
+        orderInfoDAO.getById({orderId:params.orderId},(error,rows)=>{
+            if(error){
+                logger.error('getOrder' + error.message);
+                resUtil.resInternalError(error,res,next);
+                reject(error);
+            }else{
+                logger.info('getOrder' + 'success');
+                if (rows.length > 0){
+                    resolve();
+                }else {
+                    resUtil.resetFailedRes(res,sysMsg.ORDER_NO_EXISTE);
+                }
+            }
+        })
+    }).then(()=>{
+        new Promise((resolve,reject)=>{
+            requireTaskDAO.getById({requireId:params.requireId},(error,rows)=>{
+                if(error){
+                    logger.error('getRequireTaskById' + error.message);
+                    resUtil.resInternalError(error,res,next);
+                    reject(error);
+                }else{
+                    logger.info('getRequireTaskById' + 'success');
+                    if (rows.length > 0){
+                        resolve();
+                    }else {
+                        resUtil.resetFailedRes(res,sysMsg.REQUIRE_NO_EXISTE);
+                    }
+                }
+            })
+        }).then(()=>{
+            loadTaskDAO.getLoadTaskWithDetail(params,(error,rows)=>{
+                if(error){
+                    logger.error('getLoadTaskWithDetail' + error.message);
+                    resUtil.resInternalError(error,res,next);
+                }else{
+                    logger.info('getLoadTaskWithDetail' + 'success');
+                    resUtil.resetQueryRes(res,rows,null);
+                    return next;
+                }
+            })
+        })
+    })
+}
 module.exports={
     addLoadTask,
-    submitToSupplier
+    submitToSupplier,
+    getLoadTaskWithDetail
 }
