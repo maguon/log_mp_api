@@ -22,7 +22,7 @@ const add = (params,callback) => {
     paramsArray[i++] = params.routeEndId;
     paramsArray[i++] = params.requireId;
     paramsArray[i++] = params.supplierId;
-    paramsArray[i++] = params.planDateId;
+    paramsArray[i++] = params.planDate;
     paramsArray[i++] = params.transType;
     if (params.remark){
         paramsArray[i] = params.remark;
@@ -96,8 +96,8 @@ const updateById =(params,callback) => {
         paramsArray[i++] = params.transType;
         query += " ,trans_type = ?";
     }
-    if (params.planDateId){
-        paramsArray[i++] = params.planDateId;
+    if (params.planDate){
+        paramsArray[i++] = params.planDate;
         query += " ,plan_date_id = ?";
     }
     if (params.remark){

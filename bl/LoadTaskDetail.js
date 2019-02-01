@@ -109,7 +109,7 @@ const addLoadTaskDetail = (req,res,next) => {
                                 resUtil.resInternalError(error,res,next);
                             }else{
                                 logger.info('updateRequireLoadCarNum' + 'success');
-                                resUtil.resetQueryRes(res,detailId,null);
+                                resUtil.resetCreateRes(res,detailId,null);
                                 return next;
                             }
                         })

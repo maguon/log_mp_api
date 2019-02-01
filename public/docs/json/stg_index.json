@@ -10346,7 +10346,7 @@
         "transType": {
           "type": "integer"
         },
-        "planDateId": {
+        "planDate": {
           "type": "string"
         },
         "remark": {
