@@ -16,7 +16,7 @@ const supplierInfo = require("../dao/SupplierDAO");
 
 const addLoadTask = (req,res,next) => {
     let params = req.params;
-    let insertId = 0;
+    let insert ;
     new Promise((resolve,reject)=>{
         orderInfoDAO.getById({orderId:params.orderId},(error,rows)=>{
             if(error){
@@ -50,7 +50,7 @@ const addLoadTask = (req,res,next) => {
             })
         }).then(()=>{
             new Promise((resolve,reject)=>{
-                params.planDateId = moment(params.planDateId).format("YYYYMMDD");
+                params.planDate = moment(params.planDate).format("YYYYMMDD");
                 loadTaskDAO.add(params,(error,rows)=>{
                     if(error){
                         logger.error('addLoadTask' + error.message);
@@ -59,7 +59,7 @@ const addLoadTask = (req,res,next) => {
                     }else{
                         logger.info('addLoadTask' + 'success');
                         if (rows.insertId){
-                            insertId = rows.insertId;
+                            insert = rows;
                             resolve();
                         }else {
                             resUtil.resetFailedRes(res,sysMsg.LOADTASK_ADD_NULL)
@@ -73,7 +73,7 @@ const addLoadTask = (req,res,next) => {
                         resUtil.resInternalError(error,res,next);
                     }else{
                         logger.info('updateRequireStatus' + 'success');
-                        resUtil.resetCreateRes(res,insertId,null);
+                        resUtil.resetCreateRes(res,insert,null);
                         return next;
                     }
                 })
