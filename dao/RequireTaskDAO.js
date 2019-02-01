@@ -105,6 +105,10 @@ const updateById = (params,callback) => {
         paramsArray[i++] = params.status;
         query += " , status = ?";
     }
+    if (params.loadCarNum){
+        paramsArray[i++] = params.loadCarNum;
+        query += " , load_car_num = ?";
+    }
     paramsArray[i] = params.requireId;
     query += " where id = ?";
     db.dbQuery(query,paramsArray,(error,rows)=>{

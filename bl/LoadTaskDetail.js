@@ -9,6 +9,7 @@ const moment = require('moment/moment.js');
 const loadTaskDAO = require("../dao/LoadTaskDAO");
 const loadTaskDetailDAO = require("../dao/LoadTaskDetailDAO");
 const orderItemDAO = require("../dao/OrderItemDAO");
+const requireTaskDAO = require("../dao/RequireTaskDAO");
 
 const addLoadTaskDetail = (req,res,next) => {
     let params = req.params;
@@ -69,23 +70,50 @@ const addLoadTaskDetail = (req,res,next) => {
                     }
                 })
             }).then(()=>{
-                let carNum =1;
-                carNum = params.carNum + carNum;
-                let options ={
-                    carNum:carNum,
-                    loadTaskId: params.loadTaskId,
-                    supplierTransPrice:params.supplierTransPrice,
-                    supplierInsurePrice:params.supplierInsurePrice
-                }
-                loadTaskDAO.updateById(options,(error,rows)=>{
-                    if(error){
-                        logger.error('updateLoadTaskCarNum' + error.message);
-                        resUtil.resInternalError(error,res,next);
-                    }else{
-                        logger.info('updateLoadTaskCarNum' + 'success');
-                        resUtil.resetQueryRes(res,detailId,null);
-                        return next;
+                new Promise((resolve,reject)=>{
+                    let carNum =1;
+                    carNum = params.carNum + carNum;
+                    let options ={
+                        carNum:carNum,
+                        loadTaskId: params.loadTaskId,
+                        supplierTransPrice:params.supplierTransPrice,
+                        supplierInsurePrice:params.supplierInsurePrice
                     }
+                    loadTaskDAO.updateById(options,(error,rows)=>{
+                        if(error){
+                            logger.error('updateLoadTaskCarNum' + error.message);
+                            resUtil.resInternalError(error,res,next);
+                            reject(error);
+                        }else{
+                            logger.info('updateLoadTaskCarNum' + 'success');
+                            resolve();
+                        }
+                    })
+                }).then(()=>{
+                    new Promise((resolve,reject)=>{
+                        loadTaskDAO.getHasLoadCarCount({requireId:params.requireId},(error,rows)=>{
+                            if(error){
+                                logger.error('getHasLoadCarCount' + error.message);
+                                resUtil.resInternalError(error,res,next);
+                                reject(error);
+                            }else{
+                                logger.info('getHasLoadCarCount' + 'success');
+                                params.loadCarNum = rows[0].total_car_count;
+                                resolve();
+                            }
+                        })
+                    }).then(()=>{
+                        requireTaskDAO.updateById({requireId:params.requireId,loadCarNum:params.loadCarNum},(error,rows)=>{
+                            if(error){
+                                logger.error('updateRequireLoadCarNum' + error.message);
+                                resUtil.resInternalError(error,res,next);
+                            }else{
+                                logger.info('updateRequireLoadCarNum' + 'success');
+                                resUtil.resetQueryRes(res,detailId,null);
+                                return next;
+                            }
+                        })
+                    })
                 })
             })
         })
@@ -166,20 +194,48 @@ const deleteLoadTaskDetail = (req,res,next) => {
                         params.carCount = rows[0].car_count;
                         params.supplierTransPrice = rows[0].supplier_trans_price - supplierTransPrice;
                         params.supplierInsurePrice = rows[0].supplier_insure_price - supplierInsurePrice;
+                        params.requireId = rows[0].require_id;
                         resolve();
                     }
                 })
             }).then(()=>{
-                params.carNum = params.carCount - 1;
-                loadTaskDAO.updateById(params,(error,rows)=>{
-                    if(error){
-                        logger.error('updateLoadTaskCarNum' + error.message);
-                        resUtil.resInternalError(error,res,next);
-                    }else{
-                        logger.info('updateLoadTaskCarNum' + 'success');
-                        resUtil.resetUpdateRes(res,rows,null);
-                        return next;
-                    }
+                new Promise((resolve,reject)=>{
+                    params.carNum = params.carCount - 1;
+                    loadTaskDAO.updateById(params,(error,rows)=>{
+                        if(error){
+                            logger.error('updateLoadTaskCarNum' + error.message);
+                            resUtil.resInternalError(error,res,next);
+                            reject(error);
+                        }else{
+                            logger.info('updateLoadTaskCarNum' + 'success');
+                            resolve();
+                        }
+                    })
+                }).then(()=>{
+                    new Promise((resolve,reject)=>{
+                        loadTaskDAO.getHasLoadCarCount({requireId:params.requireId},(error,rows)=>{
+                            if(error){
+                                logger.error('getHasLoadCarCount' + error.message);
+                                resUtil.resInternalError(error,res,next);
+                                reject(error);
+                            }else{
+                                logger.info('getHasLoadCarCount' + 'success');
+                                params.loadCarNum = rows[0].total_car_count;
+                                resolve();
+                            }
+                        })
+                    }).then(()=>{
+                        requireTaskDAO.updateById({requireId:params.requireId,loadCarNum:params.loadCarNum},(error,rows)=>{
+                            if(error){
+                                logger.error('updateRequireLoadCarNum' + error.message);
+                                resUtil.resInternalError(error,res,next);
+                            }else{
+                                logger.info('updateRequireLoadCarNum' + 'success');
+                                resUtil.resetUpdateRes(res,rows,null);
+                                return next;
+                            }
+                        })
+                    })
                 })
             })
         })

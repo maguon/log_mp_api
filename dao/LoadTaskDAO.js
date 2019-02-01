@@ -163,9 +163,22 @@ const deleteById = (params,callback) => {
         callback(error,rows);
     })
 }
+const getHasLoadCarCount = (params,callback) => {
+    let query = "select sum(car_count) total_car_count from dp_load_task where 1=1";
+    let paramsArray = [],i=0;
+    if (params.requireId){
+        paramsArray[i] = params.requireId;
+        query += " and require_id = ?";
+    }
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('getHasLoadCarCount');
+        callback(error,rows);
+    })
+}
 module.exports={
     add,getById,updateById,
     getLoadTaskWithDetail,
     getLoadTaskOrder,
-    deleteById
+    deleteById,
+    getHasLoadCarCount
 }
