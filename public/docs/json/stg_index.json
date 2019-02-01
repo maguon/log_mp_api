@@ -10046,6 +10046,47 @@
         }
       }
     },
+    "/admin/{adminId/requireTask/{requireId}/getSyncLoadTask": {
+      "get": {
+        "tags": [
+          "loadTask"
+        ],
+        "summary": "update",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },{
+            "name": "requireId",
+            "in": "path",
+            "description": "requireId",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/loadTask"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
     "/admin/{adminId}/loadTask/{loadTaskId}/loadTaskDetail": {
       "post": {
         "tags": [

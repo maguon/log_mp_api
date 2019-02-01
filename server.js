@@ -376,6 +376,7 @@ const createServer=()=>{
     server.del({path:'/api/admin/:adminId/order/:orderId/require/:requireId/loadTask/:loadTaskId',contentType: 'application/json'},loadTask.delLoadTask);
     server.put({path:'/api/admin/:adminId/order/:orderId/require/:requireId/loadTask/:loadTaskId',contentType: 'application/json'},loadTask.updateLoadTask);
     server.put({path:'/api/admin/:adminId/loadTask/:loadTaskId/status/:status',contentType: 'application/json'},loadTask.updateLoadTaskStatus);
+    server.get('/api/admin/:adminId/requireTask/:requireId/getSyncLoadTask',loadTask.getSyncLoadTask);
     /**
      * dp_load_task_detail
      */

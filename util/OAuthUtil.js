@@ -162,6 +162,11 @@ const putLoadTaskStatusToSupplier = (params,callback)=>{
         callback(error,result)
     })
 }
+const getSyncLoadTaskToSupplier = (params,callback)=>{
+    httpUtil.httpGet(sysConsts.SUPPLIER_URL,'/api/entrust/'+params.entrustId+"/dpDemand",params,params,(error,result)=>{
+        callback(error,result)
+    })
+}
 module.exports = {
     createAccessToken,
     parseAccessToken,
@@ -172,5 +177,6 @@ module.exports = {
     getUserPhoneCode,
     saveLoadTaskToSupplier,
     saveLoadTaskDetailToSupplier,
-    putLoadTaskStatusToSupplier
+    putLoadTaskStatusToSupplier,
+    getSyncLoadTaskToSupplier
 };

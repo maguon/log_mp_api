@@ -125,6 +125,7 @@ const submitToSupplier = (req,res,next) => {
                             params.baseAddrId = rows[0].base_addr_id;
                             params.makeId = rows[0].car_module_id;
                             params.options.baseAddrId = params.baseAddrId;
+                            params.options.receiveId = rows[0].receive_id;
                             resolve();
                         }
                     }else {
@@ -494,11 +495,70 @@ const updateLoadTaskStatus = (req,res,next) => {
         }
     })
 }
+const getSyncLoadTask = (req,res,next) => {
+    let params = req.params;
+    let syncList = new Array();
+    loadTaskDAO.getById({requireId:params.requireId},(error,rows)=>{
+        if(error){
+            logger.error('getLoadTaskByRequireId' + error.message);
+            resUtil.resInternalError(error,res,next);
+        }else{
+            logger.info('getLoadTaskByRequireId' + 'success');
+            if (rows.length > 0){
+                new Promise((resolve,reject)=>{
+                    for (let i=0;i<rows.length;i++){
+                        let options ={
+                            demandStatus:1,
+                            dpDemandId:rows[i].hook_id,
+                        }
+                        supplierInfo.querySupplier({supplierId:rows[i].supplier_id},(error,suRows)=>{
+                            if(error){
+                                logger.error('getSupplierById' + error.message);
+                                resUtil.resInternalError(error,res,next);
+                                reject(error);
+                            }else{
+                                logger.info('getSupplierById' + 'success');
+                                if (suRows.length > 0){
+                                    options.entrustId = suRows[0].app_id;
+                                    oAuthUtil.getSyncLoadTaskToSupplier(options,(error,result)=>{
+                                        if(error){
+                                            logger.error(' getSyncLoadTaskToSupplier ' + error.message);
+                                            resUtil.resInternalError(error,res,next);
+                                            reject(error);
+                                        }else{
+                                            logger.info('getSyncLoadTaskToSupplier' + 'success');
+                                            if (result.success){
+                                                syncList.push(result.result[0]);
+                                                if (i+1 == rows.length){
+                                                    resolve();
+                                                }
+                                            } else {
+                                                resUtil.resetFailedRes(res,result.msg);
+                                            }
+                                        }
+                                    })
+                                }else {
+                                    resUtil.resetFailedRes(res,sysMsg.SUPPLIER_NOT_EXISTS);
+                                }
+                            }
+                        })
+                    }
+                }).then(()=>{
+                    resUtil.resetQueryRes(res,syncList,null);
+                    return next;
+                })
+            }else {
+                resUtil.resetFailedRes(res,sysMsg.LOAD_TASK_NO_EXISTS)
+            }
+        }
+    })
+}
 module.exports={
     addLoadTask,
     submitToSupplier,
     getLoadTaskWithDetail,
     delLoadTask,
     updateLoadTask,
-    updateLoadTaskStatus
+    updateLoadTaskStatus,
+    getSyncLoadTask
 }
