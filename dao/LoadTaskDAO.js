@@ -36,8 +36,16 @@ const getById = (params,callback) => {
     let query = "select * from dp_load_task where 1=1";
     let paramsArray = [],i=0;
     if (params.loadTaskId){
-        paramsArray[i] = params.loadTaskId;
+        paramsArray[i++] = params.loadTaskId;
         query += " and id = ?";
+    }
+    if (params.orderId){
+        paramsArray[i++] = params.orderId;
+        query += " and order_id = ?";
+    }
+    if (params.requireId){
+        paramsArray[i] = params.requireId;
+        query += " and require_id = ?";
     }
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('getLoadTaskById');

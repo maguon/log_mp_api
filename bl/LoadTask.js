@@ -264,6 +264,7 @@ const getLoadTaskWithDetail = (req,res,next) => {
 const delLoadTask = (req,res,next) => {
     let params = req.params;
     let loadTaskHookId = 0;
+    let supplierId =0;
     new Promise((resolve,reject)=>{
         orderInfoDAO.getById({orderId:params.orderId},(error,rows)=>{
             if(error){
@@ -297,7 +298,7 @@ const delLoadTask = (req,res,next) => {
             })
         }).then(()=>{
             new Promise((resolve,reject)=>{
-                loadTaskDAO.getById({loadTaskId:params.loadTaskId},(error,rows)=>{
+                loadTaskDAO.getById({loadTaskId:params.loadTaskId,orderId:params.orderId,requireId:params.requireId},(error,rows)=>{
                     if(error){
                         logger.error('getLoadTaskById' + error.message);
                         resUtil.resInternalError(error,res,next);
@@ -306,6 +307,7 @@ const delLoadTask = (req,res,next) => {
                         logger.info('getLoadTaskById' + 'success');
                         if (rows.length > 0){
                             loadTaskHookId = rows[0].hook_id;
+                            supplierId = rows[0].supplier_id;
                             resolve();
                         }else {
                             resUtil.resetFailedRes(res,sysMsg.LOAD_TASK_NO_EXISTS)
@@ -313,7 +315,44 @@ const delLoadTask = (req,res,next) => {
                     }
                 })
             }).then(()=>{
-                if (loadTaskHookId == null){
+                new Promise((resolve,reject)=>{
+                    supplierInfo.querySupplier({supplierId:supplierId},(error,rows)=>{
+                        if(error){
+                            logger.error('getSupplierById' + error.message);
+                            resUtil.resInternalError(error,res,next);
+                            reject(error);
+                        }else{
+                            logger.info('getSupplierById' + 'success');
+                            if (rows.length > 0){
+                                if (loadTaskHookId != null){
+                                    let options ={
+                                        entrustId:rows[0].app_id,
+                                        dpDemandId:loadTaskHookId,
+                                        demandStatus:0
+                                    }
+                                    oAuthUtil.putLoadTaskStatusToSupplier(options,(error,result)=>{
+                                        if(error){
+                                            logger.error(' putLoadTaskStatusToSupplier ' + error.message);
+                                            resUtil.resInternalError(error,res,next);
+                                            reject(error);
+                                        }else{
+                                            logger.info('putLoadTaskStatusToSupplier' + 'success');
+                                            if (result.success){
+                                                resolve();
+                                            } else {
+                                                resUtil.resetFailedRes(res,result.msg);
+                                            }
+                                        }
+                                    })
+                                }else {
+                                    resolve();
+                                }
+                            }else {
+                                resUtil.resetFailedRes(res,sysMsg.SUPPLIER_NOT_EXISTS)
+                            }
+                        }
+                    })
+                }).then(()=>{
                     new Promise((resolve,reject)=>{
                         loadTaskDAO.deleteById({loadTaskId:params.loadTaskId},(error,rows)=>{
                             if(error){
@@ -358,10 +397,7 @@ const delLoadTask = (req,res,next) => {
                             })
                         })
                     })
-                } else {
-                    //调用外部取消接口
-                    resUtil.resetFailedRes(res,sysMsg.LOCKTASK_DELETE_ALREADY_SYNC);
-                }
+                })
             })
         })
     })
