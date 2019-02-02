@@ -10087,6 +10087,101 @@
         }
       }
     },
+    "/admin/{adminId/getLoadTaskProfit": {
+      "get": {
+        "tags": [
+          "loadTask"
+        ],
+        "summary": "select",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },{
+            "name": "vin",
+            "in": "query",
+            "description": "vin",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "routeStart",
+            "in": "query",
+            "description": "routeStart",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "routeEnd",
+            "in": "query",
+            "description": "routeEnd",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "serviceType",
+            "in": "query",
+            "description": "serviceType",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "orderId",
+            "in": "query",
+            "description": "orderId",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "createdOnStart",
+            "in": "query",
+            "description": "createdOnStart",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "createdOnEnd",
+            "in": "query",
+            "description": "createdOnEnd",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "budgetStatus",
+            "in": "query",
+            "description": "1:盈利 ; 2:亏损",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "start",
+            "in": "query",
+            "description": "start",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "size",
+            "in": "query",
+            "description": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/loadTask"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
     "/admin/{adminId}/loadTask/{loadTaskId}/loadTaskDetail": {
       "post": {
         "tags": [

@@ -63,6 +63,10 @@ const ORDER ={
         tpShipped:1,//待发运1
         inTransport:2,//运输中2
         served:3//已送达3
+    },
+    budgetStatus:{
+        profit:1,//盈利
+        loss:2//亏损
     }
 }
 const REFUND_STATUS = {

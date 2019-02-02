@@ -608,6 +608,19 @@ const getOrderLoadTask = (req,res,next) => {
         })
     })
 }
+const getLoadTaskProfit = (req,res,next) => {
+    let params = req.params;
+    loadTaskDAO.getLoadTaskProfit(params,(error,rows)=>{
+        if(error){
+            logger.error('getLoadTaskProfit' + error.message);
+            resUtil.resInternalError(error,res,next);
+        }else{
+            logger.info('getLoadTaskProfit' + 'success');
+            resUtil.resetQueryRes(res,rows,null);
+            return next;
+        }
+    })
+}
 module.exports={
     addLoadTask,
     submitToSupplier,
@@ -616,5 +629,6 @@ module.exports={
     updateLoadTask,
     updateLoadTaskStatus,
     getSyncLoadTask,
-    getOrderLoadTask
+    getOrderLoadTask,
+    getLoadTaskProfit
 }

@@ -2,6 +2,7 @@
 const serverLogger = require('../util/ServerLogger.js');
 const logger = serverLogger.createLogger('LoadTaskDAO.js');
 const db = require('../db/connection/MysqlDb.js');
+const sysConst = require("../util/SystemConst");
 
 const add = (params,callback) => {
     let query = "insert into dp_load_task (admin_id,order_id,route_start,route_end,route_start_id,route_end_id,require_id,supplier_id,plan_date_id,trans_type,plan_date";
@@ -214,11 +215,65 @@ const getLoadTask = (params,callback) => {
         callback(error,rows);
     })
 }
+const getLoadTaskProfit = (params,callback) => {
+    let query = "select dltd.id,dltd.order_id,dltd.vin,dltd.supplier_trans_price,dltd.supplier_insure_price,dlt.id load_task_id,";
+    query += " dlt.route_start,dlt.route_end,oi.total_trans_price,oi.total_insure_price,oi.created_on order_created_on,au.real_name,oi.service_type";
+    query += " ,(oi.total_trans_price+oi.total_insure_price-dltd.supplier_trans_price-dltd.supplier_insure_price) profit_price";
+    query += " from dp_load_task_detail dltd";
+    query += " left join dp_load_task dlt on dltd.dp_load_task_id = dlt.id";
+    query += " left join order_info oi on dlt.order_id = oi.id";
+    query += " left join admin_user au on oi.admin_id = au.id where 1=1 ";
+    let paramsArray = [],i=0;
+    if (params.vin){
+        paramsArray[i++] = params.vin;
+        query += " and dltd.vin = ?";
+    }
+    if (params.routeStart){
+        paramsArray[i++] = params.routeStart;
+        query += " and dlt.route_start = ?";
+    }
+    if (params.routeEnd){
+        paramsArray[i++] = params.routeEnd;
+        query += " and dlt.route_end = ?";
+    }
+    if (params.serviceType){
+        paramsArray[i++] = params.serviceType;
+        query += " and oi.service_type = ?";
+    }
+    if (params.orderId){
+        paramsArray[i++] = params.orderId;
+        query += " and dltd.order_id = ?";
+    }
+    if(params.createdOnStart){
+        paramsArray[i++] = params.createdOnStart;
+        query = query + " and date_format(dltd.created_on,'%Y-%m-%d') >= ? ";
+    }
+    if(params.createdOnEnd){
+        paramsArray[i++] = params.createdOnEnd;
+        query = query + " and date_format(dltd.created_on,'%Y-%m-%d') <= ? ";
+    }
+    if (params.budgetStatus == sysConst.ORDER.budgetStatus.profit){
+        query += " and oi.total_trans_price+oi.total_insure_price-dltd.supplier_trans_price-dltd.supplier_insure_price > 0";
+    }else if (params.budgetStatus == sysConst.ORDER.budgetStatus.loss) {
+        query += " and oi.total_trans_price+oi.total_insure_price-dltd.supplier_trans_price-dltd.supplier_insure_price < 0";
+    }
+    query = query + " order by dltd.created_on desc";
+    if(params.start && params.size){
+        paramsArray[i++] = parseInt(params.start);
+        paramsArray[i] = parseInt(params.size);
+        query = query + " limit ?,? ";
+    }
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('getLoadTaskProfit');
+        callback(error,rows);
+    })
+}
 module.exports={
     add,getById,updateById,
     getLoadTaskWithDetail,
     getLoadTaskOrder,
     deleteById,
     getHasLoadCarCount,
-    getLoadTask
+    getLoadTask,
+    getLoadTaskProfit
 }
