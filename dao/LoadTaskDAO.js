@@ -217,9 +217,10 @@ const getLoadTask = (params,callback) => {
 }
 const getLoadTaskProfit = (params,callback) => {
     let query = "select dltd.id,dltd.order_id,dltd.vin,dltd.supplier_trans_price,dltd.supplier_insure_price,dlt.id load_task_id,";
-    query += " dlt.route_start,dlt.route_end,oi.total_trans_price,oi.total_insure_price,oi.created_on order_created_on,au.real_name,oi.service_type";
-    query += " ,(oi.total_trans_price+oi.total_insure_price-dltd.supplier_trans_price-dltd.supplier_insure_price) profit_price";
+    query += " dlt.route_start,dlt.route_end,oit.act_trans_price,oit.act_insure_price,oi.created_on order_created_on,au.real_name,oi.service_type";
+    query += " ,(oit.act_trans_price+oit.act_insure_price-dltd.supplier_trans_price-dltd.supplier_insure_price) profit_price";
     query += " from dp_load_task_detail dltd";
+    query += " inner join order_item oit on dltd.order_item_id = oit.id";
     query += " left join dp_load_task dlt on dltd.dp_load_task_id = dlt.id";
     query += " left join order_info oi on dlt.order_id = oi.id";
     query += " left join admin_user au on oi.admin_id = au.id where 1=1 ";
@@ -253,9 +254,9 @@ const getLoadTaskProfit = (params,callback) => {
         query = query + " and date_format(dltd.created_on,'%Y-%m-%d') <= ? ";
     }
     if (params.budgetStatus == sysConst.ORDER.budgetStatus.profit){
-        query += " and oi.total_trans_price+oi.total_insure_price-dltd.supplier_trans_price-dltd.supplier_insure_price > 0";
+        query += " and oit.act_trans_price+oit.act_insure_price-dltd.supplier_trans_price-dltd.supplier_insure_price > 0";
     }else if (params.budgetStatus == sysConst.ORDER.budgetStatus.loss) {
-        query += " and oi.total_trans_price+oi.total_insure_price-dltd.supplier_trans_price-dltd.supplier_insure_price < 0";
+        query += " and oit.act_trans_price+oit.act_insure_price-dltd.supplier_trans_price-dltd.supplier_insure_price < 0";
     }
     query = query + " order by dltd.created_on desc";
     if(params.start && params.size){
