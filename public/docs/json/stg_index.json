@@ -9999,7 +9999,7 @@
         }
       }
     },
-    "/admin/{adminId/loadTask/{loadTaskId}/status/{status}": {
+    "/admin/{adminId}/loadTask/{loadTaskId}/status/{status}": {
       "put": {
         "tags": [
           "loadTask"
@@ -10173,6 +10173,34 @@
               "type": "object",
               "items": {
                 "$ref": "#/definitions/loadTask"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId/loadTaskDetail/{loadTaskDetailId}/getLoadTaskDetailProfit": {
+      "get": {
+        "tags": [
+          "loadTaskDetail"
+        ],
+        "summary": "select",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/loadTaskDetail"
               }
             }
           },
