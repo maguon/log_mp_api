@@ -16,7 +16,6 @@ const supplierInfo = require("../dao/SupplierDAO");
 
 const addLoadTask = (req,res,next) => {
     let params = req.params;
-    let insert ;
     new Promise((resolve,reject)=>{
         orderInfoDAO.getById({orderId:params.orderId},(error,rows)=>{
             if(error){
@@ -60,26 +59,14 @@ const addLoadTask = (req,res,next) => {
                     }else{
                         logger.info('addLoadTask' + 'success');
                         if (rows.insertId){
-                            insert = rows;
-                            resolve();
+                            resUtil.resetCreateRes(res,rows,null);
+                            return next;
                         }else {
                             resUtil.resetFailedRes(res,sysMsg.LOADTASK_ADD_NULL)
                         }
                     }
                 })
-            }).then(()=>{
-                requireTaskDAO.updateById({requireId: params.requireId,status:sysConsts.REQUIRE_TASK.status.inArrange},(error,rows)=>{
-                    if(error){
-                        logger.error('updateRequireStatus' + error.message);
-                        resUtil.resInternalError(error,res,next);
-                    }else{
-                        logger.info('updateRequireStatus' + 'success');
-                        resUtil.resetCreateRes(res,insert,null);
-                        return next;
-                    }
-                })
             })
-
         })
     })
 }
