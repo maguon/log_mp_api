@@ -177,10 +177,32 @@ const getHasLoadCarCount = (params,callback) => {
         callback(error,rows);
     })
 }
+const getLoadTask = (params,callback) => {
+    let query = "select dlt.*, si.supplier_full,si.supplier_short from dp_load_task dlt ";
+    query += " left join supplier_info si on si.id = dlt.supplier_id  where 1=1";
+    let paramsArray = [],i=0;
+    if (params.loadTaskId){
+        paramsArray[i++] = params.loadTaskId;
+        query += " and dlt.id = ?";
+    }
+    if (params.orderId){
+        paramsArray[i++] = params.orderId;
+        query += " and dlt.order_id = ?";
+    }
+    if (params.requireId){
+        paramsArray[i] = params.requireId;
+        query += " and dlt.require_id = ?";
+    }
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('getLoadTask');
+        callback(error,rows);
+    })
+}
 module.exports={
     add,getById,updateById,
     getLoadTaskWithDetail,
     getLoadTaskOrder,
     deleteById,
-    getHasLoadCarCount
+    getHasLoadCarCount,
+    getLoadTask
 }

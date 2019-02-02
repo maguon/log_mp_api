@@ -554,6 +554,53 @@ const getSyncLoadTask = (req,res,next) => {
         }
     })
 }
+const getOrderLoadTask = (req,res,next) => {
+    let params = req.params;
+    new Promise((resolve,reject)=>{
+        orderInfoDAO.getById({orderId:params.orderId},(error,rows)=>{
+            if(error){
+                logger.error('getOrder' + error.message);
+                resUtil.resInternalError(error,res,next);
+                reject(error);
+            }else{
+                logger.info('getOrder' + 'success');
+                if (rows.length > 0){
+                    resolve();
+                }else {
+                    resUtil.resetFailedRes(res,sysMsg.ORDER_NO_EXISTE);
+                }
+            }
+        })
+    }).then(()=>{
+        new Promise((resolve,reject)=>{
+            requireTaskDAO.getById({requireId:params.requireId},(error,rows)=>{
+                if(error){
+                    logger.error('getRequireTaskById' + error.message);
+                    resUtil.resInternalError(error,res,next);
+                    reject(error);
+                }else{
+                    logger.info('getRequireTaskById' + 'success');
+                    if (rows.length > 0){
+                        resolve();
+                    }else {
+                        resUtil.resetFailedRes(res,sysMsg.REQUIRE_NO_EXISTE);
+                    }
+                }
+            })
+        }).then(()=>{
+            loadTaskDAO.getLoadTask(params,(error,rows)=>{
+                if(error){
+                    logger.error('getOrderLoadTask' + error.message);
+                    resUtil.resInternalError(error,res,next);
+                }else{
+                    logger.info('getOrderLoadTask' + 'success');
+                    resUtil.resetQueryRes(res,rows,null);
+                    return next;
+                }
+            })
+        })
+    })
+}
 module.exports={
     addLoadTask,
     submitToSupplier,
@@ -561,5 +608,6 @@ module.exports={
     delLoadTask,
     updateLoadTask,
     updateLoadTaskStatus,
-    getSyncLoadTask
+    getSyncLoadTask,
+    getOrderLoadTask
 }
