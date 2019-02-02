@@ -367,6 +367,7 @@ const createServer=()=>{
      */
     server.post({path:'/api/admin/:adminId/order/:orderId/requireTask',contentType: 'application/json'},requireTask.addRequireTask);
     server.get('/api/admin/:adminId/requireTask',requireTask.getRequireOrder);
+    server.put({path:'/api/admin/:adminId/requireTask/:requireId/status/:status',contentType: 'application/json'},requireTask.updateStatus);
     /**
      * dp_load_task
      */

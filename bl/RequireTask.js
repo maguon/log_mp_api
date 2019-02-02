@@ -71,7 +71,21 @@ const getRequireOrder = (req,res,next) => {
         }
     })
 }
+const updateStatus = (req,res,next) => {
+    let params = req.params;
+    requireTask.updateById(params,(error,rows)=>{
+        if(error){
+            logger.error('updateRequireStatus' + error.message);
+            resUtil.resInternalError(error,res,next);
+        }else{
+            logger.info('updateRequireStatus' + 'success');
+            resUtil.resetUpdateRes(res,rows,null);
+            return next;
+        }
+    })
+}
 module.exports={
     addRequireTask,
-    getRequireOrder
+    getRequireOrder,
+    updateStatus
 }

@@ -9739,6 +9739,53 @@
         }
       }
     },
+    "/admin/{adminId}/requireTask/{requireId}/status/{status}": {
+      "put": {
+        "tags": [
+          "requireTask"
+        ],
+        "summary": "update",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },{
+            "name": "requireId",
+            "in": "path",
+            "description": "requireId",
+            "required": true,
+            "type": "integer"
+          },{
+            "name": "status",
+            "in": "path",
+            "description": "0:待安排 1:已安排",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/requireTask"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
     "/admin/{adminId}/order/{orderId}/require/{requireId}/loadTask": {
       "post": {
         "tags": [
