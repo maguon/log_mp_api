@@ -139,6 +139,12 @@ const SUPPLIER={
         open:0
     }
 }
+const LOAD_TASK_STATUS ={
+    //1-未装车,2-已装车,3-已送达
+    noLoad:1,
+    loading:2,
+    served:3
+}
 module.exports = {
     CAR_MODEL,
     PAYMENT,
@@ -153,5 +159,6 @@ module.exports = {
     SUPER_ADMIN_TYPE,
     REQUIRE_TASK,
     SUPPLIER_URL,
-    SUPPLIER
+    SUPPLIER,
+    LOAD_TASK_STATUS
 }

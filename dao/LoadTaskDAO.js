@@ -101,6 +101,22 @@ const updateById =(params,callback) => {
         paramsArray[i++] = params.planDate;
         query += " ,plan_date_id = ?";
     }
+    if (params.loadDateId){
+        paramsArray[i++] = params.loadDateId;
+        query += " ,load_date_id = ?";
+    }
+    if (params.arriveDateId){
+        paramsArray[i++] = params.arriveDateId;
+        query += " ,arrive_date_id = ?";
+    }
+    if (params.loadDate){
+        paramsArray[i++] = params.loadDate;
+        query += " ,load_date = ?";
+    }
+    if (params.arriveDate){
+        paramsArray[i++] = params.arriveDate;
+        query += " ,arrive_date = ?";
+    }
     if (params.remark){
         paramsArray[i++] = params.remark;
         query += " ,remark = ?";
