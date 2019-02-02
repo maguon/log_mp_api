@@ -101,7 +101,7 @@ const updateById = (params,callback) => {
     let paramsArray = [],i=0;
     let query = "update dp_require_task set id = ?";
     paramsArray[i++] = params.requireId;
-    if (params.status){
+    if (params.status || params.status ==0){
         paramsArray[i++] = params.status;
         query += " , status = ?";
     }
