@@ -51,6 +51,7 @@ const addLoadTask = (req,res,next) => {
         }).then(()=>{
             new Promise((resolve,reject)=>{
                 params.planDate = moment(params.planDate).format("YYYYMMDD");
+                params.planDateTime = moment(params.planDate).format("YYYY-MM-DD");
                 loadTaskDAO.add(params,(error,rows)=>{
                     if(error){
                         logger.error('addLoadTask' + error.message);

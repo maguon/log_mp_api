@@ -4,11 +4,11 @@ const logger = serverLogger.createLogger('LoadTaskDAO.js');
 const db = require('../db/connection/MysqlDb.js');
 
 const add = (params,callback) => {
-    let query = "insert into dp_load_task (admin_id,order_id,route_start,route_end,route_start_id,route_end_id,require_id,supplier_id,plan_date_id,trans_type";
+    let query = "insert into dp_load_task (admin_id,order_id,route_start,route_end,route_start_id,route_end_id,require_id,supplier_id,plan_date_id,trans_type,plan_date";
     if (params.remark){
         query += ",remark";
     }
-    query += ") values (?,?,?,?,?,?,?,?,?,?"
+    query += ") values (?,?,?,?,?,?,?,?,?,?,?"
     if (params.remark){
         query += ",?"
     }
@@ -24,6 +24,7 @@ const add = (params,callback) => {
     paramsArray[i++] = params.supplierId;
     paramsArray[i++] = params.planDate;
     paramsArray[i++] = params.transType;
+    paramsArray[i++] = params.planDateTime;
     if (params.remark){
         paramsArray[i] = params.remark;
     }

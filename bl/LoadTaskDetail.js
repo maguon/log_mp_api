@@ -63,7 +63,7 @@ const addLoadTaskDetail = (req,res,next) => {
                         reject(error);
                     }else{
                         logger.info('addLoadTaskDetail' + 'success');
-                        detailId = rows.insertId;
+                        detailId = rows;
                         params.supplierTransPrice = supplierTransPrice +params.supplierTransPrice;
                         params.supplierInsurePrice = supplierInsurePrice +params.supplierInsurePrice;
                         resolve();
