@@ -216,9 +216,10 @@ const getLoadTask = (params,callback) => {
     })
 }
 const getLoadTaskProfit = (params,callback) => {
-    let query = "select dltd.id,dltd.order_id,dltd.vin,dltd.supplier_trans_price,dltd.supplier_insure_price,dlt.id load_task_id,";
+    let query = "select dltd.id load_task_detail_id,dltd.order_id,dltd.vin,dltd.supplier_trans_price,dltd.supplier_insure_price,dlt.id load_task_id,";
     query += " dlt.route_start,dlt.route_end,oit.act_trans_price,oit.act_insure_price,oi.created_on order_created_on,au.real_name,oi.service_type";
     query += " ,(oit.act_trans_price+oit.act_insure_price-dltd.supplier_trans_price-dltd.supplier_insure_price) profit_price";
+    query += " ,oit.model_type,oit.brand,oit.brand_type,oit.old_car,oit.safe_status,oit.valuation";
     query += " from dp_load_task_detail dltd";
     query += " inner join order_item oit on dltd.order_item_id = oit.id";
     query += " left join dp_load_task dlt on dltd.dp_load_task_id = dlt.id";
@@ -244,6 +245,10 @@ const getLoadTaskProfit = (params,callback) => {
     if (params.orderId){
         paramsArray[i++] = params.orderId;
         query += " and dltd.order_id = ?";
+    }
+    if (params.loadTaskDetailId){
+        paramsArray[i++] = params.loadTaskDetailId;
+        query += " and dltd.id = ?";
     }
     if(params.createdOnStart){
         paramsArray[i++] = params.createdOnStart;

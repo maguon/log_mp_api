@@ -10135,6 +10135,12 @@
             "required": false,
             "type": "integer"
           },{
+            "name": "loadTaskDetailId",
+            "in": "query",
+            "description": "loadTaskDetailId",
+            "required": false,
+            "type": "integer"
+          },{
             "name": "createdOnStart",
             "in": "query",
             "description": "createdOnStart",
@@ -10173,34 +10179,6 @@
               "type": "object",
               "items": {
                 "$ref": "#/definitions/loadTask"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/admin/{adminId/loadTaskDetail/{loadTaskDetailId}/getLoadTaskDetailProfit": {
-      "get": {
-        "tags": [
-          "loadTaskDetail"
-        ],
-        "summary": "select",
-        "description": "",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/loadTaskDetail"
               }
             }
           },
