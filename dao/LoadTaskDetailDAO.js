@@ -23,8 +23,11 @@ const add = (params,callback) => {
 }
 const getArrangeLoadTaskDetail = (params,callback) => {
     let paramsArray = [],i=0;
-    let query = "select oi.id order_item_id,dltd.id load_task_detail_id,oi.order_id,oi.vin,oi.model_type,oi.brand,oi.brand_type,oi.old_car,oi.safe_status,dltd.id load_task_detail_id";
-    query += " ,dltd.dp_load_task_id,dltd.supplier_trans_price,dltd.supplier_insure_price";
+    let query = "select oi.id order_item_id,dltd.id load_task_detail_id,oi.order_id,oi.vin,oi.model_type,oi.brand";
+    query += ",oi.brand_type,oi.old_car,oi.safe_status,dltd.id load_task_detail_id,oi.valuation,";
+    query += "case when dltd.supplier_trans_price is null then 0 else dltd.supplier_trans_price end as supplier_trans_price,"
+    query += "case when dltd.supplier_insure_price is null then 0 else dltd.supplier_insure_price end as supplier_insure_price";
+    query += " ,dltd.dp_load_task_id";
     query += " from order_item oi left join dp_load_task_detail dltd on oi.id = dltd.order_item_id ";
     if (params.loadTaskId){
         paramsArray[i++] = params.loadTaskId;

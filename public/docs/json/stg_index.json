@@ -10093,7 +10093,7 @@
         }
       }
     },
-    "/admin/{adminId/requireTask/{requireId}/getSyncLoadTask": {
+    "/admin/{adminId}/requireTask/{requireId}/getSyncLoadTask": {
       "get": {
         "tags": [
           "loadTask"
@@ -10134,7 +10134,7 @@
         }
       }
     },
-    "/admin/{adminId/getLoadTaskProfit": {
+    "/admin/{adminId}/getLoadTaskProfit": {
       "get": {
         "tags": [
           "loadTask"
