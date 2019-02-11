@@ -161,12 +161,16 @@ const deleteLoadTaskDetail = (req,res,next) => {
                 reject(error);
             }else{
                 logger.info('getLoadTaskDetail' + 'success');
-                if (rows[0].hook_id == null){
-                    supplierTransPrice = rows[0].supplier_trans_price;
-                    supplierInsurePrice = rows[0].supplier_insure_price;
-                    resolve();
-                }else {
-                    resUtil.resetFailedRes(res,sysMsg.LOCKDETAIL_DELETE_ALREADY_SYNC)
+                if (rows.length >0){
+                    if (rows[0].hook_id == null){
+                        supplierTransPrice = rows[0].supplier_trans_price;
+                        supplierInsurePrice = rows[0].supplier_insure_price;
+                        resolve();
+                    }else {
+                        resUtil.resetFailedRes(res,sysMsg.LOCKDETAIL_DELETE_ALREADY_SYNC)
+                    }
+                } else {
+                    resUtil.resetFailedRes(res,sysMsg.LOADTASK_DETAIL_NO_EXISTE)
                 }
             }
         })
