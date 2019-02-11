@@ -80,8 +80,12 @@ const getById = (params,callback) => {
         query += " and id = ?";
     }
     if (params.loadTaskId){
-        paramsArray[i] = params.loadTaskId;
+        paramsArray[i++] = params.loadTaskId;
         query += " and dp_load_task_id = ?";
+    }
+    if (params.isHookIdNull){
+        paramsArray[i] = params.isHookIdNull;
+        query += " and hook_id is not null";
     }
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('getLoadTaskDetailById');
