@@ -108,10 +108,24 @@ const deleteById = (params,callback) => {
         callback(error,rows);
     })
 }
+const getTotalPrice = (params,callback) => {
+    let query = "select count(id) car_num,sum(supplier_trans_price) total_supplier_trans_price,sum(supplier_insure_price) total_supplier_insure_price ";
+    query += " from dp_load_task_detail where 1=1";
+    let paramsArray = [],i=0;
+    if (params.loadTaskId){
+        paramsArray[i] = params.loadTaskId;
+        query += " and dp_load_task_id = ?";
+    }
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('getTotalPrice');
+        callback(error,rows);
+    })
+}
 module.exports={
     add,
     getArrangeLoadTaskDetail,
     updateById,
     getById,
-    deleteById
+    deleteById,
+    getTotalPrice
 }

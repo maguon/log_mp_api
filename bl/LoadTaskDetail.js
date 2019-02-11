@@ -161,7 +161,7 @@ const deleteLoadTaskDetail = (req,res,next) => {
                 reject(error);
             }else{
                 logger.info('getLoadTaskDetail' + 'success');
-                if (rows.length >0){
+                if (rows.length > 0 ){
                     if (rows[0].hook_id == null){
                         supplierTransPrice = rows[0].supplier_trans_price;
                         supplierInsurePrice = rows[0].supplier_insure_price;
@@ -169,9 +169,10 @@ const deleteLoadTaskDetail = (req,res,next) => {
                     }else {
                         resUtil.resetFailedRes(res,sysMsg.LOCKDETAIL_DELETE_ALREADY_SYNC)
                     }
-                } else {
-                    resUtil.resetFailedRes(res,sysMsg.LOADTASK_DETAIL_NO_EXISTE)
+                }else {
+                    resUtil.resetFailedRes(res,sysMsg.LOADTASK_DETAIL_NO_EXISTE);
                 }
+
             }
         })
     }).then(()=>{
@@ -245,24 +246,9 @@ const deleteLoadTaskDetail = (req,res,next) => {
         })
     })
 }
-const getLoadTaskDetail = (req,res,next) => {
-    let params = req.params;
-    params.isHookIdNull =  1;
-    loadTaskDetailDAO.getById(params,(error,rows)=>{
-        if(error){
-            logger.error('getLoadTaskDetail' + error.message);
-            resUtil.resInternalError(error,res,next);
-        }else{
-            logger.info('getLoadTaskDetail' + 'success');
-            resUtil.resetQueryRes(res,rows,null);
-            return next;
-        }
-    })
-}
 module.exports={
     addLoadTaskDetail,
     getArrangeLoadTaskDetail,
     updateLoadTaskDetail,
-    deleteLoadTaskDetail,
-    getLoadTaskDetail
+    deleteLoadTaskDetail
 }

@@ -46,8 +46,12 @@ const getById = (params,callback) => {
         query += " and order_id = ?";
     }
     if (params.requireId){
-        paramsArray[i] = params.requireId;
+        paramsArray[i++] = params.requireId;
         query += " and require_id = ?";
+    }
+    if (params.isHookIdNull){
+        paramsArray[i] = params.isHookIdNull;
+        query += " and hook_id is not null";
     }
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('getLoadTaskById');
