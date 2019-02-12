@@ -73,130 +73,147 @@ const addLoadTask = (req,res,next) => {
 const submitToSupplier = (req,res,next) => {
     let params = req.params;
     new Promise((resolve,reject)=>{
-        loadTaskDAO.getLoadTaskOrder({loadTaskId:params.loadTaskId},(error,rows)=>{
+        loadTaskDetailDAO.getById({loadTaskId:params.loadTaskId},(error,rows)=>{
             if(error){
-                logger.error('getLoadTaskOrder' + error.message);
+                logger.error('getLoadTaskDetail' + error.message);
                 resUtil.resInternalError(error,res,next);
                 reject(error);
             }else{
-                logger.info('getLoadTaskOrder' + 'success');
+                logger.info('getLoadTaskDetail' + 'success');
                 if (rows.length > 0){
-                    params.supplierId = rows[0].supplier_id;
-                    params.options = {
-                        routeStart:rows[0].route_start,
-                        routeEnd:rows[0].route_end,
-                        preCount:rows[0].car_count,
-                        dateId:rows[0].plan_date_id,
-                        remark:"发货地址:"+rows[0].send_address + ";收货地址:"+rows[0].recv_address
-                    }
                     resolve();
                 }else {
-                    resUtil.resetFailedRes(res,sysMsg.ORDER_NO_EXISTE);
+                    resUtil.resetFailedRes(res,sysMsg.LOADTASK_DETAIL_SYNC_NULL);
                 }
             }
         })
     }).then(()=>{
         new Promise((resolve,reject)=>{
-            supplierInfo.querySupplier({supplierId:params.supplierId},(error,rows)=>{
+            loadTaskDAO.getLoadTaskOrder({loadTaskId:params.loadTaskId},(error,rows)=>{
                 if(error){
-                    logger.error(' getSupplierById ' + error.message);
+                    logger.error('getLoadTaskOrder' + error.message);
                     resUtil.resInternalError(error,res,next);
                     reject(error);
-                }else {
-                    logger.info('getSupplierById' + 'success');
-                    if (rows.length >0){
-                        if (rows[0].close_flag == sysConsts.SUPPLIER.closeFlag.close){
-                            resUtil.resetFailedRes(res,sysMsg.SUPPLIER_CLOSE_NOTALLOW_SYNC);
-                        } else if (rows[0].close_flag == sysConsts.SUPPLIER.closeFlag.open){
-                            params.appId = rows[0].app_id;
-                            params.baseAddrId = rows[0].base_addr_id;
-                            params.makeId = rows[0].car_module_id;
-                            params.options.baseAddrId = params.baseAddrId;
-                            params.options.receiveId = rows[0].receive_id;
-                            resolve();
+                }else{
+                    logger.info('getLoadTaskOrder' + 'success');
+                    if (rows.length > 0){
+                        params.supplierId = rows[0].supplier_id;
+                        params.options = {
+                            routeStart:rows[0].route_start,
+                            routeEnd:rows[0].route_end,
+                            preCount:rows[0].car_count,
+                            dateId:rows[0].plan_date_id,
+                            remark:"发货地址:"+rows[0].send_address + ";收货地址:"+rows[0].recv_address
                         }
+                        resolve();
                     }else {
-                        resUtil.resetFailedRes(res,sysMsg.SUPPLIER_NOT_EXISTS);
+                        resUtil.resetFailedRes(res,sysMsg.ORDER_NO_EXISTE);
                     }
                 }
             })
         }).then(()=>{
             new Promise((resolve,reject)=>{
-                params.req = req;
-                oAuthUtil.saveLoadTaskToSupplier(params,(error,result)=>{
+                supplierInfo.querySupplier({supplierId:params.supplierId},(error,rows)=>{
                     if(error){
-                        logger.error(' saveLoadTaskToSupplier ' + error.message);
+                        logger.error(' getSupplierById ' + error.message);
                         resUtil.resInternalError(error,res,next);
                         reject(error);
-                    }else{
-                        logger.info('saveLoadTaskToSupplier' + 'success');
-                        if (result.success){
-                            params.hookId = result.id;
-                            resolve();
-                        } else {
-                            resUtil.resetFailedRes(res,result.msg);
+                    }else {
+                        logger.info('getSupplierById' + 'success');
+                        if (rows.length >0){
+                            if (rows[0].close_flag == sysConsts.SUPPLIER.closeFlag.close){
+                                resUtil.resetFailedRes(res,sysMsg.SUPPLIER_CLOSE_NOTALLOW_SYNC);
+                            } else if (rows[0].close_flag == sysConsts.SUPPLIER.closeFlag.open){
+                                params.appId = rows[0].app_id;
+                                params.baseAddrId = rows[0].base_addr_id;
+                                params.makeId = rows[0].car_module_id;
+                                params.options.baseAddrId = params.baseAddrId;
+                                params.options.receiveId = rows[0].receive_id;
+                                resolve();
+                            }
+                        }else {
+                            resUtil.resetFailedRes(res,sysMsg.SUPPLIER_NOT_EXISTS);
                         }
                     }
                 })
             }).then(()=>{
                 new Promise((resolve,reject)=>{
-                    loadTaskDAO.updateById({loadTaskId:params.loadTaskId,hookId:params.hookId},(error,rows)=>{
+                    params.req = req;
+                    oAuthUtil.saveLoadTaskToSupplier(params,(error,result)=>{
                         if(error){
-                            logger.error(' updateLoadTaskHookId ' + error.message);
+                            logger.error(' saveLoadTaskToSupplier ' + error.message);
                             resUtil.resInternalError(error,res,next);
                             reject(error);
                         }else{
-                            logger.info('updateLoadTaskHookId' + 'success');
-                            resolve();
+                            logger.info('saveLoadTaskToSupplier' + 'success');
+                            if (result.success){
+                                params.hookId = result.id;
+                                resolve();
+                            } else {
+                                resUtil.resetFailedRes(res,result.msg);
+                            }
                         }
                     })
                 }).then(()=>{
                     new Promise((resolve,reject)=>{
-                        loadTaskDAO.getLoadTaskWithDetail({loadTaskId:params.loadTaskId},(error,rows)=>{
+                        loadTaskDAO.updateById({loadTaskId:params.loadTaskId,hookId:params.hookId},(error,rows)=>{
                             if(error){
-                                logger.error(' getLoadTaskWithDetail ' + error.message);
+                                logger.error(' updateLoadTaskHookId ' + error.message);
                                 resUtil.resInternalError(error,res,next);
                                 reject(error);
                             }else{
-                                logger.info('getLoadTaskWithDetail' + 'success');
-                                for (let i in rows){
-                                    params.req = req;
-                                    params.options={
-                                        vin:rows[i].vin,
-                                        makeId:params.makeId,
-                                        routeStart: rows[i].route_start,
-                                        baseAddrId: params.baseAddrId,
-                                        entrustId:params.appId,
-                                        orderDate:moment(rows[i].plan_date_id.toString()).format("YYYY-MM-DD")
-                                    }
-                                    oAuthUtil.saveLoadTaskDetailToSupplier(params,(error,result)=>{
-                                        if(error){
-                                            logger.error(' saveLoadTaskDetailToSupplier ' + error.message);
-                                            resUtil.resInternalError(error,res,next);
-                                            reject(error);
-                                        }else{
-                                            logger.info('saveLoadTaskDetailToSupplier' + 'success');
-                                            if (result.success){
-                                                params.detailHookId = result.id;
-                                                loadTaskDetailDAO.updateById({detailHookId:result.id,loadTaskDetailId:rows[i].id},(error,result)=>{
-                                                    if(error){
-                                                        logger.error(' updateLoadTaskDetailHookId ' + error.message);
-                                                        resUtil.resInternalError(error,res,next);
-                                                        reject(error);
-                                                    }else{
-                                                        logger.info(' updateLoadTaskDetailHookId ' + 'success');
-                                                    }
-                                                })
-                                            } else {
-                                                resUtil.resetFailedRes(res,result.msg);
-                                            }
-                                        }
-                                    })
-                                }
-                                resUtil.resetQueryRes(res,params.hookId,null);
+                                logger.info('updateLoadTaskHookId' + 'success');
+                                resolve();
                             }
                         })
-                    });
+                    }).then(()=>{
+                        new Promise((resolve,reject)=>{
+                            loadTaskDAO.getLoadTaskWithDetail({loadTaskId:params.loadTaskId},(error,rows)=>{
+                                if(error){
+                                    logger.error(' getLoadTaskWithDetail ' + error.message);
+                                    resUtil.resInternalError(error,res,next);
+                                    reject(error);
+                                }else{
+                                    logger.info('getLoadTaskWithDetail' + 'success');
+                                    for (let i in rows){
+                                        params.req = req;
+                                        params.options={
+                                            vin:rows[i].vin,
+                                            makeId:params.makeId,
+                                            routeStart: rows[i].route_start,
+                                            baseAddrId: params.baseAddrId,
+                                            entrustId:params.appId,
+                                            orderDate:moment(rows[i].plan_date_id.toString()).format("YYYY-MM-DD")
+                                        }
+                                        oAuthUtil.saveLoadTaskDetailToSupplier(params,(error,result)=>{
+                                            if(error){
+                                                logger.error(' saveLoadTaskDetailToSupplier ' + error.message);
+                                                resUtil.resInternalError(error,res,next);
+                                                reject(error);
+                                            }else{
+                                                logger.info('saveLoadTaskDetailToSupplier' + 'success');
+                                                if (result.success){
+                                                    params.detailHookId = result.id;
+                                                    loadTaskDetailDAO.updateById({detailHookId:result.id,loadTaskDetailId:rows[i].id},(error,result)=>{
+                                                        if(error){
+                                                            logger.error(' updateLoadTaskDetailHookId ' + error.message);
+                                                            resUtil.resInternalError(error,res,next);
+                                                            reject(error);
+                                                        }else{
+                                                            logger.info(' updateLoadTaskDetailHookId ' + 'success');
+                                                        }
+                                                    })
+                                                } else {
+                                                    resUtil.resetFailedRes(res,result.msg);
+                                                }
+                                            }
+                                        })
+                                    }
+                                    resUtil.resetQueryRes(res,params.hookId,null);
+                                }
+                            })
+                        });
+                    })
                 })
             })
         })
