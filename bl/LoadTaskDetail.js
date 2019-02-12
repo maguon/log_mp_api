@@ -263,15 +263,14 @@ const deleteLoadTaskDetail = (req,res,next) => {
 const getLoadTaskDetail = (req,res,next) => {
     let params = req.params;
     new Promise((resolve,reject)=>{
-        loadTaskDAO.getById({hookId:params.syncLoadTaskId},(error,rows)=>{
+        loadTaskDAO.getById(params,(error,rows)=>{
             if(error){
-                logger.error('getLoadTaskByHookId' + error.message);
+                logger.error('getLoadTaskById' + error.message);
                 resUtil.resInternalError(error,res,next);
                 reject(error);
             }else{
-                logger.info('getLoadTaskByHookId' + 'success');
+                logger.info('getLoadTaskById' + 'success');
                 if (rows.length > 0){
-                    params.loadTaskId = rows[0].id;
                     resolve();
                 } else {
                     resUtil.resetFailedRes(res,sysMsg.LOAD_TASK_NO_EXISTS);
