@@ -259,6 +259,7 @@ const deleteLoadTaskDetail = (req,res,next) => {
 }
 const getLoadTaskDetail = (req,res,next) => {
     let params = req.params;
+    params.isHookIdNull = 1;
     loadTaskDetailDAO.getById(params,(error,rows)=>{
         if(error){
             logger.error('getLoadTaskDetail' + error.message);
