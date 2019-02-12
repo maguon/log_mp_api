@@ -162,8 +162,6 @@ const updateLoadTaskDetail = (req,res,next) => {
 }
 const deleteLoadTaskDetail = (req,res,next) => {
     let params = req.params;
-    let supplierTransPrice =0;
-    let supplierInsurePrice =0;
     new Promise((resolve,reject)=>{
         loadTaskDetailDAO.getById(params,(error,rows)=>{
             if(error){
@@ -174,8 +172,7 @@ const deleteLoadTaskDetail = (req,res,next) => {
                 logger.info('getLoadTaskDetail' + 'success');
                 if (rows.length > 0 ){
                     if (rows[0].hook_id == null){
-                        supplierTransPrice = rows[0].supplier_trans_price;
-                        supplierInsurePrice = rows[0].supplier_insure_price;
+                        params.requireId = rows[0].require_id;
                         resolve();
                     }else {
                         resUtil.resetFailedRes(res,sysMsg.LOCKDETAIL_DELETE_ALREADY_SYNC)
