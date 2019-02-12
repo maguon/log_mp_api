@@ -199,7 +199,7 @@ const getHasLoadCarCount = (params,callback) => {
     })
 }
 const getLoadTask = (params,callback) => {
-    let query = "select dlt.*, si.supplier_full,si.supplier_short from dp_load_task dlt ";
+    let query = "select dlt.*, si.supplier_full,si.supplier_short,si.close_flag from dp_load_task dlt ";
     query += " left join supplier_info si on si.id = dlt.supplier_id  where 1=1";
     let paramsArray = [],i=0;
     if (params.loadTaskId){
