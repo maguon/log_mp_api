@@ -259,12 +259,12 @@ const deleteLoadTaskDetail = (req,res,next) => {
 }
 const getLoadTaskDetail = (req,res,next) => {
     let params = req.params;
-    loadTaskDetailDAO.getArrangeLoadTaskDetail(params,(error,rows)=>{
+    loadTaskDetailDAO.getById(params,(error,rows)=>{
         if(error){
-            logger.error('getArrangeLoadTaskDetail' + error.message);
+            logger.error('getLoadTaskDetail' + error.message);
             resUtil.resInternalError(error,res,next);
         }else{
-            logger.info('getArrangeLoadTaskDetail' + 'success');
+            logger.info('getLoadTaskDetail' + 'success');
             resUtil.resetQueryRes(res,rows,null);
             return next;
         }
