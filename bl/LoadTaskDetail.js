@@ -254,16 +254,34 @@ const deleteLoadTaskDetail = (req,res,next) => {
 }
 const getLoadTaskDetail = (req,res,next) => {
     let params = req.params;
-    params.isHookIdNull = 1;
-    loadTaskDetailDAO.getById(params,(error,rows)=>{
-        if(error){
-            logger.error('getLoadTaskDetail' + error.message);
-            resUtil.resInternalError(error,res,next);
-        }else{
-            logger.info('getLoadTaskDetail' + 'success');
-            resUtil.resetQueryRes(res,rows,null);
-            return next;
-        }
+    new Promise((resolve,reject)=>{
+        loadTaskDAO.getById({hookId:params.syncLoadTaskId},(error,rows)=>{
+            if(error){
+                logger.error('getLoadTaskByHookId' + error.message);
+                resUtil.resInternalError(error,res,next);
+                reject(error);
+            }else{
+                logger.info('getLoadTaskByHookId' + 'success');
+                if (rows.length > 0){
+                    params.loadTaskId = rows[0].id;
+                    resolve();
+                } else {
+                    resUtil.resetFailedRes(res,sysMsg.LOAD_TASK_NO_EXISTS);
+                }
+            }
+        })
+    }).then(()=>{
+        params.isHookIdNull = 1;
+        loadTaskDetailDAO.getById(params,(error,rows)=>{
+            if(error){
+                logger.error('getLoadTaskDetail' + error.message);
+                resUtil.resInternalError(error,res,next);
+            }else{
+                logger.info('getLoadTaskDetail' + 'success');
+                resUtil.resetQueryRes(res,rows,null);
+                return next;
+            }
+        })
     })
 }
 module.exports={
