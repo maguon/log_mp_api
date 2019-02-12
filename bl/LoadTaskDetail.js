@@ -10,6 +10,7 @@ const loadTaskDAO = require("../dao/LoadTaskDAO");
 const loadTaskDetailDAO = require("../dao/LoadTaskDetailDAO");
 const orderItemDAO = require("../dao/OrderItemDAO");
 const requireTaskDAO = require("../dao/RequireTaskDAO");
+const oauthUtil = require("../util/OAuthUtil");
 
 const addLoadTaskDetail = (req,res,next) => {
     let params = req.params;
@@ -262,33 +263,22 @@ const deleteLoadTaskDetail = (req,res,next) => {
 }
 const getLoadTaskDetail = (req,res,next) => {
     let params = req.params;
-    new Promise((resolve,reject)=>{
-        loadTaskDAO.getById(params,(error,rows)=>{
-            if(error){
-                logger.error('getLoadTaskById' + error.message);
-                resUtil.resInternalError(error,res,next);
-                reject(error);
-            }else{
-                logger.info('getLoadTaskById' + 'success');
-                if (rows.length > 0){
-                    resolve();
-                } else {
-                    resUtil.resetFailedRes(res,sysMsg.LOAD_TASK_NO_EXISTS);
-                }
-            }
-        })
-    }).then(()=>{
-        params.isHookIdNull = 1;
-        loadTaskDetailDAO.getById(params,(error,rows)=>{
-            if(error){
-                logger.error('getLoadTaskDetail' + error.message);
-                resUtil.resInternalError(error,res,next);
-            }else{
-                logger.info('getLoadTaskDetail' + 'success');
-                resUtil.resetQueryRes(res,rows,null);
+    let options = {
+        dpRouteLoadTaskId : params.syncLoadTaskId
+    }
+    oauthUtil.getRouteLoadTaskDetail(options,(error,result)=>{
+        if(error){
+            logger.error(' getRouteLoadTaskDetail ' + error.message);
+            resUtil.resInternalError(error,res,next);
+        }else{
+            logger.info('getRouteLoadTaskDetail' + 'success');
+            if (result.success){
+                resUtil.resetQueryRes(res,result.result,null);
                 return next;
+            } else {
+                resUtil.resetFailedRes(res,result.msg);
             }
-        })
+        }
     })
 }
 module.exports={
