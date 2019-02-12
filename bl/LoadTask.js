@@ -493,14 +493,31 @@ const updateLoadTaskStatus = (req,res,next) => {
 const getSyncLoadTask = (req,res,next) => {
     let params = req.params;
     let syncList = new Array();
-    loadTaskDAO.getById({requireId:params.requireId},(error,rows)=>{
-        if(error){
-            logger.error('getLoadTaskByRequireId' + error.message);
-            resUtil.resInternalError(error,res,next);
-        }else{
-            logger.info('getLoadTaskByRequireId' + 'success');
-            if (rows.length > 0){
-                new Promise((resolve,reject)=>{
+    let syncMsg = new Object();
+    new Promise((resolve,reject)=>{
+        requireTaskDAO.getById({requireId:params.requireId},(error,rows)=>{
+            if(error){
+                logger.error('getRequire' + error.message);
+                resUtil.resInternalError(error,res,next);
+                reject(error);
+            }else{
+                logger.info('getRequire' + 'success');
+                if (rows.length > 0){
+                    syncMsg.require = rows[0];
+                    resolve();
+                }else {
+                    resUtil.resetFailedRes(res,sysMsg.REQUIRE_NO_EXISTE);
+                }
+            }
+        })
+    }).then(()=>{
+        loadTaskDAO.getById({requireId:params.requireId,isHookIdNull:1},(error,rows)=>{
+            if(error){
+                logger.error('getLoadTaskByRequireId' + error.message);
+                resUtil.resInternalError(error,res,next);
+            }else{
+                logger.info('getLoadTaskByRequireId' + 'success');
+                if (rows.length > 0){
                     for (let i=0;i<rows.length;i++){
                         let options ={
                             demandStatus:1,
@@ -510,7 +527,6 @@ const getSyncLoadTask = (req,res,next) => {
                             if(error){
                                 logger.error('getSupplierById' + error.message);
                                 resUtil.resInternalError(error,res,next);
-                                reject(error);
                             }else{
                                 logger.info('getSupplierById' + 'success');
                                 if (suRows.length > 0){
@@ -519,13 +535,14 @@ const getSyncLoadTask = (req,res,next) => {
                                         if(error){
                                             logger.error(' getSyncLoadTaskToSupplier ' + error.message);
                                             resUtil.resInternalError(error,res,next);
-                                            reject(error);
                                         }else{
                                             logger.info('getSyncLoadTaskToSupplier' + 'success');
                                             if (result.success){
                                                 syncList.push(result.result[0]);
                                                 if (i+1 == rows.length){
-                                                    resolve();
+                                                    syncMsg.loadTask = syncList;
+                                                    resUtil.resetQueryRes(res,syncMsg,null);
+                                                    return next;
                                                 }
                                             } else {
                                                 resUtil.resetFailedRes(res,result.msg);
@@ -538,14 +555,13 @@ const getSyncLoadTask = (req,res,next) => {
                             }
                         })
                     }
-                }).then(()=>{
-                    resUtil.resetQueryRes(res,syncList,null);
+                } else {
+                    syncMsg.loadTask = syncList;
+                    resUtil.resetQueryRes(res,syncMsg,null);
                     return next;
-                })
-            }else {
-                resUtil.resetFailedRes(res,sysMsg.LOAD_TASK_NO_EXISTS)
+                }
             }
-        }
+        })
     })
 }
 const getOrderLoadTask = (req,res,next) => {
