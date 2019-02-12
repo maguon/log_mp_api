@@ -85,7 +85,6 @@ const submitToSupplier = (req,res,next) => {
                     params.options = {
                         routeStart:rows[0].route_start,
                         routeEnd:rows[0].route_end,
-                        receiveId:rows[0].route_end_id,
                         preCount:rows[0].car_count,
                         dateId:rows[0].plan_date_id,
                         remark:"发货地址:"+rows[0].send_address + ";收货地址:"+rows[0].recv_address
@@ -168,7 +167,7 @@ const submitToSupplier = (req,res,next) => {
                                         routeStart: rows[i].route_start,
                                         baseAddrId: params.baseAddrId,
                                         entrustId:params.appId,
-                                        orderDate:moment(rows[i].date_id.toString()).format("YYYY-MM-DD")
+                                        orderDate:moment(rows[i].plan_date_id.toString()).format("YYYY-MM-DD")
                                     }
                                     oAuthUtil.saveLoadTaskDetailToSupplier(params,(error,result)=>{
                                         if(error){
@@ -490,7 +489,7 @@ const updateLoadTaskStatus = (req,res,next) => {
         }
     })
 }
-const getSyncLoadTask = (req,res,next) => {
+const syncOld = (req,res,next) => {
     let params = req.params;
     let syncList = new Array();
     let syncMsg = new Object();
@@ -622,6 +621,48 @@ const getLoadTaskProfit = (req,res,next) => {
             resUtil.resetQueryRes(res,rows,null);
             return next;
         }
+    })
+}
+const getSyncLoadTask = (req,res,next) => {
+    let params = req.params;
+    new Promise((resolve,reject)=>{
+        loadTaskDAO.getById({loadTaskId:params.loadTaskId},(error,rows)=>{
+            if(error){
+                logger.error('getLoadTask' + error.message);
+                resUtil.resInternalError(error,res,next);
+                reject(error);
+            }else{
+                logger.info('getLoadTask' + 'success');
+                if (rows.length > 0){
+                    if (rows[0].hook_id){
+                        params.hookId = rows[0].hook_id;
+                        resolve();
+                    } else {
+                        resUtil.resetFailedRes(res,sysMsg.LOADTASK_NO_HOOKID);
+                    }
+                }else {
+                    resUtil.resetFailedRes(res,sysMsg.REQUIRE_NO_EXISTE);
+                }
+            }
+        })
+    }).then(()=>{
+        let options ={
+            dpDemandId:params.hookId
+        }
+        oAuthUtil.getRouteLoadTask(options,(error,result)=>{
+            if(error){
+                logger.error(' getRouteLoadTask ' + error.message);
+                resUtil.resInternalError(error,res,next);
+            }else{
+                logger.info('getRouteLoadTask' + 'success');
+                if (result.success){
+                    resUtil.resetQueryRes(res,result.result,null);
+                    return next;
+                } else {
+                    resUtil.resetFailedRes(res,result.msg);
+                }
+            }
+        })
     })
 }
 module.exports={

@@ -10093,7 +10093,7 @@
         }
       }
     },
-    "/admin/{adminId}/requireTask/{requireId}/getSyncLoadTask": {
+    "/admin/{adminId}/loadTask/{loadTaskId}/getSyncLoadTask": {
       "get": {
         "tags": [
           "loadTask"
@@ -10111,9 +10111,9 @@
             "required": true,
             "type": "integer"
           },{
-            "name": "requireId",
+            "name": "loadTaskId",
             "in": "path",
-            "description": "requireId",
+            "description": "loadTaskId",
             "required": true,
             "type": "integer"
           }

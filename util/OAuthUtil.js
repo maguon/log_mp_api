@@ -167,6 +167,11 @@ const getSyncLoadTaskToSupplier = (params,callback)=>{
         callback(error,result)
     })
 }
+const getRouteLoadTask= (params,callback)=>{
+    httpUtil.httpGet(sysConsts.SUPPLIER_URL,'/api/dpRouteLoadTask',params,params,(error,result)=>{
+        callback(error,result)
+    })
+}
 module.exports = {
     createAccessToken,
     parseAccessToken,
@@ -178,5 +183,6 @@ module.exports = {
     saveLoadTaskToSupplier,
     saveLoadTaskDetailToSupplier,
     putLoadTaskStatusToSupplier,
-    getSyncLoadTaskToSupplier
+    getSyncLoadTaskToSupplier,
+    getRouteLoadTask
 };
