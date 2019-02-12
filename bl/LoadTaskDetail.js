@@ -200,23 +200,21 @@ const deleteLoadTaskDetail = (req,res,next) => {
             })
         }).then(()=>{
             new Promise((resolve,reject)=>{
-                loadTaskDAO.getById(params,(error,rows)=>{
+                loadTaskDetailDAO.getTotalPrice({loadTaskId:params.loadTaskId},(error,rows)=>{
                     if(error){
-                        logger.error('getLoadTask' + error.message);
+                        logger.error('getTotalPrice' + error.message);
                         resUtil.resInternalError(error,res,next);
                         reject(error);
                     }else{
-                        logger.info('getLoadTask' + 'success');
-                        params.carCount = rows[0].car_count;
-                        params.supplierTransPrice = rows[0].supplier_trans_price - supplierTransPrice;
-                        params.supplierInsurePrice = rows[0].supplier_insure_price - supplierInsurePrice;
-                        params.requireId = rows[0].require_id;
+                        logger.info('getTotalPrice' + 'success');
+                        params.carNum = rows[0].total_car_num;
+                        params.supplierTransPrice = rows[0].total_supplier_trans_price;
+                        params.supplierInsurePrice = rows[0].total_supplier_insure_price;
                         resolve();
                     }
                 })
             }).then(()=>{
                 new Promise((resolve,reject)=>{
-                    params.carNum = params.carCount - 1;
                     loadTaskDAO.updateById(params,(error,rows)=>{
                         if(error){
                             logger.error('updateLoadTaskCarNum' + error.message);
