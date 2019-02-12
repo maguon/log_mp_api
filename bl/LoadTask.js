@@ -444,7 +444,7 @@ const updateLoadTask = (req,res,next) => {
                 })
             }).then(()=>{
                 if (loadTaskHookId == null){
-                    params.planDateId = moment(params.planDateId.toString()).format("YYYYMMDD");
+                    params.planDate = moment(params.planDate.toString()).format("YYYYMMDD");
                     loadTaskDAO.updateById(params,(error,rows)=>{
                             if(error){
                                 logger.error('updateLoadTaskById' + error.message);
