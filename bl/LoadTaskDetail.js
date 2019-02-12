@@ -19,7 +19,9 @@ const addLoadTaskDetail = (req,res,next) => {
     let carNum =0 ;
     if (!params.supplierTransPrice || !params.supplierInsurePrice) {
         resUtil.resetFailedRes(res,sysMsg.LOADTASK_DETAIL_SUPPLIERPRICE_ZERO);
-    }else {
+    }else if(params.supplierTransPrice < 0 || params.supplierInsurePrice < 0) {
+        resUtil.resetFailedRes(res,sysMsg.LOADTASK_DETAIL_SUPPLIERPRICE_INTEGER);
+    }else{
         new Promise((resolve,reject)=>{
             loadTaskDAO.getById({loadTaskId:params.loadTaskId},(error,rows)=>{
                 if(error){
@@ -151,6 +153,8 @@ const updateLoadTaskDetail = (req,res,next) => {
     let params = req.params;
     if (!params.supplierTransPrice || !params.supplierInsurePrice) {
         resUtil.resetFailedRes(res,sysMsg.LOADTASK_DETAIL_SUPPLIERPRICE_ZERO)
+    }else if(params.supplierTransPrice < 0 || params.supplierInsurePrice < 0) {
+        resUtil.resetFailedRes(res,sysMsg.LOADTASK_DETAIL_SUPPLIERPRICE_INTEGER);
     }else {
         loadTaskDetailDAO.updateById(params,(error,rows)=>{
             if(error){
