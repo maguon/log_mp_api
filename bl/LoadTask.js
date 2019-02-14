@@ -127,6 +127,7 @@ const submitToSupplier = (req,res,next) => {
                                 params.appId = rows[0].app_id;
                                 params.baseAddrId = rows[0].base_addr_id;
                                 params.makeId = rows[0].car_module_id;
+                                params.appUrl = hostPort(rows[0].app_url);
                                 params.options.baseAddrId = params.baseAddrId;
                                 params.options.receiveId = rows[0].receive_id;
                                 resolve();
@@ -182,8 +183,8 @@ const submitToSupplier = (req,res,next) => {
                                             makeId:params.makeId,
                                             routeStart: rows[i].route_start,
                                             baseAddrId: params.baseAddrId,
-                                            entrustId:params.appId,
-                                            orderDate:moment(rows[i].plan_date_id.toString()).format("YYYY-MM-DD")
+                                            entrustId:params.appId
+                                            // orderDate:moment(rows[i].plan_date_id.toString()).format("YYYY-MM-DD")
                                         }
                                         oAuthUtil.saveLoadTaskDetailToSupplier(params,(error,result)=>{
                                             if(error){
@@ -333,7 +334,8 @@ const delLoadTask = (req,res,next) => {
                                     let options ={
                                         entrustId:rows[0].app_id,
                                         dpDemandId:loadTaskHookId,
-                                        demandStatus:0
+                                        demandStatus:0,
+                                        appUrl:hostPort(rows[0].app_url)
                                     }
                                     oAuthUtil.putLoadTaskStatusToSupplier(options,(error,result)=>{
                                         if(error){

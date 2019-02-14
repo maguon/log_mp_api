@@ -148,22 +148,17 @@ const sendCaptcha=(params,callback)=>{
 }
 
 const saveLoadTaskToSupplier = (params,callback)=>{
-    httpUtil.httpPost(sysConsts.SUPPLIER_URL,'/api/entrust/'+params.appId+"/dpDemand",params.req,params.options,(error,result)=>{
+    httpUtil.httpPost(params.appUrl,'/api/entrust/'+params.appId+"/dpDemand",params.req,params.options,(error,result)=>{
         callback(error,result)
     })
 }
 const saveLoadTaskDetailToSupplier = (params,callback)=>{
-    httpUtil.httpPost(sysConsts.SUPPLIER_URL,'/api/user/'+0+"/entrustCar",params.req,params.options,(error,result)=>{
+    httpUtil.httpPost(params.appUrl,'/api/user/'+0+"/entrustCar",params.req,params.options,(error,result)=>{
         callback(error,result)
     })
 }
 const putLoadTaskStatusToSupplier = (params,callback)=>{
-    httpUtil.httpPut(sysConsts.SUPPLIER_URL,'/api/entrust/'+params.entrustId+"/dpDemand/"+params.dpDemandId+"/demandStatus/"+params.demandStatus,params.req,{},(error,result)=>{
-        callback(error,result)
-    })
-}
-const getSyncLoadTaskToSupplier = (params,callback)=>{
-    httpUtil.httpGet(sysConsts.SUPPLIER_URL,'/api/entrust/'+params.entrustId+"/dpDemand",params,params,(error,result)=>{
+    httpUtil.httpPut(params.appUrl,'/api/entrust/'+params.entrustId+"/dpDemand/"+params.dpDemandId+"/demandStatus/"+params.demandStatus,params.req,{},(error,result)=>{
         callback(error,result)
     })
 }
@@ -194,7 +189,6 @@ module.exports = {
     saveLoadTaskToSupplier,
     saveLoadTaskDetailToSupplier,
     putLoadTaskStatusToSupplier,
-    getSyncLoadTaskToSupplier,
     getRouteLoadTask,
     getRouteLoadTaskDetail,
     getDpDemand
