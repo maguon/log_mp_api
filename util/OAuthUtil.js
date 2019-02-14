@@ -173,7 +173,7 @@ const getRouteLoadTask= (params,callback)=>{
     })
 }
 const getRouteLoadTaskDetail= (params,callback)=>{
-    httpUtil.httpGet(sysConsts.SUPPLIER_URL,'/api/dpRouteLoadTask/'+params.dpRouteLoadTaskId+"/dpRouteLoadTaskDetail",params,params,(error,result)=>{
+    httpUtil.httpGet(params.appUrl,'/api/dpRouteLoadTask/'+params.dpRouteLoadTaskId+"/dpRouteLoadTaskDetail",params,params,(error,result)=>{
         callback(error,result)
     })
 }

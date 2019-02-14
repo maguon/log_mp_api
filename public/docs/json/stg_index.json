@@ -5001,6 +5001,79 @@
         }
       }
     },
+    "/admin/{adminId}/getOrderProfit": {
+      "get": {
+        "tags": [
+          "order"
+        ],
+        "summary": "select",
+        "description": "select order profit msg",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "query",
+            "description": "orderId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "routeStart",
+            "in": "query",
+            "description": "routeStart",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "routeEnd",
+            "in": "query",
+            "description": "routeEnd",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "serviceType",
+            "in": "query",
+            "description": "1:上门提货 2:自提",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "createOrderUser",
+            "in": "query",
+            "description": "adminId",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "createOrderUser",
+            "in": "query",
+            "description": "adminId",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/adminMark"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
     "/user/{userId}/city": {
       "post": {
         "tags": [
@@ -10437,7 +10510,7 @@
         }
       }
     },
-    "/admin/{adminId}/loadTask/{syncLoadTaskId}/getSyncLoadTaskDetail": {
+    "/admin/{adminId}/loadTask/{loadTaskId}/getSyncLoadTaskDetail/{syncLoadTaskId}": {
       "get": {
         "tags": [
           "loadTaskDetail"
@@ -10452,6 +10525,12 @@
             "name": "adminId",
             "in": "path",
             "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },{
+            "name": "loadTaskId",
+            "in": "path",
+            "description": "loadTaskId",
             "required": true,
             "type": "integer"
           },{

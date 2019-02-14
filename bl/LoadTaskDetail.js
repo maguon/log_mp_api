@@ -11,6 +11,7 @@ const loadTaskDetailDAO = require("../dao/LoadTaskDetailDAO");
 const orderItemDAO = require("../dao/OrderItemDAO");
 const requireTaskDAO = require("../dao/RequireTaskDAO");
 const oauthUtil = require("../util/OAuthUtil");
+const supplierInfo = require("../dao/SupplierDAO");
 
 const addLoadTaskDetail = (req,res,next) => {
     let params = req.params;
@@ -263,23 +264,69 @@ const deleteLoadTaskDetail = (req,res,next) => {
 }
 const getLoadTaskDetail = (req,res,next) => {
     let params = req.params;
-    let options = {
-        dpRouteLoadTaskId : params.syncLoadTaskId
-    }
-    oauthUtil.getRouteLoadTaskDetail(options,(error,result)=>{
-        if(error){
-            logger.error(' getRouteLoadTaskDetail ' + error.message);
-            resUtil.resInternalError(error,res,next);
-        }else{
-            logger.info('getRouteLoadTaskDetail' + 'success');
-            if (result.success){
-                resUtil.resetQueryRes(res,result.result,null);
-                return next;
-            } else {
-                resUtil.resetFailedRes(res,result.msg);
+    new Promise((resolve,reject)=>{
+        loadTaskDAO.getById(params,(error,rows)=>{
+            if(error){
+                logger.error('getLoadTask' + error.message);
+                resUtil.resInternalError(error,res,next);
+                reject(error);
+            }else{
+                logger.info('getLoadTask' + 'success');
+                if (rows.length > 0 ){
+                    params.supplierId = rows[0].supplier_id;
+                    resolve();
+                }else {
+                    resUtil.resetFailedRes(res,sysMsg.LOADTASK_DETAIL_NO_EXISTE);
+                }
+
             }
-        }
+        })
+    }).then(()=>{
+        new Promise((resolve,reject)=>{
+            supplierInfo.querySupplier({supplierId:params.supplierId},(error,rows)=>{
+                if(error){
+                    logger.error('getSupplierInfo' + error.message);
+                    resUtil.resInternalError(error,res,next);
+                    reject(error);
+                }else{
+                    logger.info('getSupplierInfo' + 'success');
+                    if (rows.length > 0){
+                        params.appUrl = hostPort(rows[0].app_url);
+                        resolve();
+                    }else {
+                        resUtil.resetFailedRes(res,sysMsg.SUPPLIER_NOT_EXISTS);
+                    }
+                }
+            })
+        }).then(()=>{
+            let options = {
+                dpRouteLoadTaskId : params.syncLoadTaskId,
+                appUrl:params.appUrl
+            }
+            oauthUtil.getRouteLoadTaskDetail(options,(error,result)=>{
+                if(error){
+                    logger.error(' getRouteLoadTaskDetail ' + error.message);
+                    resUtil.resInternalError(error,res,next);
+                }else{
+                    logger.info('getRouteLoadTaskDetail' + 'success');
+                    if (result.success){
+                        resUtil.resetQueryRes(res,result.result,null);
+                        return next;
+                    } else {
+                        resUtil.resetFailedRes(res,result.msg);
+                    }
+                }
+            })
+        })
     })
+}
+const hostPort=(url)=>{
+    let urlObj ={};
+    urlObj.scheme = url.substring(0,url.indexOf(":")); //协议头
+    let temp=url.substring(url.indexOf("//")+2); //域名+端口号
+    urlObj.host = temp.split(":")[0];
+    urlObj.port = temp.split(":")[1];
+    return urlObj;
 }
 module.exports={
     addLoadTaskDetail,
