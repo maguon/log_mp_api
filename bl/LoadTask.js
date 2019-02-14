@@ -151,7 +151,7 @@ const submitToSupplier = (req,res,next) => {
                                 params.hookId = result.id;
                                 resolve();
                             } else {
-                                resUtil.resetFailedRes(res,result.msg);
+                                resUtil.resetFailedRes(res,"对方服务器:"+result.msg);
                             }
                         }
                     })
@@ -205,7 +205,7 @@ const submitToSupplier = (req,res,next) => {
                                                         }
                                                     })
                                                 } else {
-                                                    resUtil.resetFailedRes(res,result.msg);
+                                                    resUtil.resetFailedRes(res,"对方服务器:"+result.msg);
                                                 }
                                             }
                                         })
@@ -627,7 +627,7 @@ const getSyncLoadTask = (req,res,next) => {
                             resultData.require = result.result;
                             resolve();
                         } else {
-                            resUtil.resetFailedRes(res,result.msg);
+                            resUtil.resetFailedRes(res,"对方服务器:"+result.msg);
                         }
                     }
                 })
@@ -643,7 +643,7 @@ const getSyncLoadTask = (req,res,next) => {
                             resUtil.resetQueryRes(res,resultData,null);
                             return next;
                         } else {
-                            resUtil.resetFailedRes(res,result.msg);
+                            resUtil.resetFailedRes(res,"对方服务器:"+result.msg);
                         }
                     }
                 })
@@ -709,7 +709,7 @@ const syncComplete = (req,res,next) => {
                         resUtil.resetQueryRes(res,result,null);
                         return next;
                     } else {
-                        resUtil.resetFailedRes(res,result.msg);
+                        resUtil.resetFailedRes(res,"对方服务器:"+result.msg);
                     }
                 }
             })
