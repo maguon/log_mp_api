@@ -153,21 +153,54 @@ const getArrangeLoadTaskDetail = (req,res,next) => {
 }
 const updateLoadTaskDetail = (req,res,next) => {
     let params = req.params;
+    let updateResult;
     if (!params.supplierTransPrice || !params.supplierInsurePrice) {
         resUtil.resetFailedRes(res,sysMsg.LOADTASK_DETAIL_SUPPLIERPRICE_ZERO)
     }else if(params.supplierTransPrice < 0 || params.supplierInsurePrice < 0) {
         resUtil.resetFailedRes(res,sysMsg.LOADTASK_DETAIL_SUPPLIERPRICE_INTEGER);
     }else {
-        loadTaskDetailDAO.updateById(params,(error,rows)=>{
-            if(error){
-                logger.error('updateLoadTaskDetail' + error.message);
-                resUtil.resInternalError(error,res,next);
-            }else{
-                logger.info('updateLoadTaskDetail' + 'success');
-                resUtil.resetUpdateRes(res,rows,null);
-                return next;
-            }
+        new Promise((resolve,reject)=>{
+            loadTaskDetailDAO.updateById(params,(error,rows)=>{
+                if(error){
+                    logger.error('updateLoadTaskDetail' + error.message);
+                    resUtil.resInternalError(error,res,next);
+                    reject(error);
+                }else{
+                    logger.info('updateLoadTaskDetail' + 'success');
+                    updateResult = rows;
+                    resolve();
+                }
+            })
+        }).then(()=>{
+            new Promise((resolve,reject)=>{
+                loadTaskDetailDAO.getTotalPrice({loadTaskId:params.loadTaskId},(error,rows)=>{
+                    if(error){
+                        logger.error('getTotalPrice' + error.message);
+                        resUtil.resInternalError(error,res,next);
+                        reject(error);
+                    }else{
+                        logger.info('getTotalPrice' + 'success');
+                        params.carNum = rows[0].total_car_num;
+                        params.supplierTransPrice = rows[0].total_supplier_trans_price;
+                        params.supplierInsurePrice = rows[0].total_supplier_insure_price;
+                        resolve();
+                    }
+                })
+            }).then(()=>{
+                loadTaskDAO.updateById(params,(error,rows)=>{
+                    if(error){
+                        logger.error('updateLoadTaskCarNum' + error.message);
+                        resUtil.resInternalError(error,res,next);
+                    }else{
+                        logger.info('updateLoadTaskCarNum' + 'success');
+                        resUtil.resetUpdateRes(res,updateResult,null);
+                        return next;
+                    }
+                })
+            })
+
         })
+
     }
 }
 const deleteLoadTaskDetail = (req,res,next) => {
