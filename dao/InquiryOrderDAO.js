@@ -2,7 +2,7 @@
 
 const serverLogger = require('../util/ServerLogger.js');
 const logger = serverLogger.createLogger('InquiryOrderDAO.js');
-const sysConfig = require("../config/SystemConfig");
+const sysConst = require("../util/SystemConst");
 const httpUtil = require('../util/HttpUtil');
 const db = require('../db/connection/MysqlDb.js');
 
@@ -564,6 +564,61 @@ const statisticsByDays =(params,callback) => {
         callback(error,rows);
     })
 }
+const getOrderProfit = (params,callback) => {
+    let query = " select oi.id,oi.route_start,oi.route_end,oi.car_num,oi.service_type,oi.admin_id,oi.created_on,oi.total_trans_price,oi.total_insure_price";
+    query += ",oi.real_payment_price,au.real_name,dlt.supplier_trans_price,dlt.supplier_insure_price,";
+    query += "IFNULL((oi.real_payment_price - dlt.supplier_trans_price - dlt.supplier_insure_price),0) order_real_profit";
+    query += " from order_info oi ";
+    query += " left join (";
+    query += "select order_id,sum(supplier_trans_price) supplier_trans_price,sum(supplier_insure_price) supplier_insure_price from dp_load_task group by order_id";
+    query += " )dlt on oi.id = dlt.order_id";
+    query += " left join admin_user au on oi.admin_id = au.id";
+    query += " where dlt.order_id is not null";
+    let paramsArray = [],i=0;
+    if(params.orderId){
+        paramsArray[i++] = params.orderId;
+        query = query + " and oi.id = ? ";
+    }
+    if(params.routeStart){
+        paramsArray[i++] = params.routeStart;
+        query = query + " and oi.route_start = ? ";
+    }
+    if(params.routeEnd){
+        paramsArray[i++] = params.routeEnd;
+        query = query + " and oi.route_end = ? ";
+    }
+    if(params.serviceType){
+        paramsArray[i++] = params.serviceType;
+        query = query + " and oi.service_type = ? ";
+    }
+    if(params.createOrderUser){
+        paramsArray[i++] = params.createOrderUser;
+        query = query + " and oi.admin_id = ? ";
+    }
+    if(params.budgetStatus == sysConst.ORDER.budgetStatus.loss){
+        query = query + " and (oi.real_payment_price - dlt.supplier_trans_price - dlt.supplier_insure_price) < 0 ";
+    }else if (params.budgetStatus == sysConst.ORDER.budgetStatus.profit){
+        query = query + " and (oi.real_payment_price - dlt.supplier_trans_price - dlt.supplier_insure_price) >= 0 ";
+    }
+    if(params.createdOnStart){
+        paramsArray[i++] = params.createdOnStart + " 00:00:00";
+        query = query + " and oi.created_on >= ? ";
+    }
+    if(params.createdOnEnd){
+        paramsArray[i++] = params.createdOnEnd + " 23:59:59";
+        query = query + " and oi.created_on <= ? ";
+    }
+    query += " order by oi.created_on desc";
+    if(params.start && params.size){
+        paramsArray[i++] = parseInt(params.start);
+        paramsArray[i] = parseInt(params.size);
+        query = query + " limit ?, ? ";
+    }
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('getOrderProfit');
+        callback(error,rows);
+    })
+}
 module.exports = {
     getInquiryOrder,
     addInquiryOrder,
@@ -583,5 +638,6 @@ module.exports = {
     getById,
     updateById,
     statisticsMonths,
-    statisticsByDays
+    statisticsByDays,
+    getOrderProfit
 }

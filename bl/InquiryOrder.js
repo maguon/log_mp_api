@@ -460,6 +460,19 @@ const selfMentionAddress = (req,res,next) => {
         }
     })
 }
+const getOrderProfit = (req,res,next) => {
+    let params = req.params;
+    inquiryOrderDAO.getOrderProfit(params,(error,result)=>{
+        if(error){
+            logger.error('getOrderProfit' + error.message);
+            resUtil.resInternalError(error,res,next);
+        }else{
+            logger.info('getOrderProfit' + 'success');
+            resUtil.resetQueryRes(res,result,null);
+            return next();
+        }
+    })
+}
 module.exports = {
     addInquiryOrderByAdmin,
     addInquiryOrderByUser,
@@ -476,6 +489,7 @@ module.exports = {
     getOrderNew,
     updatePaymentRemark,
     updateById,
-    selfMentionAddress
+    selfMentionAddress,
+    getOrderProfit
 }
 

@@ -5051,9 +5051,33 @@
             "required": false,
             "type": "integer"
           },{
-            "name": "createOrderUser",
+            "name": "createdOnStart",
             "in": "query",
-            "description": "adminId",
+            "description": "createdOnStart",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "createdOnEnd",
+            "in": "query",
+            "description": "createdOnEnd",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "budgetStatus",
+            "in": "query",
+            "description": "1:盈利 ; 2:亏损",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "start",
+            "in": "query",
+            "description": "start",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "size",
+            "in": "query",
+            "description": "size",
             "required": false,
             "type": "integer"
           }
