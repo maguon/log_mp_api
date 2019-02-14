@@ -11,7 +11,7 @@ const cityDAO = require('../dao/CityInfoDAO.js');
 const routeDAO = require('../dao/RouteDAO.js');
 const sysConsts = require("../util/SystemConst");
 const moment = require('moment/moment.js');
-const requireTask = require("../dao/RequireTaskDAO");
+const orderItemDAO = require("../dao/OrderItemDAO");
 
 const addInquiryOrderByUser = (req,res,next) => {
     let params = req.params;
@@ -473,6 +473,19 @@ const getOrderProfit = (req,res,next) => {
         }
     })
 }
+const getOrderCostOfCar = (req,res,next) => {
+    let params = req.params;
+    orderItemDAO.getOrderCostOfCar(params,(error,result)=>{
+        if(error){
+            logger.error('getOrderCostOfCar' + error.message);
+            resUtil.resInternalError(error,res,next);
+        }else{
+            logger.info('getOrderCostOfCar' + 'success');
+            resUtil.resetQueryRes(res,result,null);
+            return next();
+        }
+    })
+}
 module.exports = {
     addInquiryOrderByAdmin,
     addInquiryOrderByUser,
@@ -490,6 +503,7 @@ module.exports = {
     updatePaymentRemark,
     updateById,
     selfMentionAddress,
-    getOrderProfit
+    getOrderProfit,
+    getOrderCostOfCar
 }
 

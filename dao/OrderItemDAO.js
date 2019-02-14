@@ -138,6 +138,19 @@ const getPriceSum = (params,callback) => {
         callback(error,rows)
     })
 }
+const getOrderCostOfCar = (params,callback) => {
+    let query = " select oi.id,oi.vin,oi.model_type,oi.old_car,oi.brand,oi.brand_type,";
+    query += " oi.valuation,oi.safe_status,oi.act_trans_price,oi.act_insure_price,dltd.supplier_trans_price,dltd.supplier_insure_price"
+    query += " from order_item oi ";
+    query += " left join dp_load_task_detail dltd on oi.id = dltd.order_item_id ";
+    query += " where oi.order_id = ? ";
+    let paramsArray = [],i=0;
+    paramsArray[i] = params.orderId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('getOrderCostOfCar');
+        callback(error,rows)
+    })
+}
 module.exports = {
     addOrderCar,
     getOrderCar,
@@ -146,5 +159,6 @@ module.exports = {
     updateActFee,
     updateOrderItemInfo,
     updateCarType,
-    getPriceSum
+    getPriceSum,
+    getOrderCostOfCar
 }
