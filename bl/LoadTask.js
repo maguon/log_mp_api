@@ -334,7 +334,7 @@ const delLoadTask = (req,res,next) => {
                                     let options ={
                                         entrustId:rows[0].app_id,
                                         dpDemandId:loadTaskHookId,
-                                        demandStatus:0,
+                                        demandStatus:0,//删除
                                         appUrl:hostPort(rows[0].app_url)
                                     }
                                     oAuthUtil.putLoadTaskStatusToSupplier(options,(error,result)=>{
@@ -651,7 +651,71 @@ const getSyncLoadTask = (req,res,next) => {
         })
     })
 }
-
+const syncComplete = (req,res,next) => {
+    let params = req.params;
+    new Promise((resolve,reject)=>{
+        loadTaskDAO.getById({loadTaskId:params.loadTaskId},(error,rows)=>{
+            if(error){
+                logger.error('getLoadTask' + error.message);
+                resUtil.resInternalError(error,res,next);
+                reject(error);
+            }else{
+                logger.info('getLoadTask' + 'success');
+                if (rows.length > 0){
+                    if (rows[0].hook_id){
+                        params.hookId = rows[0].hook_id;
+                        params.supplierId = rows[0].supplier_id;
+                        resolve();
+                    } else {
+                        resUtil.resetFailedRes(res,sysMsg.LOADTASK_NO_HOOKID);
+                    }
+                }else {
+                    resUtil.resetFailedRes(res,sysMsg.REQUIRE_NO_EXISTE);
+                }
+            }
+        })
+    }).then(()=>{
+        new Promise((resolve,reject)=>{
+            supplierInfo.querySupplier({supplierId:params.supplierId},(error,rows)=>{
+                if(error){
+                    logger.error('getSupplierInfo' + error.message);
+                    resUtil.resInternalError(error,res,next);
+                    reject(error);
+                }else{
+                    logger.info('getSupplierInfo' + 'success');
+                    if (rows.length > 0){
+                        params.appUrl = hostPort(rows[0].app_url);
+                        params.entrustId = rows[0].app_id;
+                        resolve();
+                    }else {
+                        resUtil.resetFailedRes(res,sysMsg.SUPPLIER_NOT_EXISTS);
+                    }
+                }
+            })
+        }).then(()=>{
+            let options ={
+                entrustId:params.entrustId,
+                dpDemandId:params.hookId,
+                demandStatus:2,//完成
+                appUrl:params.appUrl
+            }
+            oAuthUtil.putLoadTaskStatusToSupplier(options,(error,result)=>{
+                if(error){
+                    logger.error(' putLoadTaskStatusToSupplier ' + error.message);
+                    resUtil.resInternalError(error,res,next);
+                }else{
+                    logger.info('putLoadTaskStatusToSupplier' + 'success');
+                    if (result.success){
+                        resUtil.resetQueryRes(res,result,null);
+                        return next;
+                    } else {
+                        resUtil.resetFailedRes(res,result.msg);
+                    }
+                }
+            })
+        })
+    })
+}
 const hostPort=(url)=>{
     let urlObj ={};
     urlObj.scheme = url.substring(0,url.indexOf(":")); //协议头
@@ -669,5 +733,6 @@ module.exports={
     updateLoadTaskStatus,
     getSyncLoadTask,
     getOrderLoadTask,
-    getLoadTaskProfit
+    getLoadTaskProfit,
+    syncComplete
 }

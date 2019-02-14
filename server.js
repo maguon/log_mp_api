@@ -379,6 +379,7 @@ const createServer=()=>{
     server.put({path:'/api/admin/:adminId/loadTask/:loadTaskId/status/:status',contentType: 'application/json'},loadTask.updateLoadTaskStatus);
     server.get('/api/admin/:adminId/loadTask/:loadTaskId/getSyncLoadTask',loadTask.getSyncLoadTask);
     server.get('/api/admin/:adminId/getLoadTaskProfit',loadTask.getLoadTaskProfit);
+    server.put({path:'/api/admin/:adminId/loadTask/:loadTaskId/syncComplete',contentType: 'application/json'},loadTask.syncComplete);
     /**
      * dp_load_task_detail
      */
