@@ -170,7 +170,7 @@ const getLoadTaskWithDetail = (params,callback) => {
     })
 }
 const getLoadTaskOrder = (params,callback) => {
-    let query = "select dlt.*,oi.send_address,oi.recv_address ";
+    let query = "select dlt.*,oi.send_address,oi.recv_address,oi.send_address_point,oi.recv_address_point,oi.service_type ";
     query += " from dp_load_task dlt left join order_info oi on dlt.order_id = oi.id where 1=1";
     let paramsArray = [],i=0;
     if (params.loadTaskId){
