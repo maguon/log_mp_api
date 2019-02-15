@@ -10445,9 +10445,9 @@
             "required": false,
             "type": "integer"
           },{
-            "name": "orderStatus",
+            "name": "status",
             "in": "query",
-            "description": "orderStatus",
+            "description": "status",
             "required": false,
             "type": "integer"
           },{

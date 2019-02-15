@@ -332,6 +332,10 @@ const getRouteLoadTask = (params,callback) => {
         paramsArray[i++] = params.orderStatus;
         query = query + " and oi.status = ? ";
     }
+    if(params.status){
+        paramsArray[i++] = params.status;
+        query = query + " and dlt.load_task_status = ? ";
+    }
     if(params.supplierId){
         paramsArray[i++] = params.supplierId;
         query = query + " and dlt.supplier_id = ? ";
