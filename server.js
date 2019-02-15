@@ -376,8 +376,8 @@ const createServer=()=>{
     server.post({path:'/api/admin/:adminId/order/:orderId/require/:requireId/loadTask',contentType: 'application/json'},loadTask.addLoadTask);
     server.post({path:'/api/admin/:adminId/loadTask/:loadTaskId/submitToSupplier',contentType: 'application/json'},loadTask.submitToSupplier);
     server.get('/api/admin/:adminId/order/:orderId/require/:requireId/loadTask',loadTask.getOrderLoadTask);
-    server.del({path:'/api/admin/:adminId/order/:orderId/require/:requireId/loadTask/:loadTaskId',contentType: 'application/json'},loadTask.delLoadTask);
-    server.put({path:'/api/admin/:adminId/order/:orderId/require/:requireId/loadTask/:loadTaskId',contentType: 'application/json'},loadTask.updateLoadTask);
+    server.del({path:'/api/admin/:adminId/loadTask/:loadTaskId',contentType: 'application/json'},loadTask.delLoadTask);
+    server.put({path:'/api/admin/:adminId/loadTask/:loadTaskId',contentType: 'application/json'},loadTask.updateLoadTask);
     server.put({path:'/api/admin/:adminId/loadTask/:loadTaskId/status/:status',contentType: 'application/json'},loadTask.updateLoadTaskStatus);
     server.get('/api/admin/:adminId/loadTask/:loadTaskId/getSyncLoadTask',loadTask.getSyncLoadTask);
     server.get('/api/admin/:adminId/getLoadTaskProfit',loadTask.getLoadTaskProfit);
