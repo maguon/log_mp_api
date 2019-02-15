@@ -214,7 +214,7 @@ const deleteLoadTaskDetail = (req,res,next) => {
             }else{
                 logger.info('getLoadTaskDetail' + 'success');
                 if (rows.length > 0 ){
-                    if (rows[0].hook_id == null){
+                    if (rows[0].hook_id == 0){
                         params.requireId = rows[0].require_id;
                         resolve();
                     }else {
