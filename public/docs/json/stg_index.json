@@ -10451,6 +10451,12 @@
             "required": false,
             "type": "integer"
           },{
+            "name": "paymentFlag",
+            "in": "query",
+            "description": "paymentFlag",
+            "required": false,
+            "type": "integer"
+          },{
             "name": "supplierId",
             "in": "query",
             "description": "supplierId",
@@ -10466,6 +10472,18 @@
             "name": "createdOnEnd",
             "in": "query",
             "description": "createdOnEnd",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "paymentOnStart",
+            "in": "query",
+            "description": "paymentOnStart",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "paymentOnEnd",
+            "in": "query",
+            "description": "paymentOnEnd",
             "required": false,
             "type": "string"
           },{
