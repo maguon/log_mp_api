@@ -106,9 +106,13 @@ const updateById =(params,callback) => {
         paramsArray[i++] = params.transType;
         query += " ,trans_type = ?";
     }
+    if (params.planDateId){
+        paramsArray[i++] = params.planDateId;
+        query += " ,plan_date_id = ?";
+    }
     if (params.planDate){
         paramsArray[i++] = params.planDate;
-        query += " ,plan_date_id = ?";
+        query += " ,plan_date = ?";
     }
     if (params.loadDateId){
         paramsArray[i++] = params.loadDateId;
