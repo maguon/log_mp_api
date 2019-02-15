@@ -129,13 +129,9 @@ const SUPER_ADMIN_TYPE = 99;
 const REQUIRE_TASK = {
     status:{
         toArrange:0,//待安排
-        inArrange:1,//安排中
-        arranged:2//已安排
+        arranged:1,//已安排
+        complete:9//已完成
     }
-}
-const SUPPLIER_URL={
-    host:"stg.myxxjs.com",
-    port:9001
 }
 const SUPPLIER={
     closeFlag:{
@@ -162,7 +158,6 @@ module.exports = {
     NOROUTE_INQUIRY,
     SUPER_ADMIN_TYPE,
     REQUIRE_TASK,
-    SUPPLIER_URL,
     SUPPLIER,
     LOAD_TASK_STATUS
 }

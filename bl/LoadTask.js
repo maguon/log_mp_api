@@ -716,6 +716,19 @@ const syncComplete = (req,res,next) => {
         })
     })
 }
+const getRouteLoadTask = (req,res,next) => {
+    let params = req.params;
+    loadTaskDAO.getRouteLoadTask(params,(error,rows)=>{
+        if(error){
+            logger.error('getLoadTaskProfit' + error.message);
+            resUtil.resInternalError(error,res,next);
+        }else{
+            logger.info('getLoadTaskProfit' + 'success');
+            resUtil.resetQueryRes(res,rows,null);
+            return next;
+        }
+    })
+}
 const hostPort=(url)=>{
     let urlObj ={};
     urlObj.scheme = url.substring(0,url.indexOf(":")); //协议头
@@ -734,5 +747,6 @@ module.exports={
     getSyncLoadTask,
     getOrderLoadTask,
     getLoadTaskProfit,
-    syncComplete
+    syncComplete,
+    getRouteLoadTask
 }

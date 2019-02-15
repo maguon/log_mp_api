@@ -10415,6 +10415,125 @@
         }
       }
     },
+    "/admin/{adminId}/routeLoadTask": {
+      "get": {
+        "tags": [
+          "loadTask"
+        ],
+        "summary": "select",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },{
+            "name": "loadTaskId",
+            "in": "query",
+            "description": "loadTaskId",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "orderId",
+            "in": "query",
+            "description": "orderId",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "serviceType",
+            "in": "query",
+            "description": "1:上门提货 2:自提",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "routeStartId",
+            "in": "query",
+            "description": "routeStartId",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "routeEndId",
+            "in": "query",
+            "description": "routeEndId",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "transType",
+            "in": "query",
+            "description": "transType",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "orderStatus",
+            "in": "query",
+            "description": "orderStatus",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "supplierId",
+            "in": "query",
+            "description": "supplierId",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "createdOnStart",
+            "in": "query",
+            "description": "createdOnStart",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "createdOnEnd",
+            "in": "query",
+            "description": "createdOnEnd",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "planDateStart",
+            "in": "query",
+            "description": "planDateStart",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "planDateEnd",
+            "in": "query",
+            "description": "planDateEnd",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "start",
+            "in": "query",
+            "description": "start",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "size",
+            "in": "query",
+            "description": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/loadTask"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
     "/admin/{adminId}/loadTask/{loadTaskId}/loadTaskDetail": {
       "post": {
         "tags": [

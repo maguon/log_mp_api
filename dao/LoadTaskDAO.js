@@ -282,6 +282,75 @@ const getLoadTaskProfit = (params,callback) => {
         callback(error,rows);
     })
 }
+const getRouteLoadTask = (params,callback) => {
+    let query = "select dlt.id,dlt.plan_date,dlt.route_start,dlt.route_end,dlt.arrive_date,dlt.load_date,dlt.trans_type,";
+    query += " dlt.supplier_trans_price,dlt.supplier_insure_price,dlt.load_task_status,dlt.order_id,dlt.created_on,oi.created_on order_created_on";
+    query += " ,oi.car_num order_car_num,oi.total_trans_price,oi.total_insure_price,oi.service_type,dlt.car_count,si.supplier_short,au.real_name,drt.created_on require_created_on ";
+    query += " from dp_load_task dlt"
+    query += " left join order_info oi on dlt.order_id = oi.id";
+    query += " left join supplier_info si on dlt.supplier_id = si.id ";
+    query += " left join dp_require_task drt on dlt.require_id = drt.id"
+    query += " left join admin_user au on oi.admin_id = au.id where 1=1"
+    let paramsArray = [],i=0;
+    if (params.loadTaskId){
+        paramsArray[i++] = params.loadTaskId;
+        query += " and dlt.id = ?";
+    }
+    if (params.orderId){
+        paramsArray[i++] = params.orderId;
+        query += " and dlt.order_id = ?";
+    }
+    if (params.routeEndId){
+        paramsArray[i++] = params.routeEndId;
+        query += " and dlt.route_end_id = ?";
+    }
+    if (params.serviceType){
+        paramsArray[i++] = params.serviceType;
+        query += " and oi.service_type = ?";
+    }
+    if (params.routeStartId){
+        paramsArray[i++] = params.routeStartId;
+        query += " and dlt.route_start_id = ?";
+    }
+    if (params.transType){
+        paramsArray[i++] = params.transType;
+        query += " and dlt.trans_type = ?";
+    }
+    if(params.createdOnStart){
+        paramsArray[i++] = params.createdOnStart;
+        query = query + " and date_format(dlt.created_on,'%Y-%m-%d') >= ? ";
+    }
+    if(params.createdOnEnd){
+        paramsArray[i++] = params.createdOnEnd;
+        query = query + " and date_format(dlt.created_on,'%Y-%m-%d') <= ? ";
+    }
+    if(params.orderStatus){
+        paramsArray[i++] = params.orderStatus;
+        query = query + " and oi.status = ? ";
+    }
+    if(params.supplierId){
+        paramsArray[i++] = params.supplierId;
+        query = query + " and dlt.supplier_id = ? ";
+    }
+    if(params.planDateStart){
+        paramsArray[i++] = params.planDateStart;
+        query = query + " and date_format(dlt.plan_date,'%Y-%m-%d') >= ? ";
+    }
+    if(params.planDateEnd){
+        paramsArray[i++] = params.planDateEnd;
+        query = query + " and date_format(dlt.plan_date,'%Y-%m-%d') <= ? ";
+    }
+    query = query + " order by dlt.created_on desc";
+    if(params.start && params.size){
+        paramsArray[i++] = parseInt(params.start);
+        paramsArray[i] = parseInt(params.size);
+        query = query + " limit ?,? ";
+    }
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('getRouteLoadTask');
+        callback(error,rows);
+    })
+}
 module.exports={
     add,getById,updateById,
     getLoadTaskWithDetail,
@@ -289,5 +358,6 @@ module.exports={
     deleteById,
     getHasLoadCarCount,
     getLoadTask,
-    getLoadTaskProfit
+    getLoadTaskProfit,
+    getRouteLoadTask
 }
