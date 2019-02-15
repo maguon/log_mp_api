@@ -423,12 +423,8 @@ const updateLoadTask = (req,res,next) => {
                         resUtil.resInternalError(error,res,next);
                     }else{
                         logger.info('updateLoadTaskById' + 'success');
-                        if (rows.changedRows > 0){
-                            resUtil.resetUpdateRes(res,rows,null);
-                            return next;
-                        } else {
-                            resUtil.resetFailedRes(res,sysMsg.LOADTASK_DELETE_FAIL);
-                        }
+                        resUtil.resetUpdateRes(res,rows,null);
+                        return next;
                     }
                 })
             } else {
