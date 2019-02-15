@@ -383,74 +383,57 @@ const updateLoadTask = (req,res,next) => {
     let params = req.params;
     let loadTaskHookId = 0;
     new Promise((resolve,reject)=>{
-        orderInfoDAO.getById({orderId:params.orderId},(error,rows)=>{
+        requireTaskDAO.getById({requireId:params.requireId},(error,rows)=>{
             if(error){
-                logger.error('getOrder' + error.message);
+                logger.error('getRequireTaskById' + error.message);
                 resUtil.resInternalError(error,res,next);
                 reject(error);
             }else{
-                logger.info('getOrder' + 'success');
+                logger.info('getRequireTaskById' + 'success');
                 if (rows.length > 0){
                     resolve();
                 }else {
-                    resUtil.resetFailedRes(res,sysMsg.ORDER_NO_EXISTE);
+                    resUtil.resetFailedRes(res,sysMsg.REQUIRE_NO_EXISTE);
                 }
             }
         })
     }).then(()=>{
         new Promise((resolve,reject)=>{
-            requireTaskDAO.getById({requireId:params.requireId},(error,rows)=>{
+            loadTaskDAO.getById({loadTaskId:params.loadTaskId},(error,rows)=>{
                 if(error){
-                    logger.error('getRequireTaskById' + error.message);
+                    logger.error('getLoadTaskById' + error.message);
                     resUtil.resInternalError(error,res,next);
                     reject(error);
                 }else{
-                    logger.info('getRequireTaskById' + 'success');
+                    logger.info('getLoadTaskById' + 'success');
                     if (rows.length > 0){
+                        loadTaskHookId = rows[0].hook_id;
                         resolve();
                     }else {
-                        resUtil.resetFailedRes(res,sysMsg.REQUIRE_NO_EXISTE);
+                        resUtil.resetFailedRes(res,sysMsg.LOAD_TASK_NO_EXISTS)
                     }
                 }
             })
         }).then(()=>{
-            new Promise((resolve,reject)=>{
-                loadTaskDAO.getById({loadTaskId:params.loadTaskId},(error,rows)=>{
+            if (loadTaskHookId == 0){
+                params.planDateId = moment(params.planDate.toString()).format("YYYYMMDD");
+                loadTaskDAO.updateById(params,(error,rows)=>{
                     if(error){
-                        logger.error('getLoadTaskById' + error.message);
+                        logger.error('updateLoadTaskById' + error.message);
                         resUtil.resInternalError(error,res,next);
-                        reject(error);
                     }else{
-                        logger.info('getLoadTaskById' + 'success');
-                        if (rows.length > 0){
-                            loadTaskHookId = rows[0].hook_id;
-                            resolve();
-                        }else {
-                            resUtil.resetFailedRes(res,sysMsg.LOAD_TASK_NO_EXISTS)
+                        logger.info('updateLoadTaskById' + 'success');
+                        if (rows.changedRows > 0){
+                            resUtil.resetUpdateRes(res,rows,null);
+                            return next;
+                        } else {
+                            resUtil.resetFailedRes(res,sysMsg.LOADTASK_DELETE_FAIL);
                         }
                     }
                 })
-            }).then(()=>{
-                if (loadTaskHookId == 0){
-                    params.planDateId = moment(params.planDate.toString()).format("YYYYMMDD");
-                    loadTaskDAO.updateById(params,(error,rows)=>{
-                            if(error){
-                                logger.error('updateLoadTaskById' + error.message);
-                                resUtil.resInternalError(error,res,next);
-                            }else{
-                                logger.info('updateLoadTaskById' + 'success');
-                                if (rows.changedRows > 0){
-                                    resUtil.resetUpdateRes(res,rows,null);
-                                    return next;
-                                } else {
-                                    resUtil.resetFailedRes(res,sysMsg.LOADTASK_DELETE_FAIL);
-                                }
-                            }
-                        })
-                } else {
-                    resUtil.resetFailedRes(res,sysMsg.LOCKTASK_UPDATE_ALREADY_SYNC);
-                }
-            })
+            } else {
+                resUtil.resetFailedRes(res,sysMsg.LOCKTASK_UPDATE_ALREADY_SYNC);
+            }
         })
     })
 }
