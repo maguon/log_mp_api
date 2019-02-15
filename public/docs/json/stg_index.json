@@ -9904,7 +9904,7 @@
           },{
             "name": "status",
             "in": "path",
-            "description": "0:待安排 1:已安排",
+            "description": "0:待安排 1:已安排 9:已完成",
             "required": true,
             "type": "integer"
           }

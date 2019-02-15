@@ -73,15 +73,55 @@ const getRequireOrder = (req,res,next) => {
 }
 const updateStatus = (req,res,next) => {
     let params = req.params;
-    requireTask.updateById(params,(error,rows)=>{
-        if(error){
-            logger.error('updateRequireStatus' + error.message);
-            resUtil.resInternalError(error,res,next);
-        }else{
-            logger.info('updateRequireStatus' + 'success');
-            resUtil.resetUpdateRes(res,rows,null);
-            return next;
-        }
+    new Promise((resolve,reject)=>{
+        requireTask.updateById(params,(error,rows)=>{
+            if(error){
+                logger.error('updateRequireStatus' + error.message);
+                resUtil.resInternalError(error,res,next);
+                reject(error);
+            }else{
+                logger.info('updateRequireStatus' + 'success');
+                resolve();
+            }
+        })
+    }).then(()=>{
+        new Promise((resolve,reject)=>{
+            requireTask.getById(params,(error,rows)=>{
+                if(error){
+                    logger.error('getRequireTask' + error.message);
+                    resUtil.resInternalError(error,res,next);
+                    reject(error);
+                }else{
+                    logger.info('getRequireTask' + 'success');
+                    if (rows.length > 0){
+                        params.orderId = rows[0].order_id;
+                        resolve();
+                    } else {
+                        resUtil.resetFailedRes(res,sysMsg.REQUIRE_NO_EXISTE);
+                    }
+
+                }
+            })
+        }).then(()=>{
+            let options = {
+                orderId:params.orderId
+            }
+            if (params.status == sysConsts.REQUIRE_TASK.status.arranged){
+                options.status = sysConsts.ORDER.status.inExecution;
+            }else if (params.status == sysConsts.REQUIRE_TASK.status.arranged) {
+                options.status = sysConsts.ORDER.status.completed;
+            }
+            orderInfoDAO.updateById(options,(error,rows)=>{
+                if(error){
+                    logger.error('updateOrderStatus' + error.message);
+                    resUtil.resInternalError(error,res,next);
+                }else{
+                    logger.info('updateOrderStatus' + 'success');
+                    resUtil.resetUpdateRes(res,rows,null);
+                    return next;
+                }
+            })
+        })
     })
 }
 module.exports={
