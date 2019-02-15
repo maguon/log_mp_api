@@ -623,7 +623,7 @@ const syncComplete = (req,res,next) => {
                         resUtil.resetFailedRes(res,sysMsg.LOADTASK_NO_HOOKID);
                     }
                 }else {
-                    resUtil.resetFailedRes(res,sysMsg.REQUIRE_NO_EXISTE);
+                    resUtil.resetFailedRes(res,sysMsg.LOAD_TASK_NO_EXISTS);
                 }
             }
         })
@@ -682,6 +682,38 @@ const getRouteLoadTask = (req,res,next) => {
         }
     })
 }
+const doPayment = (req,res,next) => {
+    let params = req.params;
+    new Promise((resolve,reject)=>{
+        loadTaskDAO.getById({loadTaskId:params.loadTaskId},(error,rows)=>{
+            if(error){
+                logger.error('getLoadTask' + error.message);
+                resUtil.resInternalError(error,res,next);
+                reject(error);
+            }else{
+                logger.info('getLoadTask' + 'success');
+                if (rows.length > 0){
+                    resolve();
+                }else {
+                    resUtil.resetFailedRes(res,sysMsg.LOAD_TASK_NO_EXISTS);
+                }
+            }
+        })
+    }).then(()=>{
+        params.paymentFlag = sysConsts.LOAD_TASK_PAYMENTFLAG.yes;
+        params.paymentOn = new Date();
+        loadTaskDAO.updateById(params,(error,rows)=>{
+            if(error){
+                logger.error('updatePaymentFlag' + error.message);
+                resUtil.resInternalError(error,res,next);
+            }else{
+                logger.info('updatePaymentFlag' + 'success');
+                resUtil.resetUpdateRes(res,rows,null);
+                return next;
+            }
+        })
+    })
+}
 const hostPort=(url)=>{
     let urlObj ={};
     urlObj.scheme = url.substring(0,url.indexOf(":")); //协议头
@@ -701,5 +733,6 @@ module.exports={
     getOrderLoadTask,
     getLoadTaskProfit,
     syncComplete,
-    getRouteLoadTask
+    getRouteLoadTask,
+    doPayment
 }

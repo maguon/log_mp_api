@@ -145,6 +145,10 @@ const LOAD_TASK_STATUS ={
     loading:2,
     served:3
 }
+const LOAD_TASK_PAYMENTFLAG ={
+    yes:1,//已付款
+    no:0//未付款
+}
 module.exports = {
     CAR_MODEL,
     PAYMENT,
@@ -159,5 +163,6 @@ module.exports = {
     SUPER_ADMIN_TYPE,
     REQUIRE_TASK,
     SUPPLIER,
-    LOAD_TASK_STATUS
+    LOAD_TASK_STATUS,
+    LOAD_TASK_PAYMENTFLAG
 }

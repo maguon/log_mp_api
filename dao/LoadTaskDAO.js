@@ -82,6 +82,14 @@ const updateById =(params,callback) => {
         paramsArray[i++] = params.hookId;
         query += " ,hook_id = ?";
     }
+    if (params.paymentFlag){
+        paramsArray[i++] = params.paymentFlag;
+        query += " ,payment_flag = ?";
+    }
+    if (params.paymentOn){
+        paramsArray[i++] = params.paymentOn;
+        query += " ,payment_on = ?";
+    }
     if (params.routeStart){
         paramsArray[i++] = params.routeStart;
         query += " ,route_start = ?";
