@@ -299,7 +299,7 @@ const delLoadTask = (req,res,next) => {
                     logger.info('getSupplierById' + 'success');
                     if (rows.length > 0){
                         if (loadTaskHookId != 0){
-                            if (rows[0].app_id || rows[0].app_url) {
+                            if (!(rows[0].app_id || rows[0].app_url)) {
                                 resUtil.resetFailedRes(res,sysMsg.SUPPLIER_NO_APP_MSG);
                             }else {
                                 let options ={

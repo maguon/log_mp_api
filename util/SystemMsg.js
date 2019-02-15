@@ -63,7 +63,7 @@ let ADMIN_NO_USER = "该用户不存在";
  */
 let SUPPLIER_NOT_EXISTS ="该供应商不存在";
 let SUPPLIER_CLOSE_NOTALLOW_SYNC ="关闭高级设置不允许同步到供应商";
-let SUPPLIER_NO_APP_MSG ="该供应商高级设置即可删除";
+let SUPPLIER_NO_APP_MSG ="完成同步的无限需有供应商高级设置即可删除";
 /**
  * order info
  */
