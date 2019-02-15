@@ -10073,7 +10073,7 @@
         }
       }
     },
-    "/admin/{adminId}/order/{orderId}/require/{requireId}/loadTask/{loadTaskId}": {
+    "/admin/{adminId}/loadTask/{loadTaskId}": {
       "put": {
         "tags": [
           "loadTask"
@@ -10088,18 +10088,6 @@
             "name": "adminId",
             "in": "path",
             "description": "adminId",
-            "required": true,
-            "type": "integer"
-          },{
-            "name": "orderId",
-            "in": "path",
-            "description": "orderId",
-            "required": true,
-            "type": "integer"
-          },{
-            "name": "requireId",
-            "in": "path",
-            "description": "requireId",
             "required": true,
             "type": "integer"
           },{
