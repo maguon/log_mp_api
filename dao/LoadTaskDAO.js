@@ -51,9 +51,9 @@ const getById = (params,callback) => {
     }
     if (params.isHookIdNull){
         paramsArray[i++] = params.isHookIdNull;
-        query += " and hook_id is not null";
+        query += " and hook_id != 0";
     }
-    if (params.hookId){
+    if (params.hookId || params.hookId == 0){
         paramsArray[i] = params.hookId;
         query += " and hook_id = ?";
     }
