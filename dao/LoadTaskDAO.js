@@ -298,6 +298,7 @@ const getRouteLoadTask = (params,callback) => {
     let query = "select dlt.id,dlt.plan_date,dlt.route_start,dlt.route_end,dlt.arrive_date,dlt.load_date,dlt.trans_type,dlt.car_count,dlt.payment_flag,";
     query += " dlt.supplier_trans_price,dlt.supplier_insure_price,dlt.load_task_status,dlt.order_id,dlt.created_on,oi.created_on order_created_on,dlt.payment_on";
     query += " ,oi.car_num order_car_num,oi.total_trans_price,oi.total_insure_price,oi.service_type,dlt.car_count,si.supplier_short,au.real_name,drt.created_on require_created_on ";
+    query += ",dlt.arrive_date,dlt.supplier_id";
     query += " from dp_load_task dlt"
     query += " left join order_info oi on dlt.order_id = oi.id";
     query += " left join supplier_info si on dlt.supplier_id = si.id ";
@@ -359,6 +360,14 @@ const getRouteLoadTask = (params,callback) => {
     if(params.planDateEnd){
         paramsArray[i++] = params.planDateEnd;
         query = query + " and date_format(dlt.plan_date,'%Y-%m-%d') <= ? ";
+    }
+    if(params.arriveDateStart){
+        paramsArray[i++] = params.arriveDateStart;
+        query = query + " and date_format(dlt.arrive_date,'%Y-%m-%d') >= ? ";
+    }
+    if(params.arriveDateEnd){
+        paramsArray[i++] = params.arriveDateEnd;
+        query = query + " and date_format(dlt.arrive_date,'%Y-%m-%d') <= ? ";
     }
     if(params.paymentOnStart){
         paramsArray[i++] = params.paymentOnStart;

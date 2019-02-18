@@ -10453,7 +10453,7 @@
           },{
             "name": "paymentFlag",
             "in": "query",
-            "description": "paymentFlag",
+            "description": "0:未付款 1:已付款",
             "required": false,
             "type": "integer"
           },{
@@ -10496,6 +10496,18 @@
             "name": "planDateEnd",
             "in": "query",
             "description": "planDateEnd",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "arriveDateStart",
+            "in": "query",
+            "description": "arriveDateStart",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "arriveDateEnd",
+            "in": "query",
+            "description": "arriveDateEnd",
             "required": false,
             "type": "string"
           },{
