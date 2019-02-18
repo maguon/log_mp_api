@@ -267,6 +267,7 @@ const createServer=()=>{
     server.put({path:'/api/admin/:adminId/supplier/:supplierId/supplierInfo',contentType: 'application/json'},supplier.updateSupplier);
     server.put({path:'/api/admin/:adminId/supplier/:supplierId/advancedSetting',contentType: 'application/json'},supplier.updateAdvancedSetting);
     server.put({path:'/api/admin/:adminId/supplier/:supplierId/closeFlag/:closeFlag',contentType: 'application/json'},supplier.updateCloseFlag);
+    server.get('/api/admin/:adminId/supplierBusiness',supplier.getSupplierBusiness);
     /**
      supplier_bank
      */

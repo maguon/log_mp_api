@@ -132,6 +132,35 @@ const updateCloseFlag = (params,callback) => {
         callback(error,rows);
     })
 }
+const getSupplierWithLoadTask = (params,callback) => {
+    let query = "select si.id,si.supplier_short,si.supplier_full ,count(dlt.id) load_task_count,IFNULL(sum(dlt.car_count),0) total_car_num,";
+    query += "IFNULL(sum(dlt.supplier_trans_price),0) total_supplier_trans_price,IFNULL(sum(dlt.supplier_insure_price),0) total_supplier_insure_price";
+    query += " ,sum(case when dlt.payment_flag =1 then (supplier_trans_price + supplier_insure_price) else 0 end ) payment_price";
+    query += " from supplier_info si left join dp_load_task dlt on si.id = dlt.supplier_id where 1=1";
+    let paramsArray = [],i=0;
+    if(params.supplierId){
+        paramsArray[i++] = params.supplierId;
+        query = query + " and si.id = ? ";
+    }
+    if(params.createdOnStart){
+        paramsArray[i++] = params.createdOnStart;
+        query = query + " and date_format(dlt.created_on,'%Y-%m-%d') >= ? ";
+    }
+    if(params.createdOnEnd){
+        paramsArray[i++] = params.createdOnEnd;
+        query = query + " and date_format(dlt.created_on,'%Y-%m-%d') <= ? ";
+    }
+    query += " group by si.id order by si.id desc";
+    if(params.start && params.size){
+        paramsArray[i++] = parseInt(params.start);
+        paramsArray[i] = parseInt(params.size);
+        query = query + " limit ? , ? ";
+    }
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('getSupplierWithLoadTask');
+        callback(error,rows);
+    })
+}
 module.exports = {
     addSupplier,
     querySupplier,
@@ -140,5 +169,6 @@ module.exports = {
     delContact,
     delSupplier,
     updateById,
-    updateCloseFlag
+    updateCloseFlag,
+    getSupplierWithLoadTask
 }

@@ -106,10 +106,24 @@ const updateCloseFlag = (req,res,next) => {
         })
     })
 }
+const getSupplierBusiness = (req,res,next) => {
+    let params = req.params;
+    supplierDAO.getSupplierWithLoadTask(params,(error,result)=>{
+        if(error){
+            logger.error('getSupplierWithLoadTask' + error.message);
+            resUtil.resInternalError(error,res,next);
+        }else{
+            logger.info('getSupplierWithLoadTask' + 'success');
+            resUtil.resetQueryRes(res,result,null);
+            return next();
+        }
+    })
+}
 module.exports = {
     addSupplier,
     querySupplier,
     updateSupplier,
     updateAdvancedSetting,
-    updateCloseFlag
+    updateCloseFlag,
+    getSupplierBusiness
 }
