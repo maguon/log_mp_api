@@ -10319,7 +10319,7 @@
         }
       }
     },
-    "/admin/{adminId}/getLoadTaskProfit": {
+    "/admin/{adminId}/getLoadTaskProfitOfCar": {
       "get": {
         "tags": [
           "loadTask"

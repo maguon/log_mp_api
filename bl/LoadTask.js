@@ -508,9 +508,9 @@ const getOrderLoadTask = (req,res,next) => {
         })
     })
 }
-const getLoadTaskProfit = (req,res,next) => {
+const getLoadTaskProfitOfCar = (req,res,next) => {
     let params = req.params;
-    loadTaskDAO.getLoadTaskProfit(params,(error,rows)=>{
+    loadTaskDAO.getLoadTaskProfitOfCar(params,(error,rows)=>{
         if(error){
             logger.error('getLoadTaskProfit' + error.message);
             resUtil.resInternalError(error,res,next);
@@ -731,7 +731,7 @@ module.exports={
     updateLoadTaskStatus,
     getSyncLoadTask,
     getOrderLoadTask,
-    getLoadTaskProfit,
+    getLoadTaskProfitOfCar,
     syncComplete,
     getRouteLoadTask,
     doPayment

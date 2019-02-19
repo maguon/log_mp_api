@@ -381,7 +381,7 @@ const createServer=()=>{
     server.put({path:'/api/admin/:adminId/loadTask/:loadTaskId',contentType: 'application/json'},loadTask.updateLoadTask);
     server.put({path:'/api/admin/:adminId/loadTask/:loadTaskId/status/:status',contentType: 'application/json'},loadTask.updateLoadTaskStatus);
     server.get('/api/admin/:adminId/loadTask/:loadTaskId/getSyncLoadTask',loadTask.getSyncLoadTask);
-    server.get('/api/admin/:adminId/getLoadTaskProfit',loadTask.getLoadTaskProfit);
+    server.get('/api/admin/:adminId/getLoadTaskProfitOfCar',loadTask.getLoadTaskProfitOfCar);
     server.put({path:'/api/admin/:adminId/loadTask/:loadTaskId/syncComplete',contentType: 'application/json'},loadTask.syncComplete);
     server.get('/api/admin/:adminId/routeLoadTask',loadTask.getRouteLoadTask);
     server.put({path:'/api/admin/:adminId/loadTask/:loadTaskId/payment',contentType: 'application/json'},loadTask.doPayment);
