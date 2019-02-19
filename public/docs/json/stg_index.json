@@ -10894,7 +10894,7 @@
         }
       }
     },
-    "/admin/{adminId}/loadTask/{loadTaskId}/getSyncLoadTaskDetail/{syncLoadTaskId}": {
+    "/admin/{adminId}/loadTask/{loadTaskId}/syncLoadTaskDetail/{syncLoadTaskId}": {
       "get": {
         "tags": [
           "loadTaskDetail"
