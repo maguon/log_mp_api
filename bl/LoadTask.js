@@ -736,7 +736,7 @@ const getRouteOfCar = (req,res,next) => {
             }
         })
     }).then(()=>{
-        loadTaskDAO.getById({loadTaskIdArray:loadTaskIdArray},(error,rows)=>{
+        loadTaskDAO.getLoadTask({loadTaskIdArray:loadTaskIdArray},(error,rows)=>{
             if(error){
                 logger.error('getLoadTask' + error.message);
                 resUtil.resInternalError(error,res,next);
