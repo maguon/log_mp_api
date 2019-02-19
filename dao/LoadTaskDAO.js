@@ -37,6 +37,10 @@ const add = (params,callback) => {
 const getById = (params,callback) => {
     let query = "select * from dp_load_task where 1=1";
     let paramsArray = [],i=0;
+    if (params.loadTaskIdArray){
+        paramsArray[i++] = params.loadTaskIdArray;
+        query += " and id in (?)";
+    }
     if (params.loadTaskId){
         paramsArray[i++] = params.loadTaskId;
         query += " and id = ?";

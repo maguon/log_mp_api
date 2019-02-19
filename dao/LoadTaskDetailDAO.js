@@ -73,7 +73,8 @@ const updateById = (params,callback) => {
     })
 }
 const getById = (params,callback) => {
-    let query = "select * from dp_load_task_detail where 1=1";
+    let query = "select id,dp_load_task_id,require_id,order_id,order_item_id,supplier_id,vin,date_id,supplier_trans_price,supplier_insure_price,hook_id,created_on,updated_on ";
+    query += "from dp_load_task_detail where 1=1";
     let paramsArray = [],i=0;
     if (params.loadTaskDetailId){
         paramsArray[i++] = params.loadTaskDetailId;
@@ -84,8 +85,12 @@ const getById = (params,callback) => {
         query += " and dp_load_task_id = ?";
     }
     if (params.isHookIdNull){
-        paramsArray[i] = params.isHookIdNull;
-        query += " and hook_id is not null";
+        paramsArray[i++] = params.isHookIdNull;
+        query += " and hook_id != 0";
+    }
+    if (params.orderItemId){
+        paramsArray[i] = params.orderItemId;
+        query += " and order_item_id = ?";
     }
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('getLoadTaskDetailById');
@@ -121,11 +126,37 @@ const getTotalPrice = (params,callback) => {
         callback(error,rows);
     })
 }
+const getRouteId = (params,callback) => {
+    let query = "select  distinct dp_load_task_id";
+    query += " from dp_load_task_detail where 1=1";
+    let paramsArray = [],i=0;
+    if (params.loadTaskDetailId){
+        paramsArray[i++] = params.loadTaskDetailId;
+        query += " and id = ?";
+    }
+    if (params.loadTaskId){
+        paramsArray[i++] = params.loadTaskId;
+        query += " and dp_load_task_id = ?";
+    }
+    if (params.isHookIdNull){
+        paramsArray[i++] = params.isHookIdNull;
+        query += " and hook_id != 0";
+    }
+    if (params.orderItemId){
+        paramsArray[i] = params.orderItemId;
+        query += " and order_item_id = ?";
+    }
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('getLoadTaskDetailById');
+        callback(error,rows);
+    })
+}
 module.exports={
     add,
     getArrangeLoadTaskDetail,
     updateById,
     getById,
     deleteById,
-    getTotalPrice
+    getTotalPrice,
+    getRouteId
 }

@@ -714,6 +714,40 @@ const doPayment = (req,res,next) => {
         })
     })
 }
+const getRouteOfCar = (req,res,next) => {
+    let params = req.params;
+    let loadTaskIdArray = new Array();
+    new Promise((resolve,reject)=>{
+        loadTaskDetailDAO.getRouteId(params,(error,rows)=>{
+            if(error){
+                logger.error('getLoadTaskId' + error.message);
+                resUtil.resInternalError(error,res,next);
+                reject(error);
+            }else{
+                logger.info('getLoadTaskId' + 'success');
+                if (rows.length > 0){
+                    for (let i in rows){
+                        loadTaskIdArray.push(rows[i].dp_load_task_id);
+                    }
+                    resolve();
+                }else {
+                    resUtil.resetFailedRes(res,sysMsg.LOADTASK_DETAIL_NO_EXISTE);
+                }
+            }
+        })
+    }).then(()=>{
+        loadTaskDAO.getById({loadTaskIdArray:loadTaskIdArray},(error,rows)=>{
+            if(error){
+                logger.error('getLoadTask' + error.message);
+                resUtil.resInternalError(error,res,next);
+            }else{
+                logger.info('getLoadTask' + 'success');
+                resUtil.resetQueryRes(res,rows,null);
+                return next;
+            }
+        })
+    })
+}
 const hostPort=(url)=>{
     let urlObj ={};
     urlObj.scheme = url.substring(0,url.indexOf(":")); //协议头
@@ -734,5 +768,6 @@ module.exports={
     getLoadTaskProfitOfCar,
     syncComplete,
     getRouteLoadTask,
-    doPayment
+    doPayment,
+    getRouteOfCar
 }
