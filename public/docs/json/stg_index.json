@@ -5031,15 +5031,15 @@
             "type": "integer"
           },
           {
-            "name": "routeStart",
+            "name": "routeStartId",
             "in": "query",
-            "description": "routeStart",
+            "description": "routeStartId",
             "required": false,
             "type": "string"
           },{
-            "name": "routeEnd",
+            "name": "routeEndId",
             "in": "query",
-            "description": "routeEnd",
+            "description": "routeEndId",
             "required": false,
             "type": "string"
           },{

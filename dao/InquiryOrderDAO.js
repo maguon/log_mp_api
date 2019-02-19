@@ -579,13 +579,13 @@ const getOrderProfit = (params,callback) => {
         paramsArray[i++] = params.orderId;
         query = query + " and oi.id = ? ";
     }
-    if(params.routeStart){
-        paramsArray[i++] = params.routeStart;
-        query = query + " and oi.route_start = ? ";
+    if(params.routeStartId){
+        paramsArray[i++] = params.routeStartId;
+        query = query + " and oi.route_start_id = ? ";
     }
-    if(params.routeEnd){
-        paramsArray[i++] = params.routeEnd;
-        query = query + " and oi.route_end = ? ";
+    if(params.routeEndId){
+        paramsArray[i++] = params.routeEndId;
+        query = query + " and oi.route_end_id = ? ";
     }
     if(params.serviceType){
         paramsArray[i++] = params.serviceType;
