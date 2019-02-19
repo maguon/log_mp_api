@@ -37,6 +37,7 @@ const noRouteInquiryInfo = require("./bl/NoRouteInquiryInfo");
 const requireTask = require("./bl/RequireTask");
 const loadTask = require("./bl/LoadTask");
 const loadTaskDetail = require("./bl/LoadTaskDetail");
+const recommend = require("./bl/Recommend");
 
 /**
  * Returns a server with all routes defined on it
@@ -394,6 +395,14 @@ const createServer=()=>{
     server.put({path:'/api/admin/:adminId/loadTask/:loadTaskId/loadTaskDetail/:loadTaskDetailId',contentType: 'application/json'},loadTaskDetail.updateLoadTaskDetail);
     server.del({path:'/api/admin/:adminId/loadTask/:loadTaskId/loadTaskDetail/:loadTaskDetailId',contentType: 'application/json'},loadTaskDetail.deleteLoadTaskDetail);
     server.get('/api/admin/:adminId/loadTask/:loadTaskId/syncLoadTaskDetail/:syncLoadTaskId',loadTaskDetail.getLoadTaskDetail);
+
+    /**
+     * recommend_info
+     */
+    server.post({path:'/api/admin/:adminId/recommend',contentType: 'application/json'},recommend.addRecommend);
+    server.get('/api/admin/:adminId/recommend',recommend.getRecommend);
+    server.put({path:'/api/admin/:adminId/recommend/:recommendId',contentType: 'application/json'},recommend.updateRecommend);
+    server.post({path:'/api/admin/:adminId/recommend/:recommendId/advertisement',contentType: 'application/json'},recommend.addAdvertisement);
 
     server.on('NotFound', function (req, res ,next) {
         logger.warn(req.url + " not found");

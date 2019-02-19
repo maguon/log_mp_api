@@ -129,6 +129,10 @@
     {
       "name": "loadTaskDetail",
       "description":"loadTaskDetail of log api"
+    },
+    {
+      "name": "recommend",
+      "description":"recommend of log api"
     }
   ],
   "schemes": [
@@ -10940,6 +10944,192 @@
           }
         }
       }
+    },
+    "/admin/{adminId}/recommend": {
+      "post": {
+        "tags": [
+          "recommend"
+        ],
+        "summary": "insert",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },{
+            "name": "recommendMsg",
+            "in": "body",
+            "description": "recommendMsg",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/recommendMsg"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/recommend"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "recommend"
+        ],
+        "summary": "select",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },{
+            "name": "recommendId",
+            "in": "query",
+            "description": "recommendId",
+            "required": false,
+            "type":"integer"
+          },{
+            "name": "name",
+            "in": "query",
+            "description": "name",
+            "required": false,
+            "type":"string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/recommend"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/recommend/{recommendId}": {
+      "put": {
+        "tags": [
+          "recommend"
+        ],
+        "summary": "update",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },{
+            "name": "recommendId",
+            "in": "path",
+            "description": "recommendId",
+            "required": true,
+            "type": "integer"
+          },{
+            "name": "recommendMsg",
+            "in": "body",
+            "description": "recommendMsg",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/recommendMsg"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/recommend"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/recommend/{recommendId}/advertisement": {
+      "post": {
+        "tags": [
+          "recommend"
+        ],
+        "summary": "insert",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },{
+            "name": "recommendId",
+            "in": "path",
+            "description": "recommendId",
+            "required": true,
+            "type": "integer"
+          },{
+            "name": "advertisement",
+            "in": "body",
+            "description": "advertisement",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/advertisement"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/recommend"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -12387,6 +12577,31 @@
       },
       "xml": {
         "name": "selfMentionAddress"
+      }
+    },
+    "recommendMsg": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "introduction": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "recommendMsg"
+      }
+    },
+    "advertisement": {
+      "type": "object",
+      "properties": {
+        "content": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "advertisement"
       }
     }
   }
