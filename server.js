@@ -375,17 +375,17 @@ const createServer=()=>{
      * dp_load_task
      */
     server.post({path:'/api/admin/:adminId/order/:orderId/require/:requireId/loadTask',contentType: 'application/json'},loadTask.addLoadTask);
-    server.post({path:'/api/admin/:adminId/loadTask/:loadTaskId/submitToSupplier',contentType: 'application/json'},loadTask.submitToSupplier);
+    server.post({path:'/api/admin/:adminId/loadTask/:loadTaskId/supplier',contentType: 'application/json'},loadTask.submitToSupplier);
     server.get('/api/admin/:adminId/order/:orderId/require/:requireId/loadTask',loadTask.getOrderLoadTask);
     server.del({path:'/api/admin/:adminId/loadTask/:loadTaskId',contentType: 'application/json'},loadTask.delLoadTask);
     server.put({path:'/api/admin/:adminId/loadTask/:loadTaskId',contentType: 'application/json'},loadTask.updateLoadTask);
     server.put({path:'/api/admin/:adminId/loadTask/:loadTaskId/status/:status',contentType: 'application/json'},loadTask.updateLoadTaskStatus);
-    server.get('/api/admin/:adminId/loadTask/:loadTaskId/getSyncLoadTask',loadTask.getSyncLoadTask);
-    server.get('/api/admin/:adminId/getLoadTaskProfitOfCar',loadTask.getLoadTaskProfitOfCar);
+    server.get('/api/admin/:adminId/loadTask/:loadTaskId/syncLoadTask',loadTask.getSyncLoadTask);
+    server.get('/api/admin/:adminId/loadTaskProfitOfCar',loadTask.getLoadTaskProfitOfCar);
     server.put({path:'/api/admin/:adminId/loadTask/:loadTaskId/syncComplete',contentType: 'application/json'},loadTask.syncComplete);
     server.get('/api/admin/:adminId/routeLoadTask',loadTask.getRouteLoadTask);
     server.put({path:'/api/admin/:adminId/loadTask/:loadTaskId/payment',contentType: 'application/json'},loadTask.doPayment);
-    server.get('/api/admin/:adminId/routeOfCar/:orderItemId',loadTask.getRouteOfCar);
+    server.get('/api/admin/:adminId/orderItem/:orderItemId/loadTask',loadTask.getRouteOfCar);
     /**
      * dp_load_task_detail
      */

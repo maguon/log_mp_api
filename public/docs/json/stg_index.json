@@ -10101,7 +10101,7 @@
         }
       }
     },
-    "/admin/{adminId}/loadTask/{loadTaskId}/submitToSupplier": {
+    "/admin/{adminId}/loadTask/{loadTaskId}/supplier": {
       "post": {
         "tags": [
           "loadTask"
@@ -10278,7 +10278,7 @@
         }
       }
     },
-    "/admin/{adminId}/loadTask/{loadTaskId}/getSyncLoadTask": {
+    "/admin/{adminId}/loadTask/{loadTaskId}/syncLoadTask": {
       "get": {
         "tags": [
           "loadTask"
@@ -10319,7 +10319,7 @@
         }
       }
     },
-    "/admin/{adminId}/getLoadTaskProfitOfCar": {
+    "/admin/{adminId}/loadTaskProfitOfCar": {
       "get": {
         "tags": [
           "loadTask"
@@ -10651,7 +10651,7 @@
         }
       }
     },
-    "/admin/{adminId}/routeOfCar/{orderItemId}": {
+    "/admin/{adminId}/orderItem/{orderItemId}/loadTask": {
       "get": {
         "tags": [
           "loadTask"
