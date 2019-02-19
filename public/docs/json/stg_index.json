@@ -5001,7 +5001,7 @@
         }
       }
     },
-    "/admin/{adminId}/getOrderProfit": {
+    "/admin/{adminId}/orderProfit": {
       "get": {
         "tags": [
           "order"
@@ -5098,7 +5098,7 @@
         }
       }
     },
-    "/admin/{adminId}/order/{orderId}/getOrderCostOfCar": {
+    "/admin/{adminId}/order/{orderId}/orderCostOfCar": {
       "get": {
         "tags": [
           "order"
