@@ -252,6 +252,10 @@ const getLoadTaskProfitOfCar = (params,callback) => {
         paramsArray[i++] = params.orderId;
         query += " and oit.order_id = ?";
     }
+    if (params.orderItemId){
+        paramsArray[i++] = params.orderItemId;
+        query += " and oit.id = ?";
+    }
     query += " group by oit.id )carItem";
     query += " left join order_info oi on carItem.order_id = oi.id left join admin_user au on oi.admin_id = au.id where 1=1 ";
 

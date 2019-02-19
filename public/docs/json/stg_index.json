@@ -4848,55 +4848,6 @@
         }
       }
     },
-    "/admin/{adminId}/getProfit/{orderItemId}": {
-      "get": {
-        "tags": [
-          "orderItem"
-        ],
-        "summary": " select",
-        "description": " query by routeId id look order",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "orderItemId",
-            "in": "path",
-            "description": "orderItemId",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "orderId",
-            "in": "query",
-            "description": "orderId",
-            "required": false,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/orderItem"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
     "/admin/{adminId}/order/{orderId}/adminMark": {
       "put": {
         "tags": [
@@ -10416,9 +10367,9 @@
             "required": false,
             "type": "integer"
           },{
-            "name": "loadTaskDetailId",
+            "name": "orderItemId",
             "in": "query",
-            "description": "loadTaskDetailId",
+            "description": "orderItemId",
             "required": false,
             "type": "integer"
           },{

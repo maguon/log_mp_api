@@ -285,19 +285,6 @@ const updateCarType = (req,res,next) => {
         }
     })
 }
-const getProfit = (req,res,next) => {
-    let params = req.params;
-    orderItemDAO.getProfit(params,(error,result)=>{
-        if(error){
-            logger.error('getProfit' + error.message);
-            resUtil.resInternalError(error,res,next);
-        }else{
-            logger.info('getProfit' + 'success');
-            resUtil.resetQueryRes(res,result,null);
-            return next();
-        }
-    })
-}
 module.exports = {
     addOrderCar,
     getOrderCar,
@@ -305,6 +292,5 @@ module.exports = {
     addOrderCarAdmin,
     updateActFee,
     updateOrderItemInfo,
-    updateCarType,
-    getProfit
+    updateCarType
 }
