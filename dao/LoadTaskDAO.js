@@ -250,13 +250,13 @@ const getLoadTaskProfit = (params,callback) => {
         paramsArray[i++] = params.vin;
         query += " and dltd.vin = ?";
     }
-    if (params.routeStart){
-        paramsArray[i++] = params.routeStart;
-        query += " and dlt.route_start = ?";
+    if (params.routeStartId){
+        paramsArray[i++] = params.routeStartId;
+        query += " and dlt.route_start_id = ?";
     }
-    if (params.routeEnd){
-        paramsArray[i++] = params.routeEnd;
-        query += " and dlt.route_end = ?";
+    if (params.routeEndId){
+        paramsArray[i++] = params.routeEndId;
+        query += " and dlt.route_end_id = ?";
     }
     if (params.serviceType){
         paramsArray[i++] = params.serviceType;
