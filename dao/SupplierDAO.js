@@ -133,7 +133,7 @@ const updateCloseFlag = (params,callback) => {
     })
 }
 const getSupplierWithLoadTask = (params,callback) => {
-    let query = "select si.id,si.supplier_short,si.supplier_full ,count(dlt.id) load_task_count,IFNULL(sum(dlt.car_count),0) total_car_num,";
+    let query = "select si.id,si.supplier_short,si.supplier_full ,si.trans_type,count(dlt.id) load_task_count,IFNULL(sum(dlt.car_count),0) total_car_num,";
     query += "IFNULL(sum(dlt.supplier_trans_price),0) total_supplier_trans_price,IFNULL(sum(dlt.supplier_insure_price),0) total_supplier_insure_price";
     query += " ,sum(case when dlt.payment_flag =1 then (supplier_trans_price + supplier_insure_price) else 0 end ) payment_price";
     query += " from supplier_info si left join dp_load_task dlt on si.id = dlt.supplier_id where 1=1";
