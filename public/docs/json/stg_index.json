@@ -11303,6 +11303,9 @@
         },
         "avatar": {
           "type": "string"
+        },
+        "recommendId": {
+          "type": "integer"
         }
       },
       "xml": {
