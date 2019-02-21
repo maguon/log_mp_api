@@ -43,10 +43,6 @@ const update = (params,callback) => {
         paramsArray[i++] = params.adminId;
         query += " , admin_id = ?";
     }
-    if (params.recommendId){
-        paramsArray[i++] = params.recommendId;
-        query += " , id = ?";
-    }
     if (params.name){
         paramsArray[i++] = params.name;
         query += " , name = ?";
