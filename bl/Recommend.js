@@ -11,6 +11,7 @@ const fs = require('fs');
 const sysConfig = require("../config/SystemConfig");
 const recommendInfoDAO = require("../dao/RecommendInfoDAO");
 const adminUser = require('../dao/AdminUserDAO');
+const encrypt = require("../util/Encrypt");
 
 const addRecommend = (req,res,next)=>{
     let params = req.params;
@@ -135,7 +136,8 @@ const postWxCodeImage= (req,res,next)=>{
         });
     }).then(()=>{
         new Promise((resolve,reject)=>{
-            params.fileName = "wx_code_"+params.recommendId;
+            let randomString = encrypt.randomString(6);
+            params.fileName = "wx_code_"+params.recommendId+"_"+randomString;
             params.photoSrc = './public/docs/wx_img/'+params.fileName+'.png';
             let wxParams ={
                 recommendId:params.recommendId,
