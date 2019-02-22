@@ -665,12 +665,6 @@
             "description": "user id",
             "required": false,
             "type": "integer"
-          },{
-            "name": "recommendId",
-            "in": "query",
-            "description": "recommendId",
-            "required": false,
-            "type": "integer"
           },
           {
             "name": "wechatAccount",
@@ -788,6 +782,12 @@
             "name": "userId",
             "in": "query",
             "description": "user id",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "recommendId",
+            "in": "query",
+            "description": "recommendId",
             "required": false,
             "type": "integer"
           },
