@@ -5,6 +5,7 @@ conf.json
 public/docs/json/index.json
 .idea/*
 uploads/*
+wx_img/*
 node_modules
 .DS_Store
 .DS_Store?
