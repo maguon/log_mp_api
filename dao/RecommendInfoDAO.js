@@ -66,8 +66,41 @@ const update = (params,callback) => {
         callback(error,rows);
     })
 }
+const selectAchievement = (params,callback) => {
+    let paramsArray = [],i=0;
+    let query = " select ri.id,ri.name,ri.mp_url,count(ui.id) user_count,sum(case when auth_status = 1 then 1 else 0 end) auth_count ";
+    query += " from recommend_info ri left join user_info ui on ri.id = ui.recommend_id ";
+    if(params.recommendOnStart){
+        paramsArray[i++] = params.recommendOnStart;
+        query = query + " and date_format(ui.created_on,'%Y-%m-%d') >= ? ";
+    }
+    if(params.recommendOnEnd){
+        paramsArray[i++] = params.recommendOnEnd;
+        query = query + " and date_format(ui.created_on,'%Y-%m-%d') <= ? ";
+    }
+    query += " where 1=1";
+    if (params.recommendId){
+        paramsArray[i++] = params.recommendId;
+        query += " and ri.id = ?";
+    }
+    if (params.recommendName){
+        paramsArray[i++] = params.recommendName;
+        query += " and ri.name = ?";
+    }
+    query = query + " group by ri.id order by ri.id desc";
+    if(params.start && params.size){
+        paramsArray[i++] = parseInt(params.start);
+        paramsArray[i] = parseInt(params.size);
+        query = query + " limit ?,? ";
+    }
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('selectAchievement');
+        callback(error,rows);
+    })
+}
 module.exports={
     add,
     select,
-    update
+    update,
+    selectAchievement
 }

@@ -174,7 +174,19 @@ const postWxCodeImage= (req,res,next)=>{
         })
     })
 }
-
+const getAchievement= (req,res,next)=>{
+    let params = req.params;
+    recommendInfoDAO.selectAchievement(params,(error,rows)=>{
+        if (error){
+            logger.error('selectAchievement' + error.message);
+            resUtil.resInternalError(error, res, next);
+        } else {
+            logger.info('selectAchievement' + 'success');
+            resUtil.resetQueryRes(res,rows,null);
+            return next;
+        }
+    });
+}
 const getAccessToken=(params,callback)=>{
     let url = '/cgi-bin/token?grant_type=client_credential&appid='+params.mpAppId+"&secret="+params.mpSecret;
     let options ={
@@ -242,5 +254,6 @@ module.exports={
     getRecommend,
     updateRecommend,
     addAdvertisement,
-    postWxCodeImage
+    postWxCodeImage,
+    getAchievement
 }

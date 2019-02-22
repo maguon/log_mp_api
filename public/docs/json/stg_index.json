@@ -11165,6 +11165,78 @@
           }
         }
       }
+    },
+    "/admin/{adminId}/achievement": {
+      "get": {
+        "tags": [
+          "recommend"
+        ],
+        "summary": "select",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },{
+            "name": "recommendId",
+            "in": "query",
+            "description": "recommendId",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "recommendName",
+            "in": "query",
+            "description": "recommendName",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "recommendOnStart",
+            "in": "query",
+            "description": "recommendOnStart",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "recommendOnEnd",
+            "in": "query",
+            "description": "recommendOnEnd",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "start",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "size",
+            "in": "query",
+            "description": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/recommend"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
     }
   },
   "definitions": {
