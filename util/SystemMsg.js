@@ -89,6 +89,10 @@ let LOCKTASK_UPDATE_ALREADY_SYNC = "已经同步的路线无法修改";
 let LOADTASK_DETAIL_NO_EXISTE = "该运输车辆不存在";
 let LOADTASK_NO_HOOKID = "该运输详细没有同步，请先同步";
 let LOADTASK_DETAIL_SYNC_NULL = "没有需要同步的车辆，无法同步";
+/**
+ * recommend_info
+ */
+let RECOMMEND_TASK_NO_EXISTS = "推荐信息不存在";
 module.exports = {
     SYS_AUTH_TOKEN_ERROR,
     SYS_VALIDATE_EMAIL_ERROR,
@@ -141,5 +145,6 @@ module.exports = {
     LOADTASK_DETAIL_SUPPLIERPRICE_INTEGER,
     LOADTASK_NO_HOOKID,
     LOADTASK_DETAIL_SYNC_NULL,
-    SUPPLIER_NO_APP_MSG
+    SUPPLIER_NO_APP_MSG,
+    RECOMMEND_TASK_NO_EXISTS
 }

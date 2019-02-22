@@ -403,6 +403,7 @@ const createServer=()=>{
     server.get('/api/admin/:adminId/recommend',recommend.getRecommend);
     server.put({path:'/api/admin/:adminId/recommend/:recommendId',contentType: 'application/json'},recommend.updateRecommend);
     server.post({path:'/api/admin/:adminId/recommend/:recommendId/advertisement',contentType: 'application/json'},recommend.addAdvertisement);
+    server.post({path:'/api/recommend/:recommendId/wxCodeImage',contentType: 'application/json'},recommend.postWxCodeImage);
 
     server.on('NotFound', function (req, res ,next) {
         logger.warn(req.url + " not found");

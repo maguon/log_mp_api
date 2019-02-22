@@ -11033,6 +11033,41 @@
         }
       }
     },
+    "/recommend/{recommendId}/wxCodeImage": {
+      "post": {
+        "tags": [
+          "recommend"
+        ],
+        "summary": "insert",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "recommendId",
+            "in": "path",
+            "description": "recommendId",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/recommend"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
     "/admin/{adminId}/recommend/{recommendId}": {
       "put": {
         "tags": [
