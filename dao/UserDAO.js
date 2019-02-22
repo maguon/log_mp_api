@@ -14,6 +14,10 @@ const queryUser = (params,callback) => {
         paramsArray[i++] = params.userId;
         query = query + " and id = ? ";
     }
+    if(params.recommendId){
+        paramsArray[i++] = params.recommendId;
+        query = query + " and recommend_id = ? ";
+    }
     if(params.userName){
         query = query + " and user_name like '%"+params.userName+"%'";
     }
