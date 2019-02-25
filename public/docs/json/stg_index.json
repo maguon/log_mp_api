@@ -11124,11 +11124,11 @@
       }
     },
     "/admin/{adminId}/recommend/{recommendId}/advertisement": {
-      "post": {
+      "put": {
         "tags": [
           "recommend"
         ],
-        "summary": "insert",
+        "summary": "update",
         "description": "",
         "produces": [
           "application/json"
