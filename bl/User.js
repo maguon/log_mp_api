@@ -207,7 +207,7 @@ const wechatBindPhone=(req,res,next)=>{
         params.phone = data.phoneNumber;
     }
     params.authStatus = 1;
-    params.authTime = moment();
+    params.authTime = new Date();
     userDao.updatePhone(params,(error,result)=>{
         if(error){
             logger.error('updateUserInfo' + error.message);
