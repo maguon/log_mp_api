@@ -147,6 +147,25 @@ const sendCaptcha=(params,callback)=>{
     })
 }
 
+const saveToken = (params,callback) =>{
+    httpUtil.httpPost(systemConfig.hosts.auth,'/api/token',{},params,(error,result)=>{
+        callback(error,result)
+    })
+}
+
+
+const removeToken = (params,callback)=>{
+    httpUtil.httpDelete(systemConfig.hosts.auth,'/api/token/'+params.accessToken,{},params,(error,result)=>{
+        callback(error,result)
+    })
+}
+
+const getToken = (params,callback) =>{
+    httpUtil.httpGet(systemConfig.hosts.auth,'/api/token/'+params.accessToken,{},{},(error,result)=>{
+        callback(error,result)
+    })
+}
+
 module.exports = {
     createAccessToken,
     parseAccessToken,
@@ -154,5 +173,8 @@ module.exports = {
     parseAdminToken,
     saveUserPhoneCode,
     sendCaptcha,
-    getUserPhoneCode
+    getUserPhoneCode,
+    saveToken,
+    removeToken,
+    getToken
 };
