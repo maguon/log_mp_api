@@ -1,5 +1,5 @@
 'use strict';
-let serverLogger = require('./ServerLogger.js');
+let serverLogger = require('../util/ServerLogger.js');
 let logger = serverLogger.createLogger('ExRouteRequireDAO.js');
 let httpUtil = require('../util/HttpUtil.js');
 
