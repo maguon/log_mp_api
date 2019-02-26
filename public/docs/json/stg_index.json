@@ -70,7 +70,8 @@
     {
       "name": "inquiry",
       "description":"inquiry of log api"
-    },{
+    },
+    {
       "name": "userAddress",
       "description":"userAddress of log api"
     },
@@ -133,6 +134,10 @@
     {
       "name": "recommend",
       "description":"recommend of log api"
+    },
+    {
+      "name": "userDeviceInfo",
+      "description":"userDeviceInfo of log api"
     }
   ],
   "schemes": [
@@ -11327,9 +11332,70 @@
           }
         }
       }
+    },
+    "/user/{userId}/device": {
+      "post": {
+        "tags": [
+          "userDeviceInfo"
+        ],
+        "summary": "insert",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "deviceInfo",
+            "in": "body",
+            "description": "deviceInfo",
+            "required": true,
+            "schema":{
+              "$ref": "#/definitions/deviceInfo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/userDeviceInfo"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
     }
   },
   "definitions": {
+    "deviceInfo":{
+      "type": "object",
+      "properties": {
+        "brand": {
+          "type": "string"
+        },
+        "model": {
+          "type": "string"
+        },
+        "system": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "deviceInfo"
+      }
+    },
     "supplierPrice": {
       "type": "object",
       "properties": {

@@ -38,6 +38,7 @@ const requireTask = require("./bl/RequireTask");
 const loadTask = require("./bl/LoadTask");
 const loadTaskDetail = require("./bl/LoadTaskDetail");
 const recommend = require("./bl/Recommend");
+const userDeviceInfo = require("./bl/UserDeviceInfo");
 
 /**
  * Returns a server with all routes defined on it
@@ -407,6 +408,11 @@ const createServer=()=>{
     server.put({path:'/api/admin/:adminId/recommend/:recommendId/advertisement',contentType: 'application/json'},recommend.addAdvertisement);
     server.post({path:'/api/recommend/:recommendId/wxCodeImage',contentType: 'application/json'},recommend.postWxCodeImage);
     server.get('/api/admin/:adminId/achievement',recommend.getAchievement);
+
+    /**
+     * user_device_info
+     */
+    server.post({path:'/api/user/:userId/device',contentType: 'application/json'},userDeviceInfo.addUserDeviceInfo);
 
     server.on('NotFound', function (req, res ,next) {
         logger.warn(req.url + " not found");
