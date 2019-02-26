@@ -155,8 +155,18 @@ const userLogin = (req,res,next)=>{
                             status: 1
                         }
                         user.accessToken = oAuthUtil.createAccessToken(oAuthUtil.clientType.user,user.userId,user.status);
-                        resUtil.resetQueryRes(res,user,null);
-                        return next();
+                        oAuthUtil.saveToken(user,function(error,result){
+                            if(error){
+                                logger.error(' changeUserToken ' + error.stack);
+                                return next(sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG))
+                            }else{
+                                logger.info(' changeUserToken' +params.userId+ " success");
+                                resUtil.resetQueryRes(res,user,null);
+                                return next();
+                            }
+                        })
+                        // resUtil.resetQueryRes(res,user,null);
+                        // return next();
                     }
                 });
             }else{
@@ -219,6 +229,43 @@ const wechatBindPhone=(req,res,next)=>{
         }
     });
 };
+const updateToken=(req,res,next)=>{
+    let params = req.params;
+    let user ={
+        userId:params.userId
+    }
+    new Promise((resolve,reject)=>{
+        userDao.queryUser(params,(error,rows)=>{
+            if(error){
+                logger.error('queryUser' + error.message);
+                resUtil.resetFailedRes(error,res,next);
+                reject(error);
+            }else{
+                logger.info('queryUser' + 'success');
+                user.status = rows[0].status;
+            }
+        });
+    }).then(()=>{
+        user.accessToken = oAuthUtil.createAccessToken(oAuthUtil.clientType.user,user.userId,user.status);
+        oAuthUtil.removeToken({accessToken:params.token},function(error,result){
+            if(error) {
+                logger.error(' changeUserToken ' + error.stack);
+                resUtil.resInternalError(error,res,next);
+            }else {
+                oAuthUtil.saveToken(user,function(error,result){
+                    if(error){
+                        logger.error(' changeUserToken ' + error.stack);
+                        return next(sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG))
+                    }else{
+                        logger.info(' changeUserToken' +params.userId+ " success");
+                        resUtil.resetQueryRes(res,user,null);
+                        return next();
+                    }
+                })
+            }
+        })
+    })
+};
 module.exports ={
     queryUser,
     userLogin,
@@ -227,5 +274,6 @@ module.exports ={
     updateStatus,
     updatePhone,
     updateUserInfo,
-    wechatBindPhone
+    wechatBindPhone,
+    updateToken
 };

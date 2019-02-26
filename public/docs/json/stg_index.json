@@ -562,6 +562,48 @@
         }
       }
     },
+    "/admin/{adminId}/token/{token}": {
+      "get": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "select",
+        "description": "Get admin token",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "admin Id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "token",
+            "in": "path",
+            "description": "token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/admin"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
     "/admin/{adminId}/password": {
       "put": {
         "tags": [
@@ -1266,6 +1308,48 @@
               "type": "object",
               "items": {
                 "$ref": "#/definitions/phone"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/token/{token}": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "select",
+        "description": "get token",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "user info",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "token",
+            "in": "path",
+            "description": "user token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/token"
               }
             }
           },
