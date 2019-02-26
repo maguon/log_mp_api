@@ -10,7 +10,7 @@ const loadTaskDAO = require("../dao/LoadTaskDAO");
 const loadTaskDetailDAO = require("../dao/LoadTaskDetailDAO");
 const orderItemDAO = require("../dao/OrderItemDAO");
 const requireTaskDAO = require("../dao/RequireTaskDAO");
-const oauthUtil = require("../util/OAuthUtil");
+const exRouteRequireDAO = require("../dao/ExRouteRequireDAO");
 const supplierInfo = require("../dao/SupplierDAO");
 
 const addLoadTaskDetail = (req,res,next) => {
@@ -336,7 +336,7 @@ const getLoadTaskDetail = (req,res,next) => {
                 dpRouteLoadTaskId : params.syncLoadTaskId,
                 appUrl:params.appUrl
             }
-            oauthUtil.getRouteLoadTaskDetail(options,(error,result)=>{
+            exRouteRequireDAO.getRouteLoadTaskDetail(options,(error,result)=>{
                 if(error){
                     logger.error(' getRouteLoadTaskDetail ' + error.message);
                     resUtil.resInternalError(error,res,next);

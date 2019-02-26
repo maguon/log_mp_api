@@ -7,7 +7,8 @@ const sysConfig = require("../config/SystemConfig");
 const logger = serverLogger.createLogger('LoadTask.js');
 const sysConsts = require("../util/SystemConst");
 const moment = require('moment/moment.js');
-const oAuthUtil = require("../util/OAuthUtil");
+// const oAuthUtil = require("../util/OAuthUtil");
+const exRouteRequireDAO = require("../dao/ExRouteRequireDAO");
 const orderInfoDAO = require("../dao/InquiryOrderDAO");
 const requireTaskDAO = require("../dao/RequireTaskDAO");
 const loadTaskDAO = require("../dao/LoadTaskDAO");
@@ -144,7 +145,7 @@ const submitToSupplier = (req,res,next) => {
             }).then(()=>{
                 new Promise((resolve,reject)=>{
                     params.req = req;
-                    oAuthUtil.saveLoadTaskToSupplier(params,(error,result)=>{
+                    exRouteRequireDAO.saveLoadTaskToSupplier(params,(error,result)=>{
                         if(error){
                             logger.error(' saveLoadTaskToSupplier ' + error.message);
                             resUtil.resInternalError(error,res,next);
@@ -190,7 +191,7 @@ const submitToSupplier = (req,res,next) => {
                                             entrustId:params.appId
                                             // orderDate:moment(rows[i].plan_date_id.toString()).format("YYYY-MM-DD")
                                         }
-                                        oAuthUtil.saveLoadTaskDetailToSupplier(params,(error,result)=>{
+                                        exRouteRequireDAO.saveLoadTaskDetailToSupplier(params,(error,result)=>{
                                             if(error){
                                                 logger.error(' saveLoadTaskDetailToSupplier ' + error.message);
                                                 resUtil.resInternalError(error,res,next);
@@ -312,7 +313,7 @@ const delLoadTask = (req,res,next) => {
                                     demandStatus:0,//删除
                                     appUrl:hostPort(rows[0].app_url)
                                 }
-                                oAuthUtil.putLoadTaskStatusToSupplier(options,(error,result)=>{
+                                exRouteRequireDAO.putLoadTaskStatusToSupplier(options,(error,result)=>{
                                     if(error){
                                         logger.error(' putLoadTaskStatusToSupplier ' + error.message);
                                         resUtil.resInternalError(error,res,next);
@@ -569,7 +570,7 @@ const getSyncLoadTask = (req,res,next) => {
                     dpDemandId:params.hookId
                 }
                 params.options = options;
-                oAuthUtil.getDpDemand(params,(error,result)=>{
+                exRouteRequireDAO.getDpDemand(params,(error,result)=>{
                     if(error){
                         logger.error(' getDpDemand ' + error.message);
                         resUtil.resInternalError(error,res,next);
@@ -585,7 +586,7 @@ const getSyncLoadTask = (req,res,next) => {
                     }
                 })
             }).then(()=>{
-                oAuthUtil.getRouteLoadTask(params,(error,result)=>{
+                exRouteRequireDAO.getRouteLoadTask(params,(error,result)=>{
                     if(error){
                         logger.error(' getRouteLoadTask ' + error.message);
                         resUtil.resInternalError(error,res,next);
@@ -652,7 +653,7 @@ const syncComplete = (req,res,next) => {
                 demandStatus:2,//完成
                 appUrl:params.appUrl
             }
-            oAuthUtil.putLoadTaskStatusToSupplier(options,(error,result)=>{
+            exRouteRequireDAO.putLoadTaskStatusToSupplier(options,(error,result)=>{
                 if(error){
                     logger.error(' putLoadTaskStatusToSupplier ' + error.message);
                     resUtil.resInternalError(error,res,next);
