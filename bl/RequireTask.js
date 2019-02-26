@@ -108,6 +108,7 @@ const updateStatus = (req,res,next) => {
             }
             if (params.status == sysConsts.REQUIRE_TASK.status.arranged){
                 options.status = sysConsts.ORDER.status.inExecution;
+                options.logStatus = sysConsts.ORDER.logStatus.tpShipped;
             }else if (params.status == sysConsts.REQUIRE_TASK.status.complete) {
                 options.status = sysConsts.ORDER.status.completed;
             }

@@ -485,6 +485,10 @@ const updateById =(params,callback) => {
         paramsArray[i++] = params.status;
         query += " ,status = ?"
     }
+    if (params.logStatus) {
+        paramsArray[i++] = params.logStatus;
+        query += " ,log_status = ?"
+    }
     if (params.remark) {
         paramsArray[i++] = params.remark;
         query += " ,remark = ?"
