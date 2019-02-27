@@ -4,7 +4,15 @@ const logger = serverLogger.createLogger('OrderInvoiceApplyDAO.js');
 const db = require('../db/connection/MysqlDb.js');
 
 const addOrderInvoiceApply = (params,callback) => {
-    let query = " insert into  order_invoice_apply (user_id,admin_id,order_id,date_id,title,tax_number,bank,bank_code,company_phone,company_address,remark) values (?,?,?,?,?,?,?,?,?,?,?)";
+    let query = " insert into  order_invoice_apply (user_id,admin_id,order_id,date_id,title,tax_number,bank,bank_code";
+    if (params.companyPhone){
+        query += ",company_phone";
+    }
+    query += ",company_address,remark) values (?,?,?,?,?,?,?,?";
+    if (params.companyPhone){
+        query += ",?";
+    }
+    query += ",?,?)";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.userId;
     paramsArray[i++] = params.adminId;
@@ -14,7 +22,9 @@ const addOrderInvoiceApply = (params,callback) => {
     paramsArray[i++] = params.taxNumber;
     paramsArray[i++] = params.bank;
     paramsArray[i++] = params.bankCode;
-    paramsArray[i++] = params.companyPhone;
+    if (params.companyPhone){
+        paramsArray[i++] = params.companyPhone;
+    }
     paramsArray[i++] = params.companyAddress;
     paramsArray[i] = params.remark;
     db.dbQuery(query,paramsArray,(error,rows)=>{
