@@ -243,6 +243,7 @@ const updateToken=(req,res,next)=>{
             }else{
                 logger.info('queryUser' + 'success');
                 user.status = rows[0].status;
+                resolve();
             }
         });
     }).then(()=>{
