@@ -244,6 +244,7 @@ const changeToken=(req,res,next)=>{
             }else{
                 logger.info('queryUser' + 'success');
                 adminUser.status = rows[0].status;
+                resolve();
             }
         });
     }).then(()=>{
