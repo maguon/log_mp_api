@@ -86,6 +86,10 @@ const getPayment = (params,callback) => {
         paramsArray[i++] = params.createdOnEnd;
         query = query + " and date_format(payment_info.created_on,'%Y-%m-%d') <= ? ";
     }
+    if (params.unWxUnpaid || params.unWxUnpaid ==0 ){
+        paramsArray[i++] = params.unWxUnpaid;
+        query += " and if(payment_type = 1 and payment_info.status = 0,1,0) = ?";
+    }
 
     query = query + " order by created_on desc";
     if(params.start && params.size){

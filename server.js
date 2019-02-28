@@ -289,7 +289,7 @@ const createServer=()=>{
      */
     server.get('/api/user/:userId/payment' ,payment.getPayment);
     server.get('/api/admin/:adminId/paymentStat' ,payment.getPaymentPrice);
-    server.get('/api/admin/:adminId/payment' ,payment.getPayment);
+    server.get('/api/admin/:adminId/payment' ,payment.getAdminPayment);
     server.get('/api/admin/:adminId/paymentRefund' ,payment.getRefundByPaymentId);
     server.post({path:'/api/user/:userId/order/:orderId/wechatPayment',contentType: 'application/json'},payment.wechatPayment);
     server.post({path:'/api/wechatPayment',contentType: 'text/xml'},payment.updateWechatPayment);

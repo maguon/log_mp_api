@@ -171,6 +171,20 @@ const getPayment = (req,res,next)=>{
         }
     });
 }
+const getAdminPayment = (req,res,next)=>{
+    let params = req.params;
+    params.unWxUnpaid = 0;
+    paymentDAO.getPayment(params,(error,result)=>{
+        if(error){
+            logger.error('getPayment' + error.message);
+            resUtil.resInternalError(error, res, next);
+        }else{
+            logger.info('getPayment' + 'success');
+            resUtil.resetQueryRes(res,result,null);
+            return next();
+        }
+    });
+}
 const getPaymentPrice = (req,res,next)=>{
     let params = req.params;
     paymentDAO.getPaymentPrice(params,(error,result)=>{
@@ -870,5 +884,6 @@ module.exports = {
     updateTotalFee,
     deletePayment,
     updateBankInfo,
-    wechatPayment
+    wechatPayment,
+    getAdminPayment
 }
