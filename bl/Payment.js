@@ -757,6 +757,7 @@ const updateWechatPayment=(req,res,next) => {
         let evalJson = eval('(' + resString + ')');
         logger.info("paymentResult166"+resString);
         logger.info("paymentResult1666"+req.body);
+        logger.info("orderId====="+parseInt(evalJson.xml.out_trade_no.split("_")[0]));
         let prepayIdJson = {
             nonceStr: evalJson.xml.nonce_str,
             openid: evalJson.xml.openid,
