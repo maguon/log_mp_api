@@ -37,6 +37,7 @@ const wechatRefund = (req,res,next)=>{
                 logger.info('getPaymentByOrderId' + 'success');
                 params.totalFee = rows[0].total_fee;
                 params.paymentId = rows[0].id;
+                params.wxOrderId = rows[0].wx_order_id;
                 resolve();
             }
         })
@@ -56,7 +57,7 @@ const wechatRefund = (req,res,next)=>{
                         + "&notify_url="+refundUrl
                         //+ "&openid="+params.openid
                         + "&out_refund_no="+params.refundId
-                        + "&out_trade_no="+params.orderId
+                        + "&out_trade_no="+params.wxOrderId
                         + "&refund_fee="+params.refundFee * 100
                         + "&total_fee=" +params.totalFee * 100
                         + "&key="+sysConfig.wechatConfig.paymentKey;
@@ -68,7 +69,7 @@ const wechatRefund = (req,res,next)=>{
                         '<notify_url>'+refundUrl+'</notify_url>' +
                         //'<openid>'+params.openid+'</openid>' +
                         '<out_refund_no>'+params.refundId+'</out_refund_no>' +
-                        '<out_trade_no>'+params.orderId+'</out_trade_no>' +
+                        '<out_trade_no>'+params.wxOrderId+'</out_trade_no>' +
                         '<refund_fee>'+params.refundFee * 100+'</refund_fee>' +
                         '<total_fee>'+params.totalFee * 100+'</total_fee>' +
                         '<sign>'+signByMd+'</sign></xml>';
@@ -663,6 +664,7 @@ const updateBankInfo = (req,res,next)=>{
 const wechatPayment =(req,res,next)=>{
     let params = req.params;
     let ourString = encrypt.randomString();
+    let orderId = params.orderId+"_"+encrypt.randomString(6);
     params.nonceStr = ourString;
     let myDate = new Date();
     params.dateId = moment(myDate).format('YYYYMMDD');
@@ -687,6 +689,7 @@ const wechatPayment =(req,res,next)=>{
             params.paymentType = sysConsts.PAYMENT.paymentType.wechat;
             params.type = sysConsts.PAYMENT.type.payment;
             params.dateId = moment().format("YYYYMMDD");
+            params.wxOrderId = orderId;
             paymentDAO.addPayment(params,(error,result)=>{
                 if(error){
                     logger.error('addPayment' + error.message);
@@ -820,7 +823,7 @@ const getParams =(req,res,params)=>{
         + "&nonce_str="+params.nonceStr
         + "&notify_url="+sysConfig.wechatConfig.notifyUrl
         + "&openid="+params.openid
-        + "&out_trade_no="+params.orderId
+        + "&out_trade_no="+params.wxOrderId
         + "&spbill_create_ip="+requestIp
         + "&total_fee=" +params.totalFee * 100
         + "&trade_type="+jsa
@@ -833,7 +836,7 @@ const getParams =(req,res,params)=>{
         '<nonce_str>'+params.nonceStr+'</nonce_str>' +
         '<notify_url>'+sysConfig.wechatConfig.notifyUrl+'</notify_url>' +
         '<openid>'+params.openid+'</openid>' +
-        '<out_trade_no>'+params.orderId+'</out_trade_no>' +
+        '<out_trade_no>'+params.wxOrderId+'</out_trade_no>' +
         '<spbill_create_ip>'+requestIp+'</spbill_create_ip>' +
         '<total_fee>'+params.totalFee * 100 + '</total_fee>' +
         '<trade_type>'+jsa+'</trade_type>' +

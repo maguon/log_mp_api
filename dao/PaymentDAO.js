@@ -103,10 +103,11 @@ const getPayment = (params,callback) => {
     })
 }
 const addPayment = (params,callback) => {
-    let query = " insert into payment_info (user_id,order_id,date_id,total_fee,nonce_str,status,payment_type,type) values(?,?,?,?,?,?,?,?)";
+    let query = " insert into payment_info (user_id,order_id,wx_order_id,date_id,total_fee,nonce_str,status,payment_type,type) values(?,?,?,?,?,?,?,?,?)";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.userId;
     paramsArray[i++] = params.orderId;
+    paramsArray[i++] = params.wxOrderId;
     paramsArray[i++] = params.dateId;
     paramsArray[i++] = params.totalFee;
     paramsArray[i++] = params.nonceStr;
@@ -231,11 +232,12 @@ const delRefundFail = (params,callback) => {
     })
 }
 const addWechatRefund = (params,callback) => {
-    let query = " insert into payment_info(admin_id,date_id,order_id,type,p_id,payment_type,total_fee) values(?,?,?,?,?,?,?)";
+    let query = " insert into payment_info(admin_id,date_id,order_id,wx_order_id,type,p_id,payment_type,total_fee) values(?,?,?,?,?,?,?,?)";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.adminId;
     paramsArray[i++] = params.dateId;
     paramsArray[i++] = params.orderId;
+    paramsArray[i++] = params.wxOrderId;
     paramsArray[i++] = params.type;
     paramsArray[i++] = params.paymentId;
     paramsArray[i++] = params.paymentType;
