@@ -760,7 +760,7 @@ const updateWechatPayment=(req,res,next) => {
         let prepayIdJson = {
             nonceStr: evalJson.xml.nonce_str,
             openid: evalJson.xml.openid,
-            orderId: evalJson.xml.out_trade_no,
+            orderId: parseInt(evalJson.xml.out_trade_no.split("_")[0]),
             transactionId: evalJson.xml.transaction_id,
             timeEnd: evalJson.xml.time_end,
             totalFee:evalJson.xml.total_fee / 100,
