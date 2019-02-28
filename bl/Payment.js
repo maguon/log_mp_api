@@ -43,6 +43,8 @@ const wechatRefund = (req,res,next)=>{
         })
     }).then(()=>{
         new Promise((resolve,reject)=>{
+            params.type = sysConsts.PAYMENT.type.refund;
+            params.paymentType = sysConsts.PAYMENT.paymentType.wechat;
             paymentDAO.addWechatRefund(params,(error,result)=>{
                 if(error){
                     logger.error('addWechatRefund' + error.message);
