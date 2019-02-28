@@ -232,9 +232,10 @@ const delRefundFail = (params,callback) => {
     })
 }
 const addWechatRefund = (params,callback) => {
-    let query = " insert into payment_info(admin_id,date_id,order_id,wx_order_id,type,p_id,payment_type,total_fee) values(?,?,?,?,?,?,?,?)";
+    let query = " insert into payment_info(admin_id,user_id,date_id,order_id,wx_order_id,type,p_id,payment_type,total_fee) values(?,?,?,?,?,?,?,?,?)";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.adminId;
+    paramsArray[i++] = params.userId;
     paramsArray[i++] = params.dateId;
     paramsArray[i++] = params.orderId;
     paramsArray[i++] = params.wxOrderId;
