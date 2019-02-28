@@ -38,6 +38,7 @@ const wechatRefund = (req,res,next)=>{
                 params.totalFee = rows[0].total_fee;
                 params.paymentId = rows[0].id;
                 params.wxOrderId = rows[0].wx_order_id;
+                params.userId = rows[0].user_id;
                 resolve();
             }
         })
