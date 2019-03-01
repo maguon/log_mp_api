@@ -147,6 +147,7 @@ const updateRefundStatus = (req,res,next)=>{
                     totalFee = rows[0].total_fee;
                     paymentType = rows[0].payment_type;
                     params.paymentRefundId = rows[0].id;
+                    params.userId = rows[0].user_id;
                     resolve();
                 }
             }
