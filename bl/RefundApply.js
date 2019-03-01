@@ -148,6 +148,7 @@ const updateRefundStatus = (req,res,next)=>{
                     paymentType = rows[0].payment_type;
                     params.paymentRefundId = rows[0].id;
                     params.userId = rows[0].user_id;
+                    params.wxOrderId = rows[0].wx_order_id;
                     resolve();
                 }
             }
@@ -160,7 +161,6 @@ const updateRefundStatus = (req,res,next)=>{
             params.type = sysConst.PAYMENT.type.refund;
             params.dateId = moment().format("YYYYMMDD");
             if (paymentType == sysConst.PAYMENT.paymentType.wechat){
-
                 params.paymentType = sysConst.PAYMENT.paymentType.wechat;
                 paymentDAO.addWechatRefund(params,(error,result)=>{
                     if(error){
@@ -297,7 +297,7 @@ const getParams = (params,totalFee)=>{
         + "&notify_url="+refundUrl
         //+ "&openid="+params.openid
         + "&out_refund_no="+params.refundId
-        + "&out_trade_no="+params.orderId
+        + "&out_trade_no="+params.wxOrderId
         + "&refund_fee="+params.refundFee * 100
         + "&total_fee=" +totalFee * 100
         + "&key="+sysConfig.wechatConfig.paymentKey;
@@ -309,7 +309,7 @@ const getParams = (params,totalFee)=>{
         '<notify_url>'+refundUrl+'</notify_url>' +
         //'<openid>'+params.openid+'</openid>' +
         '<out_refund_no>'+params.refundId+'</out_refund_no>' +
-        '<out_trade_no>'+params.orderId+'</out_trade_no>' +
+        '<out_trade_no>'+params.wxOrderId+'</out_trade_no>' +
         '<refund_fee>'+params.refundFee * 100+'</refund_fee>' +
         '<total_fee>'+totalFee * 100+'</total_fee>' +
         '<sign>'+signByMd+'</sign></xml>';
