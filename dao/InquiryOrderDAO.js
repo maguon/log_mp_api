@@ -293,6 +293,10 @@ const getOrderByUser = (params,callback) => {
         paramsArray[i++] = params.paymentStatus;
         query = query + " and uo.payment_status = ? ";
     }
+    if(params.paymentStatusList){
+        paramsArray[i++] = params.paymentStatusList;
+        query = query + " and uo.payment_status in (?) ";
+    }
     if(params.logStatus){
         paramsArray[i++] = params.logStatus;
         query = query + " and uo.log_status = ? ";

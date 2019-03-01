@@ -258,6 +258,9 @@ const getOrderByUser = (req,res,next) => {
     if (params.statusList){
         params.statusList = params.statusList.split(",");
     }
+    if (params.paymentStatusList){
+        params.paymentStatusList = params.paymentStatusList.split(",");
+    }
     inquiryOrderDAO.getOrderByUser(params,(error,result)=>{
         if(error){
             logger.error('getOrderByUser' + error.message);

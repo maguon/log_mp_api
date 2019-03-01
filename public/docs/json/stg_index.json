@@ -1942,6 +1942,13 @@
             "type": "integer"
           },
           {
+            "name": "paymentStatusList",
+            "in": "query",
+            "description": "paymentStatusList",
+            "required": false,
+            "type": "string"
+          },
+          {
             "name": "logStatus",
             "in": "query",
             "description": "logStatus",
