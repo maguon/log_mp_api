@@ -54,10 +54,6 @@ const getRefundApply = (params,callback) => {
         paramsArray[i++] = params.userId;
         query = query + " and ra.user_id = ?"
     }
-    if(params.adminId){
-        paramsArray[i++] = params.adminId;
-        query = query + " and ra.admin_id = ?"
-    }
     if(params.paymentId){
         paramsArray[i++] = params.paymentId;
         query = query + " and ra.payment_id = ?"
