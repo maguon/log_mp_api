@@ -446,9 +446,10 @@ const getById =(params,callback)=>{
     })
 }
 const addRefundPayment = (params,callback) => {
-    let query = " insert into payment_info(admin_id,order_id,date_id,total_fee,status,payment_type,type,bank,bank_code,account_name,p_id) values(?,?,?,?,?,?,?,?,?,?,?)";
+    let query = " insert into payment_info(admin_id,user_id,order_id,date_id,total_fee,status,payment_type,type,bank,bank_code,account_name,p_id) values(?,?,?,?,?,?,?,?,?,?,?,?)";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.adminId;
+    paramsArray[i++] = params.userId;
     paramsArray[i++] = params.orderId;
     paramsArray[i++] = params.dateId;
     paramsArray[i++] = params.totalFee;
