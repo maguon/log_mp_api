@@ -104,6 +104,14 @@ const updateById =(params,callback) => {
         paramsArray[i++] = params.routeEnd;
         query += " ,route_end = ?";
     }
+    if (params.routeStartDetail){
+        paramsArray[i++] = params.routeStartDetail;
+        query += " ,route_start_detail = ?";
+    }
+    if (params.routeEndDetail){
+        paramsArray[i++] = params.routeEndDetail;
+        query += " ,route_end_detail = ?";
+    }
     if (params.routeStartId){
         paramsArray[i++] = params.routeStartId;
         query += " ,route_start_id = ?";
