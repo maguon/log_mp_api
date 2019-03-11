@@ -418,10 +418,11 @@ const createServer=()=>{
     /**
      * customer_service_phone
      */
-    server.post({path:'/api/customerPhone',contentType: 'application/json'},customerServicePhone.addCustomerPhone);
-    server.get('/api/customerPhone',customerServicePhone.getCustomerPhone);
-    server.del({path:'/api/customerPhone',contentType: 'application/json'},customerServicePhone.deleteCustomerPhone);
-    server.put({path:'/api/customerPhone',contentType: 'application/json'},customerServicePhone.updateCustomerPhone);
+    server.post({path:'/api/admin/:adminId/customerPhone',contentType: 'application/json'},customerServicePhone.addCustomerPhone);
+    server.get('/api/admin/:adminId/customerPhone',customerServicePhone.getCustomerPhone);
+    server.del({path:'/api/admin/:adminId/customerPhone',contentType: 'application/json'},customerServicePhone.deleteCustomerPhone);
+    server.put({path:'/api/admin/:adminId/customerPhone',contentType: 'application/json'},customerServicePhone.updateCustomerPhone);
+    server.get('/api/user/:userId/customerPhone',customerServicePhone.getCustomerPhone);
 
     server.on('NotFound', function (req, res ,next) {
         logger.warn(req.url + " not found");

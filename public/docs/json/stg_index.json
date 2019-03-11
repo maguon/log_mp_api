@@ -149,7 +149,51 @@
   ],
 
   "paths": {
-    "/customerPhone": {
+    "/user/{userId}/customerPhone": {
+      "get": {
+        "tags": [
+          "customerServicePhone"
+        ],
+        "summary": "select",
+        "description": "",
+        "operationId": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "description": "id",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "phone",
+            "in": "query",
+            "description": "phone number",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/customerPhone": {
       "post": {
         "tags": [
           "customerServicePhone"
@@ -164,6 +208,13 @@
           "application/json"
         ],
         "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
           {
             "name": "phone",
             "in": "query",
@@ -192,6 +243,13 @@
           "application/json"
         ],
         "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
           {
             "name": "id",
             "in": "query",
@@ -228,6 +286,13 @@
         ],
         "parameters": [
           {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
             "name": "id",
             "in": "query",
             "description": "id",
@@ -262,6 +327,13 @@
           "application/json"
         ],
         "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
           {
             "name": "id",
             "in": "query",
