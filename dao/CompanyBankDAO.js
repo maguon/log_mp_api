@@ -53,8 +53,12 @@ const selectById = (params,callback) =>{
     let query = "select id,admin_id,bank,bank_code,account_name,status ,created_on,updated_on from company_bank where 1=1";
     let paramsArray = [],i=0;
     if (params.companyBankId){
-        paramsArray[i] = params.companyBankId;
+        paramsArray[i++] = params.companyBankId;
         query += " and id = ?"
+    }
+    if (params.status){
+        paramsArray[i] = params.status;
+        query += " and status = ?"
     }
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('selectById');

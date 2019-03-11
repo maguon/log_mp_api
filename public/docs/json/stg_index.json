@@ -289,7 +289,13 @@
           "application/json"
         ],
         "parameters": [
-
+          {
+            "name": "status",
+            "in": "query",
+            "description": "0:启用,1:停用",
+            "required": false,
+            "type": "integer"
+          }
         ],
         "responses": {
           "405": {
