@@ -421,7 +421,7 @@ const createServer=()=>{
     server.post({path:'/api/admin/:adminId/customerPhone',contentType: 'application/json'},customerServicePhone.addCustomerPhone);
     server.get('/api/admin/:adminId/customerPhone',customerServicePhone.getCustomerPhone);
     server.del({path:'/api/admin/:adminId/customerPhone',contentType: 'application/json'},customerServicePhone.deleteCustomerPhone);
-    server.put({path:'/api/admin/:adminId/customerPhone',contentType: 'application/json'},customerServicePhone.updateCustomerPhone);
+    server.put({path:'/api/admin/:adminId/customerPhone/:id',contentType: 'application/json'},customerServicePhone.updateCustomerPhone);
     server.get('/api/user/:userId/customerPhone',customerServicePhone.getCustomerPhone);
 
     server.on('NotFound', function (req, res ,next) {
