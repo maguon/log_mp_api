@@ -138,6 +138,10 @@
     {
       "name": "userDeviceInfo",
       "description":"userDeviceInfo of log api"
+    },
+    {
+      "name": "customerServicePhone",
+      "description":"customerServicePhone of log api"
     }
   ],
   "schemes": [
@@ -145,6 +149,36 @@
   ],
 
   "paths": {
+    "/customerServicePhone": {
+      "post": {
+        "tags": [
+          "customerServicePhone"
+        ],
+        "summary": "insert",
+        "description": "",
+        "operationId": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "phone",
+            "in": "query",
+            "description": "phone number",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
     "/admin/{adminId}/companyBank": {
       "post": {
         "tags": [
@@ -11450,6 +11484,12 @@
           "type": "string"
         },
         "routeEnd": {
+          "type": "string"
+        },
+        "routeStartDetail": {
+          "type": "string"
+        },
+        "routeEndDetail": {
           "type": "string"
         },
         "routeStartId": {

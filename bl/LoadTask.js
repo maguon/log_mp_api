@@ -105,11 +105,11 @@ const submitToSupplier = (req,res,next) => {
                             preCount:rows[0].car_count,
                             dateId:rows[0].plan_date_id
                         }
-                        if (rows[0].service_type == sysConsts.ORDER.serviceType.selfMention){
-                            params.options.remark = "发货地址:"+rows[0].send_address_point + ";收货地址:"+rows[0].recv_address_point;
-                        }else if (rows[0].service_type == sysConsts.ORDER.serviceType.doorToDoor){
-                            params.options.remark = "发货地址:"+rows[0].send_address + ";收货地址:"+rows[0].recv_address;
-                        }
+                        // if (rows[0].service_type == sysConsts.ORDER.serviceType.selfMention){
+                        params.options.remark = "发货地址:"+rows[0].route_start_detail + ";收货地址:"+rows[0].route_end_detail;
+                        // }else if (rows[0].service_type == sysConsts.ORDER.serviceType.doorToDoor){
+                        //     params.options.remark = "发货地址:"+rows[0].send_address + ";收货地址:"+rows[0].recv_address;
+                        // }
                         resolve();
                     }else {
                         resUtil.resetFailedRes(res,sysMsg.ORDER_NO_EXISTE);
