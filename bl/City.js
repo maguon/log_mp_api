@@ -5,6 +5,7 @@ const resUtil = require('../util/ResponseUtil.js');
 const sysMsg = require('../util/SystemMsg.js');
 const sysError = require('../util/SystemError.js');
 const logger = serverLogger.createLogger('City.js');
+const trans = require("transliteration");
 const cityInfoDAO = require('../dao/CityInfoDAO.js');
 
 const addCity = (req,res,next) =>{
@@ -14,6 +15,13 @@ const addCity = (req,res,next) =>{
             logger.error('queryCity' + error.message);
             resUtil.resInternalError(error,res,next);
         }else if(rows && rows.length < 1){
+            let pinyin = trans.slugify(params.cityName);
+            params.cityPinYin = pinyin.replace(new RegExp("-","g"),"");
+            params.cityPY = "";
+            let index = pinyin.split("-");
+            for (let i =0;i<index.length;i++){
+                params.cityPY += index[i].substr(0,1);
+            }
             cityInfoDAO.addCity(params,(error,result)=>{
                 if(error){
                     logger.error('addCity' + error.message);
