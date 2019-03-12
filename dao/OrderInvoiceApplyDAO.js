@@ -8,8 +8,14 @@ const addOrderInvoiceApply = (params,callback) => {
     if (params.companyPhone){
         query += ",company_phone";
     }
-    query += ",company_address,remark) values (?,?,?,?,?,?,?,?";
+    if (params.companyAddress) {
+        query += ",company_address";
+    }
+    query += ",remark) values (?,?,?,?,?,?,?";
     if (params.companyPhone){
+        query += ",?";
+    }
+    if (params.companyAddress) {
         query += ",?";
     }
     query += ",?,?)";
