@@ -495,7 +495,7 @@ const updateById =(params,callback) => {
         query += " ,log_status = ?"
     }
     if (params.departureTime) {
-        paramsArray[i++] = params.departure_time;
+        paramsArray[i++] = params.departureTime;
         query += " ,departure_time = ?"
     }
     if (params.remark) {
