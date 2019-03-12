@@ -359,7 +359,7 @@ const cancelOrder = (params,callback) => {
     })
 }
 const addOrder = (params,callback) => {
-    let query = " insert into order_info(route_id,date_id,distance,route_start,route_end,created_type,admin_id,route_start_id,route_end_id,service_type) values(?,?,?,?,?,?,?,?,?,?) ";
+    let query = " insert into order_info(route_id,date_id,distance,route_start,route_end,created_type,admin_id,route_start_id,route_end_id,service_type,departure_time) values(?,?,?,?,?,?,?,?,?,?,?) ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.routeId;
     paramsArray[i++] = params.dateId;
@@ -370,7 +370,8 @@ const addOrder = (params,callback) => {
     paramsArray[i++] = params.adminId;
     paramsArray[i++] = params.routeStartId;
     paramsArray[i++] = params.routeEndId;
-    paramsArray[i] = params.serviceType;
+    paramsArray[i++] = params.serviceType;
+    paramsArray[i] = params.departureTime;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('addOrder');
         callback(error,rows);
