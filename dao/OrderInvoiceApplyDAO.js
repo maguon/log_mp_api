@@ -64,7 +64,7 @@ const updateOrderId = (params,callback) => {
     })
 }
 const updateById = (params,callback) => {
-    let query = " update order_invoice_apply set title = ? , tax_number = ? ,bank = ? ,bank_code = ? ,company_phone = ? ,company_address = ?";
+    let query = " update order_invoice_apply set title = ? , tax_number = ? ,bank = ? ,bank_code = ? ,company_phone = ? ,company_address = ? ,remark = ?";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.title;
     paramsArray[i++] = params.taxNumber;
@@ -72,10 +72,7 @@ const updateById = (params,callback) => {
     paramsArray[i++] = params.bankCode;
     paramsArray[i++] = params.companyPhone;
     paramsArray[i++] = params.companyAddress;
-    if (params.remark && params.remark != ''){
-        paramsArray[i++] = params.remark;
-        query = query+ " ,remark = ? ";
-    }
+    paramsArray[i++] = params.remark;
     paramsArray[i++] = params.invoiceApplyId;
     query = query + " where id = ?";
     if (params.userId){
