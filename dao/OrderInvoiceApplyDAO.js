@@ -82,7 +82,7 @@ const updateById = (params,callback) => {
     })
 }
 const getOrderInvoice = (params,callback) => {
-    let query = " select oi.id,oi.route_start,oi.route_end,oi.total_trans_price,oi.total_insure_price,oi.real_payment_price,oi.created_on,";
+    let query = " select oi.id,oi.route_start,oi.route_end,oi.total_trans_price,oi.total_insure_price,oi.real_payment_price,oi.created_on,oi.departure_time,";
     query += " oi.payment_status,oi.created_type,au.real_name,oia.id invoice_apply_id,oia.tax_number,oia.title,oia.created_on apply_time,";
     query += " oia.bank ,oia.bank_code,oia.company_phone,oia.company_address,oia.remark,oi.car_num,oi.route_start,oi.route_end,oi.service_type,oia.refuse_reason,"
     query +=  " oia.updated_on invoiced_time,oia.status invoiced_status from order_info oi";

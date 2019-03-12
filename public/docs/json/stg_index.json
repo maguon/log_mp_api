@@ -12802,6 +12802,9 @@
       "properties": {
         "remark": {
           "type": "string"
+        },
+        "departureTime": {
+          "type": "string"
         }
       },
       "xml": {

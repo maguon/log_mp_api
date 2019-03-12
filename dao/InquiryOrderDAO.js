@@ -494,6 +494,10 @@ const updateById =(params,callback) => {
         paramsArray[i++] = params.logStatus;
         query += " ,log_status = ?"
     }
+    if (params.departureTime) {
+        paramsArray[i++] = params.departure_time;
+        query += " ,departure_time = ?"
+    }
     if (params.remark) {
         paramsArray[i++] = params.remark;
         query += " ,remark = ?"
@@ -575,7 +579,7 @@ const statisticsByDays =(params,callback) => {
 }
 const getOrderProfit = (params,callback) => {
     let query = " select oi.id,oi.route_start,oi.route_end,oi.car_num,oi.service_type,oi.admin_id,oi.created_on,oi.total_trans_price,oi.total_insure_price";
-    query += ",oi.real_payment_price,au.real_name,dlt.supplier_trans_price,dlt.supplier_insure_price,";
+    query += ",oi.real_payment_price,au.real_name,dlt.supplier_trans_price,dlt.supplier_insure_price,oi.departure_time,";
     query += "IFNULL((oi.real_payment_price - dlt.supplier_trans_price - dlt.supplier_insure_price),0) order_real_profit";
     query += " from order_info oi ";
     query += " left join (";
