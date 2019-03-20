@@ -1,22 +1,22 @@
 'use strict';
 const CAR_MODEL ={
-    NormalCar:{
-        type:1,
+    NormalCar:{//标准轿车
+       type:1,
         ratio:0.9
     },
-    NormalSUV:{
+    NormalSUV:{//标准suv
         type:2,
         ratio:1.0
     },
-    LargeSUV:{
+    LargeSUV:{//大型suv
         type:3,
         ratio:1.1
     },
-    normalBPV:{
+    normalBPV:{//标准商务车
         type:4,
         ratio:1.0
     },
-    LargeBPV:{
+    LargeBPV:{//大型商务车
         type:5,
         ratio:1.01
     }
