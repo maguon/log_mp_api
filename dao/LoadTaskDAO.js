@@ -47,6 +47,10 @@ const getById = (params,callback) => {
         paramsArray[i++] = params.loadTaskId;
         query += " and id = ?";
     }
+    if (params.loadTaskStatus){
+        paramsArray[i++] = params.loadTaskStatus;
+        query += " and load_task_status = ?";
+    }
     if (params.orderId){
         paramsArray[i++] = params.orderId;
         query += " and order_id = ?";

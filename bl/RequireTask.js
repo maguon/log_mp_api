@@ -8,6 +8,7 @@ const sysConsts = require("../util/SystemConst");
 const moment = require('moment/moment.js');
 const requireTask = require("../dao/RequireTaskDAO");
 const orderInfoDAO = require("../dao/InquiryOrderDAO");
+const loadTaskDAO = require("../dao/LoadTaskDAO");
 
 const addRequireTask = (req,res,next) => {
     let params = req.params;
@@ -73,6 +74,8 @@ const getRequireOrder = (req,res,next) => {
 }
 const updateStatus = (req,res,next) => {
     let params = req.params;
+    let loadTaskCount = 0;
+    let serLoadTaskCount =0;
     new Promise((resolve,reject)=>{
         requireTask.updateById(params,(error,rows)=>{
             if(error){
@@ -106,21 +109,59 @@ const updateStatus = (req,res,next) => {
             let options = {
                 orderId:params.orderId
             }
-            if (params.status == sysConsts.REQUIRE_TASK.status.arranged){
-                options.status = sysConsts.ORDER.status.inExecution;
-                options.logStatus = sysConsts.ORDER.logStatus.tpShipped;
-            }else if (params.status == sysConsts.REQUIRE_TASK.status.complete) {
-                options.status = sysConsts.ORDER.status.completed;
-            }
-            orderInfoDAO.updateById(options,(error,rows)=>{
-                if(error){
-                    logger.error('updateOrderStatus' + error.message);
-                    resUtil.resInternalError(error,res,next);
-                }else{
-                    logger.info('updateOrderStatus' + 'success');
-                    resUtil.resetUpdateRes(res,rows,null);
-                    return next;
+            new Promise((resolve,reject)=>{
+                if (params.status == sysConsts.REQUIRE_TASK.status.arranged){
+                    options.status = sysConsts.ORDER.status.inExecution;
+                    options.logStatus = sysConsts.ORDER.logStatus.tpShipped;
+                    resolve();
+                }else if (params.status == sysConsts.REQUIRE_TASK.status.complete) {
+                    let loadParams = {
+                        orderId:params.orderId
+                    }
+                    loadTaskDAO.getById(loadParams,(error,allRows)=>{
+                        if(error){
+                            logger.error('getLoadTaskByOrderId' + error.message);
+                            resUtil.resInternalError(error,res,next);
+                            reject(error);
+                        }else{
+                            logger.info('getLoadTaskByOrderId' + 'success');
+                            if (allRows.length > 0){
+                                loadTaskCount = allRows.length;
+                                loadParams.loadTaskStatus = sysConsts.LOAD_TASK_STATUS.served;
+                                loadTaskDAO.getById(loadParams,(error,serRows)=>{
+                                    if(error){
+                                        logger.error('getServedLoadTask' + error.message);
+                                        resUtil.resInternalError(error,res,next);
+                                        reject(error);
+                                    }else{
+                                        logger.info('getServedLoadTask' + 'success');
+                                        if (serRows.length > 0){
+                                            serLoadTaskCount = serRows.length;
+                                        }
+                                        if (loadTaskCount = serLoadTaskCount) {
+                                            options.status = sysConsts.ORDER.status.completed;
+                                        }
+                                        resolve();
+                                    }
+                                })
+                            } else {
+                                resUtil.resetFailedRes(res,sysMsg.LOAD_TASK_NO_EXISTS);
+                            }
+                        }
+                    })
                 }
+
+            }).then(()=>{
+                orderInfoDAO.updateById(options,(error,rows)=>{
+                    if(error){
+                        logger.error('updateOrderStatus' + error.message);
+                        resUtil.resInternalError(error,res,next);
+                    }else{
+                        logger.info('updateOrderStatus' + 'success');
+                        resUtil.resetUpdateRes(res,rows,null);
+                        return next;
+                    }
+                })
             })
         })
     })

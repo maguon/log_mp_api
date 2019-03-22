@@ -78,7 +78,7 @@ let REQUIRE_NO_EXISTE = "该需求不存在";
 /**
  * The dp_Load_task
  */
-let LOAD_TASK_NO_EXISTS = "该运输路线不存在";
+let LOAD_TASK_NO_EXISTS = "运输路线不存在";
 let LOADTASK_DETAIL_SUPPLIERPRICE_ZERO = "运输费用不能为空";
 let LOADTASK_DETAIL_SUPPLIERPRICE_INTEGER = "运输费用不能小于0";
 let LOADTASK_ADD_NULL = "运输线路需求创建失败";
