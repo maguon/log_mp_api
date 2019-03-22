@@ -348,7 +348,7 @@ const delLoadTask = (req,res,next) => {
                         if (rows.affectedRows > 0){
                             resolve();
                         } else {
-                            resUtil.resetFailedRes(res,sysMsg.LOADTASK_DELETE_FAIL);
+                            resUtil.resetFailedRes(res,sysMsg.LOADTASK_DO_FAIL);
                         }
                     }
                 })
@@ -453,12 +453,8 @@ const updateLoadTaskStatus = (req,res,next) => {
             resUtil.resInternalError(error,res,next);
         }else{
             logger.info('updateLoadTaskStatus' + 'success');
-            if (rows.changedRows > 0){
-                resUtil.resetUpdateRes(res,rows,null);
-                return next;
-            } else {
-                resUtil.resetFailedRes(res,sysMsg.LOADTASK_DELETE_FAIL);
-            }
+            resUtil.resetUpdateRes(res,rows,null);
+            return next;
         }
     })
 }
