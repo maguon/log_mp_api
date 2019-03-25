@@ -14,6 +14,8 @@ const moment = require('moment/moment.js');
 const https = require('https');
 const sysConsts = require("../util/SystemConst");
 const sysConfig = require("../config/SystemConfig");
+const refundApplyDAO = require('../dao/RefundApplyDAO.js');
+const orderInfoDAO = require("../dao/InquiryOrderDAO");
 
 const wechatRefund = (req,res,next)=>{
     let params = req.params;
@@ -134,34 +136,80 @@ const wechatRefund = (req,res,next)=>{
     })
 };
 const addWechatRefund=(req,res,next) => {
-    let xmlParser = new xml2js.Parser({explicitArray : false, ignoreAttrs : true});
-    xmlParser.parseString(req.body,(err,result)=>{
-        let resString = JSON.stringify(result);
-        let evalJson = eval('(' + resString + ')');
-        let prepayIdJson = {
-            status: 1
-        };
-        let md5Key = encrypt.encryptByMd5NoKey(sysConfig.wechatConfig.paymentKey).toLowerCase();
-        let reqInfo = evalJson.xml.req_info;
-        let reqResult = encrypt.decryption(reqInfo,md5Key);
-        xmlParser.parseString(reqResult,(err,result)=>{
-            let resStrings = JSON.stringify(result);
-            let evalJsons = eval('(' + resStrings + ')');
-            prepayIdJson.refundId = evalJsons.root.out_refund_no;
-            prepayIdJson.settlement_refund_fee = -(evalJsons.root.settlement_refund_fee / 100);
-        })
-        logger.info("updateRefundSSS"+prepayIdJson);
-        paymentDAO.updateRefund(prepayIdJson,(error,result)=>{
-            if(error){
-                logger.error('updateRefund' + error.message);
-                resUtil.resInternalError(error, res, next);
-            }else{
-                logger.info('updateRefund' + 'success');
-                resUtil.resetCreateRes(res,result,null);
-                return next();
-            }
+    let prepayIdJson = {
+        status: 1
+    };
+    new Promise((resolve,reject)=>{
+        let xmlParser = new xml2js.Parser({explicitArray : false, ignoreAttrs : true});
+        xmlParser.parseString(req.body,(err,result)=>{
+            let resString = JSON.stringify(result);
+            let evalJson = eval('(' + resString + ')');
+            let md5Key = encrypt.encryptByMd5NoKey(sysConfig.wechatConfig.paymentKey).toLowerCase();
+            let reqInfo = evalJson.xml.req_info;
+            let reqResult = encrypt.decryption(reqInfo,md5Key);
+            xmlParser.parseString(reqResult,(err,result)=>{
+                let resStrings = JSON.stringify(result);
+                let evalJsons = eval('(' + resStrings + ')');
+                prepayIdJson.refundId = evalJsons.root.out_refund_no;
+                prepayIdJson.settlement_refund_fee = -(evalJsons.root.settlement_refund_fee / 100);
+            })
+            logger.info("updateRefundSSS"+prepayIdJson);
+            paymentDAO.updateRefund(prepayIdJson,(error,result)=>{
+                if(error){
+                    logger.error('updateRefund' + error.message);
+                    // resUtil.resInternalError(error, res, next);
+                    reject(error);
+                }else{
+                    logger.info('updateRefund' + 'success');
+                    resolve();
+                }
+            });
         });
-    });
+    }).then(()=>{
+        new Promise((resolve,reject)=>{
+            let options ={
+                status:sysConsts.REFUND_STATUS.refunded,
+                refundFee:prepayIdJson.settlement_refund_fee,
+                refundApplyId:prepayIdJson.refundId
+            }
+            refundApplyDAO.updatePaymentRefundId(options, (error, result) => {
+                if (error) {
+                    logger.error('updatePaymentRefundId' + error.message);
+                    resUtil.resInternalError(error, res, next);
+                    reject(error);
+                } else {
+                    logger.info('updatePaymentRefundId' + 'success');
+                    resolve();
+                }
+            })
+        }).then(()=>{
+            new Promise((resolve,reject)=> {
+                orderInfoDAO.getById(options, (error, rows) => {
+                    if (error) {
+                        logger.error('getOrderById' + error.message);
+                        resUtil.resInternalError(error, res, next);
+                        reject(error);
+                    } else {
+                        logger.info('getOrderById' + 'success');
+                        options.realPaymentPrice = rows[0].real_payment_price - options.refundFee;
+                        resolve();
+                    }
+                })
+            }).then(()=>{
+                orderInfoDAO.updateRealPaymentPrice(options, (error, result) => {
+                    if (error) {
+                        logger.error('updateRealPaymentPrice' + error.message);
+                        resUtil.resInternalError(error, res, next);
+                    } else {
+                        logger.info('updateRealPaymentPrice' + 'success');
+                        resUtil.resetUpdateRes(res, result, null);
+                        return next();
+                    }
+                })
+            })
+        })
+    })
+
 }
 const getPayment = (req,res,next)=>{
     let params = req.params;
