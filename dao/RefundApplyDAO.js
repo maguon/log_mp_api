@@ -233,6 +233,18 @@ const updateById = (params,callback) => {
         callback(error,rows);
     })
 }
+const updateRefundByOrder = (params,callback) => {
+    let paramsArray = [],i=0;
+    let query = " update refund_apply set payment_refund_id = ? , status = ? where status = ? and payment_id = ?";
+    paramsArray[i++] = params.paymentRefundId;
+    paramsArray[i++] = params.status;
+    paramsArray[i++] = params.orderId;
+    paramsArray[i] = params.paymentId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('updateRefundByOrder');
+        callback(error,rows);
+    })
+}
 module.exports = {
     addRefundApply,
     getRefundApply,
@@ -242,5 +254,6 @@ module.exports = {
     updateRefundById,
     deleteById,
     updatePaymentRefundId,
-    updateById
+    updateById,
+    updateRefundByOrder
 }
