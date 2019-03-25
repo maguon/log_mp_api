@@ -46,7 +46,7 @@ const wechatRefund = (req,res,next)=>{
         new Promise((resolve,reject)=>{
             params.type = sysConsts.PAYMENT.type.refund;
             params.paymentType = sysConsts.PAYMENT.paymentType.wechat;
-            params.refundFee = - params.refundFee;
+            params.refundFee = -params.refundFee;
             paymentDAO.addWechatRefund(params,(error,result)=>{
                 if(error){
                     logger.error('addWechatRefund' + error.message);
@@ -148,7 +148,7 @@ const addWechatRefund=(req,res,next) => {
             let resStrings = JSON.stringify(result);
             let evalJsons = eval('(' + resStrings + ')');
             prepayIdJson.refundId = evalJsons.root.out_refund_no;
-            prepayIdJson.settlement_refund_fee = evalJsons.root.settlement_refund_fee / 100;
+            prepayIdJson.settlement_refund_fee = -(evalJsons.root.settlement_refund_fee / 100);
         })
         logger.info("updateRefundSSS"+prepayIdJson);
         paymentDAO.updateRefund(prepayIdJson,(error,result)=>{
@@ -767,7 +767,7 @@ const updateWechatPayment=(req,res,next) => {
             orderId: parseInt(evalJson.xml.out_trade_no.split("_")[0]),
             transactionId: evalJson.xml.transaction_id,
             timeEnd: evalJson.xml.time_end,
-            totalFee:evalJson.xml.total_fee / 100,
+            totalFee: evalJson.xml.total_fee / 100,
             status: sysConsts.PAYMENT.status.paid,
             type:sysConsts.PAYMENT.type.payment
         };
