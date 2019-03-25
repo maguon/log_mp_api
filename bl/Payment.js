@@ -152,7 +152,7 @@ const addWechatRefund=(req,res,next) => {
                 let resStrings = JSON.stringify(result);
                 let evalJsons = eval('(' + resStrings + ')');
                 prepayIdJson.paymentId = evalJsons.root.out_refund_no;
-                prepayIdJson.settlement_refund_fee = -(evalJsons.root.settlement_refund_fee / 100);
+                prepayIdJson.settlement_refund_fee = evalJsons.root.settlement_refund_fee / 100;
                 prepayIdJson.wxOrderId = evalJsons.root.out_trade_no;
             })
             logger.info("updateRefundSSS"+prepayIdJson);
@@ -177,9 +177,10 @@ const addWechatRefund=(req,res,next) => {
                 prepayIdJson.paymentPID = rows[0].p_id;
                 let options ={
                     status:sysConsts.REFUND_STATUS.refunded,
-                    refundFee:0 - prepayIdJson.settlement_refund_fee,
+                    refundFee:prepayIdJson.settlement_refund_fee,
                     orderId:prepayIdJson.wxOrderId.split("_")[0],
-                    paymentId:prepayIdJson.paymentPID
+                    paymentId:prepayIdJson.paymentPID,
+                    paymentRefundId:prepayIdJson.paymentId
                 }
                 refundApplyDAO.updateRefundByOrder(options, (error, result) => {
                     if (error) {
