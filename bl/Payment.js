@@ -151,7 +151,7 @@ const addWechatRefund=(req,res,next) => {
             xmlParser.parseString(reqResult,(err,result)=>{
                 let resStrings = JSON.stringify(result);
                 let evalJsons = eval('(' + resStrings + ')');
-                prepayIdJson.refundId = evalJsons.root.out_refund_no;
+                prepayIdJson.paymentId = evalJsons.root.out_refund_no;
                 prepayIdJson.settlement_refund_fee = -(evalJsons.root.settlement_refund_fee / 100);
                 prepayIdJson.wxOrderId = evalJsons.root.out_trade_no;
             })
@@ -168,48 +168,53 @@ const addWechatRefund=(req,res,next) => {
             });
         });
     }).then(()=>{
-        new Promise((resolve,reject)=>{
-            let options ={
-                status:sysConsts.REFUND_STATUS.refunded,
-                refundFee:prepayIdJson.settlement_refund_fee,
-                paymentRefundId:prepayIdJson.refundId,
-                orderId:prepayIdJson.wxOrderId.split("_")[0],
-                paymentId:prepayIdJson.refundId
-            }
-            refundApplyDAO.updateRefundByOrder(options, (error, result) => {
-                if (error) {
-                    logger.error('updatePaymentRefundId' + error.message);
-                    resUtil.resInternalError(error, res, next);
-                    reject(error);
-                } else {
-                    logger.info('updatePaymentRefundId' + 'success');
-                    new Promise((resolve,reject)=> {
-                        orderInfoDAO.getById(options, (error, rows) => {
-                            if (error) {
-                                logger.error('getOrderById' + error.message);
-                                resUtil.resInternalError(error, res, next);
-                                reject(error);
-                            } else {
-                                logger.info('getOrderById' + 'success');
-                                options.realPaymentPrice = rows[0].real_payment_price - options.refundFee;
-                                resolve();
-                            }
-                        })
-                    }).then(()=>{
-                        orderInfoDAO.updateRealPaymentPrice(options, (error, result) => {
-                            if (error) {
-                                logger.error('updateRealPaymentPrice' + error.message);
-                                resUtil.resInternalError(error, res, next);
-                            } else {
-                                logger.info('updateRealPaymentPrice' + 'success');
-                                resUtil.resetUpdateRes(res, result, null);
-                                return next();
-                            }
-                        })
-                    })
+        paymentDAO.getPaymentById({paymentId:prepayIdJson.paymentId},(error,rows)=>{
+            if(error){
+                logger.error('getPaymentById' + error.message);
+                resUtil.resInternalError(error, res, next);
+            }else{
+                logger.info('getPaymentById' + 'success');
+                prepayIdJson.paymentPID = rows[0].p_id;
+                let options ={
+                    status:sysConsts.REFUND_STATUS.refunded,
+                    refundFee:0 - prepayIdJson.settlement_refund_fee,
+                    orderId:prepayIdJson.wxOrderId.split("_")[0],
+                    paymentId:prepayIdJson.paymentPID
                 }
-            })
-        })
+                refundApplyDAO.updateRefundByOrder(options, (error, result) => {
+                    if (error) {
+                        logger.error('updatePaymentRefundId' + error.message);
+                        resUtil.resInternalError(error, res, next);
+                    } else {
+                        logger.info('updatePaymentRefundId' + 'success');
+                        new Promise((resolve,reject)=> {
+                            orderInfoDAO.getById(options, (error, rows) => {
+                                if (error) {
+                                    logger.error('getOrderById' + error.message);
+                                    resUtil.resInternalError(error, res, next);
+                                    reject(error);
+                                } else {
+                                    logger.info('getOrderById' + 'success');
+                                    options.realPaymentPrice = rows[0].real_payment_price - options.refundFee;
+                                    resolve();
+                                }
+                            })
+                        }).then(()=>{
+                            orderInfoDAO.updateRealPaymentPrice(options, (error, result) => {
+                                if (error) {
+                                    logger.error('updateRealPaymentPrice' + error.message);
+                                    resUtil.resInternalError(error, res, next);
+                                } else {
+                                    logger.info('updateRealPaymentPrice' + 'success');
+                                    resUtil.resetUpdateRes(res, result, null);
+                                    return next();
+                                }
+                            })
+                        })
+                    }
+                })
+            }
+        });
     })
 
 }

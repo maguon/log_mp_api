@@ -249,11 +249,11 @@ const addWechatRefund = (params,callback) => {
     })
 }
 const updateRefund = (params,callback) => {
-    let query = " update payment_info set total_fee=?,status=? where id = ?";
+    let query = " update payment_info set status=? where id = ?";
     let paramsArray = [],i=0;
-    paramsArray[i++] = params.settlement_refund_fee;
+    // paramsArray[i++] = params.settlement_refund_fee;
     paramsArray[i++] = params.status;
-    paramsArray[i] = params.refundId;
+    paramsArray[i] = params.paymentId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('updateRefund');
         callback(error,rows);
