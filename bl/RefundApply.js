@@ -169,7 +169,7 @@ const updateRefundStatus = (req,res,next)=>{
                 let myDate = new Date();
                 params.dateId = moment(myDate).format('YYYYMMDD');
                 new Promise((resolve,reject)=>{
-                    paymentDAO.getPaymentByOrderId({orderId:params.orderId,type:1,status:1},(error,rows)=>{
+                    paymentDAO.getPaymentByOrderId({orderId:params.orderId,type:1,status:1,paymentId:params.paymentId},(error,rows)=>{
                         if(error){
                             logger.error('getPaymentByOrderId' + error.message);
                             resUtil.resInternalError(error, res, next);
@@ -188,8 +188,8 @@ const updateRefundStatus = (req,res,next)=>{
                         }
                     })
                 }).then(()=>{
-                    params.type = sysConsts.PAYMENT.type.refund;
-                    params.paymentType = sysConsts.PAYMENT.paymentType.wechat;
+                    params.type = sysConst.PAYMENT.type.refund;
+                    params.paymentType = sysConst.PAYMENT.paymentType.wechat;
                     params.refundFee = -params.refundFee;
                     paymentDAO.addWechatRefund(params,(error,result)=>{
                         if(error){
