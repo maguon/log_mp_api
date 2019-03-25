@@ -916,6 +916,20 @@ const getParams =(req,res,params)=>{
     return result;
 
 }
+const paymentInMonth =(req,res,next)=>{
+    let params = req.params;
+    params.dbMonth = moment().format("YYYYMM");
+    paymentDAO.statisticsPaymentPrice(params,(error,result)=>{
+        if(error){
+            logger.error('getPaymentInMonth' + error.message);
+            resUtil.resInternalError(error, res, next);
+        }else{
+            logger.info('getPaymentInMonth' + 'success');
+            resUtil.resetQueryRes(res,result,null);
+            return next();
+        }
+    });
+}
 module.exports = {
     updateWechatPayment,
     wechatRefund,
@@ -933,5 +947,6 @@ module.exports = {
     updateTotalFee,
     deletePayment,
     updateBankInfo,
-    wechatPayment
+    wechatPayment,
+    paymentInMonth
 }

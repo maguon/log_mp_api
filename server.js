@@ -350,7 +350,7 @@ const createServer=()=>{
     server.get('/api/admin/:adminId/statisticsNewUserByDay',statistics.newUserCountByDay);
     server.get('/api/admin/:adminId/statisticsPaymentPriceByMonth',statistics.paymentPriceByMonth);
     server.get('/api/admin/:adminId/statisticsPaymentPriceByDay',statistics.paymentPriceByDay);
-
+    server.get('/api/admin/:adminId/paymentInMonth',payment.paymentInMonth);
     /**
      * department_info
      */

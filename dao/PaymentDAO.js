@@ -605,6 +605,19 @@ const getOrderRealPayment =(params,callback) => {
         callback(error,rows)
     })
 }
+const statisticsPaymentPrice =(params,callback) => {
+    let paramsArray = [],i=0;
+    let query = " select sum(total_fee) income ,";
+    query += " sum(if(pi.payment_type =2 and type = 1 and status = 0,1,0)) unPaid_count,";
+    query += " sum(if(pi.payment_type =2 and type = 1 and status = 0,total_fee,0)) unPaid_price";
+    query += " from payment_info pi left join date_base db on pi.date_id = db.id where 1=1"
+    query += " and db.y_month = ?";
+    paramsArray[i] = params.dbMonth;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('statisticsPaymentPrice');
+        callback(error,rows);
+    })
+}
 module.exports = {
     getPayment,
     addPayment,
@@ -615,6 +628,7 @@ module.exports = {
     delRefundFail,
     addWechatRefund,
     updateRefund,
+    statisticsPaymentPrice,
     updateRemark,
     addBankPayment,
     updateBankStatus,
