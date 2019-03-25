@@ -18,7 +18,6 @@ const refundApplyDAO = require('../dao/RefundApplyDAO.js');
 const orderInfoDAO = require("../dao/InquiryOrderDAO");
 
 const wechatRefund = (req,res,next)=>{
-    let refundApplyParams = req.refundApplyParams;
     let params = req.params;
     let ourString = encrypt.randomString();
     params.nonceStr = ourString;
