@@ -163,6 +163,7 @@ const updateRefundStatus = (req,res,next)=>{
             params.dateId = moment().format("YYYYMMDD");
             if (paymentType == sysConst.PAYMENT.paymentType.wechat){
                 params.paymentType = sysConst.PAYMENT.paymentType.wechat;
+                req.refundApplyParams = params;
                 payment.wechatRefund(req,res,next);
                 // resolve();
                 // paymentDAO.addWechatRefund(params,(error,result)=>{
