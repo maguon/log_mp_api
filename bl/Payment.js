@@ -207,7 +207,7 @@ const addWechatRefund=(req,res,next) => {
                                 } else {
                                     logger.info('updateRealPaymentPriceOfWechatRefund' + 'success');
                                     resUtil.resetUpdateRes(res, result, null);
-                                    return next();
+                                    // return next();
                                 }
                             })
                         })
