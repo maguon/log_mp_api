@@ -474,9 +474,26 @@ const getParams = (params,totalFee)=>{
     result.options = options;
     return result;
 }
+
+const refundInMonth = (req,res,next)=>{
+    let params = req.params;
+    params.dbMonth = moment().format("YYYYMM");
+    params.status = sysConst.REFUND_STATUS.applying;
+    refundApplyDAO.statisticsRefundPrice(params,(error,result)=>{
+        if(error){
+            logger.error('statisticsRefundPrice:' + error.message);
+            resUtil.resInternalError(error, res, next);
+        }else{
+            logger.info('statisticsRefundPrice:' + 'success');
+            resUtil.resetQueryRes(res,result,null);
+            return next();
+        }
+    });
+}
 module.exports = {
     addRefundApply,
     getRefundApply,
+    refundInMonth,
     updateRefuseStatus,
     updateRefundStatus,
     getRefundApplyStat,

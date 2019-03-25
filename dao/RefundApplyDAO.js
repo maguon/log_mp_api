@@ -246,6 +246,17 @@ const updateRefundByOrder = (params,callback) => {
         callback(error,rows);
     })
 }
+const statisticsRefundPrice = (params,callback) => {
+    let paramsArray = [],i=0;
+    let query = " select count(ra.id) refund_apply_count ,sum(apply_fee) apply_fee_price from refund_apply ra left join date_base db on ra.date_id = db.id";
+    query += " where 1=1 and db.y_month = ? and status = ?"
+    paramsArray[i++] = params.dbMonth;
+    paramsArray[i] = params.status;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('statisticsRefundPrice');
+        callback(error,rows);
+    })
+}
 module.exports = {
     addRefundApply,
     getRefundApply,
@@ -256,5 +267,6 @@ module.exports = {
     deleteById,
     updatePaymentRefundId,
     updateById,
-    updateRefundByOrder
+    updateRefundByOrder,
+    statisticsRefundPrice
 }
