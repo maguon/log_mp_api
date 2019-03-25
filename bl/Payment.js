@@ -202,10 +202,10 @@ const addWechatRefund=(req,res,next) => {
                         }).then(()=>{
                             orderInfoDAO.updateRealPaymentPrice(options, (error, result) => {
                                 if (error) {
-                                    logger.error('updateRealPaymentPrice' + error.message);
+                                    logger.error('updateRealPaymentPriceOfWechatRefund' + error.message);
                                     resUtil.resInternalError(error, res, next);
                                 } else {
-                                    logger.info('updateRealPaymentPrice' + 'success');
+                                    logger.info('updateRealPaymentPriceOfWechatRefund' + 'success');
                                     resUtil.resetUpdateRes(res, result, null);
                                     return next();
                                 }
