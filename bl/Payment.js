@@ -75,7 +75,7 @@ const wechatRefund = (req,res,next)=>{
                         '<nonce_str>'+params.nonceStr+'</nonce_str>' +
                         '<notify_url>'+refundUrl+'</notify_url>' +
                         //'<openid>'+params.openid+'</openid>' +
-                        '<out_refund_no>'+params.refundId +"_"+refundApplyParams.refundApplyId +'</out_refund_no>' +
+                        '<out_refund_no>'+params.refundId +"|"+refundApplyParams.refundApplyId +'</out_refund_no>' +
                         '<out_trade_no>'+params.wxOrderId+'</out_trade_no>' +
                         '<refund_fee>'+(-params.refundFee) * 100+'</refund_fee>' +
                         '<total_fee>'+params.totalFee * 100+'</total_fee>' +
@@ -172,8 +172,8 @@ const addWechatRefund=(req,res,next) => {
             let options ={
                 status:sysConsts.REFUND_STATUS.refunded,
                 refundFee:prepayIdJson.settlement_refund_fee,
-                paymentRefundId:prepayIdJson.refundId.split("_")[0],
-                refundApplyId:prepayIdJson.refundId.split("_")[1],
+                paymentRefundId:prepayIdJson.refundId.split("|")[0],
+                refundApplyId:prepayIdJson.refundId.split("|")[1],
                 orderId:prepayIdJson.wxOrderId.split("_")[0]
             }
             refundApplyDAO.updatePaymentRefundId(options, (error, result) => {
