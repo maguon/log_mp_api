@@ -165,56 +165,6 @@ const updateRefundStatus = (req,res,next)=>{
                 params.paymentType = sysConst.PAYMENT.paymentType.wechat;
                 req.refundApplyParams = params;
                 payment.wechatRefund(req,res,next);
-                // resolve();
-                // paymentDAO.addWechatRefund(params,(error,result)=>{
-                //     if(error){
-                //         logger.error('addWechatRefund' + error.message);
-                //         resUtil.resInternalError(error, res, next);
-                //     }else{
-                //         logger.info('addWechatRefund '+'success');
-                //         params.refundId = result.insertId;
-                //         let xmlParser = new xml2js.Parser({explicitArray : false, ignoreAttrs : true});
-                //         let getWechatParams = getParams(params,totalFee);
-                //         let httpsReq = https.request(getWechatParams.options,(result)=>{
-                //             let data = "";
-                //             logger.info(result);
-                //             result.on('data',(d)=>{
-                //                 data += d;
-                //             }).on('end',()=>{
-                //                 xmlParser.parseString(data,(err,result)=>{
-                //                     let resString = JSON.stringify(result);
-                //                     let evalJson = eval('(' + resString + ')');
-                //                     if(evalJson.xml.return_code == 'FAIL'){
-                //                         paymentDAO.delRefundFail(params,(error,result)=>{});
-                //                         logger.warn('退款失败');
-                //                         resUtil.resetFailedRes(res,evalJson.xml,null)
-                //                         reject();
-                //                     }else if(evalJson.xml.result_code=='FAIL'){
-                //                         paymentDAO.delRefundFail(params,(error,result)=>{});
-                //                         logger.warn('退款失败');
-                //                         resUtil.resetFailedRes(res,evalJson.xml.err_code_des,null)
-                //                         reject();
-                //                     }
-                //                     // resUtil.resetQueryRes(res,evalJson.xml,null);
-                //                 });
-                //                 res.send(200,data);
-                //                 return next();
-                //             }).on('error', (e)=>{
-                //                 logger.info('wechatPayment '+ e.message);
-                //                 res.send(500,e);
-                //                 return next();
-                //             });
-                //         });
-                //         httpsReq.write(getWechatParams.reqBody,"utf-8");
-                //         httpsReq.end();
-                //         resolve();
-                //         httpsReq.on('error',(e)=>{
-                //             logger.info('wechatPayment '+ e.message);
-                //             res.send(500,e);
-                //             return next();
-                //         });
-                //     }
-                // })
             } else if(paymentType == sysConst.PAYMENT.paymentType.bankTransfer){
                 params.paymentType = sysConst.PAYMENT.paymentType.bankTransfer;
                 paymentDAO.addRefundPayment(params,(error,rows)=>{
@@ -225,64 +175,62 @@ const updateRefundStatus = (req,res,next)=>{
                     }else{
                         logger.info('addRefundPayment' + 'success');
                         params.paymentRefundId = rows.insertId;
-                        resolve();
+                        new Promise((resolve,reject)=>{
+                            params.status = sysConst.REFUND_STATUS.refunded;
+                            params.refundFee = - params.refundFee;
+                            refundApplyDAO.updateRefundStatus(params,(error,result)=>{
+                                if(error){
+                                    logger.error('updateRefundStatus' + error.message);
+                                    resUtil.resInternalError(error, res, next);
+                                    reject(error);
+                                }else{
+                                    logger.info('updateRefundStatus' + 'success');
+                                    resolve();
+                                }
+                            });
+                        }).then(()=>{
+                            new Promise((resolve,reject)=> {
+                                refundApplyDAO.updatePaymentRefundId(params, (error, result) => {
+                                    if (error) {
+                                        logger.error('updatePaymentRefundId' + error.message);
+                                        resUtil.resInternalError(error, res, next);
+                                        reject(error);
+                                    } else {
+                                        logger.info('updatePaymentRefundId' + 'success');
+                                        resolve();
+                                    }
+                                })
+                            }).then(()=>{
+                                new Promise((resolve,reject)=> {
+                                    orderInfoDAO.getById(params, (error, rows) => {
+                                        if (error) {
+                                            logger.error('getOrderById' + error.message);
+                                            resUtil.resInternalError(error, res, next);
+                                            reject(error);
+                                        } else {
+                                            logger.info('getOrderById' + 'success');
+                                            params.realPaymentPrice = rows[0].real_payment_price - params.refundFee;
+                                            resolve();
+                                        }
+                                    })
+                                }).then(()=>{
+                                    orderInfoDAO.updateRealPaymentPrice(params, (error, result) => {
+                                        if (error) {
+                                            logger.error('updateRealPaymentPrice' + error.message);
+                                            resUtil.resInternalError(error, res, next);
+                                        } else {
+                                            logger.info('updateRealPaymentPrice' + 'success');
+                                            resUtil.resetUpdateRes(res, result, null);
+                                            return next();
+                                        }
+                                    })
+                                })
+
+                            })
+                        })
                     }
                 })
             }
-        }).then(()=>{
-            new Promise((resolve,reject)=>{
-                params.status = sysConst.REFUND_STATUS.refunded;
-                params.refundFee = - params.refundFee;
-                refundApplyDAO.updateRefundStatus(params,(error,result)=>{
-                    if(error){
-                        logger.error('updateRefundStatus' + error.message);
-                        resUtil.resInternalError(error, res, next);
-                        reject(error);
-                    }else{
-                        logger.info('updateRefundStatus' + 'success');
-                        resolve();
-                    }
-                });
-            }).then(()=>{
-                new Promise((resolve,reject)=> {
-                    refundApplyDAO.updatePaymentRefundId(params, (error, result) => {
-                        if (error) {
-                            logger.error('updatePaymentRefundId' + error.message);
-                            resUtil.resInternalError(error, res, next);
-                            reject(error);
-                        } else {
-                            logger.info('updatePaymentRefundId' + 'success');
-                            resolve();
-                        }
-                    })
-                }).then(()=>{
-                    new Promise((resolve,reject)=> {
-                        orderInfoDAO.getById(params, (error, rows) => {
-                            if (error) {
-                                logger.error('getOrderById' + error.message);
-                                resUtil.resInternalError(error, res, next);
-                                reject(error);
-                            } else {
-                                logger.info('getOrderById' + 'success');
-                                params.realPaymentPrice = rows[0].real_payment_price - params.refundFee;
-                                resolve();
-                            }
-                        })
-                    }).then(()=>{
-                        orderInfoDAO.updateRealPaymentPrice(params, (error, result) => {
-                            if (error) {
-                                logger.error('updateRealPaymentPrice' + error.message);
-                                resUtil.resInternalError(error, res, next);
-                            } else {
-                                logger.info('updateRealPaymentPrice' + 'success');
-                                resUtil.resetUpdateRes(res, result, null);
-                                return next();
-                            }
-                        })
-                    })
-
-                })
-            })
         })
     }).catch((error)=>{
         resUtil.resInternalError(error,res,next);
