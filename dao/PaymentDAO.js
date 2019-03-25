@@ -596,6 +596,15 @@ const statisticsByDays =(params,callback) => {
         callback(error,rows);
     })
 }
+const getOrderRealPayment =(params,callback) => {
+    let query = " select sum(total_fee) real_payment from payment_info where order_id = ?";
+    let paramsArray = [],i=0;
+    paramsArray[i] = params.orderId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('getOrderRealPayment');
+        callback(error,rows)
+    })
+}
 module.exports = {
     getPayment,
     addPayment,
@@ -622,5 +631,6 @@ module.exports = {
     getByOrderId,
     deleteById,updateById,
     statisticsByMonths,
-    statisticsByDays
+    statisticsByDays,
+    getOrderRealPayment
 }

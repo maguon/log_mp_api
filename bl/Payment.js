@@ -189,14 +189,14 @@ const addWechatRefund=(req,res,next) => {
                     } else {
                         logger.info('updatePaymentRefundId' + 'success');
                         new Promise((resolve,reject)=> {
-                            orderInfoDAO.getById(options, (error, rows) => {
+                            paymentDAO.getOrderRealPayment({orderId:options.orderId}, (error, rows) => {
                                 if (error) {
-                                    logger.error('getOrderById' + error.message);
+                                    logger.error('getOrderRealPayment' + error.message);
                                     resUtil.resInternalError(error, res, next);
                                     reject(error);
                                 } else {
-                                    logger.info('getOrderById' + 'success');
-                                    options.realPaymentPrice = rows[0].real_payment_price - options.refundFee;
+                                    logger.info('getOrderRealPayment' + 'success');
+                                    options.realPaymentPrice = rows[0].real_payment;
                                     resolve();
                                 }
                             })

@@ -235,7 +235,7 @@ const updateById = (params,callback) => {
 }
 const updateRefundByOrder = (params,callback) => {
     let paramsArray = [],i=0;
-    let query = " update refund_apply set payment_refund_id = ? , status = ? where order_id = ? and payment_id = ?";
+    let query = " update refund_apply set payment_refund_id = ? , status = ? where order_id = ? and payment_id = ? and status != 0";
     paramsArray[i++] = params.paymentRefundId;
     paramsArray[i++] = params.status;
     paramsArray[i++] = params.orderId;
