@@ -100,6 +100,10 @@ const updateById =(params,callback) => {
         paramsArray[i++] = params.paymentOn;
         query += " ,payment_on = ?";
     }
+    if (params.paymentOnId){
+        paramsArray[i++] = params.paymentOnId;
+        query += " ,payment_on_id = ?";
+    }
     if (params.routeStart){
         paramsArray[i++] = params.routeStart;
         query += " ,route_start = ?";

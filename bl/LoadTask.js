@@ -699,6 +699,7 @@ const doPayment = (req,res,next) => {
     }).then(()=>{
         params.paymentFlag = sysConsts.LOAD_TASK_PAYMENTFLAG.yes;
         params.paymentOn = new Date();
+        params.paymentOnId = moment().format("YYYYMMDD");
         loadTaskDAO.updateById(params,(error,rows)=>{
             if(error){
                 logger.error('updatePaymentFlag' + error.message);
