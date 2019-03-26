@@ -10014,6 +10014,41 @@
         }
       }
     },
+    "/admin/{adminId}/price": {
+      "get": {
+        "tags": [
+          "statisticsMsg"
+        ],
+        "summary": "",
+        "description": "本月利润/本月支付供应商/待支付线路/待支付供应商金额",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/statisticsMsg"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
     "/admin/{adminId}/department": {
       "post": {
         "tags": [

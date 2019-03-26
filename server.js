@@ -352,6 +352,7 @@ const createServer=()=>{
     server.get('/api/admin/:adminId/statisticsPaymentPriceByDay',statistics.paymentPriceByDay);
     server.get('/api/admin/:adminId/paymentInMonth',payment.paymentInMonth);
     server.get('/api/admin/:adminId/refundInMonth',refundApply.refundInMonth);
+    server.get('/api/admin/:adminId/price',loadTask.statisticsPrice);
     /**
      * department_info
      */

@@ -754,6 +754,20 @@ const hostPort=(url)=>{
     urlObj.port = temp.split(":")[1];
     return urlObj;
 }
+const statisticsPrice = (req,res,next) => {
+    let params = req.params;
+    params.dbMonth = moment().format("YYYYMM");
+    loadTaskDAO.getOrderLoadPrice(params,(error,rows)=>{
+        if(error){
+            logger.error('statisticsPrice' + error.message);
+            resUtil.resInternalError(error,res,next);
+        }else{
+            logger.info('statisticsPrice' + 'success');
+            resUtil.resetQueryRes(res,rows,null);
+            return next;
+        }
+    })
+}
 module.exports={
     addLoadTask,
     submitToSupplier,
@@ -767,5 +781,6 @@ module.exports={
     syncComplete,
     getRouteLoadTask,
     doPayment,
-    getRouteOfCar
+    getRouteOfCar,
+    statisticsPrice
 }

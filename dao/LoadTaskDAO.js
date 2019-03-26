@@ -415,6 +415,24 @@ const getRouteLoadTask = (params,callback) => {
         callback(error,rows);
     })
 }
+const getOrderLoadPrice = (params,callback) => {
+    let query = "select sum(paid_supplier_price) paid_supplier_price, sum(unpaid_load_count) unpaid_load_count,";
+    query += " sum(unpaid_supplier_price) unpaid_supplier_price,sum(real_payment_price)-sum(paid_supplier_price) profit_price";
+    query += "  from ( ";
+    query += "select oi.id,sum(supplier_insure_price + supplier_trans_price) supplier_price,sum(if(payment_flag = 0,1,0)) unpaid_load_count ";
+    query += " ,sum(if(payment_flag=1 and DATE_FORMAT(payment_on_id,'%Y%m')= ?,supplier_insure_price + supplier_trans_price,0)) paid_supplier_price"
+    query += " ,sum(if(payment_flag=0 ,supplier_insure_price + supplier_trans_price,0)) unpaid_supplier_price";
+    query += " ,sum(if(db.y_month= ?,oi.real_payment_price,0)) real_payment_price ";
+    query += " from order_info oi left join date_base db on oi.date_id = db.id "
+    query += " left join dp_load_task dlt on dlt.order_id = oi.id group by oi.id ) db_price"
+    let paramsArray = [],i=0;
+    paramsArray[i++] = parseInt(params.dbMonth);
+    paramsArray[i] = parseInt(params.dbMonth);
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('getOrderLoadPrice');
+        callback(error,rows);
+    })
+}
 module.exports={
     add,getById,updateById,
     getLoadTaskWithDetail,
@@ -423,5 +441,6 @@ module.exports={
     getHasLoadCarCount,
     getLoadTask,
     getLoadTaskProfitOfCar,
-    getRouteLoadTask
+    getRouteLoadTask,
+    getOrderLoadPrice
 }
