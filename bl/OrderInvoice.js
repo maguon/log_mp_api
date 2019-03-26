@@ -206,6 +206,20 @@ const addByUser = (req,res,next)=>{
         }
     });
 }
+const statisticsInvoice = (req,res,next)=>{
+    let params = req.params;
+    params.dbMonth = moment().format("YYYYMM");
+    orderInvoiceDAO.getStatisticsInvoice(params,(error,result)=>{
+        if (error){
+            logger.error('statisticsInvoice:' + error.message);
+            resUtil.resInternalError(error,res,next);
+        } else {
+            logger.info('statisticsInvoice:' + 'success');
+            resUtil.resetQueryRes(res,result,null);
+            return next();
+        }
+    });
+}
 module.exports={
     addByAdmin,
     updateInvoiceStatus,
@@ -215,5 +229,6 @@ module.exports={
     replaceOrderId,
     delInvoiceApply,
     updateRefuseStatus,
-    addByUser
+    addByUser,
+    statisticsInvoice
 }

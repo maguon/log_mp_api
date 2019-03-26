@@ -258,6 +258,17 @@ const statisticsByDays =(params,callback) => {
         callback(error,rows);
     })
 }
+const getStatisticsInvoice =(params,callback) => {
+    let paramsArray = [],i=0;
+    let query = " select sum(if(oia.status=0,1,0)) unInvoice_count,sum((oi.total_insure_price+oi.total_trans_price)) invoice_total_price";
+    query += " from order_invoice_apply oia left join date_base db on oia.date_id = db.id and db.y_month = ?";
+    query += " inner join order_info oi on oia.order_id = oi.id";
+    paramsArray[i] = params.dbMonth;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('statisticsInvoice');
+        callback(error,rows);
+    })
+}
 module.exports = {
     addOrderInvoiceApply,
     updateStatus,
@@ -268,5 +279,6 @@ module.exports = {
     getById,
     getByOrderId,
     statisticsByMonths,
-    statisticsByDays
+    statisticsByDays,
+    getStatisticsInvoice
 }

@@ -10049,6 +10049,41 @@
         }
       }
     },
+    "/admin/{adminId}/unInvoice": {
+      "get": {
+        "tags": [
+          "statisticsMsg"
+        ],
+        "summary": "",
+        "description": "待开票(笔数,金额)",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/statisticsMsg"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
     "/admin/{adminId}/department": {
       "post": {
         "tags": [
