@@ -198,7 +198,11 @@ const updateCarNum = (params,callback) => {
 const getById = (params,callback) => {
     let query = "select * from inquiry_info where id = ? ";
     let paramsArray = [],i=0;
-    paramsArray[i] = params.inquiryId;
+    paramsArray[i++] = params.inquiryId;
+    if(params.status){
+        paramsArray[i] = params.status;
+        query = query + " and status = ? ";
+    }
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('getById');
         callback(error,rows);

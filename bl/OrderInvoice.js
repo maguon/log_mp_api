@@ -220,6 +220,19 @@ const statisticsInvoice = (req,res,next)=>{
         }
     });
 }
+const statisticsOrder = (req,res,next)=>{
+    let params = req.params;
+    orderInvoiceDAO.getStatisticsOrder(params,(error,result)=>{
+        if (error){
+            logger.error('statisticsOrder:' + error.message);
+            resUtil.resInternalError(error,res,next);
+        } else {
+            logger.info('statisticsOrder:' + 'success');
+            resUtil.resetQueryRes(res,result,null);
+            return next();
+        }
+    });
+}
 module.exports={
     addByAdmin,
     updateInvoiceStatus,
@@ -230,5 +243,6 @@ module.exports={
     delInvoiceApply,
     updateRefuseStatus,
     addByUser,
-    statisticsInvoice
+    statisticsInvoice,
+    statisticsOrder
 }

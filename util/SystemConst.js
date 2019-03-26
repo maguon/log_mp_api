@@ -93,10 +93,10 @@ const ORDER_INVOICE_APPLY = {
 }
 const INQUIRY = {
     status:{
-        inquirying:0,
-        enquiryPrice:1,
-        getOrder:2,
-        cancelOrder:3
+        inquirying:0,//询价中
+        enquiryPrice:1,//已询价
+        getOrder:2,//生成订单
+        cancelOrder:3//取消订单
     }
 }
 const CAR = {

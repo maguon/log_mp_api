@@ -269,6 +269,19 @@ const getStatisticsInvoice =(params,callback) => {
         callback(error,rows);
     })
 }
+const getStatisticsOrder =(params,callback) => {
+    let paramsArray = [],i=0;
+    let query = " select sum(if(oi.status=0,1,0)) msg_improved ,sum(if(oi.status=1,1,0)) price_improved ,sum(if(oi.status=2,1,0)) ungenerated ";
+    query += " ,sum(if(oi.status=3,1,0)) unexecuted ,sum(if(oi.status=4,1,0)) inexecution,sum(if(drt.status=0,1,0)) arrange";
+    query += " ,sum(if(drt.status=1,1,0)) arrangeing,sum(if(dlt.load_task_status = 1,car_count,0)) noload_car_count";
+    query += " ,sum(if(dlt.load_task_status = 2,car_count,0)) loading_car_count";
+    query += " from order_info oi left join dp_require_task drt on oi.id = drt.order_id";
+    query += " left join dp_load_task dlt on dlt.order_id = oi.id";
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('getStatisticsOrder');
+        callback(error,rows);
+    })
+}
 module.exports = {
     addOrderInvoiceApply,
     updateStatus,
@@ -280,5 +293,6 @@ module.exports = {
     getByOrderId,
     statisticsByMonths,
     statisticsByDays,
-    getStatisticsInvoice
+    getStatisticsInvoice,
+    getStatisticsOrder
 }

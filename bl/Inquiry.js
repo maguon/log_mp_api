@@ -154,10 +154,25 @@ const cancelInquiry = (req,res,next) => {
         }
     })
 }
+const getUnConsultOrderCount = (req,res,next) => {
+    let params = req.params;
+    params.status= systemConst.INQUIRY.status.enquiryPrice;
+    inquiryDAO.getById(params,(error,rows)=>{
+        if(error){
+            logger.error('cancelInquiry' + error.message);
+            throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
+        }else{
+            logger.info('cancelInquiry' + 'success');
+            resUtil.resetQueryRes(res,rows.length,null);
+            return next();
+        }
+    })
+}
 module.exports = {
     addRouteInquiry,
     getInquiryByUserId,
     updateInquiryStatus,
     updateFeePrice,
-    cancelInquiry
+    cancelInquiry,
+    getUnConsultOrderCount
 }

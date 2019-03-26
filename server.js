@@ -354,6 +354,8 @@ const createServer=()=>{
     server.get('/api/admin/:adminId/refundInMonth',refundApply.refundInMonth);
     server.get('/api/admin/:adminId/price',loadTask.statisticsPrice);
     server.get('/api/admin/:adminId/unInvoice',orderInvoice.statisticsInvoice);
+    server.get('/api/admin/:adminId/statisticsOrder',orderInvoice.statisticsOrder);
+    server.get('/api/admin/:adminId/unConsultOrderCount',inquiry.getUnConsultOrderCount);
     /**
      * department_info
      */
