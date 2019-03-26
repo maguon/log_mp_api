@@ -242,7 +242,7 @@ const addWechatRefund = (params,callback) => {
     paramsArray[i++] = params.type;
     paramsArray[i++] = params.paymentId;
     paramsArray[i++] = params.paymentType;
-    paramsArray[i] = params.refundFee;
+    paramsArray[i] = -params.refundFee;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('addWechatRefund');
         callback(error,rows);

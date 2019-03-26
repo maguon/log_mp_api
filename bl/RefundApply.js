@@ -280,7 +280,7 @@ const wechatRefund = (req,res,next)=>{
         new Promise((resolve,reject)=>{
             params.type = sysConst.PAYMENT.type.refund;
             params.paymentType = sysConst.PAYMENT.paymentType.wechat;
-            params.refundFee = -params.refundFee;
+            params.refundFee = params.refundFee;
             paymentDAO.addWechatRefund(params,(error,result)=>{
                 if(error){
                     logger.error('addWechatRefund' + error.message);

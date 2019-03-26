@@ -48,7 +48,7 @@ const wechatRefund = (req,res,next)=>{
         new Promise((resolve,reject)=>{
             params.type = sysConsts.PAYMENT.type.refund;
             params.paymentType = sysConsts.PAYMENT.paymentType.wechat;
-            params.refundFee = -params.refundFee;
+            params.refundFee = params.refundFee;
             paymentDAO.addWechatRefund(params,(error,result)=>{
                 if(error){
                     logger.error('addWechatRefund' + error.message);
@@ -836,11 +836,15 @@ const updateWechatPayment=(req,res,next) => {
                     resUtil.resetFailedRes(res,'没有此支付信息',null);
                 }else{
                     prepayIdJson.paymentId = rows[0].id;
+                    prepayIdJson.paymentType = rows[0].type;
                     resolve();
                 }
             })
         }).then(()=>{
             new Promise((resolve,reject)=>{
+                if (prepayIdJson.paymentType = sysConsts.PAYMENT.type.refund){
+                    prepayIdJson.totalFee = -prepayIdJson.totalFee;
+                }
                 paymentDAO.updateWechatPayment(prepayIdJson,(error,result)=>{
                     if(error){
                         logger.error('updateWechatPayment' + error.message);
