@@ -313,7 +313,6 @@ const createServer=()=>{
     server.post({path:'/api/admin/:adminId/order/:orderId/payment/:paymentId/refundApply',contentType: 'application/json'},refundApply.addRefundApply);
     server.get('/api/user/:userId/refundApply' ,refundApply.getRefundApply);
     server.get('/api/admin/:adminId/refundApplyStat' ,refundApply.getRefundApplyStat);
-    server.post({path:'/api/wechatRefundResult',contentType: 'text/xml'},refundApply.wechatRefundResult);
     server.put({path:'/api/admin/:adminId/order/:orderId/payment/:paymentId/refundApply/:refundApplyId/refuse',contentType: 'application/json'},refundApply.updateRefuseStatus);
     server.put({path:'/api/admin/:adminId/order/:orderId/payment/:paymentId/refundApply/:refundApplyId/agree',contentType: 'application/json'},refundApply.updateRefundStatus);
     server.put({path:'/api/admin/:adminId/order/:orderId/payment/:paymentId/refundApply/:refundId',contentType: 'application/json'},refundApply.updateRefundById);

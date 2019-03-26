@@ -234,87 +234,6 @@ const updateRefundStatus = (req,res,next)=>{
         resUtil.resInternalError(error,res,next);
     })
 }
-const wechatRefundResult = (req,res,next)=>{
-    let prepayIdJson = {
-        status: 1
-    };
-    new Promise((resolve,reject)=>{
-        let xmlParser = new xml2js.Parser({explicitArray : false, ignoreAttrs : true});
-        xmlParser.parseString(req.body,(err,result)=>{
-            let resString = JSON.stringify(result);
-            let evalJson = eval('(' + resString + ')');
-            let md5Key = encrypt.encryptByMd5NoKey(sysConfig.wechatConfig.paymentKey).toLowerCase();
-            let reqInfo = evalJson.xml.req_info;
-            let reqResult = encrypt.decryption(reqInfo,md5Key);
-            xmlParser.parseString(reqResult,(err,result)=>{
-                let resStrings = JSON.stringify(result);
-                let evalJsons = eval('(' + resStrings + ')');
-                prepayIdJson.paymentId = evalJsons.root.out_refund_no;
-                prepayIdJson.settlement_refund_fee = evalJsons.root.settlement_refund_fee / 100;
-                prepayIdJson.wxOrderId = evalJsons.root.out_trade_no;
-            })
-            logger.info("wechatRefundResult =>"+prepayIdJson);
-            paymentDAO.updateRefund(prepayIdJson,(error,result)=>{
-                if(error){
-                    logger.error('updateRefund' + error.message);
-                    reject(error);
-                }else{
-                    logger.info('updateRefund' + 'success');
-                    resolve();
-                }
-            });
-        });
-    }).then(()=>{
-        paymentDAO.getPaymentById({paymentId:prepayIdJson.paymentId},(error,rows)=>{
-            if(error){
-                logger.error('getPaymentById' + error.message);
-                resUtil.resInternalError(error, res, next);
-            }else{
-                logger.info('getPaymentById' + 'success');
-                prepayIdJson.paymentPID = rows[0].p_id;
-                let options ={
-                    status:sysConsts.REFUND_STATUS.refunded,
-                    refundFee:prepayIdJson.settlement_refund_fee,
-                    orderId:prepayIdJson.wxOrderId.split("_")[0],
-                    paymentId:prepayIdJson.paymentPID,
-                    paymentRefundId:prepayIdJson.paymentId
-                }
-                refundApplyDAO.updateRefundByOrder(options, (error, result) => {
-                    if (error) {
-                        logger.error('updatePaymentRefundId' + error.message);
-                        resUtil.resInternalError(error, res, next);
-                    } else {
-                        logger.info('updatePaymentRefundId' + 'success');
-                        new Promise((resolve,reject)=> {
-                            paymentDAO.getOrderRealPayment({orderId:options.orderId}, (error, rows) => {
-                                if (error) {
-                                    logger.error('getOrderRealPayment' + error.message);
-                                    resUtil.resInternalError(error, res, next);
-                                    reject(error);
-                                } else {
-                                    logger.info('getOrderRealPayment' + 'success');
-                                    options.realPaymentPrice = rows[0].real_payment;
-                                    resolve();
-                                }
-                            })
-                        }).then(()=>{
-                            orderInfoDAO.updateRealPaymentPrice(options, (error, result) => {
-                                if (error) {
-                                    logger.error('updateRealPaymentPriceOfWechatRefund' + error.message);
-                                    resUtil.resInternalError(error, res, next);
-                                } else {
-                                    logger.info('updateRealPaymentPriceOfWechatRefund' + 'success');
-                                    resUtil.resetUpdateRes(res, result, null);
-                                    return next();
-                                }
-                            })
-                        })
-                    }
-                })
-            }
-        });
-    })
-}
 const refundInMonth = (req,res,next)=>{
     let params = req.params;
     params.dbMonth = moment().format("YYYYMM");
@@ -457,6 +376,5 @@ module.exports = {
     getRefundApplyStat,
     updateRefundById,
     deleteById,
-    updateRefundApplyMsg,
-    wechatRefundResult
+    updateRefundApplyMsg
 }
