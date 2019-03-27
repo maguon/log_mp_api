@@ -175,8 +175,8 @@ const updateRefundStatus = (req,res,next)=>{
                         params.paymentRefundId = rows.insertId;
                         new Promise((resolve,reject)=>{
                             params.status = sysConst.REFUND_STATUS.refunded;
-                            params.refundFee = - params.refundFee;
-                            refundApplyDAO.updateRefundStatus(params,(error,result)=>{
+                            params.refundFee = params.refundFee;
+                            refundApplyDAO.updateRefund(params,(error,result)=>{
                                 if(error){
                                     logger.error('updateRefundStatus' + error.message);
                                     resUtil.resInternalError(error, res, next);
@@ -188,42 +188,28 @@ const updateRefundStatus = (req,res,next)=>{
                             });
                         }).then(()=>{
                             new Promise((resolve,reject)=> {
-                                refundApplyDAO.updatePaymentRefundId(params, (error, result) => {
+                                paymentDAO.getRealPaymentPrice(params, (error, rows) => {
                                     if (error) {
-                                        logger.error('updatePaymentRefundId' + error.message);
+                                        logger.error('getRealPaymentPrice' + error.message);
                                         resUtil.resInternalError(error, res, next);
                                         reject(error);
                                     } else {
-                                        logger.info('updatePaymentRefundId' + 'success');
+                                        logger.info('getRealPaymentPrice' + 'success');
+                                        params.realPaymentPrice = rows[0].pay_price - Math.abs(rows[0].refund_price) ;
                                         resolve();
                                     }
                                 })
                             }).then(()=>{
-                                new Promise((resolve,reject)=> {
-                                    orderInfoDAO.getById(params, (error, rows) => {
-                                        if (error) {
-                                            logger.error('getOrderById' + error.message);
-                                            resUtil.resInternalError(error, res, next);
-                                            reject(error);
-                                        } else {
-                                            logger.info('getOrderById' + 'success');
-                                            params.realPaymentPrice = rows[0].real_payment_price - params.refundFee;
-                                            resolve();
-                                        }
-                                    })
-                                }).then(()=>{
-                                    orderInfoDAO.updateRealPaymentPrice(params, (error, result) => {
-                                        if (error) {
-                                            logger.error('updateRealPaymentPrice' + error.message);
-                                            resUtil.resInternalError(error, res, next);
-                                        } else {
-                                            logger.info('updateRealPaymentPrice' + 'success');
-                                            resUtil.resetUpdateRes(res, result, null);
-                                            return next();
-                                        }
-                                    })
+                                orderInfoDAO.updateRealPaymentPrice(params, (error, result) => {
+                                    if (error) {
+                                        logger.error('updateRealPaymentPrice' + error.message);
+                                        resUtil.resInternalError(error, res, next);
+                                    } else {
+                                        logger.info('updateRealPaymentPrice' + 'success');
+                                        resUtil.resetUpdateRes(res, result, null);
+                                        return next();
+                                    }
                                 })
-
                             })
                         })
                     }

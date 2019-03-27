@@ -618,6 +618,15 @@ const statisticsPaymentPrice =(params,callback) => {
         callback(error,rows);
     })
 }
+const getRealPaymentPrice =(params,callback) => {
+    let query = " select sum(if(type=0 ,total_fee,0)) refund_price,sum(if(type=1 ,total_fee,0)) pay_price from payment_info where order_id = ?";
+    let paramsArray = [],i=0;
+    paramsArray[i] = params.orderId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('getRealPaymentPrice');
+        callback(error,rows)
+    })
+}
 module.exports = {
     getPayment,
     addPayment,
@@ -646,5 +655,6 @@ module.exports = {
     deleteById,updateById,
     statisticsByMonths,
     statisticsByDays,
-    getOrderRealPayment
+    getOrderRealPayment,
+    getRealPaymentPrice
 }

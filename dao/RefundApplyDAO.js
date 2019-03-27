@@ -257,6 +257,19 @@ const statisticsRefundPrice = (params,callback) => {
         callback(error,rows);
     })
 }
+const updateRefund = (params,callback) => {
+    let query = " update refund_apply set status = ?,payment_refund_id = ?,refund_fee = ?,remark = ? where id = ?";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.status;
+    paramsArray[i++] = params.paymentRefundId;
+    paramsArray[i++] = params.refundFee;
+    paramsArray[i++] = params.remark;
+    paramsArray[i] = params.refundApplyId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('updateRefundStatus');
+        callback(error,rows);
+    })
+}
 module.exports = {
     addRefundApply,
     getRefundApply,
@@ -268,5 +281,6 @@ module.exports = {
     updatePaymentRefundId,
     updateById,
     updateRefundByOrder,
-    statisticsRefundPrice
+    statisticsRefundPrice,
+    updateRefund
 }
