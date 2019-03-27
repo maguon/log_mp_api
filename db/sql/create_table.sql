@@ -469,7 +469,7 @@ CREATE TABLE `company_bank` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ----------------------------
--- Table structure for noRoute_inquiry_info
+-- Table structure for inquiry_route_none_info
 -- ----------------------------
 DROP TABLE IF EXISTS `inquiry_route_none_info`;
 CREATE TABLE `inquiry_route_none_info` (
