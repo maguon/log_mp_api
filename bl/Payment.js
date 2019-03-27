@@ -634,19 +634,15 @@ const updateOrderMsgByPrice = (params,callback)=>{
     let paymentPrice =0;
     let totalPrice =0;
     new Promise((resolve,reject)=>{
-        params.status = sysConsts.PAYMENT.status.paid;
-        paymentDAO.getByOrderId(params,(error,rows)=>{
+        // params.status = sysConsts.PAYMENT.status.paid;
+        paymentDAO.getRealPaymentPrice(params,(error,rows)=>{
             if(error){
                 logger.error('getPaymentByOrderId' + error.message);
                 return callback(error,null);
             }else{
                 logger.info('getPaymentByOrderId' + 'success');
-                for (let i in rows){
-                    realPaymentPrice += rows[i].total_fee;
-                    if (rows[i].p_id == null && rows[i].status == sysConsts.PAYMENT.status.paid) {
-                        paymentPrice += rows[i].total_fee;
-                    }
-                }
+                realPaymentPrice = rows[0].pay_price - Math.abs(rows[0].refund_price);
+                paymentPrice = rows[0].pay_price;
                 resolve();
             }
         });
@@ -655,8 +651,7 @@ const updateOrderMsgByPrice = (params,callback)=>{
             orderDAO.getById(params,(error,rows)=>{
                 if(error){
                     logger.error('getOrderById' + error.message);
-                    resUtil.resInternalError(error, res, next);
-                    reject(error);
+                    return callback(error,null);
                 }else{
                     logger.info('getOrderById' + 'success');
                     totalPrice = rows[0].total_trans_price + rows[0].total_insure_price;
