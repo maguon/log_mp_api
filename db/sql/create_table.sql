@@ -471,8 +471,8 @@ CREATE TABLE `company_bank` (
 -- ----------------------------
 -- Table structure for noRoute_inquiry_info
 -- ----------------------------
-DROP TABLE IF EXISTS `noRoute_inquiry_info`;
-CREATE TABLE `noRoute_inquiry_info` (
+DROP TABLE IF EXISTS `inquiry_route_none_info`;
+CREATE TABLE `inquiry_route_none_info` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `user_id` int(11) DEFAULT NULL COMMENT '管理员id',
     `date_id` int(4) DEFAULT NULL,
