@@ -293,7 +293,7 @@ const createServer=()=>{
     server.get('/api/admin/:adminId/payment' ,payment.getPayment);
     server.get('/api/admin/:adminId/paymentRefund' ,payment.getRefundByPaymentId);
     server.post({path:'/api/user/:userId/order/:orderId/wechatPayment',contentType: 'application/json'},payment.wechatPayment);
-    server.post({path:'/api/wechatPayment',contentType: 'text/xml'},payment.updateWechatPayment);
+    server.post({path:'/api/wechatPayment',contentType: 'text/xml'},payment.wechatPaymentCallback);
     server.post({path:'/api/admin/:adminId/user/:userId/order/:orderId/wechatRefund',contentType: 'application/json'},payment.wechatRefund);
     server.post({path:'/api/wechatRefund',contentType: 'text/xml'},payment.addWechatRefund);
     server.put({path:'/api/admin/:adminId/payment/:paymentId/paymentRemark',contentType: 'application/json'},payment.updateRemark);

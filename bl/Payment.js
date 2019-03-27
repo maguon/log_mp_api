@@ -809,13 +809,13 @@ const wechatPayment =(req,res,next)=>{
         resUtil.resInternalError(error, res, next);
     })
 }
-const updateWechatPayment=(req,res,next) => {
+const wechatPaymentCallback=(req,res,next) => {
     let xmlParser = new xml2js.Parser({explicitArray : false, ignoreAttrs : true});
     xmlParser.parseString(req.body,(err,result)=>{
         let resString = JSON.stringify(result);
         let evalJson = eval('(' + resString + ')');
-        logger.info("paymentResult166"+resString);
-        logger.info("paymentResult1666"+req.body);
+        logger.info("wechatPaymentCallback166"+resString);
+        logger.info("wechatPaymentCallback1666"+req.body);
         let prepayIdJson = {
             nonceStr: evalJson.xml.nonce_str,
             openid: evalJson.xml.openid,
@@ -935,7 +935,7 @@ const paymentInMonth =(req,res,next)=>{
     });
 }
 module.exports = {
-    updateWechatPayment,
+    wechatPaymentCallback,
     wechatRefund,
     addWechatRefund,
     getPayment,
