@@ -180,6 +180,7 @@ const createServer=()=>{
     server.put({path:'/api/admin/:adminId/order/:orderId/selfMentionAddress',contentType: 'application/json'},inquiryOrder.selfMentionAddress);
     server.get('/api/admin/:adminId/orderProfit',inquiryOrder.getOrderProfit);
     server.get('/api/admin/:adminId/order/:orderId/orderCostOfCar',inquiryOrder.getOrderCostOfCar);
+    server.post({path:'/api/user/:userId/order',contentType: 'application/json'},inquiryOrder.orderWithoutInquiry);
     /**
      order_item
      */

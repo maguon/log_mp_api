@@ -5465,6 +5465,50 @@
         }
       }
     },
+    "/user/{userId}/order": {
+      "post": {
+        "tags": [
+          "order"
+        ],
+        "summary": "insert",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderMsg",
+            "in": "body",
+            "description": "orderMsg",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/userCreateOrder"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/adminMark"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
     "/user/{userId}/city": {
       "post": {
         "tags": [
@@ -13310,6 +13354,79 @@
       },
       "xml": {
         "name": "advertisement"
+      }
+    },
+    "userCreateOrder":{
+      "type": "object",
+      "properties": {
+        "routeStartId": {
+          "type": "integer"
+        },
+        "routeEndId": {
+          "type": "integer"
+        },
+        "routeStart": {
+          "type": "string"
+        },
+        "routeEnd": {
+          "type": "string"
+        },
+        "serviceType": {
+          "type": "integer"
+        },
+        "createdType": {
+          "type": "integer"
+        },
+        "remark": {
+          "type": "string"
+        },
+        "recvAddress": {
+          "type": "string"
+        },
+        "sendAddress": {
+          "type": "string"
+        },
+        "orderItemArray": {
+          "type": "array",
+          "items":{
+            "$ref": "#/definitions/orderItemArray"
+          }
+        }
+      },
+      "xml": {
+        "name": "userCreateOrder"
+      }
+    },
+    "orderItemArray": {
+      "type": "object",
+      "properties": {
+        "modelType": {
+          "type": "integer"
+        },
+        "oldCar": {
+          "type": "integer"
+        },
+        "brand": {
+          "type": "string"
+        },
+        "brandType": {
+          "type": "string"
+        },
+        "vin": {
+          "type": "string"
+        },
+        "valuation": {
+          "type": "integer"
+        },
+        "safeStatus": {
+          "type": "integer"
+        },
+        "distance": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "orderItemArray"
       }
     }
   }

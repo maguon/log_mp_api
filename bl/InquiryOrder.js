@@ -12,6 +12,7 @@ const routeDAO = require('../dao/RouteDAO.js');
 const sysConsts = require("../util/SystemConst");
 const moment = require('moment/moment.js');
 const orderItemDAO = require("../dao/OrderItemDAO");
+const commonUtil = require("../util/CommonUtil");
 
 const addInquiryOrderByUser = (req,res,next) => {
     let params = req.params;
@@ -489,6 +490,84 @@ const getOrderCostOfCar = (req,res,next) => {
         }
     })
 }
+const orderWithoutInquiry =(req,res,next)=>{
+    let params = req.params;
+    let oraTransPrice = 0;
+    let oraInsurePrice = 0;
+    let resultCallback;
+    new Promise((resolve,reject)=>{
+        routeDAO.getRoute({routeStartId:params.routeStartId,routeEndId:params.routeEndId},(error,result)=>{
+            if(error){
+                logger.error('getRouteDistance' + error.message);
+                resUtil.resInternalError(error,res,next);
+                reject(error);
+            }else{
+                logger.info('getRouteDistance' + 'success');
+                params.distance = result[0].distance;
+                resolve();
+            }
+        })
+    }).then(()=>{
+        new Promise((resolve,reject)=>{
+            params.dateId = moment().format("YYYYMMDD");
+            params.routeId = parseInt(params.routeStartId.toString()+params.routeEndId.toString());
+            params.adminId =0;
+            inquiryOrderDAO.addOrder(params,(error,result)=>{
+                if(error){
+                    logger.error('addOrder' + error.message);
+                    resUtil.resInternalError(error,res,next);
+                    reject(error);
+                }else{
+                    logger.info('addOrder' + 'success');
+                    params.orderId = result.insertId;
+                    resultCallback = result;
+                    resolve();
+                }
+            })
+        }).then(()=>{
+            new Promise((resolve,reject)=>{
+                let orderItemList = params.orderItemArray;
+                for (let i in orderItemList) {
+                    let price = commonUtil.calculatedAmount(params.serviceType,orderItemList[i].oldCar,orderItemList[i].modelType,params.distance,orderItemList[i].safeStatus, orderItemList[i].valuation);
+                    orderItemList[i].oraTransPrice = price.trans;
+                    orderItemList[i].oraInsurePrice = price.insure;
+                    orderItemList[i].distance = params.distance;
+                    orderItemList[i].orderId = params.orderId;
+                    orderItemList[i].userId = params.userId;
+                    oraTransPrice += price.trans;
+                    oraInsurePrice += price.insure;
+                    orderItemDAO.addOrderCar(orderItemList[i],(error,result)=>{
+                        if(error){
+                            logger.error('addOrderCar' + error.message);
+                            resUtil.resInternalError(error,res,next);
+                        }else{
+                            logger.info('addOrderCar' + 'success');
+                        }
+                    });
+                    if (i == orderItemList.length-1){
+                        resolve();
+                    }
+                }
+            }).then(()=>{
+                let options ={
+                    oraTransPrice:oraTransPrice,
+                    oraInsurePrice:oraInsurePrice,
+                    orderId:params.orderId
+                }
+                inquiryOrderDAO.updateById(options,(error,result)=>{
+                    if(error){
+                        logger.error('updateOrderOraPrice' + error.message);
+                        resUtil.resInternalError(error,res,next);
+                    }else{
+                        logger.info('updateOrderOraPrice' + 'success');
+                        resUtil.resetCreateRes(res,resultCallback,null);
+                        return next();
+                    }
+                })
+            })
+        })
+    })
+}
 module.exports = {
     addInquiryOrderByAdmin,
     addInquiryOrderByUser,
@@ -507,6 +586,7 @@ module.exports = {
     updateById,
     selfMentionAddress,
     getOrderProfit,
-    getOrderCostOfCar
+    getOrderCostOfCar,
+    orderWithoutInquiry
 }
 
