@@ -552,7 +552,8 @@ const orderWithoutInquiry =(req,res,next)=>{
                 let options ={
                     oraTransPrice:oraTransPrice,
                     oraInsurePrice:oraInsurePrice,
-                    orderId:params.orderId
+                    orderId:params.orderId,
+                    status:sysConsts.ORDER.status.priceToBeImproved
                 }
                 inquiryOrderDAO.updateById(options,(error,result)=>{
                     if(error){
