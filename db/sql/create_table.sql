@@ -312,7 +312,7 @@ CREATE TABLE `inquiry_route_none_info` (
 DROP TABLE IF EXISTS `order_info`;
 CREATE TABLE `order_info` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `admin_id` int(11) DEFAULT NULL,
+  `admin_id` int(11) DEFAULT 0,
   `user_id` int(11) DEFAULT '0',
   `inquiry_id` int(11) DEFAULT '0',
   `route_id` int(11) DEFAULT NULL,
@@ -323,7 +323,7 @@ CREATE TABLE `order_info` (
   `route_end` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `distance` decimal(10,2) DEFAULT NULL,
   `service_type` tinyint(1) DEFAULT NULL COMMENT '上门服务，当地自提',
-  `created_type` tinyint(1) DEFAULT '2' COMMENT '内外部订单',
+  `created_type` tinyint(1) DEFAULT '2' COMMENT '1:内部订单 2:外部订单 3:自建订单',
   `ora_trans_price` decimal(12,2) NOT NULL DEFAULT '0.00' COMMENT '预计的运费',
   `ora_insure_price` decimal(12,2) DEFAULT '0.00' COMMENT '预计的保险',
   `total_trans_price` decimal(12,2) DEFAULT '0.00' COMMENT '应该付总运费',

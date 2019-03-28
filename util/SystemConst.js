@@ -38,7 +38,8 @@ const PAYMENT = {
 const ORDER ={
     type :{
         internal :1,//内部订单
-        extrnal :2//外部订单
+        extrnal :2,//外部订单
+        owner :3//自建订单
     },
     serviceType:{
         doorToDoor :1,//上门提货
