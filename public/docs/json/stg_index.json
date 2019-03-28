@@ -13420,9 +13420,6 @@
         },
         "safeStatus": {
           "type": "integer"
-        },
-        "distance": {
-          "type": "integer"
         }
       },
       "xml": {
