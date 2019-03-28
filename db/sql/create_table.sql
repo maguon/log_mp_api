@@ -347,7 +347,7 @@ CREATE TABLE `order_info` (
   `admin_mark` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '客服备注',
   `payment_remark` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '订单支付备注',
   `cancel_reason` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '取消订单原因',
-  `departure_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `departure_time` datetime DEFAULT NULL  COMMENT '发车时间',
   `cancel_time` timestamp NULL DEFAULT NULL,
   `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

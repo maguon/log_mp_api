@@ -13384,6 +13384,9 @@
         "sendAddress": {
           "type": "string"
         },
+        "departureTime": {
+          "type": "string"
+        },
         "orderItemArray": {
           "type": "array",
           "items":{
