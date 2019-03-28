@@ -2220,7 +2220,7 @@
       },
       "post": {
         "tags": [
-          "userDeviceInfo"
+          "order"
         ],
         "summary": "insert",
         "description": "",
@@ -2236,12 +2236,12 @@
             "type": "integer"
           },
           {
-            "name": "deviceInfo",
+            "name": "orderMsg",
             "in": "body",
-            "description": "deviceInfo",
+            "description": "orderMsg",
             "required": true,
-            "schema":{
-              "$ref": "#/definitions/deviceInfo"
+            "schema": {
+              "$ref": "#/definitions/userCreateOrder"
             }
           }
         ],
@@ -2251,7 +2251,7 @@
             "schema": {
               "type": "object",
               "items": {
-                "$ref": "#/definitions/userDeviceInfo"
+                "$ref": "#/definitions/adminMark"
               }
             }
           },
@@ -5489,50 +5489,6 @@
             "description": "orderId",
             "required": true,
             "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/adminMark"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/user/{userId}/order": {
-      "post": {
-        "tags": [
-          "order"
-        ],
-        "summary": "insert",
-        "description": "",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "userId",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "orderMsg",
-            "in": "body",
-            "description": "orderMsg",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/userCreateOrder"
-            }
           }
         ],
         "responses": {
@@ -11846,6 +11802,50 @@
               "type": "object",
               "items": {
                 "$ref": "#/definitions/recommend"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/device": {
+      "post": {
+        "tags": [
+          "userDeviceInfo"
+        ],
+        "summary": "insert",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "deviceInfo",
+            "in": "body",
+            "description": "deviceInfo",
+            "required": true,
+            "schema":{
+              "$ref": "#/definitions/deviceInfo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/userDeviceInfo"
               }
             }
           },
