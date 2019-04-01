@@ -359,7 +359,58 @@ const cancelOrder = (params,callback) => {
     })
 }
 const addOrder = (params,callback) => {
-    let query = " insert into order_info(route_id,date_id,distance,route_start,route_end,created_type,admin_id,user_id,route_start_id,route_end_id,service_type,departure_time) values(?,?,?,?,?,?,?,?,?,?,?,?) ";
+    let query = " insert into order_info(route_id,date_id,distance,route_start,route_end,created_type,admin_id,user_id,route_start_id,route_end_id,"
+    query += "service_type,departure_time";
+    if (params.recvAddress){
+        query += ",recv_address"
+    }
+    if (params.sendAddress){
+        query += ",send_address"
+    }
+    if (params.recvName){
+        query += ",recv_name"
+    }
+    if (params.recvPhone){
+        query += ",recv_phone"
+    }
+    if (params.sendName){
+        query += ",send_name"
+    }
+    if (params.sendPhone){
+        query += ",send_phone"
+    }
+    if (params.remark){
+        query += ",remark"
+    }
+    if (params.carNum){
+        query += ",car_num"
+    }
+    query += ") values(?,?,?,?,?,?,?,?,?,?,?,?";
+    if (params.recvAddress){
+        query += ",?"
+    }
+    if (params.sendAddress){
+        query += ",?"
+    }
+    if (params.recvName){
+        query += ",?"
+    }
+    if (params.recvPhone){
+        query += ",?"
+    }
+    if (params.sendName){
+        query += ",?"
+    }
+    if (params.sendPhone){
+        query += ",?"
+    }
+    if (params.remark){
+        query += ",?"
+    }
+    if (params.carNum){
+        query += ",?"
+    }
+    query += ") ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.routeId;
     paramsArray[i++] = params.dateId;
@@ -372,7 +423,31 @@ const addOrder = (params,callback) => {
     paramsArray[i++] = params.routeStartId;
     paramsArray[i++] = params.routeEndId;
     paramsArray[i++] = params.serviceType;
-    paramsArray[i] = params.departureTime;
+    paramsArray[i++] = params.departureTime;
+    if (params.recvAddress){
+        paramsArray[i++] = params.recvAddress;
+    }
+    if (params.sendAddress){
+        paramsArray[i++] = params.sendAddress;
+    }
+    if (params.recvName){
+        paramsArray[i++] = params.recvName;
+    }
+    if (params.recvPhone){
+        paramsArray[i++] = params.recvPhone;
+    }
+    if (params.sendName){
+        paramsArray[i++] = params.sendName;
+    }
+    if (params.sendPhone){
+        paramsArray[i++] = params.sendPhone;
+    }
+    if (params.remark){
+        paramsArray[i++] = params.remark;
+    }
+    if (params.carNum){
+        paramsArray[i] = params.carNum;
+    }
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('addOrder');
         callback(error,rows);

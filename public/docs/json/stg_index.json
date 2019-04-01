@@ -13378,7 +13378,19 @@
         "remark": {
           "type": "string"
         },
+        "recvName": {
+          "type": "string"
+        },
+        "recvPhone": {
+          "type": "string"
+        },
         "recvAddress": {
+          "type": "string"
+        },
+        "sendName": {
+          "type": "string"
+        },
+        "sendPhone": {
           "type": "string"
         },
         "sendAddress": {
@@ -13386,6 +13398,9 @@
         },
         "departureTime": {
           "type": "string"
+        },
+        "carNum": {
+          "type": "integer"
         },
         "orderItemArray": {
           "type": "array",
