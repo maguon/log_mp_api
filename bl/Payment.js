@@ -879,7 +879,7 @@ const getParams =(req,res,params)=>{
         + "&body="+body
         + "&mch_id="+sysConfig.wechatConfig.mchId
         + "&nonce_str="+params.nonceStr
-        + "&notify_url="+sysConfig.wechatConfig.notifyUrl
+        + "&notify_url="+sysConfig.wechatConfig.notifyUrl//回调路径
         + "&openid="+params.openid
         + "&out_trade_no="+params.wxOrderId
         + "&spbill_create_ip="+requestIp
