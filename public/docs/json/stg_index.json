@@ -5811,7 +5811,7 @@
           "city"
         ],
         "summary": "city update",
-        "description": "city update",
+        "description": "一键更新表内全部城市全拼和城市首拼字段",
         "produces": [
           "application/json"
         ],
