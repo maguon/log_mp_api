@@ -7,7 +7,7 @@ const httpUtil = require('../util/HttpUtil');
 const db = require('../db/connection/MysqlDb.js');
 
 const addCity = (params,callback) =>{
-    let query = "insert into city_info(city_name,cityPinYin,cityPY) values(?,?,?) ";
+    let query = "insert into city_info(city_name,city_pinyin,city_py) values(?,?,?) ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.cityName;
     paramsArray[i++] = params.cityPinYin;
@@ -40,7 +40,7 @@ const queryCity = (params,callback) =>{
     })
 }
 const updateCity = (params,callback) =>{
-    let query = "update city_info set city_name = ?, cityPinYin = ?,cityPY = ? where id = ? ";
+    let query = "update city_info set city_name = ?, city_pinyin = ?,city_py = ? where id = ? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.cityName;
     paramsArray[i++] = params.cityPinYin;
