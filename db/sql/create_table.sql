@@ -78,8 +78,8 @@ DROP TABLE IF EXISTS `city_info`;
 CREATE TABLE `city_info` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `city_name` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `cityPinYin` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `cityPY` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `city_pinyin` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `city_py` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `status` tinyint(1) NOT NULL DEFAULT '1',
   `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
