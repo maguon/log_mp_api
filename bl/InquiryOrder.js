@@ -510,7 +510,11 @@ const orderWithoutInquiry =(req,res,next)=>{
     }).then(()=>{
         new Promise((resolve,reject)=>{
             params.dateId = moment().format("YYYYMMDD");
-            params.routeId = parseInt(params.routeStartId.toString()+params.routeEndId.toString());
+            if (params.routeStartId > params.routeEndId){
+                params.routeId = parseInt(params.routeEndId.toString()+params.routeStartId.toString());
+            } else {
+                params.routeId = parseInt(params.routeStartId.toString()+params.routeEndId.toString());
+            }
             params.adminId =0;
             inquiryOrderDAO.addOrder(params,(error,result)=>{
                 if(error){
