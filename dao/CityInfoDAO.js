@@ -40,9 +40,11 @@ const queryCity = (params,callback) =>{
     })
 }
 const updateCity = (params,callback) =>{
-    let query = "update city_info set city_name = ? where id = ? ";
+    let query = "update city_info set city_name = ?, cityPinYin = ?,cityPY = ? where id = ? ";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.cityName;
+    paramsArray[i++] = params.cityPinYin;
+    paramsArray[i++] = params.cityPY;
     paramsArray[i] = params.cityId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('updateCity');

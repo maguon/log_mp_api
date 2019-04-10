@@ -238,6 +238,8 @@ const createServer=()=>{
     server.post({path:'/api/admin/:adminId',contentType: 'application/json'},adminUser.addAdminUser);
     server.put({path:'/api/admin/:adminId/status/:status',contentType: 'application/json'} ,adminUser.updateAdminStatus);
     server.get('/api/admin/:adminId/token/:token' ,adminUser.changeToken);
+    server.post({path:'/api/admin/:adminId/MobileLogin',contentType: 'application/json'},adminUser.adminUserMobileLogin);
+
     /**
      user_info
      */
@@ -259,6 +261,7 @@ const createServer=()=>{
     server.get('/api/user/:userId/city',city.queryCity);
     server.get('/api/admin/:adminId/city',city.queryCityAdmin);
     server.put({path:'/api/user/:userId/city/:cityId',contentType: 'application/json'},city.updateCity);
+    server.put({path:'/api/admin/:adminId/cityPY',contentType: 'application/json'},city.updateCityPY);
     /**
      city_route_info
      */

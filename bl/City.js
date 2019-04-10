@@ -10,6 +10,7 @@ const cityInfoDAO = require('../dao/CityInfoDAO.js');
 
 const addCity = (req,res,next) =>{
     let params = req.params;
+    console.log('req',req);
     cityInfoDAO.queryCity(params,(error,rows)=>{
         if(error){
             logger.error('queryCity' + error.message);
@@ -65,6 +66,43 @@ const updateCity = (req,res,next) =>{
         }
     })
 }
+
+const updateCityPY = (req,res,next) =>{
+    let params = req.params;
+    cityInfoDAO.queryCity(params,(error,rows)=>{
+        if(error){
+            logger.error('updateCityPY' + error.message);
+            resUtil.resInternalError(error,res,next);
+        }else if(rows && rows.length < 1){
+            logger.warn('queryCity' + '无城市信息');
+            resUtil.resetFailedRes(res,'无城市信息');
+            return next();
+        }else{
+            //rows.forEach(function (row){
+            for(let i = 0 ; i < rows.length ; i++){
+                let pinyin = trans.slugify(rows[i].city_name);
+                params.cityPinYin = pinyin.replace(new RegExp("-","g"),"");
+                params.cityPY = "";
+                let index = pinyin.split("-");
+                for (let i =0;i<index.length;i++){
+                    params.cityPY += index[i].substr(0,1);
+                }
+                params.cityName = rows[i].city_name;
+                params.cityId = rows[i].id;
+                cityInfoDAO.updateCity(params,(error,result)=>{
+                    if(error){
+                        logger.error('addCity' + error.message);
+                        resUtil.resInternalError(error,res,next);
+                    }else{
+                        logger.info('addCity' + 'success');
+                        resUtil.resetCreateRes(res,result,null);
+                        return next();
+                    }
+                })
+            }
+        }
+    })
+}
 const queryCityAdmin = (req,res,next) => {
     let params = req.params;
     cityInfoDAO.queryCityAdmin(params,(error,result)=>{
@@ -82,5 +120,6 @@ module.exports = {
     addCity,
     queryCity,
     updateCity,
+    updateCityPY,
     queryCityAdmin
 }

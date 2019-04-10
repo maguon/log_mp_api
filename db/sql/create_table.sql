@@ -55,6 +55,23 @@ CREATE TABLE `admin_user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ----------------------------
+-- Table structure for admin_device_info
+-- ----------------------------
+DROP TABLE IF EXISTS `admin_device_info`;
+CREATE TABLE `admin_device_info`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `admin_id` int(20) NULL DEFAULT NULL COMMENT '管理员id',
+  `device_type` tinyint(1) NOT NULL DEFAULT 1 COMMENT '1安卓2苹果',
+  `device_token` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '设备编号',
+  `app_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT 'App类型',
+  `app_version` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT 'App版本',
+  `status` tinyint(1) NOT NULL DEFAULT 0 COMMENT '0:启用,1:停用',
+  `created_on` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
+  `updated_on` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 10000 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
 -- Table structure for `city_info`
 -- ----------------------------
 DROP TABLE IF EXISTS `city_info`;

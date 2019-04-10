@@ -7,6 +7,7 @@ const resUtil = require('../util/ResponseUtil.js');
 const listOfValue = require('../util/ListOfValue.js');
 const oAuthUtil = require('../util/OAuthUtil.js');
 const adminUserDao = require('../dao/AdminUserDAO.js');
+const adminDeviceInfoDao = require('../dao/AdminDeviceInfoDao.js');
 const serverLogger = require('../util/ServerLogger.js');
 const logger = serverLogger.createLogger('AdminUser.js');
 const sysConsts = require("../util/SystemConst");
@@ -104,6 +105,95 @@ const adminUserLogin = (req,res,next) => {
             }
         }
     })
+}
+
+const adminUserMobileLogin = (req,res,next) =>{
+    let params = req.params;
+    let userMsg={};
+    new Promise((resolve,reject)=>{
+        //根据userName查询用户信息
+        adminUserDao.queryAdminUser({userName:params.userName},(error,rows)=>{
+            if(error){
+                logger.error(' adminUserMobileLogin ' + error.message);
+                resUtil.resInternalError(error,res,next);
+            }else{
+                //判断用户密码
+                if(rows && rows.length<0){
+                    logger.warn(' adminUserMobileLogin ' +params.adminId+ sysMsg.CUST_SIGNUP_REGISTERED);
+                    resUtil.resetFailedRes(res,sysMsg.CUST_SIGNUP_REGISTERED) ;//用户不存在
+                    // return next();
+                }else{
+                    let passwordMd5 = encrypt.encryptByMd5(params.password);
+                    if(passwordMd5 != rows[0].password){
+                        //密码不匹配
+                        logger.warn(' adminUserMobileLogin ' +params.adminId+ sysMsg.CUST_LOGIN_PSWD_ERROR);
+                        resUtil.resetFailedRes(res,sysMsg.CUST_LOGIN_PSWD_ERROR) ;
+                        //return next();
+                    }else{
+                        //密码正确
+                        if(rows[0].status == listOfValue.ADMIN_USER_STATUS_NOT_ACTIVE){
+                            resUtil.resetFailedRes(res,"该管理员不可用");
+                         }else {
+                            params.adminId  = rows[0].id;
+                            params.status  = rows[0].status;
+                            logger.info('adminUserMobileLogin' +params.userName+ " not verified");
+                            userMsg.userName = rows[0].user_name;
+                            userMsg.userId = rows[0].id;
+                            userMsg.status = rows[0].status;
+                            //resUtil.resetQueryRes(res,user,null);
+                            //return next();
+                            resolve();
+                        }
+                    }
+                }
+            }
+        })
+    }).then(()=> {
+        //查询管理员设备信息
+        new Promise((resolve,reject)=>{
+            adminDeviceInfoDao.getDeviceInfo({adminId:params.adminId,deviceType:params.deviceType,deviceToken:params.deviceToken},(error,rows)=>{
+                if(error){
+                    logger.error(' adminUserMobileLogin ' + error.message);
+                    resUtil.resInternalError(error,res,next);
+                    reject(error);
+                    // return next();
+                } else {
+                    //查询到相同数据后，更新数据
+                    if(rows && rows.length>0){
+                        logger.info(' adminUserMobileLogin ' + params.adminId + sysMsg.CUST_SIGNUP_REGISTERED);
+                        //resUtil.resetFailedRes(res,sysMsg.CUST_SIGNUP_REGISTERED) ;
+                        //更新设备信息
+                        adminDeviceInfoDao.updateDeviceInfo({adminId:rows[0].id,appType:params.appType,appVersion:params.appVersion},(error,rows)=>{
+                            if(error){
+                                logger.error('adminUserMobileLogin' + error.message);
+                                resUtil.resetFailedRes(error,res,next);
+                            }else{
+                                logger.info('adminUserMobileLogin' + 'success');
+                                resUtil.resetQueryRes(res,userMsg,null);
+                                // resUtil.resetCreateRes(res,result,null);
+                                //return next();
+                            }
+                        })
+                    }else{
+                        resolve();
+                    }
+                }
+            })
+        }).then(()=>{
+            //添加设备信息
+            adminDeviceInfoDao.addDeviceInfo(params,(error,rows)=>{
+                if(error){
+                    logger.error('adminUserMobileLogin' + error.message);
+                    resUtil.resetFailedRes(error,res,next);
+                }else{
+                    logger.info('adminUserMobileLogin' + 'success');
+                    resUtil.resetQueryRes(res,userMsg,null);
+                    // resUtil.resetCreateRes(res,result,null);
+                    return next();
+                }
+            })
+        })
+    });
 }
 const getAdminUserInfo = (req,res,next) => {
     let params = req.params;
@@ -272,6 +362,7 @@ const changeToken=(req,res,next)=>{
 module.exports = {
     createAdminUser,
     adminUserLogin,
+    adminUserMobileLogin,
     getAdminUserInfo,
     updateAdminInfo,
     changeAdminPassword,
