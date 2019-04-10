@@ -920,7 +920,7 @@
           "admin"
         ],
         "summary": "insert",
-        "description": "",
+        "description": "管理员登录成功后，存储登录设备和APP信息",
         "produces": [
           "application/json"
         ],
