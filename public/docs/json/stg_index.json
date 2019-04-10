@@ -914,6 +914,43 @@
         }
       }
     },
+    "/admin/{adminId}/MobileLogin": {
+      "post": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "insert",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "device",
+            "in": "body",
+            "description": "device",
+            "required": true,
+            "schema":{
+              "$ref": "#/definitions/adminUserMobileLogin"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/adminUserMobileLogin"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
     "/user": {
       "get": {
         "tags": [
@@ -5750,6 +5787,41 @@
             "schema": {
               "$ref": "#/definitions/city"
             }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/city"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/citySpell": {
+      "put": {
+        "tags": [
+          "city"
+        ],
+        "summary": "city update",
+        "description": "city update",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
           }
         ],
         "responses": {
@@ -11872,6 +11944,32 @@
       },
       "xml": {
         "name": "deviceInfo"
+      }
+    },
+    "adminUserMobileLogin":{
+      "type": "object",
+      "properties": {
+        "userName": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "deviceType": {
+          "type": "integer"
+        },
+        "deviceToken": {
+          "type": "string"
+        },
+        "appType": {
+          "type": "string"
+        },
+        "appVersion": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "adminUserMobileLogin"
       }
     },
     "supplierPrice": {
