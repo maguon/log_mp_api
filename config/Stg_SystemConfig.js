@@ -57,6 +57,14 @@ const hosts = {
     record : {
         host:"stg.myxxjs.com",
         port:9004
+    },
+    image:{
+        host:"stg.myxxjs.com",
+        port:9002
+    },
+    wx:{
+        host :"stg.myxxjs.com",
+        port : 9101
     }
 }
 

@@ -159,7 +159,7 @@ const postWxCodeImage= (req,res,next)=>{
                 }
             });
         }).then(()=>{
-            let mpUrl = "/wx_img/"+params.fileName+".png";
+            let mpUrl = "http://"+sysConfig.hosts.wx.host+":"+sysConfig.hosts.wx.port+"/wx_img/"+params.fileName+".png";
             recommendInfoDAO.update({recommendId: params.recommendId,mpUrl:mpUrl},(error,result)=>{
                 if(error){
                     logger.error('updateRecommend' + error.message);
