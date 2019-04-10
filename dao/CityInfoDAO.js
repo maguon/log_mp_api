@@ -28,7 +28,7 @@ const queryCity = (params,callback) =>{
         paramsArray[i++] = params.cityName;
         query = query + " and city_name = ? "
     }
-    query = query + " order by cityPY asc ";
+    query = query + " order by city_py asc ";
     if(params.start && params.size){
         paramsArray[i++] = parseInt(params.start);
         paramsArray[i] = parseInt(params.size);
