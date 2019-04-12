@@ -80,15 +80,79 @@ const getOrderCar = (req,res,next) => {
 }
 const delOrderCar = (req,res,next) => {
     let params = req.params;
-    orderItemDAO.delOrderCar(params,(error,result)=>{
-        if(error){
-            logger.error('delOrderCar' + error.message);
-            resUtil.resInternalError(error,res,next);
-        }else{
-            logger.info('delOrderCar' + 'success');
-            resUtil.resetUpdateRes(res,result,null);
-            return next();
-        }
+    // orderItemDAO.delOrderCar(params,(error,result)=>{
+    //     if(error){
+    //         logger.error('delOrderCar' + error.message);
+    //         resUtil.resInternalError(error,res,next);
+    //     }else{
+    //         logger.info('delOrderCar' + 'success');
+    //         resUtil.resetUpdateRes(res,result,null);
+    //         return next();
+    //     }
+    // })
+    new Promise((resolve,reject)=>{
+        //查询订单下的车辆信息
+        orderItemDAO.getOrderCar({orderItemId:params.orderItemId},(error,rows)=>{
+            if(error){
+                logger.error('getOrderCar' + error.message);
+                reject(error);
+            }else{
+                logger.info('getOrderCar' + 'success');
+                params.orderId = rows[0].order_id;
+                resolve();
+            }
+        })
+
+    }).then(()=> {
+        //删除成功后更新订单字段数据
+        new Promise((resolve,reject)=>{
+            orderItemDAO.delOrderCar(params,(error,result)=>{
+                if(error){
+                    logger.error('delOrderCar' + error.message);
+                    resUtil.resInternalError(error,res,next);
+                    reject(error);
+                }else{
+                    logger.info('delOrderCar' + 'success');
+                    resolve();
+                    resUtil.resetUpdateRes(res,result,null);
+                    //return next();
+                }
+            })
+        }).then(()=>{
+            new Promise((resolve,reject)=>{
+                orderItemDAO.getPriceSum({orderId:params.orderId},(error,rows)=>{
+                    if(error){
+                        logger.error('getPriceSum' + error.message);
+                        reject(error);
+                    }else{
+                        logger.info('getPriceSum' + 'success');
+                        params.oraTransPrice = rows[0].sum_ora_trans_price;
+                        params.oraInsurePrice = rows[0].sum_ora_insure_price;
+                        params.totalTransPrice = rows[0].sum_act_trans_price;
+                        params.totalInsurePrice = rows[0].sum_act_insure_price;
+                        params.carNum = rows[0].sum_car_num;
+                        resolve();
+                    }
+                })
+            }).then(()=>{
+                orderDAO.updatePrice(params,(error,result)=>{
+                    if(error) {
+                        logger.error('updatePrice' + error.message);
+                        resUtil.resInternalError(error,res,next);
+                    }else{
+                        logger.info('updatePrice' + 'success');
+                        let result_id = [{
+                            orderItemId
+                        }]
+                        resUtil.resetQueryRes(res,result_id,null);
+                        return next();
+                    }
+                })
+            })
+        })
+
+    }).catch((error)=>{
+        resUtil.resInternalError(error,res,next);
     })
 }
 const addOrderCarAdmin = (req,res,next) => {
