@@ -150,6 +150,13 @@ const LOAD_TASK_PAYMENTFLAG ={
     yes:1,//已付款
     no:0//未付款
 }
+const CALCULATED_AMOUNT = {
+    insureRatio:0.05,//保费
+    servicePrice:500,//服务费上门服务500
+    oldCarRatio:0.8,//二手车估值0.8
+    notOldCarRatio:0.1,//非二手车估值0.1
+    kmUnitPrice:1.2//公里单价1.2元
+}
 module.exports = {
     CAR_MODEL,
     PAYMENT,
@@ -165,5 +172,6 @@ module.exports = {
     REQUIRE_TASK,
     SUPPLIER,
     LOAD_TASK_STATUS,
-    LOAD_TASK_PAYMENTFLAG
+    LOAD_TASK_PAYMENTFLAG,
+    CALCULATED_AMOUNT
 }

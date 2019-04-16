@@ -9,15 +9,15 @@ const calculatedAmount = (serviceType,oldCar,modelType,distance,safeStatus,valua
     let insurePrice = 0;
 
     if(safeStatus == sysConsts.CAR.insureFlag.yes){
-        insurePrice = valuation * 0.05;
+        insurePrice = valuation * sysConsts.CALCULATED_AMOUNT.insureRatio;
     }
     if(serviceType == sysConsts.ORDER.serviceType.doorToDoor){//服务费上门服务500
-        servicePrice = 500;
+        servicePrice = sysConsts.CALCULATED_AMOUNT.servicePrice;
     }
     if(oldCar == sysConsts.CAR.oldFlag.yes){//二手车估值0.8
-        oldCarRatio = 0.8;
+        oldCarRatio = sysConsts.CALCULATED_AMOUNT.oldCarRatio;
     }else if (oldCar == sysConsts.CAR.oldFlag.no){
-        oldCarRatio = 1.0;
+        oldCarRatio = sysConsts.CALCULATED_AMOUNT.notOldCarRatio;
     }
     switch (modelType) {
         case sysConsts.CAR_MODEL.NormalCar.type:
@@ -32,7 +32,7 @@ const calculatedAmount = (serviceType,oldCar,modelType,distance,safeStatus,valua
             modelRatio = sysConsts.CAR_MODEL.LargeBPV.ratio;break;
     }
 
-    transPrice = servicePrice + 1.2 * distance * modelRatio * oldCarRatio; //公里单价1.2元
+    transPrice = servicePrice + sysConsts.CALCULATED_AMOUNT.kmUnitPrice * distance * modelRatio * oldCarRatio; //公里单价1.2元
 
     let priceItem = {
         trans: transPrice,
