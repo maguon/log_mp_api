@@ -381,7 +381,7 @@ const wechatRefund = (req,res,next)=>{
                                             })
                                         })
                                     })
-                                    resUtil.resetQueryRes(res,evalJson.xml,null);
+                                    //resUtil.resetQueryRes(res,evalJson.xml,null);
                                 }
                                 return next();
 
