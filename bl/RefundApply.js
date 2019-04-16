@@ -7,7 +7,7 @@ const serverLogger = require('../util/ServerLogger.js');
 const resUtil = require('../util/ResponseUtil.js');
 const sysMsg = require('../util/SystemMsg.js');
 const sysError = require('../util/SystemError.js');
-const logger = serverLogger.createLogger('RefundApply.js');
+const logger = serverLogger.createLogger('Refund.js');
 const refundApplyDAO = require('../dao/RefundApplyDAO.js');
 const sysConst = require("../util/SystemConst");
 const paymentDAO = require("../dao/PaymentDAO");
@@ -323,10 +323,12 @@ const wechatRefund = (req,res,next)=>{
                                 if(evalJson.xml.return_code == 'FAIL'){
                                     paymentDAO.delRefundFail(params,(error,result)=>{});
                                     logger.warn('退款失败');
-                                    resUtil.resetFailedRes(res,evalJson.xml,null)
+                                    logger.warn(evalJson.xml);
+                                    resUtil.resetFailedRes(res,evalJson.xml,null);
                                 }else if(evalJson.xml.result_code=='FAIL'){
                                     paymentDAO.delRefundFail(params,(error,result)=>{});
                                     logger.warn('退款失败');
+                                    logger.warn(evalJson.xml);
                                     resUtil.resetFailedRes(res,evalJson.xml.err_code_des,null)
                                 }
                                 resUtil.resetQueryRes(res,evalJson.xml,null);
