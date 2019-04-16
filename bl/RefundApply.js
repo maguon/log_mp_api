@@ -337,8 +337,8 @@ const wechatRefund = (req,res,next)=>{
                                     resUtil.resetFailedRes(res,evalJson.xml,null);
                                 }else {
                                     //退款成功
-                                    logger.info('addWechatRefund' + 'success');
-                                    params.paymentRefundId = rows.insertId;
+                                    //logger.info('addWechatRefund' + 'success');
+                                    params.paymentRefundId = result.insertId;
                                     new Promise((resolve,reject)=>{
                                         params.status = sysConst.REFUND_STATUS.refunded;
                                         //params.refundFee = params.refundFee;
@@ -346,7 +346,7 @@ const wechatRefund = (req,res,next)=>{
                                         refundApplyDAO.updateRefund(params,(error,result)=>{
                                             if(error){
                                                 logger.error('updateRefundStatus' + error.message);
-                                                resUtil.resInternalError(error, res, next);
+                                                //resUtil.resInternalError(error, res, next);
                                                 reject(error);
                                             }else{
                                                 logger.info('updateRefundStatus' + 'success');
@@ -359,7 +359,7 @@ const wechatRefund = (req,res,next)=>{
                                             paymentDAO.getRealPaymentPrice(params, (error, rows) => {
                                                 if (error) {
                                                     logger.error('getRealPaymentPrice' + error.message);
-                                                    resUtil.resInternalError(error, res, next);
+                                                    ///resUtil.resInternalError(error, res, next);
                                                     reject(error);
                                                 } else {
                                                     logger.info('getRealPaymentPrice' + 'success');
@@ -372,10 +372,10 @@ const wechatRefund = (req,res,next)=>{
                                             orderInfoDAO.updateRealPaymentPrice(params, (error, result) => {
                                                 if (error) {
                                                     logger.error('updateRealPaymentPrice' + error.message);
-                                                    resUtil.resInternalError(error, res, next);
+                                                    //resUtil.resInternalError(error, res, next);
                                                 } else {
                                                     logger.info('updateRealPaymentPrice' + 'success');
-                                                    resUtil.resetUpdateRes(res, result, null);
+                                                    //resUtil.resetUpdateRes(res, result, null);
                                                     return next();
                                                 }
                                             })
