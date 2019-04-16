@@ -7,7 +7,7 @@ const serverLogger = require('../util/ServerLogger.js');
 const resUtil = require('../util/ResponseUtil.js');
 const sysMsg = require('../util/SystemMsg.js');
 const sysError = require('../util/SystemError.js');
-const logger = serverLogger.createLogger('Refund.js');
+const logger = serverLogger.createLogger('RefundApply.js');
 const refundApplyDAO = require('../dao/RefundApplyDAO.js');
 const sysConst = require("../util/SystemConst");
 const paymentDAO = require("../dao/PaymentDAO");
@@ -314,7 +314,7 @@ const wechatRefund = (req,res,next)=>{
                     }
                     let httpsReq = https.request(options,(result)=>{
                         let data = "";
-                        logger.info(result);
+                        //logger.info(result);
                         result.on('data',(d)=>{
                             data += d;
                         }).on('end',()=>{
