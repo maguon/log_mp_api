@@ -240,7 +240,8 @@ const wechatRefund = (req,res,next)=>{
     let ourString = encrypt.randomString();
     params.nonceStr = ourString;
     let xmlParser = new xml2js.Parser({explicitArray : false, ignoreAttrs : true});
-    let refundUrl = 'https://stg.myxxjs.com/api/wechatRefund';
+    //let refundUrl = 'https://stg.myxxjs.com/api/wechatRefund';
+    let refundUrl = sysConfig.wechatConfig.notifyUrl;
     let myDate = new Date();
     params.dateId = moment(myDate).format('YYYYMMDD');
     new Promise((resolve,reject)=>{
