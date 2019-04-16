@@ -103,6 +103,7 @@ const updateCityPY = (req,res,next) =>{
         }
     })
 }
+//暂时不适用queryCityAdmin
 const queryCityAdmin = (req,res,next) => {
     let params = req.params;
     cityInfoDAO.queryCityAdmin(params,(error,result)=>{

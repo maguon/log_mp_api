@@ -51,6 +51,8 @@ const updateCity = (params,callback) =>{
         callback(error,rows);
     })
 }
+
+//不使用queryCityAdmin
 const queryCityAdmin = (params,callback) =>{
     let query = "select * from city_info where id is not null ";
     let paramsArray = [],i=0;

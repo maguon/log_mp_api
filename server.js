@@ -259,7 +259,7 @@ const createServer=()=>{
     server.post({path:'/api/user/:userId/city',contentType: 'application/json'},city.addCity);
     server.post({path:'/api/admin/:adminId/city',contentType: 'application/json'},city.addCity);
     server.get('/api/user/:userId/city',city.queryCity);
-    server.get('/api/admin/:adminId/city',city.queryCityAdmin);
+    server.get('/api/admin/:adminId/city',city.queryCity);
     server.put({path:'/api/user/:userId/city/:cityId',contentType: 'application/json'},city.updateCity);
     server.put({path:'/api/admin/:adminId/cityPY',contentType: 'application/json'},city.updateCityPY);
     /**
