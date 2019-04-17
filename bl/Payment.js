@@ -202,10 +202,10 @@ const addWechatRefund=(req,res,next) => {
                         }).then(()=>{
                             orderInfoDAO.updateRealPaymentPrice(options, (error, result) => {
                                 if (error) {
-                                    logger.error('updateRealPaymentPriceOfWechatRefund' + error.message);
+                                    logger.error('updateRealPaymentPriceOfWechatRefund ' + error.message);
                                     resUtil.resInternalError(error, res, next);
                                 } else {
-                                    logger.info('updateRealPaymentPriceOfWechatRefund' + 'success');
+                                    logger.info('updateRealPaymentPriceOfWechatRefund ' + 'success');
                                     resUtil.resetUpdateRes(res, result, null);
                                     // return next();
                                 }
@@ -433,10 +433,10 @@ const updateBankStatus = (req,res,next)=>{
                 params.realPaymentPrice = realPaymentPrice;
                 orderDAO.updateRealPaymentPrice(params, (error, result) => {
                     if (error) {
-                        logger.error('updateRealPaymentPrice' + error.message);
+                        logger.error('updateRealPaymentPrice ' + error.message);
                         resUtil.resInternalError(error, res, next);
                     } else {
-                        logger.info('updateRealPaymentPrice' + 'success');
+                        logger.info('updateRealPaymentPrice ' + 'success');
                         resUtil.resetUpdateRes(res, result, null);
                         return next();
                     }
@@ -650,10 +650,10 @@ const updateOrderMsgByPrice = (params,callback)=>{
         new Promise((resolve,reject)=>{
             orderDAO.getById(params,(error,rows)=>{
                 if(error){
-                    logger.error('getOrderById' + error.message);
+                    logger.error('getOrderById ' + error.message);
                     return callback(error,null);
                 }else{
-                    logger.info('getOrderById' + 'success');
+                    logger.info('getOrderById ' + 'success');
                     totalPrice = rows[0].total_trans_price + rows[0].total_insure_price;
                     resolve();
                 }
@@ -678,10 +678,10 @@ const updateOrderMsgByPrice = (params,callback)=>{
                 params.realPaymentPrice = realPaymentPrice;
                 orderDAO.updateRealPaymentPrice(params,(error,result)=>{
                     if(error){
-                        logger.error('updateRealPaymentPrice' + error.message);
+                        logger.error('updateRealPaymentPrice ' + error.message);
                         return callback(error,null);
                     }else{
-                        logger.info('updateRealPaymentPrice' + 'success');
+                        logger.info('updateRealPaymentPrice ' + 'success');
                         return callback(null,result);
                     }
                 });
@@ -725,11 +725,11 @@ const wechatPayment =(req,res,next)=>{
     new Promise((resolve,reject)=>{
         orderDAO.getById({orderId:params.orderId},(error,rows)=>{
             if(error){
-                logger.error('getOrderById' + error.message);
+                logger.error('getOrderById ' + error.message);
                 resUtil.resInternalError(error, res, next);
                 reject(error);
             }else{
-                logger.info('getOrderById' + 'success');
+                logger.info('getOrderById ' + 'success');
                 if (rows[0].payment_status == sysConsts.ORDER.paymentStatus.complete) {
                     resUtil.resetFailedRes(res,sysMsg.ORDER_PAYMENT_STATUS_COMPLETE);
                 }else {
@@ -932,7 +932,7 @@ const paymentInMonth =(req,res,next)=>{
 module.exports = {
     wechatPaymentCallback,
     wechatRefund,
-    addWechatRefund,
+    ,
     getPayment,
     getRefundByPaymentId,
     updateRemark,

@@ -137,19 +137,24 @@ const updateRefundStatus = (req,res,next)=>{
                 reject(error);
             }else{
                 logger.info('getPaymentById ' + 'success');
-                if (rows[0].total_fee < params.refundFee) {
-                    resUtil.resetFailedRes( res, sysMsg.ADMIN_PAYMENT_REFUND_PRICE);
-                    reject(error);
+                if (rows && rows.length>0) {
+                    if (rows[0].total_fee < params.refundFee) {
+                        resUtil.resetFailedRes(res, sysMsg.ADMIN_PAYMENT_REFUND_PRICE);
+                        reject(error);
+                    } else {
+                        params.bank = rows[0].bank;
+                        params.bankCode = rows[0].bank_code;
+                        params.accountName = rows[0].account_name;
+                        totalFee = rows[0].total_fee;
+                        paymentType = rows[0].payment_type;
+                        params.paymentRefundId = rows[0].id;
+                        params.userId = rows[0].user_id;
+                        params.wxOrderId = rows[0].wx_order_id;
+                        resolve();
+                    }
                 }else{
-                    params.bank = rows[0].bank;
-                    params.bankCode = rows[0].bank_code;
-                    params.accountName = rows[0].account_name;
-                    totalFee = rows[0].total_fee;
-                    paymentType = rows[0].payment_type;
-                    params.paymentRefundId = rows[0].id;
-                    params.userId = rows[0].user_id;
-                    params.wxOrderId = rows[0].wx_order_id;
-                    resolve();
+                    resUtil.resetFailedRes(res, sysMsg.ADMIN_PAYMENT_REFUND_PRICE);
+                    reject({msg:sysMsg.ADMIN_PAYMENT_REFUND_PRICE})
                 }
             }
         })
@@ -277,11 +282,11 @@ const wechatRefund = (req,res,next)=>{
             //添加退款的panmen_inf
             paymentDAO.addWechatRefund(params,(error,result)=>{
                 if(error){
-                    logger.error(' addWechatRefund ' + error.message);
+                    logger.error('addWechatRefund ' + error.message);
                     resUtil.resInternalError(error, res, next);
                 }else{
                     //成功添加退款信息
-                    logger.info('wechatRefund中添加成功信息' + 'addWechatRefund '+'success');
+                    logger.info('wechatRefund中添加成功信息' + 'addWechatRefund '+' success');
                     params.refundId = result.insertId;
                     let signStr =
                         "appid="+sysConfig.wechatConfig.mpAppId
@@ -346,6 +351,7 @@ const wechatRefund = (req,res,next)=>{
                                     params.paymentRefundId = result.insertId;
                                     logger.info('要使用的参数：'+  params );
                                     logger.info('微信返回的参数：' + result );
+
                                     new Promise((resolve,reject)=>{
                                         params.status = sysConst.REFUND_STATUS.refunded;
                                         //params.refundFee = params.refundFee;
@@ -361,6 +367,7 @@ const wechatRefund = (req,res,next)=>{
                                             }
                                         });
                                     }).then(()=>{
+                                        /*
                                         new Promise((resolve,reject)=> {
                                             //获取付款信息
                                             paymentDAO.getRealPaymentPrice(params, (error, rows) => {
@@ -387,8 +394,10 @@ const wechatRefund = (req,res,next)=>{
                                                 }
                                             })
                                         })
+                                         */
                                     })
-                                    //resUtil.resetQueryRes(res,evalJson.xml,null);
+
+                                    resUtil.resetQueryRes(res,evalJson.xml,null);
                                 }
                                 return next();
 
