@@ -343,7 +343,6 @@ const wechatRefund = (req,res,next)=>{
                                     params.paymentRefundId = result.insertId;
                                     new Promise((resolve,reject)=>{
                                         params.status = sysConst.REFUND_STATUS.refunded;
-                                        //params.refundFee = params.refundFee;
                                         //更新退款申请信息
                                         refundApplyDAO.updateRefund(params,(error,result)=>{
                                             if(error){
@@ -386,7 +385,6 @@ const wechatRefund = (req,res,next)=>{
 
                                          */
                                     })
-
                                     resUtil.resetQueryRes(res,evalJson.xml,null);
                                 }
                                 return next();
