@@ -364,7 +364,7 @@ const wechatRefund = (req,res,next)=>{
                                             }
                                         });
                                     }).then(()=>{
-
+                                        /*
                                         new Promise((resolve,reject)=> {
                                             //获取付款信息
                                             paymentDAO.getRealPaymentPrice(params, (error, rows) => {
@@ -391,6 +391,8 @@ const wechatRefund = (req,res,next)=>{
                                                 }
                                             })
                                         })
+
+                                         */
 
                                     })
 
