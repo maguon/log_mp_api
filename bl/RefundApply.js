@@ -33,10 +33,10 @@ const getRefundApply = (req,res,next)=>{
     let params = req.params;
     refundApplyDAO.getRefundApply(params,(error,result)=>{
         if(error){
-            logger.error('getRefundApply' + error.message);
+            logger.error('getRefundApply ' + error.message);
             resUtil.resInternalError(error, res, next);
         }else{
-            logger.info('getRefundApply' + 'success');
+            logger.info('getRefundApply ' + 'success');
             resUtil.resetQueryRes(res,result,null);
             return next();
         }
@@ -60,10 +60,10 @@ const getRefundApplyStat = (req,res,next)=>{
     let params = req.params;
     refundApplyDAO.getRefundApplyStat(params,(error,result)=>{
         if(error){
-            logger.error('getRefundApplyStat' + error.message);
+            logger.error('getRefundApplyStat ' + error.message);
             resUtil.resInternalError(error, res, next);
         }else{
-            logger.info('getRefundApplyStat' + 'success');
+            logger.info('getRefundApplyStat ' + 'success');
             resUtil.resetQueryRes(res,result,null);
             return next();
         }
@@ -73,10 +73,10 @@ const updateRefundById = (req,res,next)=>{
     let params = req.params;
     refundApplyDAO.updateRefundById(params,(error,result)=>{
         if(error){
-            logger.error('updateRefundById:' + error.message);
+            logger.error('updateRefundById ' + error.message);
             resUtil.resInternalError(error, res, next);
         }else{
-            logger.info('updateRefundById:' + 'success');
+            logger.info('updateRefundById ' + 'success');
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
@@ -86,10 +86,10 @@ const deleteById = (req,res,next)=>{
     let params = req.params;
     refundApplyDAO.deleteById(params,(error,result)=>{
         if(error){
-            logger.error('deleteRefundApply:' + error.message);
+            logger.error('deleteRefundApply ' + error.message);
             resUtil.resInternalError(error, res, next);
         }else{
-            logger.info('deleteRefundApply:' + 'success');
+            logger.info('deleteRefundApply ' + 'success');
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
@@ -100,7 +100,7 @@ const updateRefundApplyMsg = (req,res,next)=>{
     new Promise((resolve,reject)=> {
         paymentDAO.getById({paymentId:params.paymentId},(error,rows)=>{
             if (error){
-                logger.info("getPaymentById"+error.message);
+                logger.info("getPaymentById "+error.message);
                 resUtil.resetFailedRes(res,error);
                 reject(error);
             }else {
@@ -115,10 +115,10 @@ const updateRefundApplyMsg = (req,res,next)=>{
     }).then(()=>{
         refundApplyDAO.updateById(params,(error,result)=>{
             if(error){
-                logger.error('updateRefundApplyMsg:' + error.message);
+                logger.error('updateRefundApplyMsg ' + error.message);
                 resUtil.resInternalError(error, res, next);
             }else{
-                logger.info('updateRefundApplyMsg:' + 'success');
+                logger.info('updateRefundApplyMsg ' + 'success');
                 resUtil.resetUpdateRes(res,result,null);
                 return next();
             }
@@ -136,11 +136,7 @@ const updateRefundStatus = (req,res,next)=>{
                 resUtil.resInternalError(error, res, next);
                 reject(error);
             }else{
-                logger.info('++++getPaymentById ' + ' success');
-                logger.info('+++rows:  ' + rows);
                 if (rows && rows.length>0) {
-                    logger.info('rows:  ' + rows);
-                    logger.info('rows[0]:  ' + rows[0]);
                     if (rows[0].total_fee < params.refundFee) {
                         resUtil.resetFailedRes(res, sysMsg.ADMIN_PAYMENT_REFUND_PRICE);
                         reject(error);
@@ -168,7 +164,6 @@ const updateRefundStatus = (req,res,next)=>{
             params.status = sysConst.PAYMENT.status.paid;
             params.type = sysConst.PAYMENT.type.refund;
             params.dateId = moment().format("YYYYMMDD");
-            logger.info('查看是微信还是银行卡：' + ' paymentType ');
             if (paymentType == sysConst.PAYMENT.paymentType.wechat){
                 params.paymentType = sysConst.PAYMENT.paymentType.wechat;
                 wechatRefund(req,res,next);
@@ -186,7 +181,6 @@ const updateRefundStatus = (req,res,next)=>{
                         params.paymentRefundId = rows.insertId;
                         new Promise((resolve,reject)=>{
                             params.status = sysConst.REFUND_STATUS.refunded;
-                            //params.refundFee = params.refundFee;
                             //更新退款申请信息
                             refundApplyDAO.updateRefund(params,(error,result)=>{
                                 if(error){
@@ -207,7 +201,7 @@ const updateRefundStatus = (req,res,next)=>{
                                         resUtil.resInternalError(error, res, next);
                                         reject(error);
                                     } else {
-                                        logger.info('getRealPaymentPrice' + 'success');
+                                        logger.info('getRealPaymentPrice ' + 'success');
                                         params.realPaymentPrice = rows[0].pay_price - Math.abs(rows[0].refund_price) ;
                                         resolve();
                                     }
@@ -216,10 +210,10 @@ const updateRefundStatus = (req,res,next)=>{
                                 //更新订单支付金额
                                 orderInfoDAO.updateRealPaymentPrice(params, (error, result) => {
                                     if (error) {
-                                        logger.error('updateRealPaymentPrice' + error.message);
+                                        logger.error('updateRealPaymentPrice ' + error.message);
                                         resUtil.resInternalError(error, res, next);
                                     } else {
-                                        logger.info('updateRealPaymentPrice' + 'success');
+                                        logger.info('updateRealPaymentPrice ' + 'success');
                                         resUtil.resetUpdateRes(res, result, null);
                                         return next();
                                     }
@@ -240,10 +234,10 @@ const refundInMonth = (req,res,next)=>{
     params.status = sysConst.REFUND_STATUS.applying;
     refundApplyDAO.statisticsRefundPrice(params,(error,result)=>{
         if(error){
-            logger.error('statisticsRefundPrice:' + error.message);
+            logger.error('statisticsRefundPrice ' + error.message);
             resUtil.resInternalError(error, res, next);
         }else{
-            logger.info('statisticsRefundPrice:' + 'success');
+            logger.info('statisticsRefundPrice ' + 'success');
             resUtil.resetQueryRes(res,result,null);
             return next();
         }
@@ -289,7 +283,7 @@ const wechatRefund = (req,res,next)=>{
                     resUtil.resInternalError(error, res, next);
                 }else{
                     //成功添加退款信息
-                    logger.info('wechatRefund中添加成功信息' + 'addWechatRefund '+' success');
+                    logger.info('++++addWechatRefund '+' success');
                     params.refundId = result.insertId;
                     let signStr =
                         "appid="+sysConfig.wechatConfig.mpAppId
@@ -329,7 +323,7 @@ const wechatRefund = (req,res,next)=>{
                         }
                     }
                     //向微信请求
-                    logger.info(' 向微信进行请求！ ');
+                    logger.info(' !!!!!!！ ');
                     let httpsReq = https.request(options,(result)=>{
                         let data = "";
                         //logger.info(result);
@@ -337,7 +331,7 @@ const wechatRefund = (req,res,next)=>{
                         result.on('data',(d)=>{
                             data += d;
                         }).on('end',()=>{
-                            logger.info(' 向微信请求结束end！ ');
+                            logger.info(' !!!!!end！ ');
                             xmlParser.parseString(data,(err,result)=>{
                                 let resString = JSON.stringify(result);
                                 let evalJson = eval('(' + resString + ')');
@@ -370,7 +364,7 @@ const wechatRefund = (req,res,next)=>{
                                             }
                                         });
                                     }).then(()=>{
-                                        /*
+
                                         new Promise((resolve,reject)=> {
                                             //获取付款信息
                                             paymentDAO.getRealPaymentPrice(params, (error, rows) => {
@@ -397,7 +391,7 @@ const wechatRefund = (req,res,next)=>{
                                                 }
                                             })
                                         })
-                                         */
+
                                     })
 
                                     resUtil.resetQueryRes(res,evalJson.xml,null);
