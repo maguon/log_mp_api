@@ -323,7 +323,6 @@ const wechatRefund = (req,res,next)=>{
                         }
                     }
                     //向微信请求
-                    logger.info(' !!!!!!！ ');
                     let httpsReq = https.request(options,(result)=>{
                         let data = "";
                         //logger.info(result);
@@ -331,7 +330,6 @@ const wechatRefund = (req,res,next)=>{
                         result.on('data',(d)=>{
                             data += d;
                         }).on('end',()=>{
-                            logger.info(' !!!!!end！ ');
                             xmlParser.parseString(data,(err,result)=>{
                                 let resString = JSON.stringify(result);
                                 let evalJson = eval('(' + resString + ')');
