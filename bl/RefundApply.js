@@ -136,7 +136,7 @@ const updateRefundStatus = (req,res,next)=>{
                 resUtil.resInternalError(error, res, next);
                 reject(error);
             }else{
-                logger.info('getPaymentById ' + ' success');
+                logger.info('++++getPaymentById ' + ' success');
                 logger.info('+++rows:  ' + rows);
                 if (rows && rows.length>0) {
                     logger.info('rows:  ' + rows);
