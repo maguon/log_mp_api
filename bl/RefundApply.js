@@ -333,7 +333,7 @@ const wechatRefund = (req,res,next)=>{
                             xmlParser.parseString(data,(err,result)=>{
                                 let resString = JSON.stringify(result);
                                 let evalJson = eval('(' + resString + ')');
-                                logger.info(' 向微信请求结果： ' + ' evalJson.xml.return_code ');
+                                logger.info(' 向微信请求结果： ' + evalJson.xml.return_code);
                                 if(evalJson.xml.return_code == 'FAIL'){
                                     paymentDAO.delRefundFail(params,(error,result)=>{});
                                     logger.warn('退款失败');
@@ -344,8 +344,8 @@ const wechatRefund = (req,res,next)=>{
                                     logger.info(' 微信返回退款成功wechatRefund ' + 'success');
 
                                     params.paymentRefundId = result.insertId;
-                                    logger.info('要使用的参数：'+ ' params ');
-                                    logger.info('微信返回的参数：' + ' result ');
+                                    logger.info('要使用的参数：'+  params );
+                                    logger.info('微信返回的参数：' + result );
                                     new Promise((resolve,reject)=>{
                                         params.status = sysConst.REFUND_STATUS.refunded;
                                         //params.refundFee = params.refundFee;
