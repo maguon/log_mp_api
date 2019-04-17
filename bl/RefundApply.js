@@ -283,7 +283,7 @@ const wechatRefund = (req,res,next)=>{
                     resUtil.resInternalError(error, res, next);
                 }else{
                     //成功添加退款信息
-                    logger.info('++++addWechatRefund '+' success');
+                    logger.info('addWechatRefund '+' success');
                     params.refundId = result.insertId;
                     let signStr =
                         "appid="+sysConfig.wechatConfig.mpAppId
@@ -335,7 +335,6 @@ const wechatRefund = (req,res,next)=>{
                             xmlParser.parseString(data,(err,result)=>{
                                 let resString = JSON.stringify(result);
                                 let evalJson = eval('(' + resString + ')');
-                                logger.info(' 向微信请求结果： ' + evalJson.xml.return_code);
                                 if(evalJson.xml.return_code == 'FAIL'){
                                     paymentDAO.delRefundFail(params,(error,result)=>{});
                                     logger.warn('退款失败');
@@ -343,12 +342,7 @@ const wechatRefund = (req,res,next)=>{
                                     resUtil.resetFailedRes(res,evalJson.xml,null);
                                 }else {
                                     //退款成功
-                                    logger.info(' 微信返回退款成功wechatRefund ' + 'success');
-
                                     params.paymentRefundId = result.insertId;
-                                    logger.info('要使用的参数：'+  params.paymentRefundId );
-                                    logger.info('微信返回的参数：' + result.insertId );
-
                                     new Promise((resolve,reject)=>{
                                         params.status = sysConst.REFUND_STATUS.refunded;
                                         //params.refundFee = params.refundFee;
@@ -393,13 +387,11 @@ const wechatRefund = (req,res,next)=>{
                                         })
 
                                          */
-
                                     })
 
                                     resUtil.resetQueryRes(res,evalJson.xml,null);
                                 }
                                 return next();
-
                             });
 
                         }).on('error', (e)=>{
