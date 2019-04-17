@@ -273,7 +273,7 @@ const wechatRefund = (req,res,next)=>{
         new Promise((resolve,reject)=>{
             params.type = sysConst.PAYMENT.type.refund;
             params.paymentType = sysConst.PAYMENT.paymentType.wechat;
-            //添加退款的panmen_info
+            //添加退款的panmen_inf
             paymentDAO.addWechatRefund(params,(error,result)=>{
                 if(error){
                     logger.error('addWechatRefund' + error.message);
@@ -337,8 +337,11 @@ const wechatRefund = (req,res,next)=>{
                                     resUtil.resetFailedRes(res,evalJson.xml,null);
                                 }else {
                                     //退款成功
-                                    //logger.info('addWechatRefund' + 'success');
+                                    logger.info(' wechatRefund ' + 'success');
+
                                     params.paymentRefundId = result.insertId;
+                                    logger.info(' params ');
+                                    logger.info(' result ');
                                     new Promise((resolve,reject)=>{
                                         params.status = sysConst.REFUND_STATUS.refunded;
                                         //params.refundFee = params.refundFee;
