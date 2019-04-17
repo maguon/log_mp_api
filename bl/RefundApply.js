@@ -346,8 +346,8 @@ const wechatRefund = (req,res,next)=>{
                                     logger.info(' 微信返回退款成功wechatRefund ' + 'success');
 
                                     params.paymentRefundId = result.insertId;
-                                    logger.info('要使用的参数：'+  params );
-                                    logger.info('微信返回的参数：' + result );
+                                    logger.info('要使用的参数：'+  params.paymentRefundId );
+                                    logger.info('微信返回的参数：' + result.insertId );
 
                                     new Promise((resolve,reject)=>{
                                         params.status = sysConst.REFUND_STATUS.refunded;
