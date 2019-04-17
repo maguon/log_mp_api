@@ -137,6 +137,7 @@ const updateRefundStatus = (req,res,next)=>{
                 reject(error);
             }else{
                 logger.info('getPaymentById ' + ' success');
+                logger.info('+++rows:  ' + rows);
                 if (rows && rows.length>0) {
                     logger.info('rows:  ' + rows);
                     logger.info('rows[0]:  ' + rows[0]);
