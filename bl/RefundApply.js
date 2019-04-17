@@ -136,8 +136,10 @@ const updateRefundStatus = (req,res,next)=>{
                 resUtil.resInternalError(error, res, next);
                 reject(error);
             }else{
-                logger.info('getPaymentById ' + 'success');
+                logger.info('getPaymentById ' + ' success');
                 if (rows && rows.length>0) {
+                    logger.info('rows:  ' + rows);
+                    logger.info('rows[0]:  ' + rows[0]);
                     if (rows[0].total_fee < params.refundFee) {
                         resUtil.resetFailedRes(res, sysMsg.ADMIN_PAYMENT_REFUND_PRICE);
                         reject(error);
