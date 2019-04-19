@@ -54,7 +54,7 @@ const createAdminUser = (req,res,next) => {
             }
         })
     })
-    logger.debug("Leaving createAdminUser()");
+    //logger.debug("Leaving createAdminUser()");
 }
 const adminUserLogin = (req,res,next) => {
     logger.debug("Entering adminUserLogin()");
@@ -92,10 +92,10 @@ const adminUserLogin = (req,res,next) => {
                         user.accessToken = oAuthUtil.createAccessToken(oAuthUtil.clientType.admin,user.userId,user.status);
                         oAuthUtil.saveToken(user,function(error,result){
                             if(error){
-                                logger.error(' changeUserToken ' + error.stack);
+                                logger.error(' changeUserToken: ' + error.stack);
                                 return next(sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG))
                             }else{
-                                logger.info(' changeUserToken ' +params.userId+ " success");
+                                logger.info(' changeUserToken: ' +params.userId+ " success");
                                 resUtil.resetQueryRes(res,user,null);
                                 return next();
                             }
@@ -108,7 +108,7 @@ const adminUserLogin = (req,res,next) => {
             }
         }
     })
-    logger.debug("Leaving adminUserLogin()");
+    //logger.debug("Leaving adminUserLogin()");
 }
 
 const adminUserMobileLogin = (req,res,next) =>{
@@ -199,16 +199,16 @@ const adminUserMobileLogin = (req,res,next) =>{
             })
         })
     });
-    logger.debug("Leaving adminUserMobileLogin()");
+    //logger.debug("Leaving adminUserMobileLogin()");
 }
 const getAdminUserInfo = (req,res,next) => {
     let params = req.params;
     adminUserDao.queryAdminInfo(params,(error,rows)=>{
         if(error){
-            logger.error(' getAdminUserInfo ' + error.message);
+            logger.error(' getAdminUserInfo: ' + error.message);
             resUtil.resInternalError(error,res,next);
         }else{
-            logger.info(' getAdminUserInfo ' + 'success');
+            logger.info(' getAdminUserInfo: ' + 'success');
             resUtil.resetQueryRes(res,rows,null);
             return next();
         }
@@ -244,7 +244,7 @@ const updateAdminInfo = (req,res,next) => {
             }
         })
     })
-    logger.debug("Leaving updateAdminInfo()");
+    //logger.debug("Leaving updateAdminInfo()");
 }
 const changeAdminPassword = (req,res,next) => {
     logger.debug("Entering changeAdminPassword()");
@@ -281,7 +281,7 @@ const changeAdminPassword = (req,res,next) => {
             }
         })
     })
-    logger.debug("Leaving changeAdminPassword()");
+    //logger.debug("Leaving changeAdminPassword()");
 }
 const addAdminUser = (req,res,next) => {
     logger.debug("Entering addAdminUser()");
@@ -317,7 +317,7 @@ const addAdminUser = (req,res,next) => {
             }
         })
     })
-    logger.debug("Leaving addAdminUser()");
+    //logger.debug("Leaving addAdminUser()");
 }
 const updateAdminStatus = (req,res,next) => {
     let params = req.params;
