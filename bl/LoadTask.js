@@ -20,11 +20,11 @@ const addLoadTask = (req,res,next) => {
     new Promise((resolve,reject)=>{
         orderInfoDAO.getById({orderId:params.orderId},(error,rows)=>{
             if(error){
-                logger.error('getOrder' + error.message);
+                logger.error('addLoadTask getOrder ' + error.message);
                 resUtil.resInternalError(error,res,next);
                 reject(error);
             }else{
-                logger.info('getOrder' + 'success');
+                logger.info('addLoadTask getOrder ' + 'success');
                 if (rows.length > 0){
                     resolve();
                 }else {
@@ -36,11 +36,11 @@ const addLoadTask = (req,res,next) => {
         new Promise((resolve,reject)=>{
             requireTaskDAO.getById({requireId:params.requireId},(error,rows)=>{
                 if(error){
-                    logger.error('getRequireTaskById' + error.message);
+                    logger.error('addLoadTask getById ' + error.message);
                     resUtil.resInternalError(error,res,next);
                     reject(error);
                 }else{
-                    logger.info('getRequireTaskById' + 'success');
+                    logger.info('addLoadTask getById ' + 'success');
                     if (rows.length > 0){
                         resolve();
                     }else {
@@ -54,11 +54,11 @@ const addLoadTask = (req,res,next) => {
                 params.planDateTime = moment(params.planDate).format("YYYY-MM-DD");
                 loadTaskDAO.add(params,(error,rows)=>{
                     if(error){
-                        logger.error('addLoadTask' + error.message);
+                        logger.error('addLoadTask add ' + error.message);
                         resUtil.resInternalError(error,res,next);
                         reject(error);
                     }else{
-                        logger.info('addLoadTask' + 'success');
+                        logger.info('addLoadTask add ' + 'success');
                         if (rows.insertId){
                             resUtil.resetCreateRes(res,rows,null);
                             return next;
@@ -76,11 +76,11 @@ const submitToSupplier = (req,res,next) => {
     new Promise((resolve,reject)=>{
         loadTaskDetailDAO.getById({loadTaskId:params.loadTaskId},(error,rows)=>{
             if(error){
-                logger.error('getLoadTaskDetail' + error.message);
+                logger.error('submitToSupplier getById ' + error.message);
                 resUtil.resInternalError(error,res,next);
                 reject(error);
             }else{
-                logger.info('getLoadTaskDetail' + 'success');
+                logger.info('submitToSupplier getById ' + 'success');
                 if (rows.length > 0){
                     resolve();
                 }else {
@@ -92,11 +92,11 @@ const submitToSupplier = (req,res,next) => {
         new Promise((resolve,reject)=>{
             loadTaskDAO.getLoadTaskOrder({loadTaskId:params.loadTaskId},(error,rows)=>{
                 if(error){
-                    logger.error('getLoadTaskOrder' + error.message);
+                    logger.error('submitToSupplier getLoadTaskOrder' + error.message);
                     resUtil.resInternalError(error,res,next);
                     reject(error);
                 }else{
-                    logger.info('getLoadTaskOrder' + 'success');
+                    logger.info('submitToSupplier getLoadTaskOrder' + 'success');
                     if (rows.length > 0){
                         params.supplierId = rows[0].supplier_id;
                         params.options = {
@@ -120,11 +120,11 @@ const submitToSupplier = (req,res,next) => {
             new Promise((resolve,reject)=>{
                 supplierInfo.querySupplier({supplierId:params.supplierId},(error,rows)=>{
                     if(error){
-                        logger.error(' getSupplierById ' + error.message);
+                        logger.error('submitToSupplier querySupplier ' + error.message);
                         resUtil.resInternalError(error,res,next);
                         reject(error);
                     }else {
-                        logger.info('getSupplierById' + 'success');
+                        logger.info('submitToSupplier querySupplier ' + 'success');
                         if (rows.length >0){
                             if (rows[0].close_flag == sysConsts.SUPPLIER.closeFlag.close){
                                 resUtil.resetFailedRes(res,sysMsg.SUPPLIER_CLOSE_NOTALLOW_SYNC);
@@ -147,11 +147,11 @@ const submitToSupplier = (req,res,next) => {
                     params.req = req;
                     exRouteRequireDAO.saveLoadTaskToSupplier(params,(error,result)=>{
                         if(error){
-                            logger.error(' saveLoadTaskToSupplier ' + error.message);
+                            logger.error('submitToSupplier saveLoadTaskToSupplier ' + error.message);
                             resUtil.resInternalError(error,res,next);
                             reject(error);
                         }else{
-                            logger.info('saveLoadTaskToSupplier' + 'success');
+                            logger.info('submitToSupplier saveLoadTaskToSupplier ' + 'success');
                             if (result.success){
                                 params.hookId = result.id;
                                 resolve();
@@ -164,11 +164,11 @@ const submitToSupplier = (req,res,next) => {
                     new Promise((resolve,reject)=>{
                         loadTaskDAO.updateById({loadTaskId:params.loadTaskId,hookId:params.hookId},(error,rows)=>{
                             if(error){
-                                logger.error(' updateLoadTaskHookId ' + error.message);
+                                logger.error('submitToSupplier updateById ' + error.message);
                                 resUtil.resInternalError(error,res,next);
                                 reject(error);
                             }else{
-                                logger.info('updateLoadTaskHookId' + 'success');
+                                logger.info('submitToSupplier updateById ' + 'success');
                                 resolve();
                             }
                         })
@@ -176,11 +176,11 @@ const submitToSupplier = (req,res,next) => {
                         new Promise((resolve,reject)=>{
                             loadTaskDAO.getLoadTaskWithDetail({loadTaskId:params.loadTaskId},(error,rows)=>{
                                 if(error){
-                                    logger.error(' getLoadTaskWithDetail ' + error.message);
+                                    logger.error('submitToSupplier getLoadTaskWithDetail ' + error.message);
                                     resUtil.resInternalError(error,res,next);
                                     reject(error);
                                 }else{
-                                    logger.info('getLoadTaskWithDetail' + 'success');
+                                    logger.info('submitToSupplier getLoadTaskWithDetail ' + 'success');
                                     for (let i in rows){
                                         params.req = req;
                                         params.options={
@@ -193,20 +193,20 @@ const submitToSupplier = (req,res,next) => {
                                         }
                                         exRouteRequireDAO.saveLoadTaskDetailToSupplier(params,(error,result)=>{
                                             if(error){
-                                                logger.error(' saveLoadTaskDetailToSupplier ' + error.message);
+                                                logger.error('submitToSupplier saveLoadTaskDetailToSupplier ' + error.message);
                                                 resUtil.resInternalError(error,res,next);
                                                 reject(error);
                                             }else{
-                                                logger.info('saveLoadTaskDetailToSupplier' + 'success');
+                                                logger.info('submitToSupplier saveLoadTaskDetailToSupplier ' + 'success');
                                                 if (result.success){
                                                     params.detailHookId = result.id;
                                                     loadTaskDetailDAO.updateById({detailHookId:result.id,loadTaskDetailId:rows[i].id},(error,result)=>{
                                                         if(error){
-                                                            logger.error(' updateLoadTaskDetailHookId ' + error.message);
+                                                            logger.error('submitToSupplier updateLoadTaskDetailHookId ' + error.message);
                                                             resUtil.resInternalError(error,res,next);
                                                             reject(error);
                                                         }else{
-                                                            logger.info(' updateLoadTaskDetailHookId ' + 'success');
+                                                            logger.info('submitToSupplier updateLoadTaskDetailHookId ' + 'success');
                                                         }
                                                     })
                                                 } else {
@@ -230,11 +230,11 @@ const getLoadTaskWithDetail = (req,res,next) => {
     new Promise((resolve,reject)=>{
         orderInfoDAO.getById({orderId:params.orderId},(error,rows)=>{
             if(error){
-                logger.error('getOrder' + error.message);
+                logger.error('getLoadTaskWithDetail getById ' + error.message);
                 resUtil.resInternalError(error,res,next);
                 reject(error);
             }else{
-                logger.info('getOrder' + 'success');
+                logger.info('getLoadTaskWithDetail getById ' + 'success');
                 if (rows.length > 0){
                     resolve();
                 }else {
@@ -246,11 +246,11 @@ const getLoadTaskWithDetail = (req,res,next) => {
         new Promise((resolve,reject)=>{
             requireTaskDAO.getById({requireId:params.requireId},(error,rows)=>{
                 if(error){
-                    logger.error('getRequireTaskById' + error.message);
+                    logger.error('getLoadTaskWithDetail getById2 ' + error.message);
                     resUtil.resInternalError(error,res,next);
                     reject(error);
                 }else{
-                    logger.info('getRequireTaskById' + 'success');
+                    logger.info('getLoadTaskWithDetail getById2 ' + 'success');
                     if (rows.length > 0){
                         resolve();
                     }else {
@@ -261,10 +261,10 @@ const getLoadTaskWithDetail = (req,res,next) => {
         }).then(()=>{
             loadTaskDAO.getLoadTaskWithDetail(params,(error,rows)=>{
                 if(error){
-                    logger.error('getLoadTaskWithDetail' + error.message);
+                    logger.error('getLoadTaskWithDetail ' + error.message);
                     resUtil.resInternalError(error,res,next);
                 }else{
-                    logger.info('getLoadTaskWithDetail' + 'success');
+                    logger.info('getLoadTaskWithDetail ' + 'success');
                     resUtil.resetQueryRes(res,rows,null);
                     return next;
                 }
@@ -279,11 +279,11 @@ const delLoadTask = (req,res,next) => {
     new Promise((resolve,reject)=>{
         loadTaskDAO.getById({loadTaskId:params.loadTaskId,orderId:params.orderId,requireId:params.requireId},(error,rows)=>{
             if(error){
-                logger.error('getLoadTaskById' + error.message);
+                logger.error('delLoadTask getById ' + error.message);
                 resUtil.resInternalError(error,res,next);
                 reject(error);
             }else{
-                logger.info('getLoadTaskById' + 'success');
+                logger.info('delLoadTask getById ' + 'success');
                 if (rows.length > 0){
                     loadTaskHookId = rows[0].hook_id;
                     supplierId = rows[0].supplier_id;
@@ -297,11 +297,11 @@ const delLoadTask = (req,res,next) => {
         new Promise((resolve,reject)=>{
             supplierInfo.querySupplier({supplierId:supplierId},(error,rows)=>{
                 if(error){
-                    logger.error('getSupplierById' + error.message);
+                    logger.error('delLoadTask querySupplier ' + error.message);
                     resUtil.resInternalError(error,res,next);
                     reject(error);
                 }else{
-                    logger.info('getSupplierById' + 'success');
+                    logger.info('delLoadTask querySupplier ' + 'success');
                     if (rows.length > 0){
                         if (loadTaskHookId != 0){
                             if (!(rows[0].app_id || rows[0].app_url)) {
@@ -315,11 +315,11 @@ const delLoadTask = (req,res,next) => {
                                 }
                                 exRouteRequireDAO.putLoadTaskStatusToSupplier(options,(error,result)=>{
                                     if(error){
-                                        logger.error(' putLoadTaskStatusToSupplier ' + error.message);
+                                        logger.error('delLoadTask putLoadTaskStatusToSupplier ' + error.message);
                                         resUtil.resInternalError(error,res,next);
                                         reject(error);
                                     }else{
-                                        logger.info('putLoadTaskStatusToSupplier' + 'success');
+                                        logger.info('delLoadTask putLoadTaskStatusToSupplier ' + 'success');
                                         if (result.success){
                                             resolve();
                                         } else {
@@ -340,11 +340,11 @@ const delLoadTask = (req,res,next) => {
             new Promise((resolve,reject)=>{
                 loadTaskDAO.deleteById({loadTaskId:params.loadTaskId},(error,rows)=>{
                     if(error){
-                        logger.error('deleteLoadTaskById' + error.message);
+                        logger.error('delLoadTask deleteById ' + error.message);
                         resUtil.resInternalError(error,res,next);
                         reject(error);
                     }else{
-                        logger.info('deleteLoadTaskById' + 'success');
+                        logger.info('delLoadTask deleteById ' + 'success');
                         if (rows.affectedRows > 0){
                             resolve();
                         } else {
@@ -356,11 +356,11 @@ const delLoadTask = (req,res,next) => {
                 new Promise((resolve,reject)=>{
                     loadTaskDetailDAO.getById({loadTaskId:params.loadTaskId},(error,rows)=>{
                         if(error){
-                            logger.error('getLoadTaskDetailByLoadTaskId' + error.message);
+                            logger.error('delLoadTask getById ' + error.message);
                             resUtil.resInternalError(error,res,next);
                             reject(error);
                         }else{
-                            logger.info('getLoadTaskDetailByLoadTaskId' + 'success');
+                            logger.info('delLoadTask getById ' + 'success');
                             if (rows.length > 0){
                                 resolve();
                             } else {
@@ -371,10 +371,10 @@ const delLoadTask = (req,res,next) => {
                 }).then(()=>{
                     loadTaskDetailDAO.deleteById({loadTaskId:params.loadTaskId},(error,rows)=>{
                         if(error){
-                            logger.error('deleteLoadTaskDetailByLoadTaskId' + error.message);
+                            logger.error('delLoadTask deleteById ' + error.message);
                             resUtil.resInternalError(error,res,next);
                         }else{
-                            logger.info('deleteLoadTaskDetailByLoadTaskId' + 'success');
+                            logger.info('delLoadTask deleteById ' + 'success');
                             resUtil.resetUpdateRes(res,rows,null);
                             return next;
                         }
@@ -390,11 +390,11 @@ const updateLoadTask = (req,res,next) => {
     new Promise((resolve,reject)=>{
         requireTaskDAO.getById({requireId:params.requireId},(error,rows)=>{
             if(error){
-                logger.error('getRequireTaskById' + error.message);
+                logger.error('updateLoadTask getById  ' + error.message);
                 resUtil.resInternalError(error,res,next);
                 reject(error);
             }else{
-                logger.info('getRequireTaskById' + 'success');
+                logger.info('updateLoadTask getById ' + 'success');
                 if (rows.length > 0){
                     resolve();
                 }else {
@@ -406,11 +406,11 @@ const updateLoadTask = (req,res,next) => {
         new Promise((resolve,reject)=>{
             loadTaskDAO.getById({loadTaskId:params.loadTaskId},(error,rows)=>{
                 if(error){
-                    logger.error('getLoadTaskById' + error.message);
+                    logger.error('updateLoadTask getById2 ' + error.message);
                     resUtil.resInternalError(error,res,next);
                     reject(error);
                 }else{
-                    logger.info('getLoadTaskById' + 'success');
+                    logger.info('updateLoadTask getById2 ' + 'success');
                     if (rows.length > 0){
                         loadTaskHookId = rows[0].hook_id;
                         resolve();
@@ -424,10 +424,10 @@ const updateLoadTask = (req,res,next) => {
                 params.planDateId = moment(params.planDate.toString()).format("YYYYMMDD");
                 loadTaskDAO.updateById(params,(error,rows)=>{
                     if(error){
-                        logger.error('updateLoadTaskById' + error.message);
+                        logger.error('updateLoadTask updateById ' + error.message);
                         resUtil.resInternalError(error,res,next);
                     }else{
-                        logger.info('updateLoadTaskById' + 'success');
+                        logger.info('updateLoadTask updateById ' + 'success');
                         resUtil.resetUpdateRes(res,rows,null);
                         return next;
                     }
@@ -449,10 +449,10 @@ const updateLoadTaskStatus = (req,res,next) => {
     }
     loadTaskDAO.updateById(params,(error,rows)=>{
         if(error){
-            logger.error('updateLoadTaskStatus' + error.message);
+            logger.error('updateLoadTaskStatus ' + error.message);
             resUtil.resInternalError(error,res,next);
         }else{
-            logger.info('updateLoadTaskStatus' + 'success');
+            logger.info('updateLoadTaskStatus ' + 'success');
             resUtil.resetUpdateRes(res,rows,null);
             return next;
         }
@@ -463,11 +463,11 @@ const getOrderLoadTask = (req,res,next) => {
     new Promise((resolve,reject)=>{
         orderInfoDAO.getById({orderId:params.orderId},(error,rows)=>{
             if(error){
-                logger.error('getOrder' + error.message);
+                logger.error('getOrderLoadTask getByIdOrder ' + error.message);
                 resUtil.resInternalError(error,res,next);
                 reject(error);
             }else{
-                logger.info('getOrder' + 'success');
+                logger.info('getOrderLoadTask getByIdOrder ' + 'success');
                 if (rows.length > 0){
                     resolve();
                 }else {
@@ -479,11 +479,11 @@ const getOrderLoadTask = (req,res,next) => {
         new Promise((resolve,reject)=>{
             requireTaskDAO.getById({requireId:params.requireId},(error,rows)=>{
                 if(error){
-                    logger.error('getRequireTaskById' + error.message);
+                    logger.error('getOrderLoadTask getByIdRequireTask ' + error.message);
                     resUtil.resInternalError(error,res,next);
                     reject(error);
                 }else{
-                    logger.info('getRequireTaskById' + 'success');
+                    logger.info('getOrderLoadTask getByIdRequireTask ' + 'success');
                     if (rows.length > 0){
                         resolve();
                     }else {
@@ -494,10 +494,10 @@ const getOrderLoadTask = (req,res,next) => {
         }).then(()=>{
             loadTaskDAO.getLoadTask(params,(error,rows)=>{
                 if(error){
-                    logger.error('getOrderLoadTask' + error.message);
+                    logger.error('getOrderLoadTask getLoadTask ' + error.message);
                     resUtil.resInternalError(error,res,next);
                 }else{
-                    logger.info('getOrderLoadTask' + 'success');
+                    logger.info('getOrderLoadTask getLoadTask ' + 'success');
                     resUtil.resetQueryRes(res,rows,null);
                     return next;
                 }
@@ -509,10 +509,10 @@ const getLoadTaskProfitOfCar = (req,res,next) => {
     let params = req.params;
     loadTaskDAO.getLoadTaskProfitOfCar(params,(error,rows)=>{
         if(error){
-            logger.error('getLoadTaskProfit' + error.message);
+            logger.error('getLoadTaskProfitOfCar ' + error.message);
             resUtil.resInternalError(error,res,next);
         }else{
-            logger.info('getLoadTaskProfit' + 'success');
+            logger.info('getLoadTaskProfitOfCar ' + 'success');
             resUtil.resetQueryRes(res,rows,null);
             return next;
         }
@@ -524,11 +524,11 @@ const getSyncLoadTask = (req,res,next) => {
     new Promise((resolve,reject)=>{
         loadTaskDAO.getById({loadTaskId:params.loadTaskId},(error,rows)=>{
             if(error){
-                logger.error('getLoadTask' + error.message);
+                logger.error('getSyncLoadTask getByIdLoadTask ' + error.message);
                 resUtil.resInternalError(error,res,next);
                 reject(error);
             }else{
-                logger.info('getLoadTask' + 'success');
+                logger.info('getSyncLoadTask getByIdLoadTask ' + 'success');
                 if (rows.length > 0){
                     if (rows[0].hook_id){
                         params.hookId = rows[0].hook_id;
@@ -546,11 +546,11 @@ const getSyncLoadTask = (req,res,next) => {
         new Promise((resolve,reject)=>{
             supplierInfo.querySupplier({supplierId:params.supplierId},(error,rows)=>{
                 if(error){
-                    logger.error('getSupplierInfo' + error.message);
+                    logger.error('getSyncLoadTask querySupplier ' + error.message);
                     resUtil.resInternalError(error,res,next);
                     reject(error);
                 }else{
-                    logger.info('getSupplierInfo' + 'success');
+                    logger.info('getSyncLoadTask querySupplier ' + 'success');
                     if (rows.length > 0){
                         params.appUrl = hostPort(rows[0].app_url);
                         params.entrustId = rows[0].app_id;
@@ -568,11 +568,11 @@ const getSyncLoadTask = (req,res,next) => {
                 params.options = options;
                 exRouteRequireDAO.getDpDemand(params,(error,result)=>{
                     if(error){
-                        logger.error(' getDpDemand ' + error.message);
+                        logger.error('getSyncLoadTask getDpDemand ' + error.message);
                         resUtil.resInternalError(error,res,next);
                         reject(error);
                     }else{
-                        logger.info('getDpDemand' + 'success');
+                        logger.info('getSyncLoadTask getDpDemand ' + 'success');
                         if (result.success){
                             resultData.require = result.result;
                             resolve();
@@ -584,10 +584,10 @@ const getSyncLoadTask = (req,res,next) => {
             }).then(()=>{
                 exRouteRequireDAO.getRouteLoadTask(params,(error,result)=>{
                     if(error){
-                        logger.error(' getRouteLoadTask ' + error.message);
+                        logger.error('getSyncLoadTask getRouteLoadTask ' + error.message);
                         resUtil.resInternalError(error,res,next);
                     }else{
-                        logger.info('getRouteLoadTask' + 'success');
+                        logger.info('getSyncLoadTask getRouteLoadTask ' + 'success');
                         if (result.success){
                             resultData.routeLoadTask = result.result;
                             resUtil.resetQueryRes(res,resultData,null);
@@ -606,11 +606,11 @@ const syncComplete = (req,res,next) => {
     new Promise((resolve,reject)=>{
         loadTaskDAO.getById({loadTaskId:params.loadTaskId},(error,rows)=>{
             if(error){
-                logger.error('getLoadTask' + error.message);
+                logger.error('syncComplete getById ' + error.message);
                 resUtil.resInternalError(error,res,next);
                 reject(error);
             }else{
-                logger.info('getLoadTask' + 'success');
+                logger.info('syncComplete getById ' + 'success');
                 if (rows.length > 0){
                     if (rows[0].hook_id){
                         params.hookId = rows[0].hook_id;
@@ -628,11 +628,11 @@ const syncComplete = (req,res,next) => {
         new Promise((resolve,reject)=>{
             supplierInfo.querySupplier({supplierId:params.supplierId},(error,rows)=>{
                 if(error){
-                    logger.error('getSupplierInfo' + error.message);
+                    logger.error('syncComplete querySupplier ' + error.message);
                     resUtil.resInternalError(error,res,next);
                     reject(error);
                 }else{
-                    logger.info('getSupplierInfo' + 'success');
+                    logger.info('syncComplete querySupplier ' + 'success');
                     if (rows.length > 0){
                         params.appUrl = hostPort(rows[0].app_url);
                         params.entrustId = rows[0].app_id;
@@ -651,10 +651,10 @@ const syncComplete = (req,res,next) => {
             }
             exRouteRequireDAO.putLoadTaskStatusToSupplier(options,(error,result)=>{
                 if(error){
-                    logger.error(' putLoadTaskStatusToSupplier ' + error.message);
+                    logger.error('syncComplete putLoadTaskStatusToSupplier ' + error.message);
                     resUtil.resInternalError(error,res,next);
                 }else{
-                    logger.info('putLoadTaskStatusToSupplier' + 'success');
+                    logger.info('syncComplete putLoadTaskStatusToSupplier ' + 'success');
                     if (result.success){
                         resUtil.resetQueryRes(res,result,null);
                         return next;
@@ -670,10 +670,10 @@ const getRouteLoadTask = (req,res,next) => {
     let params = req.params;
     loadTaskDAO.getRouteLoadTask(params,(error,rows)=>{
         if(error){
-            logger.error('getLoadTaskProfit' + error.message);
+            logger.error('getRouteLoadTask ' + error.message);
             resUtil.resInternalError(error,res,next);
         }else{
-            logger.info('getLoadTaskProfit' + 'success');
+            logger.info('getRouteLoadTask ' + 'success');
             resUtil.resetQueryRes(res,rows,null);
             return next;
         }
@@ -684,11 +684,11 @@ const doPayment = (req,res,next) => {
     new Promise((resolve,reject)=>{
         loadTaskDAO.getById({loadTaskId:params.loadTaskId},(error,rows)=>{
             if(error){
-                logger.error('getLoadTask' + error.message);
+                logger.error('doPayment getById ' + error.message);
                 resUtil.resInternalError(error,res,next);
                 reject(error);
             }else{
-                logger.info('getLoadTask' + 'success');
+                logger.info('doPayment getById ' + 'success');
                 if (rows.length > 0){
                     resolve();
                 }else {
@@ -702,10 +702,10 @@ const doPayment = (req,res,next) => {
         params.paymentOnId = moment().format("YYYYMMDD");
         loadTaskDAO.updateById(params,(error,rows)=>{
             if(error){
-                logger.error('updatePaymentFlag' + error.message);
+                logger.error('doPayment updateById ' + error.message);
                 resUtil.resInternalError(error,res,next);
             }else{
-                logger.info('updatePaymentFlag' + 'success');
+                logger.info('doPayment updateById ' + 'success');
                 resUtil.resetUpdateRes(res,rows,null);
                 return next;
             }
@@ -718,11 +718,11 @@ const getRouteOfCar = (req,res,next) => {
     new Promise((resolve,reject)=>{
         loadTaskDetailDAO.getRouteId(params,(error,rows)=>{
             if(error){
-                logger.error('getLoadTaskId' + error.message);
+                logger.error('getRouteOfCar getRouteId ' + error.message);
                 resUtil.resInternalError(error,res,next);
                 reject(error);
             }else{
-                logger.info('getLoadTaskId' + 'success');
+                logger.info('getRouteOfCar getRouteId ' + 'success');
                 if (rows.length > 0){
                     for (let i in rows){
                         loadTaskIdArray.push(rows[i].dp_load_task_id);
@@ -736,10 +736,10 @@ const getRouteOfCar = (req,res,next) => {
     }).then(()=>{
         loadTaskDAO.getLoadTask({loadTaskIdArray:loadTaskIdArray},(error,rows)=>{
             if(error){
-                logger.error('getLoadTask' + error.message);
+                logger.error('getRouteOfCar getLoadTask ' + error.message);
                 resUtil.resInternalError(error,res,next);
             }else{
-                logger.info('getLoadTask' + 'success');
+                logger.info('getRouteOfCar getLoadTask ' + 'success');
                 resUtil.resetQueryRes(res,rows,null);
                 return next;
             }
@@ -759,10 +759,10 @@ const statisticsPrice = (req,res,next) => {
     params.dbMonth = moment().format("YYYYMM");
     loadTaskDAO.getOrderLoadPrice(params,(error,rows)=>{
         if(error){
-            logger.error('statisticsPrice' + error.message);
+            logger.error('statisticsPrice ' + error.message);
             resUtil.resInternalError(error,res,next);
         }else{
-            logger.info('statisticsPrice' + 'success');
+            logger.info('statisticsPrice ' + 'success');
             resUtil.resetQueryRes(res,rows,null);
             return next;
         }

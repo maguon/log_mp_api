@@ -11,10 +11,10 @@ const addSupplierContact = (req,res,next) => {
     let params = req.params;
     supplierContactDAO.addSupplierContact(params,(error,result)=>{
         if(error){
-            logger.error('addSupplierContact' + error.message);
+            logger.error('addSupplierContact ' + error.message);
             throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
         }else{
-            logger.info('addSupplierContact' + 'success');
+            logger.info('addSupplierContact ' + 'success');
             resUtil.resetCreateRes(res,result,null);
             return next();
         }
@@ -24,10 +24,10 @@ const querySupplierContact = (req,res,next) => {
     let params = req.params;
     supplierContactDAO.querySupplierContact(params,(error,result)=>{
         if(error){
-            logger.error('querySupplierContact' + error.message);
+            logger.error('querySupplierContact ' + error.message);
             throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
         }else{
-            logger.info('querySupplierContact' + 'success');
+            logger.info('querySupplierContact ' + 'success');
             resUtil.resetQueryRes(res,result,null);
             return next();
         }
@@ -37,10 +37,10 @@ const delSupplierContact = (req,res,next) => {
     let params = req.params;
     supplierContactDAO.delSupplierContact(params,(error,result)=>{
         if(error){
-            logger.error('delSupplierContact' + error.message);
+            logger.error('delSupplierContact ' + error.message);
             throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
         }else{
-            logger.info('delSupplierContact' + 'success');
+            logger.info('delSupplierContact ' + 'success');
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }

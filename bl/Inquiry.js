@@ -17,13 +17,13 @@ const addRouteInquiry = (req,res,next) => {
         params.dateId = moment().format("YYYYMMDD");
         inquiryDAO.addRouteInquiry(params,(error,result)=>{
             if(error){
-                logger.error('addRouteInquiry' + error.message);
+                logger.error('addRouteInquiry ' + error.message);
                 reject(error);
             }else if(result && result.insertId < 1){
-                logger.warn('addRouteInquiry'+'询价信息创建失败');
+                logger.warn('addRouteInquiry '+' Inquiry information creation failed!');
                 resUtil.resetFailedRes(res,'询价信息创建失败',null);
             }else{
-                logger.info('addRouteInquiry' + 'success');
+                logger.info('addRouteInquiry ' + 'success');
                 params.inquiryId = result.insertId;
                 resolve();
             }
@@ -44,10 +44,10 @@ const addRouteInquiry = (req,res,next) => {
                 params.status = systemConst.CAR.inquiryStatus.showInUser;
                 inquiryCarDAO.addCar(params,(error,result)=>{
                     if(error){
-                        logger.error('addInquiryCar' + error.message);
+                        logger.error('addRouteInquiry addCar ' + error.message);
                         reject(error);
                     }else{
-                        logger.info('addInquiryCar:'+ i + ':success');
+                        logger.info('addRouteInquiry addCar '+ i + ' success');
                         x++;
                         if (x == carInfo.length){
                             setTimeout(()=>{
@@ -61,13 +61,13 @@ const addRouteInquiry = (req,res,next) => {
             new Promise((resolve,reject)=>{
                 inquiryCarDAO.getSumPrice({inquiryId:params.inquiryId,status:systemConst.CAR.inquiryStatus.showInUser},(error,rows)=>{
                     if(error){
-                        logger.error('getSumPrice' + error.message);
+                        logger.error('addRouteInquiry getSumPrice ' + error.message);
                         reject(error);
                     }else if(rows && rows.length < 1){
-                        logger.warn('getSumPrice'+'查无此车辆估值信息');
+                        logger.warn('addRouteInquiry getSumPrice '+'No vehicle valuation information available!');
                         resUtil.resetFailedRes(res,'查无此车辆估值信息',null);
                     }else{
-                        logger.info('getSumPrice'+'success');
+                        logger.info('addRouteInquiry getSumPrice '+'success');
                         params.fee = rows[0].trans_price;
                         params.safePrice = rows[0].insure_price;
                         params.carNum = rows[0].sum_car_num;;
@@ -78,10 +78,10 @@ const addRouteInquiry = (req,res,next) => {
                 new Promise((resolve,reject)=>{
                     inquiryDAO.updateFee({carNum:params.carNum,inquiryId:params.inquiryId,fee:params.fee,safePrice:params.safePrice},(error,result)=>{
                         if(error){
-                            logger.error('updateFee' + error.message);
+                            logger.error('addRouteInquiry updateFee ' + error.message);
                             reject(error);
                         }else{
-                            logger.info('updateFee'+'success');
+                            logger.info('addRouteInquiry updateFee '+'success');
                             let inquiry_id = [{
                                 inquiryId:params.inquiryId
                             }]
@@ -103,10 +103,10 @@ const getInquiryByUserId = (req,res,next) => {
     }
     inquiryDAO.getInquiryByUserId(params,(error,result)=>{
         if(error){
-            logger.error('getInquiryByUserId' + error.message);
+            logger.error('getInquiryByUserId ' + error.message);
             throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
         }else{
-            logger.info('getInquiryByUserId' + 'success');
+            logger.info('getInquiryByUserId ' + 'success');
             resUtil.resetQueryRes(res,result,null);
             return next();
         }
@@ -116,10 +116,10 @@ const updateInquiryStatus = (req,res,next) => {
     let params = req.params;
     inquiryDAO.updateInquiryStatus(params,(error,result)=>{
         if(error){
-            logger.error('updateInquiryStatus' + error.message);
+            logger.error('updateInquiryStatus ' + error.message);
             throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
         }else{
-            logger.info('updateInquiryStatus' + 'success');
+            logger.info('updateInquiryStatus ' + 'success');
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
@@ -131,10 +131,10 @@ const updateFeePrice = (req,res,next) => {
     params.status = systemConst.INQUIRY.status.enquiryPrice;
     inquiryDAO.updateFeePrice(params,(error,result)=>{
         if(error){
-            logger.error('updateFeePrice' + error.message);
+            logger.error('updateFeePrice ' + error.message);
             throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
         }else{
-            logger.info('updateFeePrice' + 'success');
+            logger.info('updateFeePrice ' + 'success');
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
@@ -145,10 +145,10 @@ const cancelInquiry = (req,res,next) => {
     params.myDate = new Date();
     inquiryDAO.cancelInquiry(params,(error,result)=>{
         if(error){
-            logger.error('cancelInquiry' + error.message);
+            logger.error('cancelInquiry ' + error.message);
             throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
         }else{
-            logger.info('cancelInquiry' + 'success');
+            logger.info('cancelInquiry ' + 'success');
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
@@ -159,10 +159,10 @@ const getUnConsultOrderCount = (req,res,next) => {
     params.status= systemConst.INQUIRY.status.enquiryPrice;
     inquiryDAO.getById(params,(error,rows)=>{
         if(error){
-            logger.error('cancelInquiry' + error.message);
+            logger.error('getUnConsultOrderCount ' + error.message);
             throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
         }else{
-            logger.info('cancelInquiry' + 'success');
+            logger.info('getUnConsultOrderCount  ' + 'success');
             resUtil.resetQueryRes(res,rows.length,null);
             return next();
         }

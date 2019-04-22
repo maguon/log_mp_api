@@ -11,10 +11,10 @@ const getInquiryBank = (req,res,next) => {
     let params = req.params;
     inquiryBankDAO.getInquiryBank(params,(error,result)=>{
         if(error){
-            logger.error('getInquiryBank' + error.message);
+            logger.error('getInquiryBank ' + error.message);
             resUtil.resInternalError(error,res,next);
         }else{
-            logger.info('getInquiryBank' + 'success');
+            logger.info('getInquiryBank ' + 'success');
             resUtil.resetQueryRes(res,result,null);
             return next();
         }
@@ -24,10 +24,10 @@ const addInquiryBank = (req,res,next) => {
     let params = req.params;
     inquiryBankDAO.addInquiryBank(params,(error,result)=>{
         if(error){
-            logger.error('addInquiryBank' + error.message);
+            logger.error('addInquiryBank ' + error.message);
             resUtil.resInternalError(error,res,next);
         }else{
-            logger.info('addInquiryBank' + 'success');
+            logger.info('addInquiryBank ' + 'success');
             resUtil.resetCreateRes(res,result,null);
             return next();
         }
@@ -38,10 +38,10 @@ const updateInquiryBank = (req,res,next) => {
     new Promise((resolve,reject)=>{
         inquiryBankDAO.updateInquiryBankStatus(params,(error,result)=>{
             if(error){
-                logger.error('updateInquiryBankStatus' + error.message);
+                logger.error('updateInquiryBank updateInquiryBankStatus ' + error.message);
                 reject();
             }else{
-                logger.info('updateInquiryBankStatus'+'修改成功');
+                logger.info('updateInquiryBank updateInquiryBankStatus '+'Modify the success!');
                 resolve();
             }
         })
@@ -49,10 +49,10 @@ const updateInquiryBank = (req,res,next) => {
         new Promise((resolve,reject)=>{
             inquiryBankDAO.updateInquiryBank(params,(error,result)=>{
                 if(error){
-                    logger.error('updateInquiryBank' + error.message);
+                    logger.error('updateInquiryBank ' + error.message);
                     reject();
                 }else{
-                    logger.info('updateInquiryBank' + 'success');
+                    logger.info('updateInquiryBank ' + 'success');
                     resUtil.resetUpdateRes(res,result,null);
                     return next();
                 }
@@ -66,10 +66,10 @@ const deleteUserBank = (req,res,next) => {
     let params = req.params;
     inquiryBankDAO.deleteById(params,(error,result)=>{
         if(error){
-            logger.error('deleteUserBank :' + error.message);
+            logger.error('deleteUserBank ' + error.message);
             resUtil.resInternalError(error,res,next);
         }else{
-            logger.info('deleteUserBank :' + 'success');
+            logger.info('deleteUserBank ' + 'success');
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }

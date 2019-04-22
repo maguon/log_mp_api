@@ -53,7 +53,7 @@ const unifiedOrder = (req,res,next) => {
                 logger.error(' createUnifiedOrder ' + error.message);
                 throw resUtil.resInternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
             }else{
-                logger.info('createUnifiedOrder' + 'success');
+                logger.info(' createUnifiedOrder ' + 'success');
                 resUtil.resetCreateRes(res,result,null);
                 return next();
             }

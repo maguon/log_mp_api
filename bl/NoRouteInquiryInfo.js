@@ -14,10 +14,10 @@ const addNoRouteInquiry =(req,res,next) => {
     params.dateId = moment().format("YYYYMMDD");
     noRouteInquiry.add(params,(error,result)=>{
         if(error){
-            logger.error('addNoRouteInquiry' + error.message);
+            logger.error('addNoRouteInquiry ' + error.message);
             resUtil.resInternalError(error,res,next);
         }else{
-            logger.info('addNoRouteInquiry' + 'success');
+            logger.info('addNoRouteInquiry ' + 'success');
             resUtil.resetCreateRes(res,result,null);
             return next();
         }

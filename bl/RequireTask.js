@@ -15,11 +15,11 @@ const addRequireTask = (req,res,next) => {
     new Promise((resolve,reject)=>{
         orderInfoDAO.updateById({status:sysConsts.ORDER.status.carsToBeArranged,orderId:params.orderId},(error,rows)=>{
             if(error){
-                logger.error('updateStatus' + error.message);
+                logger.error('addRequireTask updateById ' + error.message);
                 resUtil.resInternalError(error,res,next);
                 reject(error);
             }else{
-                logger.info('updateStatus' + 'success');
+                logger.info('addRequireTask updateById ' + 'success');
                 if (rows.changedRows > 0){
                     resolve();
                 }else {
@@ -31,11 +31,11 @@ const addRequireTask = (req,res,next) => {
         new Promise((resolve,reject)=>{
             orderInfoDAO.getById({orderId:params.orderId},(error,rows)=>{
                 if(error){
-                    logger.error('getOrderInfo' + error.message);
+                    logger.error('addRequireTask getById ' + error.message);
                     resUtil.resInternalError(error,res,next);
                     reject(error);
                 }else{
-                    logger.info('getOrderInfo' + 'success');
+                    logger.info('addRequireTask getById ' + 'success');
                     params.routeStart = rows[0].route_start;
                     params.routeStartId = rows[0].route_start_id;
                     params.routeEnd = rows[0].route_end;
@@ -48,10 +48,10 @@ const addRequireTask = (req,res,next) => {
             params.dateId = moment().format("YYYYMMDD");
             requireTask.add(params,(error,rows)=>{
                 if(error){
-                    logger.error('addRequireTask' + error.message);
+                    logger.error('addRequireTask add ' + error.message);
                     resUtil.resInternalError(error,res,next);
                 }else{
-                    logger.info('addRequireTask' + 'success');
+                    logger.info('addRequireTask add ' + 'success');
                     resUtil.resetCreateRes(res,rows,null);
                     return next;
                 }
@@ -63,10 +63,10 @@ const getRequireOrder = (req,res,next) => {
     let params = req.params;
     requireTask.getRequireOrder(params,(error,rows)=>{
         if(error){
-            logger.error('getRequireOrder' + error.message);
+            logger.error('getRequireOrder ' + error.message);
             resUtil.resInternalError(error,res,next);
         }else{
-            logger.info('getRequireOrder' + 'success');
+            logger.info('getRequireOrder ' + 'success');
             resUtil.resetQueryRes(res,rows,null);
             return next;
         }
@@ -79,11 +79,11 @@ const updateStatus = (req,res,next) => {
     new Promise((resolve,reject)=>{
         requireTask.updateById(params,(error,rows)=>{
             if(error){
-                logger.error('updateRequireStatus' + error.message);
+                logger.error('updateStatus updateById ' + error.message);
                 resUtil.resInternalError(error,res,next);
                 reject(error);
             }else{
-                logger.info('updateRequireStatus' + 'success');
+                logger.info('updateStatus updateById ' + 'success');
                 resolve();
             }
         })
@@ -91,11 +91,11 @@ const updateStatus = (req,res,next) => {
         new Promise((resolve,reject)=>{
             requireTask.getById(params,(error,rows)=>{
                 if(error){
-                    logger.error('getRequireTask' + error.message);
+                    logger.error('updateStatus getById ' + error.message);
                     resUtil.resInternalError(error,res,next);
                     reject(error);
                 }else{
-                    logger.info('getRequireTask' + 'success');
+                    logger.info('updateStatus getById ' + 'success');
                     if (rows.length > 0){
                         params.orderId = rows[0].order_id;
                         resolve();
@@ -120,21 +120,21 @@ const updateStatus = (req,res,next) => {
                     }
                     loadTaskDAO.getById(loadParams,(error,allRows)=>{
                         if(error){
-                            logger.error('getLoadTaskByOrderId' + error.message);
+                            logger.error('updateStatus getById ' + error.message);
                             resUtil.resInternalError(error,res,next);
                             reject(error);
                         }else{
-                            logger.info('getLoadTaskByOrderId' + 'success');
+                            logger.info('updateStatus getById ' + 'success');
                             if (allRows.length > 0){
                                 loadTaskCount = allRows.length;
                                 loadParams.loadTaskStatus = sysConsts.LOAD_TASK_STATUS.served;
                                 loadTaskDAO.getById(loadParams,(error,serRows)=>{
                                     if(error){
-                                        logger.error('getServedLoadTask' + error.message);
+                                        logger.error('updateStatus getById2 ' + error.message);
                                         resUtil.resInternalError(error,res,next);
                                         reject(error);
                                     }else{
-                                        logger.info('getServedLoadTask' + 'success');
+                                        logger.info('updateStatus getById2 ' + 'success');
                                         if (serRows.length > 0){
                                             serLoadTaskCount = serRows.length;
                                         }
@@ -145,6 +145,7 @@ const updateStatus = (req,res,next) => {
                                     }
                                 })
                             } else {
+                                logger.info('updateStatus getById ' + sysMsg.LOAD_TASK_NO_EXISTS);
                                 resUtil.resetFailedRes(res,sysMsg.LOAD_TASK_NO_EXISTS);
                             }
                         }
@@ -154,10 +155,10 @@ const updateStatus = (req,res,next) => {
             }).then(()=>{
                 orderInfoDAO.updateById(options,(error,rows)=>{
                     if(error){
-                        logger.error('updateOrderStatus' + error.message);
+                        logger.error('updateStatus updateById ' + error.message);
                         resUtil.resInternalError(error,res,next);
                     }else{
-                        logger.info('updateOrderStatus' + 'success');
+                        logger.info('updateStatus updateById ' + 'success');
                         resUtil.resetUpdateRes(res,rows,null);
                         return next;
                     }

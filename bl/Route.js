@@ -11,10 +11,10 @@ const addRoute = (req,res,next) =>{
     let params = req.params;
     routeDAO.addRoute(params,(error,result)=>{
         if(error){
-            logger.error('addRoute' + error.message);
+            logger.error('addRoute ' + error.message);
             throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
         }else{
-            logger.info('addRoute' + 'success');
+            logger.info('addRoute ' + 'success');
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
@@ -26,10 +26,10 @@ const queryRoute = (req,res,next) =>{
     let paramsNull = [];
     routeDAO.getRoute(params,(error,result)=>{
         if(error){
-            logger.error('addRoute' + error.message);
+            logger.error('queryRoute ' + error.message);
             throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
         }else{
-            logger.info('queryRoute' + 'success');
+            logger.info('queryRoute ' + 'success');
             resUtil.resetQueryRes(res,result,null);
             return next();
         }
@@ -44,10 +44,10 @@ const updateRoute = (req,res,next) => {
     }
     routeDAO.updateRoute(params,(error,result)=>{
         if(error){
-            logger.error('updateRoute' + error.message);
+            logger.error('updateRoute ' + error.message);
             throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
         }else{
-            logger.info('updateRoute' + 'success');
+            logger.info('updateRoute ' + 'success');
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }

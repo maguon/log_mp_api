@@ -15,10 +15,10 @@ const addByAdmin = (req,res,next)=>{
     params.dateId = moment().format("YYYYMMDD");
     orderInvoiceDAO.addOrderInvoiceApply(params,(error,result)=>{
         if (error){
-            logger.error('addOrderInvoiceApply:' + error.message);
+            logger.error('addByAdmin addOrderInvoiceApply ' + error.message);
             resUtil.resInternalError(error,res,next);
         } else {
-            logger.info('addOrderInvoiceApply:' + 'success');
+            logger.info('addByAdmin addOrderInvoiceApply ' + 'success');
             resUtil.resetCreateRes(res,result,null);
             return next();
         }
@@ -29,10 +29,10 @@ const updateInvoiceStatus = (req,res,next)=>{
     params.status = sysConsts.ORDER_INVOICE_APPLY.status.invoiced;
     orderInvoiceDAO.updateStatus(params,(error,rows)=>{
         if (error){
-            logger.error('updateInvoiceStatus:' + error.message);
+            logger.error('updateInvoiceStatus ' + error.message);
             resUtil.resInternalError(error,res,next);
         } else {
-            logger.info('updateInvoiceStatus:' + 'success');
+            logger.info('updateInvoiceStatus ' + 'success');
             resUtil.resetUpdateRes(res,rows,null);
             return next();
         }
@@ -44,11 +44,11 @@ const replaceOrderId =(req,res,next)=>{
     new Promise((resolve,reject)=>{
         orderInfoDAO.getById({orderId:orderId},(error,rows)=>{
             if (error){
-                logger.error('getOrderById:' + error.message);
+                logger.error('replaceOrderId getById ' + error.message);
                 resUtil.resInternalError(error,res,next);
                 reject(error);
             } else {
-                logger.info('getOrderById:' + 'success');
+                logger.info('replaceOrderId getById ' + 'success');
                 if (rows.length > 0){
                     resolve();
                 } else {
@@ -61,11 +61,11 @@ const replaceOrderId =(req,res,next)=>{
         new Promise((resolve,reject)=>{
             orderInvoiceDAO.getByOrderId({orderId:orderId},(error,rows)=>{
                 if (error){
-                    logger.error('getInvoiceByOrderId:' + error.message);
+                    logger.error('replaceOrderId getByOrderId ' + error.message);
                     resUtil.resInternalError(error,res,next);
                     reject(error);
                 } else {
-                    logger.info('getInvoiceByOrderId:' + 'success');
+                    logger.info('replaceOrderId getByOrderId ' + 'success');
                     if (rows.length > 0){
                         resUtil.resetFailedRes(res,sysMsg.ADMIN_ORDER_INVOICE_ONLYONE);
                     } else {
@@ -79,11 +79,11 @@ const replaceOrderId =(req,res,next)=>{
                 params.orderId = 0;
                 orderInvoiceDAO.updateOrderId(params,(error,rows)=>{
                     if (error){
-                        logger.error('updateInvoiceOrder:' + error.message);
+                        logger.error('replaceOrderId updateOrderId ' + error.message);
                         resUtil.resInternalError(error,res,next);
                         reject(error);
                     } else {
-                        logger.info('updateInvoiceOrder:' + 'success');
+                        logger.info('replaceOrderId updateOrderId ' + 'success');
                         resolve();
                     }
                 });
@@ -91,10 +91,10 @@ const replaceOrderId =(req,res,next)=>{
                 params.orderId = orderId;
                 orderInvoiceDAO.updateOrderId(params,(error,rows)=>{
                     if (error){
-                        logger.error('updateInvoiceOrder:' + error.message);
+                        logger.error('replaceOrderId updateOrderId2 ' + error.message);
                         resUtil.resInternalError(error,res,next);
                     } else {
-                        logger.info('updateInvoiceOrder:' + 'success');
+                        logger.info('replaceOrderId updateOrderId2 ' + 'success');
                         resUtil.resetUpdateRes(res,rows,null);
                         return next();
                     }
@@ -108,10 +108,10 @@ const updateInvoiceApplyMsg = (req,res,next)=>{
     let params = req.params;
     orderInvoiceDAO.updateById(params,(error,rows)=>{
         if (error){
-            logger.error('updateInvoiceApplyMsg:' + error.message);
+            logger.error('updateInvoiceApplyMsg ' + error.message);
             resUtil.resInternalError(error,res,next);
         } else {
-            logger.info('updateInvoiceApplyMsg:' + 'success');
+            logger.info('updateInvoiceApplyMsg ' + 'success');
             resUtil.resetUpdateRes(res,rows,null);
             return next();
         }
@@ -122,10 +122,10 @@ const getNoInvoiceOrderList = (req,res,next)=>{
     params.orderStatus = sysConsts.ORDER.status.completed;
     orderInvoiceDAO.getOrderInvoice(params,(error,rows)=>{
         if (error){
-            logger.error('getNoInvoiceOrderList:' + error.message);
+            logger.error('getNoInvoiceOrderList ' + error.message);
             resUtil.resInternalError(error,res,next);
         } else {
-            logger.info('getNoInvoiceOrderList:' + 'success');
+            logger.info('getNoInvoiceOrderList ' + 'success');
             resUtil.resetQueryRes(res,rows,null);
             return next();
         }
@@ -136,10 +136,10 @@ const getInvoicedOrderList = (req,res,next)=>{
     params.isApply = true;
     orderInvoiceDAO.getOrderInvoice(params,(error,rows)=>{
         if (error){
-            logger.error('getInvoicedOrderList:' + error.message);
+            logger.error('getInvoicedOrderList ' + error.message);
             resUtil.resInternalError(error,res,next);
         } else {
-            logger.info('getInvoicedOrderList:' + 'success');
+            logger.info('getInvoicedOrderList ' + 'success');
             resUtil.resetQueryRes(res,rows,null);
             return next();
         }
@@ -151,10 +151,11 @@ const delInvoiceApply = (req,res,next)=>{
     new Promise((resolve,reject)=>{
         orderInvoiceDAO.getById(params,(error,rows)=>{
             if (error){
-                logger.error('getInvoiceApplyById:' + error.message);
+                logger.error('delInvoiceApply getById ' + error.message);
                 resUtil.resInternalError(error,res,next);
                 reject(error);
             } else {
+                logger.info('delInvoiceApply getById ' + 'success');
                 status = rows[0].status;
                 if (status == sysConsts.ORDER_INVOICE_APPLY.status.invoiced){
                     resUtil.resetFailedRes(res,sysMsg.ADMIN_ORDER_INVOICE_APPLY_REVOKE);
@@ -167,10 +168,10 @@ const delInvoiceApply = (req,res,next)=>{
     }).then(()=>{
         orderInvoiceDAO.deleteRevokeInvoice(params,(error,result)=>{
             if (error){
-                logger.error('deleteRevokeInvoice:' + error.message);
+                logger.error('delInvoiceApply deleteRevokeInvoice ' + error.message);
                 resUtil.resInternalError(error,res,next);
             } else {
-                logger.info('deleteRevokeInvoice:' + 'success');
+                logger.info('delInvoiceApply deleteRevokeInvoice ' + 'success');
                 resUtil.resetUpdateRes(res,result,null);
                 return next();
             }
@@ -182,10 +183,10 @@ const updateRefuseStatus = (req,res,next)=>{
     params.status = sysConsts.ORDER_INVOICE_APPLY.status.refuse;
     orderInvoiceDAO.updateStatus(params,(error,rows)=>{
         if (error){
-            logger.error('updateInvoiceStatus:' + error.message);
+            logger.error('updateRefuseStatus updateStatus ' + error.message);
             resUtil.resInternalError(error,res,next);
         } else {
-            logger.info('updateInvoiceStatus:' + 'success');
+            logger.info('updateRefuseStatus updateStatus ' + 'success');
             resUtil.resetUpdateRes(res,rows,null);
             return next();
         }
@@ -197,10 +198,10 @@ const addByUser = (req,res,next)=>{
     params.dateId = moment().format("YYYYMMDD");
     orderInvoiceDAO.addOrderInvoiceApply(params,(error,result)=>{
         if (error){
-            logger.error('addOrderInvoiceApply:' + error.message);
+            logger.error('addByUser addOrderInvoiceApply ' + error.message);
             resUtil.resInternalError(error,res,next);
         } else {
-            logger.info('addOrderInvoiceApply:' + 'success');
+            logger.info('addByUser addOrderInvoiceApply ' + 'success');
             resUtil.resetCreateRes(res,result,null);
             return next();
         }
@@ -211,10 +212,10 @@ const statisticsInvoice = (req,res,next)=>{
     params.dbMonth = moment().format("YYYYMM");
     orderInvoiceDAO.getStatisticsInvoice(params,(error,result)=>{
         if (error){
-            logger.error('statisticsInvoice:' + error.message);
+            logger.error('statisticsInvoice ' + error.message);
             resUtil.resInternalError(error,res,next);
         } else {
-            logger.info('statisticsInvoice:' + 'success');
+            logger.info('statisticsInvoice ' + 'success');
             resUtil.resetQueryRes(res,result,null);
             return next();
         }
@@ -224,10 +225,10 @@ const statisticsOrder = (req,res,next)=>{
     let params = req.params;
     orderInvoiceDAO.getStatisticsOrder(params,(error,result)=>{
         if (error){
-            logger.error('statisticsOrder:' + error.message);
+            logger.error('statisticsOrder ' + error.message);
             resUtil.resInternalError(error,res,next);
         } else {
-            logger.info('statisticsOrder:' + 'success');
+            logger.info('statisticsOrder ' + 'success');
             resUtil.resetQueryRes(res,result,null);
             return next();
         }

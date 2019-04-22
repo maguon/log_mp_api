@@ -12,10 +12,10 @@ const getInquiryInvoice = (req,res,next) => {
     let params = req.params;
     inquiryInvoiceDAO.getInquiryInvoice(params,(error,result)=>{
         if(error){
-            logger.error('getInquiryInvoice' + error.message);
+            logger.error('getInquiryInvoice ' + error.message);
             resUtil.resInternalError(error,res,next);
         }else{
-            logger.info('getInquiryInvoice' + 'success');
+            logger.info('getInquiryInvoice ' + 'success');
             resUtil.resetQueryRes(res,result,null);
             return next();
         }
@@ -27,20 +27,20 @@ const addInquiryInvoice = (req,res,next) => {
         params.status = sysConsts.USER_INVOICE.status.normal;
         inquiryInvoiceDAO.updateInquiryInvoiceStatusByUserId(params,(error,result)=>{
             if(error){
-                logger.error('updateInquiryInvoiceStatusByUserId' + error.message);
+                logger.error('addInquiryInvoice updateInquiryInvoiceStatusByUserId ' + error.message);
                 reject(error);
             }else{
-                logger.info('updateInquiryInvoiceStatusByUserId'+'success');
+                logger.info('addInquiryInvoice updateInquiryInvoiceStatusByUserId '+'success');
                 resolve();
             }
         })
     }).then(()=>{
         inquiryInvoiceDAO.addInquiryInvoice(params,(error,result)=>{
             if(error){
-                logger.error('addInquiryInvoice' + error.message);
+                logger.error('addInquiryInvoice ' + error.message);
                 resUtil.resInternalError(error,res,next);
             }else{
-                logger.info('addInquiryInvoice' + 'success');
+                logger.info('addInquiryInvoice ' + 'success');
                 resUtil.resetCreateRes(res,result,null);
                 return next();
             }
@@ -53,10 +53,10 @@ const updateInquiryInvoiceStatus = (req,res,next) => {
         params.status = sysConsts.USER_INVOICE.status.normal;
         inquiryInvoiceDAO.updateInquiryInvoiceStatusByUserId(params,(error,result)=>{
             if(error){
-                logger.error('updateInquiryInvoiceStatusByUserId' + error.message);
+                logger.error('updateInquiryInvoiceStatus updateInquiryInvoiceStatusByUserId ' + error.message);
                 reject(error);
             }else{
-                logger.info('updateInquiryInvoiceStatusByUserId'+'success');
+                logger.info('updateInquiryInvoiceStatus updateInquiryInvoiceStatusByUserId '+'success');
                 resolve();
             }
         })
@@ -65,10 +65,10 @@ const updateInquiryInvoiceStatus = (req,res,next) => {
             params.status = sysConsts.USER_INVOICE.status.default;
             inquiryInvoiceDAO.updateInquiryInvoiceStatus(params,(error,result)=>{
                 if(error){
-                    logger.error('updateInquiryInvoiceStatus' + error.message);
+                    logger.error('updateInquiryInvoiceStatus ' + error.message);
                     reject(error);
                 }else{
-                    logger.info('updateInquiryInvoiceStatus' + 'success');
+                    logger.info('updateInquiryInvoiceStatus ' + 'success');
                     resUtil.resetUpdateRes(res,result,null);
                     return next();
                 }
@@ -82,10 +82,10 @@ const deleteUserInvoice = (req,res,next) => {
     let params = req.params;
     inquiryInvoiceDAO.deleteById(params,(error,result)=>{
         if(error){
-            logger.error('deleteUserInvoice' + error.message);
+            logger.error('deleteUserInvoice ' + error.message);
             resUtil.resInternalError(error,res,next);
         }else{
-            logger.info('deleteUserInvoice' + 'success');
+            logger.info('deleteUserInvoice ' + 'success');
             resUtil.resetQueryRes(res,result,null);
             return next();
         }
@@ -95,10 +95,10 @@ const updateUserInvoice = (req,res,next) => {
     let params = req.params;
     inquiryInvoiceDAO.updateById(params,(error,result)=>{
         if(error){
-            logger.error('updateUserInvoice' + error.message);
+            logger.error('updateUserInvoice ' + error.message);
             resUtil.resInternalError(error,res,next);
         }else{
-            logger.info('updateUserInvoice'+'success');
+            logger.info('updateUserInvoice '+'success');
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }

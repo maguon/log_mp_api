@@ -17,13 +17,13 @@ const sendUserSms=(req,res,next)=>{
     new Promise((resolve,reject)=>{
         userDAO.queryUser({phone:params.phone},(error,rows)=>{
             if(error){
-                logger.error(' queryUser ' + error.message);
+                logger.error('sendUserSms queryUser ' + error.message);
                 reject(error);
             }else if(rows && rows.length > 0){
-                logger.warn('queryUser'+'手机已经被绑定');
+                logger.warn('sendUserSms queryUser '+'The phone is already tied!');
                 resUtil.resetFailedRes(res,'手机已经被绑定',null);
             }else{
-                logger.info('queryUser'+'success');
+                logger.info('sendUserSms queryUser '+'success');
                 resolve();
             }
         })
@@ -31,10 +31,10 @@ const sendUserSms=(req,res,next)=>{
         new Promise((resolve,reject)=>{
             oauthUtil.saveUserPhoneCode({phone:params.phone,code:captcha},(error,result)=>{
                 if(error){
-                    logger.error(' saveUserPhoneCode ' + error.message);
+                    logger.error('sendUserSms saveUserPhoneCode ' + error.message);
                     reject(error);
                 }else{
-                    logger.info('saveUserPhoneCode' + 'success');
+                    logger.info('sendUserSms saveUserPhoneCode ' + 'success');
                     resolve();
                 }
             })
@@ -44,10 +44,10 @@ const sendUserSms=(req,res,next)=>{
                 params.userType = 1;
                 oauthUtil.sendCaptcha(params,(error,result)=>{
                     if(error){
-                        logger.error(' sendCaptcha ' + error.message);
+                        logger.error('sendUserSms sendCaptcha ' + error.message);
                         reject(error);
                     }else{
-                        logger.info('sendCaptcha' + 'success');
+                        logger.info('sendUserSms sendCaptcha ' + 'success');
                         resUtil.resetQueryRes(res,{success:true},null);
                         return next();
                     }

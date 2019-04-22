@@ -11,10 +11,10 @@ const addUserDeviceInfo = (req,res,next)=>{
     let params = req.params;
     userDeviceInfoDAO.add(params,(error,result)=>{
         if(error){
-            logger.error('addUserDeviceInfo' + error.message);
+            logger.error('addUserDeviceInfo ' + error.message);
             resUtil.resetFailedRes(error,res,next);
         }else{
-            logger.info('addUserDeviceInfo' + 'success');
+            logger.info('addUserDeviceInfo ' + 'success');
             resUtil.resetCreateRes(res,result,null);
             return next();
         }

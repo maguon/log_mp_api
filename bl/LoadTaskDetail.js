@@ -27,11 +27,11 @@ const addLoadTaskDetail = (req,res,next) => {
         new Promise((resolve,reject)=>{
             loadTaskDAO.getById({loadTaskId:params.loadTaskId},(error,rows)=>{
                 if(error){
-                    logger.error('getLoadTask' + error.message);
+                    logger.error('addLoadTaskDetail getById ' + error.message);
                     resUtil.resInternalError(error,res,next);
                     reject(error);
                 }else{
-                    logger.info('getLoadTask' + 'success');
+                    logger.info('addLoadTaskDetail getById ' + 'success');
                     if (rows.length >0){
                         params.requireId = rows[0].require_id;
                         params.orderId = rows[0].order_id;
@@ -47,11 +47,11 @@ const addLoadTaskDetail = (req,res,next) => {
             new Promise((resolve,reject)=>{
                 orderItemDAO.getOrderCar({orderItemId:params.orderItemId},(error,rows)=>{
                     if(error){
-                        logger.error('getOrderItem' + error.message);
+                        logger.error('addLoadTaskDetail getOrderCar ' + error.message);
                         resUtil.resInternalError(error,res,next);
                         reject(error);
                     }else{
-                        logger.info('getOrderItem' + 'success');
+                        logger.info('addLoadTaskDetail getOrderCar ' + 'success');
                         if (rows.length >0){
                             resolve();
                         } else {
@@ -64,11 +64,11 @@ const addLoadTaskDetail = (req,res,next) => {
                     params.dateId = moment().format("YYYYMMDD");
                     loadTaskDetailDAO.add(params,(error,rows)=>{
                         if(error){
-                            logger.error('addLoadTaskDetail' + error.message);
+                            logger.error('addLoadTaskDetail add ' + error.message);
                             resUtil.resInternalError(error,res,next);
                             reject(error);
                         }else{
-                            logger.info('addLoadTaskDetail' + 'success');
+                            logger.info('addLoadTaskDetail add ' + 'success');
                             detailId = rows;
                             resolve();
                         }
@@ -77,11 +77,11 @@ const addLoadTaskDetail = (req,res,next) => {
                     new Promise((resolve,reject)=>{
                         loadTaskDetailDAO.getTotalPrice({loadTaskId:params.loadTaskId},(error,rows)=>{
                             if(error){
-                                logger.error('getTotalPrice' + error.message);
+                                logger.error('addLoadTaskDetail getTotalPrice ' + error.message);
                                 resUtil.resInternalError(error,res,next);
                                 reject(error);
                             }else{
-                                logger.info('getTotalPrice' + 'success');
+                                logger.info('addLoadTaskDetail getTotalPrice ' + 'success');
                                 carNum = rows[0].total_car_num;
                                 supplierTransPrice = rows[0].total_supplier_trans_price;
                                 supplierInsurePrice = rows[0].total_supplier_insure_price;
@@ -98,11 +98,11 @@ const addLoadTaskDetail = (req,res,next) => {
                             }
                             loadTaskDAO.updateById(options,(error,rows)=>{
                                 if(error){
-                                    logger.error('updateLoadTaskCarNum' + error.message);
+                                    logger.error('addLoadTaskDetail updateById ' + error.message);
                                     resUtil.resInternalError(error,res,next);
                                     reject(error);
                                 }else{
-                                    logger.info('updateLoadTaskCarNum' + 'success');
+                                    logger.info('addLoadTaskDetail updateById ' + 'success');
                                     resolve();
                                 }
                             })
@@ -110,11 +110,11 @@ const addLoadTaskDetail = (req,res,next) => {
                             new Promise((resolve,reject)=>{
                                 loadTaskDAO.getHasLoadCarCount({requireId:params.requireId},(error,rows)=>{
                                     if(error){
-                                        logger.error('getHasLoadCarCount' + error.message);
+                                        logger.error('addLoadTaskDetail getHasLoadCarCount ' + error.message);
                                         resUtil.resInternalError(error,res,next);
                                         reject(error);
                                     }else{
-                                        logger.info('getHasLoadCarCount' + 'success');
+                                        logger.info('addLoadTaskDetail getHasLoadCarCount ' + 'success');
                                         params.loadCarNum = rows[0].total_car_count;
                                         resolve();
                                     }
@@ -122,10 +122,10 @@ const addLoadTaskDetail = (req,res,next) => {
                             }).then(()=>{
                                 requireTaskDAO.updateById({requireId:params.requireId,loadCarNum:params.loadCarNum},(error,rows)=>{
                                     if(error){
-                                        logger.error('updateRequireLoadCarNum' + error.message);
+                                        logger.error('addLoadTaskDetail updateById ' + error.message);
                                         resUtil.resInternalError(error,res,next);
                                     }else{
-                                        logger.info('updateRequireLoadCarNum' + 'success');
+                                        logger.info('addLoadTaskDetail updateById ' + 'success');
                                         resUtil.resetCreateRes(res,detailId,null);
                                         return next;
                                     }
@@ -142,10 +142,10 @@ const getArrangeLoadTaskDetail = (req,res,next) => {
     let params = req.params;
     loadTaskDetailDAO.getArrangeLoadTaskDetail(params,(error,rows)=>{
         if(error){
-            logger.error('getArrangeLoadTaskDetail' + error.message);
+            logger.error('getArrangeLoadTaskDetail ' + error.message);
             resUtil.resInternalError(error,res,next);
         }else{
-            logger.info('getArrangeLoadTaskDetail' + 'success');
+            logger.info('getArrangeLoadTaskDetail ' + 'success');
             resUtil.resetQueryRes(res,rows,null);
             return next;
         }
@@ -162,11 +162,11 @@ const updateLoadTaskDetail = (req,res,next) => {
         new Promise((resolve,reject)=>{
             loadTaskDetailDAO.updateById(params,(error,rows)=>{
                 if(error){
-                    logger.error('updateLoadTaskDetail' + error.message);
+                    logger.error('updateLoadTaskDetail updateById ' + error.message);
                     resUtil.resInternalError(error,res,next);
                     reject(error);
                 }else{
-                    logger.info('updateLoadTaskDetail' + 'success');
+                    logger.info('updateLoadTaskDetail updateById ' + 'success');
                     updateResult = rows;
                     resolve();
                 }
@@ -175,11 +175,11 @@ const updateLoadTaskDetail = (req,res,next) => {
             new Promise((resolve,reject)=>{
                 loadTaskDetailDAO.getTotalPrice({loadTaskId:params.loadTaskId},(error,rows)=>{
                     if(error){
-                        logger.error('getTotalPrice' + error.message);
+                        logger.error('updateLoadTaskDetail getTotalPrice ' + error.message);
                         resUtil.resInternalError(error,res,next);
                         reject(error);
                     }else{
-                        logger.info('getTotalPrice' + 'success');
+                        logger.info('updateLoadTaskDetail getTotalPrice ' + 'success');
                         params.carNum = rows[0].total_car_num;
                         params.supplierTransPrice = rows[0].total_supplier_trans_price;
                         params.supplierInsurePrice = rows[0].total_supplier_insure_price;
@@ -189,10 +189,10 @@ const updateLoadTaskDetail = (req,res,next) => {
             }).then(()=>{
                 loadTaskDAO.updateById(params,(error,rows)=>{
                     if(error){
-                        logger.error('updateLoadTaskCarNum' + error.message);
+                        logger.error('updateLoadTaskDetail updateById ' + error.message);
                         resUtil.resInternalError(error,res,next);
                     }else{
-                        logger.info('updateLoadTaskCarNum' + 'success');
+                        logger.info('updateLoadTaskDetail updateById ' + 'success');
                         resUtil.resetUpdateRes(res,updateResult,null);
                         return next;
                     }
@@ -208,11 +208,11 @@ const deleteLoadTaskDetail = (req,res,next) => {
     new Promise((resolve,reject)=>{
         loadTaskDetailDAO.getById(params,(error,rows)=>{
             if(error){
-                logger.error('getLoadTaskDetail' + error.message);
+                logger.error('deleteLoadTaskDetail getById ' + error.message);
                 resUtil.resInternalError(error,res,next);
                 reject(error);
             }else{
-                logger.info('getLoadTaskDetail' + 'success');
+                logger.info('deleteLoadTaskDetail getById ' + 'success');
                 if (rows.length > 0 ){
                     if (rows[0].hook_id == 0){
                         params.requireId = rows[0].require_id;
@@ -230,11 +230,11 @@ const deleteLoadTaskDetail = (req,res,next) => {
         new Promise((resolve,reject)=>{
             loadTaskDetailDAO.deleteById(params,(error,rows)=>{
                 if(error){
-                    logger.error('deleteLoadTaskDetail' + error.message);
+                    logger.error('deleteLoadTaskDetail deleteById ' + error.message);
                     resUtil.resInternalError(error,res,next);
                     reject(error);
                 }else{
-                    logger.info('deleteLoadTaskDetail' + 'success');
+                    logger.info('deleteLoadTaskDetail deleteById ' + 'success');
                     resolve();
                 }
             })
@@ -242,11 +242,11 @@ const deleteLoadTaskDetail = (req,res,next) => {
             new Promise((resolve,reject)=>{
                 loadTaskDetailDAO.getTotalPrice({loadTaskId:params.loadTaskId},(error,rows)=>{
                     if(error){
-                        logger.error('getTotalPrice' + error.message);
+                        logger.error('deleteLoadTaskDetail getTotalPrice ' + error.message);
                         resUtil.resInternalError(error,res,next);
                         reject(error);
                     }else{
-                        logger.info('getTotalPrice' + 'success');
+                        logger.info('deleteLoadTaskDetail getTotalPrice ' + 'success');
                         params.carNum = rows[0].total_car_num;
                         params.supplierTransPrice = rows[0].total_supplier_trans_price;
                         params.supplierInsurePrice = rows[0].total_supplier_insure_price;
@@ -257,11 +257,11 @@ const deleteLoadTaskDetail = (req,res,next) => {
                 new Promise((resolve,reject)=>{
                     loadTaskDAO.updateById(params,(error,rows)=>{
                         if(error){
-                            logger.error('updateLoadTaskCarNum' + error.message);
+                            logger.error('deleteLoadTaskDetail updateById ' + error.message);
                             resUtil.resInternalError(error,res,next);
                             reject(error);
                         }else{
-                            logger.info('updateLoadTaskCarNum' + 'success');
+                            logger.info('deleteLoadTaskDetail updateById ' + 'success');
                             resolve();
                         }
                     })
@@ -269,11 +269,11 @@ const deleteLoadTaskDetail = (req,res,next) => {
                     new Promise((resolve,reject)=>{
                         loadTaskDAO.getHasLoadCarCount({requireId:params.requireId},(error,rows)=>{
                             if(error){
-                                logger.error('getHasLoadCarCount' + error.message);
+                                logger.error('deleteLoadTaskDetail getHasLoadCarCount ' + error.message);
                                 resUtil.resInternalError(error,res,next);
                                 reject(error);
                             }else{
-                                logger.info('getHasLoadCarCount' + 'success');
+                                logger.info('deleteLoadTaskDetail getHasLoadCarCount ' + 'success');
                                 params.loadCarNum = rows[0].total_car_count;
                                 resolve();
                             }
@@ -281,10 +281,10 @@ const deleteLoadTaskDetail = (req,res,next) => {
                     }).then(()=>{
                         requireTaskDAO.updateById({requireId:params.requireId,loadCarNum:params.loadCarNum},(error,rows)=>{
                             if(error){
-                                logger.error('updateRequireLoadCarNum' + error.message);
+                                logger.error('deleteLoadTaskDetail updateById ' + error.message);
                                 resUtil.resInternalError(error,res,next);
                             }else{
-                                logger.info('updateRequireLoadCarNum' + 'success');
+                                logger.info('deleteLoadTaskDetail updateById ' + 'success');
                                 resUtil.resetUpdateRes(res,rows,null);
                                 return next;
                             }
@@ -300,11 +300,11 @@ const getLoadTaskDetail = (req,res,next) => {
     new Promise((resolve,reject)=>{
         loadTaskDAO.getById(params,(error,rows)=>{
             if(error){
-                logger.error('getLoadTask' + error.message);
+                logger.error('getLoadTaskDetail getById ' + error.message);
                 resUtil.resInternalError(error,res,next);
                 reject(error);
             }else{
-                logger.info('getLoadTask' + 'success');
+                logger.info('getLoadTaskDetail getById ' + 'success');
                 if (rows.length > 0 ){
                     params.supplierId = rows[0].supplier_id;
                     resolve();
@@ -318,11 +318,11 @@ const getLoadTaskDetail = (req,res,next) => {
         new Promise((resolve,reject)=>{
             supplierInfo.querySupplier({supplierId:params.supplierId},(error,rows)=>{
                 if(error){
-                    logger.error('getSupplierInfo' + error.message);
+                    logger.error('getLoadTaskDetail querySupplier ' + error.message);
                     resUtil.resInternalError(error,res,next);
                     reject(error);
                 }else{
-                    logger.info('getSupplierInfo' + 'success');
+                    logger.info('getLoadTaskDetail querySupplier ' + 'success');
                     if (rows.length > 0){
                         params.appUrl = hostPort(rows[0].app_url);
                         resolve();
@@ -338,10 +338,10 @@ const getLoadTaskDetail = (req,res,next) => {
             }
             exRouteRequireDAO.getRouteLoadTaskDetail(options,(error,result)=>{
                 if(error){
-                    logger.error(' getRouteLoadTaskDetail ' + error.message);
+                    logger.error('getLoadTaskDetail getRouteLoadTaskDetail ' + error.message);
                     resUtil.resInternalError(error,res,next);
                 }else{
-                    logger.info('getRouteLoadTaskDetail' + 'success');
+                    logger.info('getLoadTaskDetail getRouteLoadTaskDetail ' + 'success');
                     if (result.success){
                         resUtil.resetQueryRes(res,result.result,null);
                         return next;

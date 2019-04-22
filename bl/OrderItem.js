@@ -19,13 +19,13 @@ const addOrderCar = (req,res,next) => {
     new Promise((resolve,reject)=>{
         orderItemDAO.addOrderCar(params,(error,result)=>{
             if(error){
-                logger.error('addOrderCar' + error.message);
+                logger.error('addOrderCar ' + error.message);
                 reject(error);
             }else if(result && result.insertId < 1){
-                logger.warn('addOrderCar'+'添加订单详情失败');
+                logger.warn('addOrderCar '+'Failed to add order details!');
                 resUtil.resetFailedRes(res,'添加订单详情失败',null);
             }else{
-                logger.info('addOrderCar' + 'success');
+                logger.info('addOrderCar ' + 'success');
                 orderItemId = result.insertId;
                 resolve();
             }
@@ -34,10 +34,10 @@ const addOrderCar = (req,res,next) => {
         new Promise((resolve,reject)=>{
             orderItemDAO.getPriceSum({orderId:params.orderId},(error,rows)=>{
                 if(error){
-                    logger.error('getPriceSum' + error.message);
+                    logger.error('addOrderCar getPriceSum ' + error.message);
                     reject(error);
                 }else{
-                    logger.info('getPriceSum' + 'success');
+                    logger.info('addOrderCar getPriceSum ' + 'success');
                     params.oraTransPrice = rows[0].sum_ora_trans_price;
                     params.oraInsurePrice = rows[0].sum_ora_insure_price;
                     params.totalTransPrice = rows[0].sum_act_trans_price;
@@ -49,10 +49,10 @@ const addOrderCar = (req,res,next) => {
         }).then(()=>{
             orderDAO.updatePrice(params,(error,result)=>{
                 if(error) {
-                    logger.error('updatePrice' + error.message);
+                    logger.error('addOrderCar updatePrice ' + error.message);
                     resUtil.resInternalError(error,res,next);
                 }else{
-                    logger.info('updatePrice' + 'success');
+                    logger.info('addOrderCar updatePrice ' + 'success');
                     let result_id = [{
                         orderItemId
                     }]
@@ -69,10 +69,10 @@ const getOrderCar = (req,res,next) => {
     let params = req.params;
     orderItemDAO.getOrderCar(params,(error,result)=>{
         if(error){
-            logger.error('getOrderCar' + error.message);
+            logger.error('getOrderCar ' + error.message);
             resUtil.resInternalError(error,res,next);
         }else{
-            logger.info('getOrderCar' + 'success');
+            logger.info('getOrderCar ' + 'success');
             resUtil.resetQueryRes(res,result,null);
             return next();
         }
@@ -94,10 +94,10 @@ const delOrderCar = (req,res,next) => {
         //查询订单下的车辆信息
         orderItemDAO.getOrderCar({orderItemId:params.orderItemId},(error,rows)=>{
             if(error){
-                logger.error('getOrderCar' + error.message);
+                logger.error('delOrderCar getOrderCar ' + error.message);
                 reject(error);
             }else{
-                logger.info('getOrderCar' + 'success');
+                logger.info('delOrderCar getOrderCar ' + 'success');
                 params.orderId = rows[0].order_id;
                 resolve();
             }
@@ -108,11 +108,11 @@ const delOrderCar = (req,res,next) => {
         new Promise((resolve,reject)=>{
             orderItemDAO.delOrderCar(params,(error,result)=>{
                 if(error){
-                    logger.error('delOrderCar' + error.message);
+                    logger.error('delOrderCar ' + error.message);
                     resUtil.resInternalError(error,res,next);
                     reject(error);
                 }else{
-                    logger.info('delOrderCar' + 'success');
+                    logger.info('delOrderCar ' + 'success');
                     resolve();
                     resUtil.resetUpdateRes(res,result,null);
                     //return next();
@@ -122,10 +122,10 @@ const delOrderCar = (req,res,next) => {
             new Promise((resolve,reject)=>{
                 orderItemDAO.getPriceSum({orderId:params.orderId},(error,rows)=>{
                     if(error){
-                        logger.error('getPriceSum' + error.message);
+                        logger.error('delOrderCar getPriceSum ' + error.message);
                         reject(error);
                     }else{
-                        logger.info('getPriceSum' + 'success');
+                        logger.info('delOrderCar getPriceSum ' + 'success');
                         params.oraTransPrice = rows[0].sum_ora_trans_price;
                         params.oraInsurePrice = rows[0].sum_ora_insure_price;
                         params.totalTransPrice = rows[0].sum_act_trans_price;
@@ -137,10 +137,10 @@ const delOrderCar = (req,res,next) => {
             }).then(()=>{
                 orderDAO.updatePrice(params,(error,result)=>{
                     if(error) {
-                        logger.error('updatePrice' + error.message);
+                        logger.error('delOrderCar updatePrice ' + error.message);
                         resUtil.resInternalError(error,res,next);
                     }else{
-                        logger.info('updatePrice' + 'success');
+                        logger.info('delOrderCar updatePrice ' + 'success');
                         let result_id = [{
                             orderItemId
                         }]
@@ -164,13 +164,13 @@ const addOrderCarAdmin = (req,res,next) => {
     new Promise((resolve,reject)=>{
         orderItemDAO.addOrderCarAdmin(params,(error,result)=>{
             if(error){
-                logger.error('addOrderCarAdmin' + error.message);
+                logger.error('addOrderCarAdmin ' + error.message);
                 reject(error);
             }else if(result && result.insertId < 1){
-                logger.warn('getOrder'+'插入订单详情失败');
+                logger.warn('addOrderCarAdmin '+'Insert order details failed!');
                 resUtil.resetFailedRes(res,'插入订单详情失败',null);
             }else{
-                logger.info('addOrderCarAdmin' + 'success');
+                logger.info('addOrderCarAdmin ' + 'success');
                 orderItemId = result.insertId;
                 resolve();
             }
@@ -179,10 +179,10 @@ const addOrderCarAdmin = (req,res,next) => {
         new Promise((resolve,reject)=>{
             orderItemDAO.getPriceSum({orderId:params.orderId},(error,rows)=>{
                 if(error){
-                    logger.error('getPriceSum' + error.message);
+                    logger.error('addOrderCarAdmin getPriceSum ' + error.message);
                     reject(error);
                 }else{
-                    logger.info('getPriceSum' + 'success');
+                    logger.info('addOrderCarAdmin getPriceSum ' + 'success');
                     params.oraTransPrice = rows[0].sum_ora_trans_price;
                     params.oraInsurePrice = rows[0].sum_ora_insure_price;
                     params.totalTransPrice = rows[0].sum_act_trans_price;
@@ -194,10 +194,10 @@ const addOrderCarAdmin = (req,res,next) => {
         }).then(()=>{
             orderDAO.updatePrice(params,(error,result)=>{
                 if(error) {
-                    logger.error('updatePrice' + error.message);
+                    logger.error('addOrderCarAdmin updatePrice ' + error.message);
                     resUtil.resInternalError(error,res,next);
                 }else{
-                    logger.info('updatePrice' + 'success');
+                    logger.info('addOrderCarAdmin updatePrice ' + 'success');
                     let result_id = [{
                         orderItemId
                     }]
@@ -215,10 +215,10 @@ const updateActFee = (req,res,next) => {
     new Promise((resolve,reject)=>{
         orderItemDAO.updateActFee(params,(error,result)=>{
             if(error){
-                logger.error('updateActFee' + error.message);
+                logger.error('updateActFee ' + error.message);
                 reject(error);
             }else{
-                logger.info('updateActFee' + 'success');
+                logger.info('updateActFee ' + 'success');
                 resolve();
             }
         })
@@ -226,10 +226,10 @@ const updateActFee = (req,res,next) => {
         new Promise((resolve,reject)=>{
             orderItemDAO.getOrderCar({orderItemId:params.orderItemId},(error,rows)=>{
                 if(error){
-                    logger.error('getOrderCar' + error.message);
+                    logger.error('updateActFee getOrderCar ' + error.message);
                     reject(error);
                 }else{
-                    logger.info('getOrderCar' + 'success');
+                    logger.info('updateActFee getOrderCar ' + 'success');
                     params.orderId = rows[0].order_id;
                     resolve();
                 }
@@ -238,10 +238,10 @@ const updateActFee = (req,res,next) => {
             new Promise((resolve,reject)=>{
                 orderItemDAO.getOrderCar({orderId:params.orderId},(error,rows)=>{
                     if(error){
-                        logger.error('getOrderCar' + error.message);
+                        logger.error('updateActFee getOrderCar ' + error.message);
                         reject(error);
                     }else{
-                        logger.info('getOrderCar' + 'success');
+                        logger.info('updateActFee getOrderCar ' + 'success');
                         let actFee = 0;
                         let safePrice = 0;
                         for(let i = 0; i < rows.length; i ++){
@@ -257,10 +257,10 @@ const updateActFee = (req,res,next) => {
                 new Promise((resolve,reject)=>{
                     orderDAO.putSafePrice(params,(error,result)=>{
                         if(error){
-                            logger.error('putSafePrice' + error.message);
+                            logger.error('updateActFee putSafePrice ' + error.message);
                             reject(error);
                         }else{
-                            logger.info('putSafePrice' + 'success');
+                            logger.info('updateActFee putSafePrice ' + 'success');
                             resUtil.resetUpdateRes(res,result,null);
                             return next();
                         }
@@ -278,11 +278,11 @@ const updateOrderItemInfo = (req,res,next) => {
     new Promise((resolve,reject)=>{
         orderItemDAO.updateOrderItemInfo(params,(error,result)=>{
             if(error){
-                logger.error('updateOrderItemInfo' + error.message);
+                logger.error('updateOrderItemInfo ' + error.message);
                 resUtil.resInternalError(error,res,next);
                 reject(error);
             }else{
-                logger.info('updateOrderItemInfo' + 'success');
+                logger.info('updateOrderItemInfo ' + 'success');
                 resolve();
                 resUtil.resetUpdateRes(res,result,null);
                 return next();
@@ -292,10 +292,10 @@ const updateOrderItemInfo = (req,res,next) => {
         new Promise((resolve,reject)=>{
             orderItemDAO.getOrderCar({orderItemId:params.orderItemId},(error,rows)=>{
                 if(error){
-                    logger.error('getOrderCar' + error.message);
+                    logger.error('updateOrderItemInfo getOrderCar ' + error.message);
                     reject(error);
                 }else{
-                    logger.info('getOrderCar' + 'success');
+                    logger.info('updateOrderItemInfo getOrderCar ' + 'success');
                     params.orderId = rows[0].order_id;
                     resolve();
                 }
@@ -304,10 +304,10 @@ const updateOrderItemInfo = (req,res,next) => {
             new Promise((resolve,reject)=>{
                 orderItemDAO.getPriceSum({orderId:params.orderId},(error,rows)=>{
                     if(error){
-                        logger.error('getPriceSum' + error.message);
+                        logger.error('updateOrderItemInfo getPriceSum ' + error.message);
                         reject(error);
                     }else{
-                        logger.info('getPriceSum' + 'success');
+                        logger.info('updateOrderItemInfo getPriceSum ' + 'success');
                         params.oraTransPrice = rows[0].sum_ora_trans_price;
                         params.oraInsurePrice = rows[0].sum_ora_insure_price;
                         params.totalTransPrice = rows[0].sum_act_trans_price;
@@ -319,10 +319,10 @@ const updateOrderItemInfo = (req,res,next) => {
             }).then(()=>{
                 orderDAO.updatePrice(params,(error,result)=>{
                     if(error) {
-                        logger.error('updatePrice' + error.message);
+                        logger.error('updateOrderItemInfo updatePrice ' + error.message);
                         resUtil.resInternalError(error,res,next);
                     }else{
-                        logger.info('updatePrice' + 'success');
+                        logger.info('updateOrderItemInfo updatePrice ' + 'success');
                         let result_id = [{
                             orderItemId
                         }]
@@ -340,10 +340,10 @@ const updateCarType = (req,res,next) => {
     let params = req.params;
     orderItemDAO.updateCarType(params,(error,result)=>{
         if(error){
-            logger.error('updateCarType' + error.message);
+            logger.error('updateCarType ' + error.message);
             resUtil.resInternalError(error,res,next);
         }else{
-            logger.info('updateCarType' + 'success');
+            logger.info('updateCarType ' + 'success');
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }

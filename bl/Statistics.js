@@ -25,11 +25,11 @@ const orderMsgByMonths =(req,res,next) => {
     new Promise((resolve,reject)=>{
         orderInfoDAO.statisticsMonths(params,(error,rows)=>{
             if(error){
-                logger.error('allOrderMsgByMonths' + error.message);
+                logger.error('allOrderMsgByMonths ' + error.message);
                 resUtil.resetFailedRes(error,res,next);
                 reject(error);
             }else{
-                logger.info('allOrderMsgByMonths' + 'success');
+                logger.info('allOrderMsgByMonths ' + 'success');
                 orderCountsList.all = rows;
                 resolve();
             }
@@ -39,11 +39,11 @@ const orderMsgByMonths =(req,res,next) => {
             params.createdType = sysConsts.ORDER.type.internal;
             orderInfoDAO.statisticsMonths(params,(error,rows)=>{
                 if(error){
-                    logger.error('internalOrderMsgByMonths' + error.message);
+                    logger.error('internalOrderMsgByMonths ' + error.message);
                     resUtil.resetFailedRes(error,res,next);
                     reject(error);
                 }else{
-                    logger.info('internalOrderMsgByMonths' + 'success');
+                    logger.info('internalOrderMsgByMonths ' + 'success');
                     orderCountsList.internal = rows;
                     resolve();
                 }
@@ -53,11 +53,11 @@ const orderMsgByMonths =(req,res,next) => {
                 params.createdType = sysConsts.ORDER.type.owner;
                 orderInfoDAO.statisticsMonths(params,(error,rows)=>{
                     if(error){
-                        logger.error('ownerOrderMsgByMonths' + error.message);
+                        logger.error('ownerOrderMsgByMonths ' + error.message);
                         resUtil.resetFailedRes(error,res,next);
                         reject(error);
                     }else{
-                        logger.info('ownerOrderMsgByMonths' + 'success');
+                        logger.info('ownerOrderMsgByMonths ' + 'success');
                         orderCountsList.owner = rows;
                         resolve();
                     }
@@ -66,10 +66,10 @@ const orderMsgByMonths =(req,res,next) => {
                 params.createdType = sysConsts.ORDER.type.extrnal;
                 orderInfoDAO.statisticsMonths(params,(error,rows)=>{
                     if(error){
-                        logger.error('extrnalOrderMsgByMonths' + error.message);
+                        logger.error('extrnalOrderMsgByMonths ' + error.message);
                         resUtil.resetFailedRes(error,res,next);
                     }else{
-                        logger.info('extrnalOrderMsgByMonths' + 'success');
+                        logger.info('extrnalOrderMsgByMonths ' + 'success');
                         orderCountsList.extrnal = rows;
                         resUtil.resetQueryRes(res,orderCountsList,null);
                         return next();
@@ -87,7 +87,7 @@ const orderMsgByDay =(req,res,next) => {
     new Promise((resolve,reject)=>{
         orderInfoDAO.statisticsByDays(params,(error,rows)=>{
             if (error) {
-                logger.error('statisticsCountsByDays' + error.message);
+                logger.error('orderMsgByDay statisticsByDays ' + error.message);
                 resUtil.resetFailedRes(error,res,next);
                 reject(error);
             }else {
@@ -100,7 +100,7 @@ const orderMsgByDay =(req,res,next) => {
             params.createdType = sysConsts.ORDER.type.internal;
             orderInfoDAO.statisticsByDays(params,(error,rows)=>{
                 if (error){
-                    logger.error('statisticsCountsByDays' + error.message);
+                    logger.error('orderMsgByDay statisticsByDays2 ' + error.message);
                     resUtil.resetFailedRes(error,res,next);
                     reject(error);
                 } else{
@@ -113,7 +113,7 @@ const orderMsgByDay =(req,res,next) => {
                 params.createdType = sysConsts.ORDER.type.owner;
                 orderInfoDAO.statisticsByDays(params,(error,rows)=>{
                     if (error){
-                        logger.error('statisticsCountsByDays' + error.message);
+                        logger.error('orderMsgByDay statisticsByDays3 ' + error.message);
                         resUtil.resetFailedRes(error,res,next);
                         reject(error);
                     } else{
@@ -125,7 +125,7 @@ const orderMsgByDay =(req,res,next) => {
                 params.createdType = sysConsts.ORDER.type.extrnal;
                 orderInfoDAO.statisticsByDays(params,(error,rows)=>{
                     if (error){
-                        logger.error('statisticsCountsByDays' + error.message);
+                        logger.error('orderMsgByDay statisticsByDays4 ' + error.message);
                         resUtil.resetFailedRes(error,res,next);
                     } else{
                         orderCountsList.extrnal = rows;
@@ -150,11 +150,11 @@ const invoiceMsgByMonths =(req,res,next) => {
     new Promise((resolve,reject)=>{
         invoiceApplyDAO.statisticsByMonths(params,(error,rows)=>{
             if(error){
-                logger.error('allInvoiceMsgByMonths' + error.message);
+                logger.error('allInvoiceMsgByMonths ' + error.message);
                 resUtil.resetFailedRes(error,res,next);
                 reject(error);
             }else{
-                logger.info('allInvoiceMsgByMonths' + 'success');
+                logger.info('allInvoiceMsgByMonths ' + 'success');
                 invoiceList.all = rows;
                 resolve();
             }
@@ -164,11 +164,11 @@ const invoiceMsgByMonths =(req,res,next) => {
             params.createdType = sysConsts.ORDER.type.owner;
             invoiceApplyDAO.statisticsByMonths(params,(error,rows)=>{
                 if(error){
-                    logger.error('ownerInvoiceMsgByMonths' + error.message);
+                    logger.error('ownerInvoiceMsgByMonths ' + error.message);
                     resUtil.resetFailedRes(error,res,next);
                     reject(error);
                 }else{
-                    logger.info('ownerInvoiceMsgByMonths' + 'success');
+                    logger.info('ownerInvoiceMsgByMonths ' + 'success');
                     invoiceList.owner = rows;
                     resolve();
                 }
@@ -178,11 +178,11 @@ const invoiceMsgByMonths =(req,res,next) => {
                 params.createdType = sysConsts.ORDER.type.internal;
                 invoiceApplyDAO.statisticsByMonths(params,(error,rows)=>{
                     if(error){
-                        logger.error('internalInvoiceMsgByMonths' + error.message);
+                        logger.error('internalInvoiceMsgByMonths ' + error.message);
                         resUtil.resetFailedRes(error,res,next);
                         reject(error);
                     }else{
-                        logger.info('internalInvoiceMsgByMonths' + 'success');
+                        logger.info('internalInvoiceMsgByMonths ' + 'success');
                         invoiceList.internal = rows;
                         resolve();
                     }
@@ -191,10 +191,10 @@ const invoiceMsgByMonths =(req,res,next) => {
                 params.createdType = sysConsts.ORDER.type.extrnal;
                 invoiceApplyDAO.statisticsByMonths(params,(error,rows)=>{
                     if(error){
-                        logger.error('extrnalInvoiceMsgByMonths' + error.message);
+                        logger.error('extrnalInvoiceMsgByMonths ' + error.message);
                         resUtil.resetFailedRes(error,res,next);
                     }else{
-                        logger.info('extrnalInvoiceMsgByMonths' + 'success');
+                        logger.info('extrnalInvoiceMsgByMonths ' + 'success');
                         invoiceList.extrnal = rows;
                         resUtil.resetQueryRes(res,invoiceList,null);
                         return next();
@@ -213,11 +213,11 @@ const invoiceMsgByDays =(req,res,next) => {
     new Promise((resolve,reject)=>{
         invoiceApplyDAO.statisticsByDays(params,(error,rows)=>{
             if(error){
-                logger.error('allInvoiceMsgByDays' + error.message);
+                logger.error('allInvoiceMsgByDays ' + error.message);
                 resUtil.resetFailedRes(error,res,next);
                 reject(error);
             }else{
-                logger.info('allInvoiceMsgByDays' + 'success');
+                logger.info('allInvoiceMsgByDays ' + 'success');
                 invoiceList.all = rows;
                 resolve();
             }
@@ -227,11 +227,11 @@ const invoiceMsgByDays =(req,res,next) => {
             params.createdType = sysConsts.ORDER.type.internal;
             invoiceApplyDAO.statisticsByDays(params,(error,rows)=>{
                 if(error){
-                    logger.error('internalInvoiceMsgByDays' + error.message);
+                    logger.error('internalInvoiceMsgByDays ' + error.message);
                     resUtil.resetFailedRes(error,res,next);
                     reject(error);
                 }else{
-                    logger.info('internalInvoiceMsgByDays' + 'success');
+                    logger.info('internalInvoiceMsgByDays ' + 'success');
                     invoiceList.internal = rows;
                     resolve();
                 }
@@ -241,11 +241,11 @@ const invoiceMsgByDays =(req,res,next) => {
                 params.createdType = sysConsts.ORDER.type.owner;
                 invoiceApplyDAO.statisticsByDays(params,(error,rows)=>{
                     if(error){
-                        logger.error('ownerInvoiceMsgByDays' + error.message);
+                        logger.error('ownerInvoiceMsgByDays ' + error.message);
                         resUtil.resetFailedRes(error,res,next);
                         reject(error);
                     }else{
-                        logger.info('ownerInvoiceMsgByDays' + 'success');
+                        logger.info('ownerInvoiceMsgByDays ' + 'success');
                         invoiceList.owner = rows;
                         resolve();
                     }
@@ -254,10 +254,10 @@ const invoiceMsgByDays =(req,res,next) => {
                 params.createdType = sysConsts.ORDER.type.extrnal;
                 invoiceApplyDAO.statisticsByDays(params,(error,rows)=>{
                     if(error){
-                        logger.error('extrnalInvoiceMsgByDays' + error.message);
+                        logger.error('extrnalInvoiceMsgByDays ' + error.message);
                         resUtil.resetFailedRes(error,res,next);
                     }else{
-                        logger.info('extrnalInvoiceMsgByDays' + 'success');
+                        logger.info('extrnalInvoiceMsgByDays ' + 'success');
                         invoiceList.extrnal = rows;
                         resUtil.resetQueryRes(res,invoiceList,null);
                         return next();
@@ -281,11 +281,11 @@ const paymentRefundPriceByMonths =(req,res,next) => {
     new Promise((resolve,reject)=>{
         paymentInfoDAO.statisticsByMonths(params,(error,rows)=>{
             if(error){
-                logger.error('allPaymentRefundByMonths' + error.message);
+                logger.error('allPaymentRefundByMonths ' + error.message);
                 resUtil.resetFailedRes(error,res,next);
                 reject(error);
             }else{
-                logger.info('allPaymentRefundByMonths' + 'success');
+                logger.info('allPaymentRefundByMonths ' + 'success');
                 dataList.all = rows;
                 resolve();
             }
@@ -295,11 +295,11 @@ const paymentRefundPriceByMonths =(req,res,next) => {
             params.createdType = sysConsts.ORDER.type.internal;
             paymentInfoDAO.statisticsByMonths(params,(error,rows)=>{
                 if(error){
-                    logger.error('internalPaymentRefundByMonths' + error.message);
+                    logger.error('internalPaymentRefundByMonths ' + error.message);
                     resUtil.resetFailedRes(error,res,next);
                     reject(error);
                 }else{
-                    logger.info('internalPaymentRefundByMonths' + 'success');
+                    logger.info('internalPaymentRefundByMonths ' + 'success');
                     dataList.internal = rows;
                     resolve();
                 }
@@ -309,11 +309,11 @@ const paymentRefundPriceByMonths =(req,res,next) => {
                 params.createdType = sysConsts.ORDER.type.owner;
                 paymentInfoDAO.statisticsByMonths(params,(error,rows)=>{
                     if(error){
-                        logger.error('ownerPaymentRefundByMonths' + error.message);
+                        logger.error('ownerPaymentRefundByMonths ' + error.message);
                         resUtil.resetFailedRes(error,res,next);
                         reject(error);
                     }else{
-                        logger.info('ownerPaymentRefundByMonths' + 'success');
+                        logger.info('ownerPaymentRefundByMonths ' + 'success');
                         dataList.owner = rows;
                         resolve();
                     }
@@ -322,10 +322,10 @@ const paymentRefundPriceByMonths =(req,res,next) => {
                 params.createdType = sysConsts.ORDER.type.extrnal;
                 paymentInfoDAO.statisticsByMonths(params,(error,rows)=>{
                     if(error){
-                        logger.error('extrnalPaymentRefundByMonths' + error.message);
+                        logger.error('extrnalPaymentRefundByMonths ' + error.message);
                         resUtil.resetFailedRes(error,res,next);
                     }else{
-                        logger.info('extrnalPaymentRefundByMonths' + 'success');
+                        logger.info('extrnalPaymentRefundByMonths ' + 'success');
                         dataList.extrnal = rows;
                         resUtil.resetQueryRes(res,dataList,null);
                         return next();
@@ -345,11 +345,11 @@ const paymentRefundPriceByDays =(req,res,next) => {
     new Promise((resolve,reject)=>{
         paymentInfoDAO.statisticsByDays(params,(error,rows)=>{
             if(error){
-                logger.error('allPaymentRefundByDays' + error.message);
+                logger.error('allPaymentRefundByDays ' + error.message);
                 resUtil.resetFailedRes(error,res,next);
                 reject(error);
             }else{
-                logger.info('allPaymentRefundByDays' + 'success');
+                logger.info('allPaymentRefundByDays ' + 'success');
                 dataList.all = rows;
                 resolve();
             }
@@ -359,11 +359,11 @@ const paymentRefundPriceByDays =(req,res,next) => {
             params.createdType = sysConsts.ORDER.type.internal;
             paymentInfoDAO.statisticsByDays(params,(error,rows)=>{
                 if(error){
-                    logger.error('internalPaymentRefundByDays' + error.message);
+                    logger.error('internalPaymentRefundByDays ' + error.message);
                     resUtil.resetFailedRes(error,res,next);
                     reject(error);
                 }else{
-                    logger.info('internalPaymentRefundByDays' + 'success');
+                    logger.info('internalPaymentRefundByDays ' + 'success');
                     dataList.internal = rows;
                     resolve();
                 }
@@ -373,11 +373,11 @@ const paymentRefundPriceByDays =(req,res,next) => {
                 params.createdType = sysConsts.ORDER.type.owner;
                 paymentInfoDAO.statisticsByDays(params,(error,rows)=>{
                     if(error){
-                        logger.error('ownerPaymentRefundByDays' + error.message);
+                        logger.error('ownerPaymentRefundByDays ' + error.message);
                         resUtil.resetFailedRes(error,res,next);
                         reject(error);
                     }else{
-                        logger.info('ownerPaymentRefundByDays' + 'success');
+                        logger.info('ownerPaymentRefundByDays ' + 'success');
                         dataList.owner = rows;
                         resolve();
                     }
@@ -386,10 +386,10 @@ const paymentRefundPriceByDays =(req,res,next) => {
                 params.createdType = sysConsts.ORDER.type.extrnal;
                 paymentInfoDAO.statisticsByDays(params,(error,rows)=>{
                     if(error){
-                        logger.error('extrnalPaymentRefundByDays' + error.message);
+                        logger.error('extrnalPaymentRefundByDays ' + error.message);
                         resUtil.resetFailedRes(error,res,next);
                     }else{
-                        logger.info('extrnalPaymentRefundByDays' + 'success');
+                        logger.info('extrnalPaymentRefundByDays ' + 'success');
                         dataList.extrnal = rows;
                         resUtil.resetQueryRes(res,dataList,null);
                         return next();
@@ -410,10 +410,10 @@ const inquiryCountByMonth =(req,res,next) => {
     }
     inquiryInfoDAO.statisticsByMonths(params,(error,rows)=>{
         if(error){
-            logger.error('inquiryCountByMonth' + error.message);
+            logger.error('inquiryCountByMonth ' + error.message);
             resUtil.resetFailedRes(error,res,next);
         }else{
-            logger.info('inquiryCountByMonth' + 'success');
+            logger.info('inquiryCountByMonth ' + 'success');
             resUtil.resetQueryRes(res,rows,null);
             return next();
         }
@@ -426,10 +426,10 @@ const inquiryCountByDay =(req,res,next) => {
     params.paymentType = sysConsts.PAYMENT.type.refund;
     inquiryInfoDAO.statisticsByDays(params,(error,rows)=>{
         if(error){
-            logger.error('inquiryCountByDay' + error.message);
+            logger.error('inquiryCountByDay ' + error.message);
             resUtil.resetFailedRes(error,res,next);
         }else{
-            logger.info('inquiryCountByDay' + 'success');
+            logger.info('inquiryCountByDay ' + 'success');
             resUtil.resetQueryRes(res,rows,null);
             return next();
         }
@@ -445,10 +445,10 @@ const newUserCountByMonth =(req,res,next) => {
     }
     userInfoDAO.statisticsByMonths(params,(error,rows)=>{
         if(error){
-            logger.error('newUserCountByMonth' + error.message);
+            logger.error('newUserCountByMonth ' + error.message);
             resUtil.resetFailedRes(error,res,next);
         }else{
-            logger.info('newUserCountByMonth' + 'success');
+            logger.info('newUserCountByMonth ' + 'success');
             resUtil.resetQueryRes(res,rows,null);
             return next();
         }
@@ -461,10 +461,10 @@ const newUserCountByDay =(req,res,next) => {
     params.paymentType = sysConsts.PAYMENT.type.refund;
     userInfoDAO.statisticsByDays(params,(error,rows)=>{
         if(error){
-            logger.error('newUserCountByDay' + error.message);
+            logger.error('newUserCountByDay ' + error.message);
             resUtil.resetFailedRes(error,res,next);
         }else{
-            logger.info('newUserCountByDay' + 'success');
+            logger.info('newUserCountByDay ' + 'success');
             resUtil.resetQueryRes(res,rows,null);
             return next();
         }
@@ -484,11 +484,11 @@ const paymentPriceByMonth =(req,res,next) => {
     new Promise((resolve,reject)=>{
         paymentInfoDAO.statisticsByMonths(params,(error,rows)=>{
             if(error){
-                logger.error('allPaymentPriceByMonths' + error.message);
+                logger.error('allPaymentPriceByMonths ' + error.message);
                 resUtil.resetFailedRes(error,res,next);
                 reject(error);
             }else{
-                logger.info('allPaymentPriceByMonths' + 'success');
+                logger.info('allPaymentPriceByMonths ' + 'success');
                 dataList.all = rows;
                 resolve();
             }
@@ -498,11 +498,11 @@ const paymentPriceByMonth =(req,res,next) => {
             params.createdType = sysConsts.ORDER.type.internal;
             paymentInfoDAO.statisticsByMonths(params,(error,rows)=>{
                 if(error){
-                    logger.error('internalPaymentPriceByMonths' + error.message);
+                    logger.error('internalPaymentPriceByMonths ' + error.message);
                     resUtil.resetFailedRes(error,res,next);
                     reject(error);
                 }else{
-                    logger.info('internalPaymentPriceByMonths' + 'success');
+                    logger.info('internalPaymentPriceByMonths ' + 'success');
                     dataList.internal = rows;
                     resolve();
                 }
@@ -512,11 +512,11 @@ const paymentPriceByMonth =(req,res,next) => {
                 params.createdType = sysConsts.ORDER.type.owner;
                 paymentInfoDAO.statisticsByMonths(params,(error,rows)=>{
                     if(error){
-                        logger.error('ownerPaymentPriceByMonths' + error.message);
+                        logger.error('ownerPaymentPriceByMonths ' + error.message);
                         resUtil.resetFailedRes(error,res,next);
                         reject(error);
                     }else{
-                        logger.info('ownerPaymentPriceByMonths' + 'success');
+                        logger.info('ownerPaymentPriceByMonths ' + 'success');
                         dataList.owner = rows;
                         resolve();
                     }
@@ -525,10 +525,10 @@ const paymentPriceByMonth =(req,res,next) => {
                 params.createdType = sysConsts.ORDER.type.extrnal;
                 paymentInfoDAO.statisticsByMonths(params,(error,rows)=>{
                     if(error){
-                        logger.error('extrnalPaymentPriceByMonths' + error.message);
+                        logger.error('extrnalPaymentPriceByMonths ' + error.message);
                         resUtil.resetFailedRes(error,res,next);
                     }else{
-                        logger.info('extrnalPaymentPriceByMonths' + 'success');
+                        logger.info('extrnalPaymentPriceByMonths ' + 'success');
                         dataList.extrnal = rows;
                         resUtil.resetQueryRes(res,dataList,null);
                         return next();
@@ -549,11 +549,11 @@ const paymentPriceByDay =(req,res,next) => {
     new Promise((resolve,reject)=>{
         paymentInfoDAO.statisticsByDays(params,(error,rows)=>{
             if(error){
-                logger.error('allPaymentPriceByDays' + error.message);
+                logger.error('allPaymentPriceByDays ' + error.message);
                 resUtil.resetFailedRes(error,res,next);
                 reject(error);
             }else{
-                logger.info('allPaymentPriceByDays' + 'success');
+                logger.info('allPaymentPriceByDays ' + 'success');
                 dataList.all = rows;
                 resolve();
             }
@@ -563,11 +563,11 @@ const paymentPriceByDay =(req,res,next) => {
             params.createdType = sysConsts.ORDER.type.internal;
             paymentInfoDAO.statisticsByDays(params,(error,rows)=>{
                 if(error){
-                    logger.error('internalPaymentPriceByDays' + error.message);
+                    logger.error('internalPaymentPriceByDays ' + error.message);
                     resUtil.resetFailedRes(error,res,next);
                     reject(error);
                 }else{
-                    logger.info('internalPaymentPriceByDays' + 'success');
+                    logger.info('internalPaymentPriceByDays ' + 'success');
                     dataList.internal = rows;
                     resolve();
                 }
@@ -577,11 +577,11 @@ const paymentPriceByDay =(req,res,next) => {
                 params.createdType = sysConsts.ORDER.type.owner;
                 paymentInfoDAO.statisticsByDays(params,(error,rows)=>{
                     if(error){
-                        logger.error('ownerPaymentPriceByDays' + error.message);
+                        logger.error('ownerPaymentPriceByDays ' + error.message);
                         resUtil.resetFailedRes(error,res,next);
                         reject(error);
                     }else{
-                        logger.info('ownerPaymentPriceByDays' + 'success');
+                        logger.info('ownerPaymentPriceByDays ' + 'success');
                         dataList.owner = rows;
                         resolve();
                     }
@@ -590,10 +590,10 @@ const paymentPriceByDay =(req,res,next) => {
                 params.createdType = sysConsts.ORDER.type.extrnal;
                 paymentInfoDAO.statisticsByDays(params,(error,rows)=>{
                     if(error){
-                        logger.error('extrnalPaymentPriceByDays' + error.message);
+                        logger.error('extrnalPaymentPriceByDays ' + error.message);
                         resUtil.resetFailedRes(error,res,next);
                     }else{
-                        logger.info('extrnalPaymentPriceByDays' + 'success');
+                        logger.info('extrnalPaymentPriceByDays ' + 'success');
                         dataList.extrnal = rows;
                         resUtil.resetQueryRes(res,dataList,null);
                         return next();

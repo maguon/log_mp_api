@@ -14,10 +14,10 @@ const updateUser = (req,res,next)=>{
     let params = req.params;
      userDao.updateUser(params,(error,result)=>{
          if(error){
-             logger.error('updateUser' + error.message);
+             logger.error('updateUser ' + error.message);
              resUtil.resetFailedRes(error,res,next);
          }else{
-             logger.info('updateUser' + 'success');
+             logger.info('updateUser ' + 'success');
              resUtil.resetUpdateRes(res,result,null);
              return next();
          }
@@ -28,14 +28,14 @@ const updatePassword=(req,res,next)=>{
     new Promise((resolve) => {
         userDao.queryUser(params,(error,rows)=>{
             if(error){
-                logger.error('updatePassword' + error.message);
+                logger.error('updatePassword queryUser ' + error.message);
                 resUtil.resetFailedRes(error,res,next);
             }else if(rows && rows.length < 1){
-                logger.warn('updatePassword' + "尚未注册");
+                logger.warn('updatePassword queryUser ' + "Have not yet registered!");
                 resUtil.resetFailedRes(res,"尚未注册");
                 return next();
             }else if(encrypt.encryptByMd5(params.oldPassword) != rows[0].password){
-                logger.warn('updatePassword' + "原密码错");
+                logger.warn('updatePassword queryUser ' + "The original password is wrong!");
                 resUtil.resetFailedRes(res,"原密码错误");
                 return next();
             }else{
@@ -46,10 +46,10 @@ const updatePassword=(req,res,next)=>{
         params.newPassword = encrypt.encryptByMd5(params.newPassword);
         userDao.updatePassword(params,(error,result)=>{
             if(error){
-                logger.error('updatePassword' + error.message);
+                logger.error('updatePassword ' + error.message);
                 resUtil.resetFailedRes(error,res,next);
             }else{
-                logger.info('updatePassword' + 'success');
+                logger.info('updatePassword ' + 'success');
                 resUtil.resetUpdateRes(res,result,null);
                 return next();
             }
@@ -60,10 +60,10 @@ const updateStatus=(req,res,next)=>{
     let params = req.params;
     userDao.updateStatus(params,(error,result)=>{
         if(error){
-            logger.error('updateStatus' + error.message);
+            logger.error('updateStatus ' + error.message);
             resUtil.resetFailedRes(error,res,next);
         }else{
-            logger.info('updateStatus' + 'success');
+            logger.info('updateStatus ' + 'success');
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
@@ -75,13 +75,13 @@ const updatePhone=(req,res,next)=>{
     new Promise((resolve,reject)=>{
         oAuthUtil.getUserPhoneCode({phone:params.phone},(error,rows)=>{
             if(error){
-                logger.error('getUserPhoneCode' + error.message);
+                logger.error('updatePhone getUserPhoneCode ' + error.message);
                 reject(error);
             }else if(rows && rows.result.code !=params.code ){
-                logger.warn('getUserPhoneCode' + '验证码错误');
+                logger.warn('updatePhone getUserPhoneCode ' + 'Verification code error!');
                 resUtil.resetFailedRes(res,'验证码错误',null);
             }else{
-                logger.info('getUserPhoneCode'+'success');
+                logger.info('updatePhone getUserPhoneCode '+'success');
                 resolve();
             }
         })
@@ -89,10 +89,10 @@ const updatePhone=(req,res,next)=>{
         new Promise((resolve,reject)=>{
             userDao.updatePhone(params,(error,result)=>{
                 if(error){
-                    logger.error('updatePhone' + error.message);
+                    logger.error('updatePhone ' + error.message);
                     reject();
                 }else{
-                    logger.info('updatePhone' + 'success');
+                    logger.info('updatePhone ' + 'success');
                     resolve();
                 }
             });
@@ -100,10 +100,10 @@ const updatePhone=(req,res,next)=>{
             new Promise((resolve,reject)=>{
                 userDao.updateAuthStatus({authStatus:1,authTime:params.myDate,userId:params.userId},(error,result)=>{
                     if(error){
-                        logger.error('updateAuthStatus' + error.message);
+                        logger.error('updatePhone updateAuthStatus ' + error.message);
                         reject();
                     }else{
-                        logger.info('updateAuthStatus'+'success');
+                        logger.info('updatePhone updateAuthStatus '+'success');
                         resUtil.resetUpdateRes(res,result,null);
                         return next();
                     }
@@ -118,10 +118,10 @@ const queryUser = (req,res,next)=>{
     let params = req.params;
     userDao.queryUser(params,(error,result)=>{
         if(error){
-            logger.error('queryUser' + error.message);
+            logger.error('queryUser ' + error.message);
             resUtil.resetFailedRes(error,res,next);
         }else{
-            logger.info('queryUser' + 'success');
+            logger.info('queryUser ' + 'success');
             resUtil.resetQueryRes(res,result,null);
             return next();
         }
@@ -135,18 +135,18 @@ const userLogin = (req,res,next)=>{
     new Promise((resolve,reject)=>{
         userDao.queryUser({wechatId:params.wechatId},(error,rows)=>{
             if(error){
-                logger.error('queryUser'+error.message);
+                logger.error('userLogin queryUser '+error.message);
                 reject(error);
             }else if(rows && rows.length < 1){
-                logger.info('queryUser'+'该用户不存在');
+                logger.info('userLogin queryUser '+'The user does not exist!');
                 params.userName = params.wechatName;
                 params.dateId = moment().format("YYYYMMDD");
                 userDao.createUser(params,(error,result)=>{
                     if(error){
-                        logger.error('createUser' + error.message);
+                        logger.error('userLogin createUser ' + error.message);
                         resUtil.resetFailedRes(error,res,next);
                     }else if(result && result.insertId < 1){
-                        logger.warn('lastLoginOn'+'创建用户失败');
+                        logger.warn('userLogin lastLoginOn'+'User creation failed!');
                         result.resetFailedRes(res,'创建用户失败',null);
                     }else{
                         logger.info('create' + 'success');
@@ -157,10 +157,10 @@ const userLogin = (req,res,next)=>{
                         user.accessToken = oAuthUtil.createAccessToken(oAuthUtil.clientType.user,user.userId,user.status);
                         oAuthUtil.saveToken(user,function(error,result){
                             if(error){
-                                logger.error(' changeUserToken ' + error.stack);
+                                logger.error('userLogin saveToken ' + error.stack);
                                 return next(sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG))
                             }else{
-                                logger.info(' changeUserToken' +params.userId+ " success");
+                                logger.info('userLogin saveToken ' +params.userId+ " success");
                                 resUtil.resetQueryRes(res,user,null);
                                 return next();
                             }
@@ -184,7 +184,7 @@ const userLogin = (req,res,next)=>{
         new Promise((resolve,reject)=>{
             userDao.lastLoginOn({wechatId:params.wechatId,lastLoginOn:params.lastLoginOn},(error,result)=>{
                 if(error){
-                    logger.error('lastLoginOn'+error.message);
+                    logger.error('userLogin lastLoginOn '+error.message);
                     reject(error);
                 }else{
                     resUtil.resetQueryRes(res,resObj,null);
@@ -200,10 +200,10 @@ const updateUserInfo=(req,res,next)=>{
     let params = req.params;
     userDao.updateUserInfo(params,(error,result)=>{
         if(error){
-            logger.error('updateUserInfo' + error.message);
+            logger.error('updateUserInfo ' + error.message);
             resUtil.resetFailedRes(error,res,next);
         }else{
-            logger.info('updateUserInfo' + 'success');
+            logger.info('updateUserInfo ' + 'success');
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
@@ -220,10 +220,10 @@ const wechatBindPhone=(req,res,next)=>{
     params.authTime = new Date();
     userDao.updatePhone(params,(error,result)=>{
         if(error){
-            logger.error('updateUserInfo' + error.message);
+            logger.error('wechatBindPhone updateUserInfo ' + error.message);
             resUtil.resetFailedRes(error,res,next);
         }else{
-            logger.info('updateUserInfo' + 'success');
+            logger.info('wechatBindPhone updateUserInfo ' + 'success');
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
@@ -237,11 +237,11 @@ const updateToken=(req,res,next)=>{
     new Promise((resolve,reject)=>{
         userDao.queryUser(params,(error,rows)=>{
             if(error){
-                logger.error('queryUser' + error.message);
+                logger.error('updateToken queryUser ' + error.message);
                 resUtil.resetFailedRes(error,res,next);
                 reject(error);
             }else{
-                logger.info('queryUser' + 'success');
+                logger.info('updateToken queryUser ' + 'success');
                 user.status = rows[0].status;
                 resolve();
             }
@@ -250,15 +250,15 @@ const updateToken=(req,res,next)=>{
         user.accessToken = oAuthUtil.createAccessToken(oAuthUtil.clientType.user,user.userId,user.status);
         oAuthUtil.removeToken({accessToken:params.token},function(error,result){
             if(error) {
-                logger.error(' changeUserToken ' + error.stack);
+                logger.error('updateToken removeToken ' + error.stack);
                 resUtil.resInternalError(error,res,next);
             }else {
                 oAuthUtil.saveToken(user,function(error,result){
                     if(error){
-                        logger.error(' changeUserToken ' + error.stack);
+                        logger.error('updateToken removeToken ' + error.stack);
                         return next(sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG))
                     }else{
-                        logger.info(' changeUserToken' +params.userId+ " success");
+                        logger.info('updateToken removeToken ' +params.userId+ " success");
                         resUtil.resetQueryRes(res,user,null);
                         return next();
                     }

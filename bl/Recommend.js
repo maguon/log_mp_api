@@ -17,10 +17,10 @@ const addRecommend = (req,res,next)=>{
     let params = req.params;
     recommendInfoDAO.add(params,(error,rows)=>{
         if(error){
-            logger.error('addRecommend' + error.message);
+            logger.error('addRecommend ' + error.message);
             resUtil.resInternalError(error, res, next);
         }else{
-            logger.info('addRecommend' + 'success');
+            logger.info('addRecommend ' + 'success');
             resUtil.resetCreateRes(res,rows,null);
             return next;
         }
@@ -31,11 +31,11 @@ const getRecommend = (req,res,next)=>{
     new Promise((resolve,reject)=>{
         adminUser.queryAdminUser(params,(error,result)=>{
             if(error){
-                logger.error('queryAdminUser' + error.message);
+                logger.error('getRecommend queryAdminUser ' + error.message);
                 resUtil.resInternalError(error, res, next);
                 reject(error);
             }else{
-                logger.info('queryAdminUser' + 'success');
+                logger.info('getRecommend queryAdminUser ' + 'success');
                 if (result.length > 0){
                     resolve();
                 } else {
@@ -46,10 +46,10 @@ const getRecommend = (req,res,next)=>{
     }).then(()=>{
         recommendInfoDAO.select(params,(error,result)=>{
             if(error){
-                logger.error('selectRecommend' + error.message);
+                logger.error('getRecommend select ' + error.message);
                 resUtil.resInternalError(error, res, next);
             }else{
-                logger.info('selectRecommend' + 'success');
+                logger.info('getRecommend select ' + 'success');
                 resUtil.resetQueryRes(res,result,null);
                 return next();
             }
@@ -61,11 +61,11 @@ const updateRecommend = (req,res,next)=>{
     new Promise((resolve,reject)=>{
         adminUser.queryAdminUser(params,(error,result)=>{
             if(error){
-                logger.error('queryAdminUser' + error.message);
+                logger.error('updateRecommend queryAdminUser ' + error.message);
                 resUtil.resInternalError(error, res, next);
                 reject(error);
             }else{
-                logger.info('queryAdminUser' + 'success');
+                logger.info('updateRecommend queryAdminUser ' + 'success');
                 if (result.length > 0){
                     resolve();
                 } else {
@@ -76,10 +76,10 @@ const updateRecommend = (req,res,next)=>{
     }).then(()=>{
         recommendInfoDAO.update(params,(error,result)=>{
             if(error){
-                logger.error('updateRecommend' + error.message);
+                logger.error('updateRecommend update ' + error.message);
                 resUtil.resInternalError(error, res, next);
             }else{
-                logger.info('updateRecommend' + 'success');
+                logger.info('updateRecommend update ' + 'success');
                 resUtil.resetUpdateRes(res,result,null);
                 return next();
             }
@@ -91,11 +91,11 @@ const addAdvertisement = (req,res,next)=>{
     new Promise((resolve,reject)=>{
         adminUser.queryAdminUser(params,(error,result)=>{
             if(error){
-                logger.error('queryAdminUser' + error.message);
+                logger.error('addAdvertisement queryAdminUser ' + error.message);
                 resUtil.resInternalError(error, res, next);
                 reject(error);
             }else{
-                logger.info('queryAdminUser' + 'success');
+                logger.info('addAdvertisement queryAdminUser ' + 'success');
                 if (result.length > 0){
                     resolve();
                 } else {
@@ -106,10 +106,10 @@ const addAdvertisement = (req,res,next)=>{
     }).then(()=>{
         recommendInfoDAO.update(params,(error,result)=>{
             if(error){
-                logger.error('updateRecommend' + error.message);
+                logger.error('addAdvertisement update ' + error.message);
                 resUtil.resInternalError(error, res, next);
             }else{
-                logger.info('updateRecommend' + 'success');
+                logger.info('addAdvertisement update ' + 'success');
                 resUtil.resetUpdateRes(res,result,null);
                 return next();
             }
@@ -121,11 +121,11 @@ const postWxCodeImage= (req,res,next)=>{
     new Promise((resolve,reject)=>{
         getAccessToken(sysConfig.wechatConfig,(error,data)=>{
             if (error){
-                logger.error('getAccessToken' + error.message);
+                logger.error('postWxCodeImage getAccessToken ' + error.message);
                 resUtil.resInternalError(error, res, next);
                 reject(error);
             } else {
-                logger.info('getAccessToken' + 'success');
+                logger.info('postWxCodeImage getAccessToken ' + 'success');
                 if (data.errcode){
                     resUtil.resetFailedRes(res,data.errmsg);
                 }else {
@@ -146,11 +146,11 @@ const postWxCodeImage= (req,res,next)=>{
             }
             getWXACodeUnlimit(wxParams,(error,result)=>{
                 if (error){
-                    logger.error('getWXACodeUnlimit' + error.message);
+                    logger.error('postWxCodeImage getWXACodeUnlimit ' + error.message);
                     resUtil.resInternalError(error, res, next);
                     reject(error);
                 } else {
-                    logger.info('getWXACodeUnlimit' + 'success');
+                    logger.info('postWxCodeImage getWXACodeUnlimit ' + 'success');
                     if (result.success){
                         resolve();
                     } else {
@@ -162,10 +162,10 @@ const postWxCodeImage= (req,res,next)=>{
             let mpUrl = "http://"+sysConfig.hosts.wx.host+":"+sysConfig.hosts.wx.port+"/wx_img/"+params.fileName+".png";
             recommendInfoDAO.update({recommendId: params.recommendId,mpUrl:mpUrl},(error,result)=>{
                 if(error){
-                    logger.error('updateRecommend' + error.message);
+                    logger.error('postWxCodeImage update ' + error.message);
                     resUtil.resInternalError(error, res, next);
                 }else{
-                    logger.info('updateRecommend' + 'success');
+                    logger.info('postWxCodeImage update ' + 'success');
                     resUtil.resetUpdateRes(res,result,null);
                     return next();
                 }
@@ -177,10 +177,10 @@ const getAchievement= (req,res,next)=>{
     let params = req.params;
     recommendInfoDAO.selectAchievement(params,(error,rows)=>{
         if (error){
-            logger.error('selectAchievement' + error.message);
+            logger.error('getAchievement selectAchievement ' + error.message);
             resUtil.resInternalError(error, res, next);
         } else {
-            logger.info('selectAchievement' + 'success');
+            logger.info('getAchievement selectAchievement ' + 'success');
             resUtil.resetQueryRes(res,rows,null);
             return next;
         }
@@ -204,7 +204,7 @@ const getAccessToken=(params,callback)=>{
     });
 
     httpsReq.on('error', (e) => {
-        logger.info('getAccessToken :'+ e.message);
+        logger.info('getAccessToken '+ e.message);
         callback(e,null);
     });
     httpsReq.end();

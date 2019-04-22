@@ -13,10 +13,10 @@ const queryMailRecord = (req,res,next) => {
      let params = req.params;
     emailHistoryDao.queryMailRecord(params,(error,result)=>{
         if(error){
-            logger.error('queryMailRecord' + error.message);
+            logger.error('queryMailRecord ' + error.message);
             throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
         }else{
-            logger.info('queryMailRecord' + 'success');
+            logger.info('queryMailRecord ' + 'success');
             resUtil.resetQueryRes(res,result,null);
             return next();
         }
@@ -39,9 +39,9 @@ const sendAccountConfirmEmail = (req,res,next) => {
             params.status = 0;
             emailHistoryDao.addMailRecord(params,(error,result)=>{
                 if(error){
-                    logger.error('sendAccountConfirmEmail addMailRecord' + error.message);
+                    logger.error('sendAccountConfirmEmail addMailRecord ' + error.message);
                 }else{
-                    logger.info('sendAccountConfirmEmail addMailRecord'  + params.email);
+                    logger.info('sendAccountConfirmEmail addMailRecord '  + params.email);
                 }
             });
             throw sysError.InternalError(error.message,sysError.InternalError);
@@ -51,9 +51,9 @@ const sendAccountConfirmEmail = (req,res,next) => {
             params.status = 1;
             emailHistoryDao.addMailRecord(params,(error,result)=>{
                 if(error){
-                    logger.error('sendAccountConfirmEmail addMailRecord' + error.message);
+                    logger.error('sendAccountConfirmEmail addMailRecord ' + error.message);
                 }else{
-                    logger.info('sendAccountConfirmEmail addMailRecord'  + params.email);
+                    logger.info('sendAccountConfirmEmail addMailRecord '  + params.email);
                     resUtil.resetCreateRes(res,result,null);
                 }
             });

@@ -13,17 +13,16 @@ const logger = serverLogger.createLogger('AdminUser.js');
 const sysConsts = require("../util/SystemConst");
 
 const createAdminUser = (req,res,next) => {
-    logger.debug("Entering createAdminUser()");
     let params = req.params;
     new Promise((resolve,reject)=>{
         adminUserDao.queryAdminUser({phone:params.phone},(error,rows)=>{
             if (error) {
-                logger.error('queryAdminUser: ' + error.message);
+                logger.error('createAdminUser queryAdminUser ' + error.message );
                 resUtil.resInternalError(error,res,next);
                 return next();
             } else {
                 if(rows && rows.length>0){
-                    logger.warn(' queryAdminUser: ' +params.phone+ sysMsg.CUST_SIGNUP_REGISTERED);
+                    logger.warn('createAdminUser queryAdminUser ' +params.phone+' '+sysMsg.CUST_SIGNUP_REGISTERED );
                     resUtil.resetFailedRes(res,sysMsg.CUST_SIGNUP_REGISTERED) ;
                     return next();
                 }else{
@@ -35,11 +34,11 @@ const createAdminUser = (req,res,next) => {
         params.password = encrypt.encryptByMd5(params.password);
         adminUserDao.createAdminUser(params,(error,result)=>{
             if (error) {
-                logger.error(' createAdminUser: ' + error.message);
+                logger.error(' createAdminUser ' + error.message );
                 resUtil.resInternalError(error,res,next);
             } else {
                 if(result && result.insertId>0){
-                    logger.info(' createAdminUser: ' + 'success');
+                    logger.info(' createAdminUser ' + 'success ');
                     let user = {
                         userId : result.insertId,
                         userStatus : listOfValue.USER_STATUS_ACTIVE
@@ -47,31 +46,29 @@ const createAdminUser = (req,res,next) => {
                     user.accessToken = oAuthUtil.createAccessToken(oAuthUtil.clientType.user,user.userId,user.userStatus);
                     resUtil.resetQueryRes(res,user,null);
                 }else{
-                    logger.warn(' createAdminUser: ' + 'false');
+                    logger.warn(' createAdminUser ' + 'false ');
                     resUtil.resetFailedRes(res,sysMsg.SYS_INTERNAL_ERROR_MSG);
                 }
                 return next();
             }
         })
     })
-    //logger.debug("Leaving createAdminUser()");
 }
 const adminUserLogin = (req,res,next) => {
-    logger.debug("Entering adminUserLogin()");
     let params = req.params;
     adminUserDao.queryAdminUser({userName:params.userName},(error,rows)=>{
         if(error){
-            logger.error(' queryAdminUser: ' + error.message);
+            logger.error('adminUserLogin queryAdminUser ' + error.message );
             resUtil.resInternalError(error,res,next);
         }else{
             if(rows && rows.length < 1){
-                logger.warn(' queryAdminUser: ' +params.userName+ sysMsg.ADMIN_LOGIN_USER_UNREGISTERED);
+                logger.warn('adminUserLogin queryAdminUser ' +params.userName+' '+sysMsg.ADMIN_LOGIN_USER_UNREGISTERED );
                 resUtil.resetFailedRes(res,sysMsg.ADMIN_LOGIN_USER_UNREGISTERED) ;
                 return next();
             }else{
                 let passwordMd5 = encrypt.encryptByMd5(params.password);
                 if(passwordMd5 != rows[0].password){
-                    logger.warn(' queryAdminUser: ' +params.phone+ sysMsg.CUST_LOGIN_PSWD_ERROR);
+                    logger.warn('adminUserLogin queryPassword ' +params.phone+' '+sysMsg.CUST_LOGIN_PSWD_ERROR);
                     resUtil.resetFailedRes(res,sysMsg.CUST_LOGIN_PSWD_ERROR) ;
                     return next();
                 }else{
@@ -80,7 +77,7 @@ const adminUserLogin = (req,res,next) => {
                             userId : rows[0].id,
                             userStatus : rows[0].status
                         }
-                        logger.info('queryAdminUser: ' +params.userName+ " not verified");
+                        logger.info('adminUserLogin queryStatus ' +params.userName+ " not verified");
                         resUtil.resetQueryRes(res,user,null);
                         return next();
                     }else{
@@ -92,10 +89,10 @@ const adminUserLogin = (req,res,next) => {
                         user.accessToken = oAuthUtil.createAccessToken(oAuthUtil.clientType.admin,user.userId,user.status);
                         oAuthUtil.saveToken(user,function(error,result){
                             if(error){
-                                logger.error(' changeUserToken: ' + error.stack);
+                                logger.error('adminUserLogin changeUserToken ' + error.stack);
                                 return next(sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG))
                             }else{
-                                logger.info(' changeUserToken: ' +params.userId+ " success");
+                                logger.info('adminUserLogin changeUserToken ' +params.userId+ " success");
                                 resUtil.resetQueryRes(res,user,null);
                                 return next();
                             }
@@ -108,40 +105,39 @@ const adminUserLogin = (req,res,next) => {
             }
         }
     })
-    //logger.debug("Leaving adminUserLogin()");
 }
 
 const adminUserMobileLogin = (req,res,next) =>{
-    logger.debug("Entering adminUserMobileLogin()");
     let params = req.params;
     let userMsg={};
     new Promise((resolve,reject)=>{
         //根据userName查询用户信息
         adminUserDao.queryAdminUser({userName:params.userName},(error,rows)=>{
             if(error){
-                logger.error(' queryAdminUser: ' + error.message);
+                logger.error('adminUserMobileLogin queryAdminUser ' + error.message);
                 resUtil.resInternalError(error,res,next);
             }else{
                 //判断用户密码
                 if(rows && rows.length<0){
-                    logger.warn(' queryAdminUser: ' +params.adminId+ sysMsg.CUST_SIGNUP_REGISTERED);
+                    logger.warn('adminUserMobileLogin queryAdminUser ' +params.adminId+' '+sysMsg.CUST_SIGNUP_REGISTERED);
                     resUtil.resetFailedRes(res,sysMsg.CUST_SIGNUP_REGISTERED) ;//用户不存在
                     // return next();
                 }else{
                     let passwordMd5 = encrypt.encryptByMd5(params.password);
                     if(passwordMd5 != rows[0].password){
                         //密码不匹配
-                        logger.warn(' queryAdminUser: ' +params.adminId+ sysMsg.CUST_LOGIN_PSWD_ERROR);
+                        logger.warn('adminUserMobileLogin queryPassword: ' +params.adminId+' '+sysMsg.CUST_LOGIN_PSWD_ERROR);
                         resUtil.resetFailedRes(res,sysMsg.CUST_LOGIN_PSWD_ERROR) ;
                         //return next();
                     }else{
                         //密码正确
                         if(rows[0].status == listOfValue.ADMIN_USER_STATUS_NOT_ACTIVE){
-                            resUtil.resetFailedRes(res,"该管理员不可用");
+                            logger.info('adminUserMobileLogin queryStatus ' +params.userName+ " not verified ");
+                            resUtil.resetFailedRes(res,"该管理员不可用!");
                          }else {
                             params.adminId  = rows[0].id;
                             params.status  = rows[0].status;
-                            logger.info('queryAdminUser: ' +params.userName+ " not verified");
+                            logger.info('queryAdminUser: ' +params.userName+ " not verified ");
                             userMsg.userName = rows[0].user_name;
                             userMsg.userId = rows[0].id;
                             userMsg.status = rows[0].status;
@@ -158,22 +154,22 @@ const adminUserMobileLogin = (req,res,next) =>{
         new Promise((resolve,reject)=>{
             adminDeviceInfoDao.getDeviceInfo({adminId:params.adminId,deviceType:params.deviceType,deviceToken:params.deviceToken},(error,rows)=>{
                 if(error){
-                    logger.error(' getDeviceInfo: ' + error.message);
+                    logger.error('adminUserMobileLogin getDeviceInfo ' + error.message);
                     resUtil.resInternalError(error,res,next);
                     reject(error);
                     // return next();
                 } else {
                     //查询到相同数据后，更新数据
                     if(rows && rows.length>0){
-                        logger.info(' getDeviceInfo: ' + params.adminId + sysMsg.CUST_SIGNUP_REGISTERED);
+                        logger.info('adminUserMobileLogin getDeviceInfo ' + params.adminId +' '+sysMsg.CUST_SIGNUP_REGISTERED);
                         //resUtil.resetFailedRes(res,sysMsg.CUST_SIGNUP_REGISTERED) ;
                         //更新设备信息
                         adminDeviceInfoDao.updateDeviceInfo({adminId:rows[0].id,appType:params.appType,appVersion:params.appVersion},(error,rows)=>{
                             if(error){
-                                logger.error('getDeviceInfo: ' + error.message);
+                                logger.error('adminUserMobileLogin updateDeviceInfo ' + error.message);
                                 resUtil.resetFailedRes(error,res,next);
                             }else{
-                                logger.info('getDeviceInfo: ' + 'success');
+                                logger.info('adminUserMobileLogin updateDeviceInfo ' + 'success');
                                 resUtil.resetQueryRes(res,userMsg,null);
                                 // resUtil.resetCreateRes(res,result,null);
                                 //return next();
@@ -188,10 +184,10 @@ const adminUserMobileLogin = (req,res,next) =>{
             //添加设备信息
             adminDeviceInfoDao.addDeviceInfo(params,(error,rows)=>{
                 if(error){
-                    logger.error('addDeviceInfo: ' + error.message);
+                    logger.error('adminUserMobileLogin addDeviceInfo ' + error.message);
                     resUtil.resetFailedRes(error,res,next);
                 }else{
-                    logger.info('addDeviceInfo: ' + 'success');
+                    logger.info('adminUserMobileLogin addDeviceInfo ' + 'success');
                     resUtil.resetQueryRes(res,userMsg,null);
                     // resUtil.resetCreateRes(res,result,null);
                     return next();
@@ -199,32 +195,30 @@ const adminUserMobileLogin = (req,res,next) =>{
             })
         })
     });
-    //logger.debug("Leaving adminUserMobileLogin()");
 }
 const getAdminUserInfo = (req,res,next) => {
     let params = req.params;
     adminUserDao.queryAdminInfo(params,(error,rows)=>{
         if(error){
-            logger.error(' getAdminUserInfo: ' + error.message);
+            logger.error(' getAdminUserInfo ' + error.message);
             resUtil.resInternalError(error,res,next);
         }else{
-            logger.info(' getAdminUserInfo: ' + 'success');
+            logger.info(' getAdminUserInfo ' + 'success');
             resUtil.resetQueryRes(res,rows,null);
             return next();
         }
     })
 }
 const updateAdminInfo = (req,res,next) => {
-    logger.debug("Entering updateAdminInfo()");
     let params = req.params;
     new Promise((resolve,reject)=>{
         adminUserDao.queryAdminUser({adminId:params.id},(error,rows)=>{
             if(error){
-                logger.error(' queryAdminUser: ' + error.message);
+                logger.error('updateAdminInfo queryAdminUser ' + error.message);
                 resUtil.resInternalError(error,res,next);
                 reject(error);
             }else{
-                logger.info(' queryAdminUser: ' + 'success');
+                logger.info('updateAdminInfo queryAdminUser ' + 'success');
                 if(rows.length > 0){
                     resolve();
                 }else {
@@ -235,32 +229,30 @@ const updateAdminInfo = (req,res,next) => {
     }).then(()=>{
         adminUserDao.updateInfo(params,(error,result)=>{
             if(error){
-                logger.error(' updateInfo: ' + error.message);
+                logger.error('updateAdminInfo updateInfo ' + error.message);
                 resUtil.resInternalError(error,res,next);
             }else{
-                logger.info(' updateInfo: ' + 'success');
+                logger.info('updateAdminInfo updateInfo ' + 'success');
                 resUtil.resetUpdateRes(res,result,null);
                 return next();
             }
         })
     })
-    //logger.debug("Leaving updateAdminInfo()");
 }
 const changeAdminPassword = (req,res,next) => {
-    logger.debug("Entering changeAdminPassword()");
     let params = req.params;
     new Promise((resolve,reject) => {
         adminUserDao.queryAdminUser(params,(error,rows)=>{
             if(error){
-                logger.error(' queryAdminUser: ' + error.message);
+                logger.error('changeAdminPassword queryAdminUser ' + error.message);
                 resUtil.resInternalError(error,res,next);
             }else{
                 if(rows && rows.length<1){
-                    logger.warn(' queryAdminUser: ' + sysMsg.ADMIN_LOGIN_USER_UNREGISTERED);
+                    logger.warn('changeAdminPassword queryAdminUser ' + sysMsg.ADMIN_LOGIN_USER_UNREGISTERED);
                     resUtil.resetFailedRes(res,sysMsg.ADMIN_LOGIN_USER_UNREGISTERED);
                     return next();
                 }else if(encrypt.encryptByMd5(params.originPassword) != rows[0].password){
-                    logger.warn(' queryAdminUser: ' + sysMsg.CUST_ORIGIN_PSWD_ERROR);
+                    logger.warn('changeAdminPassword queryAdminUser ' + sysMsg.CUST_ORIGIN_PSWD_ERROR);
                     resUtil.resetFailedRes(res,sysMsg.CUST_ORIGIN_PSWD_ERROR);
                     return next();
                 }else{
@@ -272,28 +264,26 @@ const changeAdminPassword = (req,res,next) => {
         params.password = encrypt.encryptByMd5(params.newPassword);
         adminUserDao.updatePassword(params,(error,result)=>{
             if(error){
-                logger.error(' updatePassword: ' + error.message);
+                logger.error('changeAdminPassword updatePassword ' + error.message);
                 resUtil.resInternalError(error,res,next);
             }else{
-                logger.info(' updatePassword: ' + 'success');
+                logger.info('changeAdminPassword updatePassword ' + 'success');
                 resUtil.resetUpdateRes(res,result,null);
                 return next();
             }
         })
     })
-    //logger.debug("Leaving changeAdminPassword()");
 }
 const addAdminUser = (req,res,next) => {
-    logger.debug("Entering addAdminUser()");
     let params = req.params;
     new Promise((resolve,reject)=>{
         adminUserDao.queryAdminUser({adminId:params.adminId},(error,rows)=>{
             if(error){
-                logger.error(' queryAdminUser: ' + error.message);
+                logger.error('addAdminUser queryAdminUser ' + error.message);
                 resUtil.resInternalError(error,res,next);
                 reject(error);
             }else{
-                logger.info(' queryAdminUser: ' + 'success');
+                logger.info('addAdminUser queryAdminUser ' + 'success');
                 if (rows[0].type == sysConsts.SUPER_ADMIN_TYPE){
                     resolve();
                 }else {
@@ -306,10 +296,10 @@ const addAdminUser = (req,res,next) => {
         params.password = encrypt.encryptByMd5(params.password);
         adminUserDao.add(params,(error,rows)=>{
             if(error){
-                logger.error(' add: ' + error.message);
+                logger.error('addAdminUser add ' + error.message);
                 resUtil.resInternalError(error,res,next);
             }else{
-                logger.info(' add: ' + 'success');
+                logger.info('addAdminUser add ' + 'success');
                 if (rows.insertId){
                     resUtil.resetCreateRes(res,rows,null);
                     return next;
@@ -317,16 +307,15 @@ const addAdminUser = (req,res,next) => {
             }
         })
     })
-    //logger.debug("Leaving addAdminUser()");
 }
 const updateAdminStatus = (req,res,next) => {
     let params = req.params;
     adminUserDao.updateStatus(params,(error,result)=>{
         if(error){
-            logger.error(' updateAdminStatus: ' + error.message);
+            logger.error(' updateAdminStatus ' + error.message);
             resUtil.resInternalError(error,res,next);
         }else{
-            logger.info(' updateAdminStatus: ' + 'success');
+            logger.info(' updateAdminStatus ' + 'success');
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
@@ -340,11 +329,11 @@ const changeToken=(req,res,next)=>{
     new Promise((resolve,reject)=>{
         adminUserDao.queryAdminUser(params,(error,rows)=>{
             if(error){
-                logger.error('queryUser: ' + error.message);
+                logger.error('changeToken queryUser: ' + error.message);
                 resUtil.resetFailedRes(error,res,next);
                 reject(error);
             }else{
-                logger.info('queryUser: ' + 'success');
+                logger.info('changeToken queryUser: ' + 'success');
                 adminUser.status = rows[0].status;
                 resolve();
             }
@@ -353,16 +342,16 @@ const changeToken=(req,res,next)=>{
         user.accessToken = oAuthUtil.createAccessToken(oAuthUtil.clientType.user,adminUser.userId,adminUser.status);
         oAuthUtil.removeToken({accessToken:params.token},function(error,result){
             if(error) {
-                logger.error(' changeAdminUserToken: ' + error.stack);
+                logger.error('changeAdminUserToken ' + error.stack);
                 resUtil.resInternalError(error,res,next);
             }else {
-                logger.info(' changeAdminUserToken: ' + 'success');
+                logger.info(' changeAdminUserToken ' + 'success');
                 oAuthUtil.saveToken(user,function(error,result){
                     if(error){
-                        logger.error(' changeAdminUserToken: ' + error.stack);
+                        logger.error(' changeAdminUserToken ' + error.stack);
                         return next(sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG))
                     }else{
-                        logger.info(' changeAdminUserToken: ' +params.adminId+ " success");
+                        logger.info(' changeAdminUserToken ' +params.adminId+ " success");
                         resUtil.resetQueryRes(res,adminUser,null);
                         return next();
                     }

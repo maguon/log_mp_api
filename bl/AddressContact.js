@@ -11,10 +11,10 @@ const getAddressContact = (req,res,next) => {
     let params = req.params;
     addressContactDAO.getAddressContact(params,(error,result)=>{
         if(error){
-            logger.error('getAddressContact: ' + error.message);
+            logger.error('getAddressContact ' + error.message);
             resUtil.resInternalError(error,res,next);
         }else{
-            logger.info('getAddressContact: ' + 'success');
+            logger.info('getAddressContact ' + 'success');
             resUtil.resetQueryRes(res,result,null);
             return next();
         }
@@ -24,10 +24,10 @@ const addAddressContact = (req,res,next) => {
     let params = req.params;
     addressContactDAO.addAddressContact(params,(error,result)=>{
         if(error){
-            logger.error('addAddressContact: ' + error.message);
+            logger.error('addAddressContact ' + error.message);
             resUtil.resInternalError(error,res,next);
         }else{
-            logger.info('addAddressContact: ' + 'success');
+            logger.info('addAddressContact ' + 'success');
             resUtil.resetCreateRes(res,result,null);
             return next();
         }
@@ -37,10 +37,10 @@ const delAddressContact = (req,res,next) => {
     let params = req.params;
     addressContactDAO.delAddressContact(params,(error,result)=>{
         if(error){
-            logger.error('delAddressContact: ' + error.message);
+            logger.error('delAddressContact ' + error.message);
             resUtil.resInternalError(error,res,next);
         }else{
-            logger.info('delAddressContact: ' + 'success');
+            logger.info('delAddressContact ' + 'success');
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }

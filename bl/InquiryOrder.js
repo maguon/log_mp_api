@@ -19,13 +19,13 @@ const addInquiryOrderByUser = (req,res,next) => {
     new Promise((resolve,reject)=>{
         inquiryDAO.getInquiryByUserId(params,(error,rows)=>{
             if(error){
-                logger.error('getInquiryByUserId' + error.message);
+                logger.error('addInquiryOrderByUser getInquiryByUserId ' + error.message);
                 reject(error);
             }else if(rows && rows.length < 1){
-                logger.warn('getInquiryByUserId'+'查无此询价信息');
+                logger.warn('addInquiryOrderByUser getInquiryByUserId '+'No inquiry information!');
                 resUtil.resetFailedRes(res,'查无此询价信息',null);
             }else{
-                logger.info('getInquiryByUserId'+'success');
+                logger.info('addInquiryOrderByUser getInquiryByUserId '+'success');
                 let feePrice = 0;
                 let count = 0;
                 feePrice = feePrice + rows[0].total_trans_price;
@@ -50,10 +50,10 @@ const addInquiryOrderByUser = (req,res,next) => {
             params.dateId = moment().format("YYYYMMDD");
             inquiryOrderDAO.addInquiryOrder(params,(error,result)=>{
                 if(error){
-                    logger.error('addInquiryOrder' + error.message);
+                    logger.error('addInquiryOrderByUser addInquiryOrder ' + error.message);
                     reject(error);
                 }else{
-                    logger.info('addInquiryOrder'+'success');
+                    logger.info('addInquiryOrderByUser addInquiryOrder '+'success');
                     resolve();
                 }
             })
@@ -61,10 +61,10 @@ const addInquiryOrderByUser = (req,res,next) => {
             new Promise((resolve,reject)=>{
                 inquiryDAO.updateInquiryStatus({status:2,inquiryId:params.inquiryId},(error,result)=>{
                     if(error){
-                        logger.error('updateInquiryStatus' + error.message);
+                        logger.error('addInquiryOrderByUser updateInquiryStatus ' + error.message);
                         reject(error);
                     }else{
-                        logger.info('updateInquiryStatus'+'success');
+                        logger.info('addInquiryOrderByUser updateInquiryStatus '+'success');
                         resUtil.resetUpdateRes(res,result,null);
                         return next();
                     }
@@ -80,13 +80,13 @@ const addInquiryOrderByAdmin = (req,res,next) => {
     new Promise((resolve,reject)=>{
         inquiryDAO.getInquiryByUserId(params,(error,rows)=>{
             if(error){
-                logger.error('getInquiryByUserId' + error.message);
+                logger.error('addInquiryOrderByAdmin getInquiryByUserId ' + error.message);
                 reject(error);
             }else if(rows && rows.length < 1){
-                logger.warn('getInquiryByUserId'+'查无此询价信息');
+                logger.warn('addInquiryOrderByAdmin getInquiryByUserId '+'No inquiry information!');
                 resUtil.resetFailedRes(res,'查无此询价信息',null);
             }else{
-                logger.info('getInquiryByUserId'+'success');
+                logger.info('addInquiryOrderByAdmin getInquiryByUserId '+'success');
                 let feePrice = 0;
                 let count = 0;
                 feePrice = feePrice + rows[0].fee_price;
@@ -110,10 +110,10 @@ const addInquiryOrderByAdmin = (req,res,next) => {
         new Promise((resolve,reject)=>{
             routeDAO.getRoute({routeId:params.routeId},(error,rows)=>{
                 if(error){
-                    logger.error('getRoute' + error.message);
+                    logger.error('addInquiryOrderByAdmin getRoute ' + error.message);
                     reject(error);
                 }else if(rows && rows.length < 1){
-                    logger.warn('getRoute'+'没有这个路线');
+                    logger.warn('addInquiryOrderByAdmin getRoute '+'There is no such route！');
                     resUtil.resetFailedRes(res,'没有这个路线',null);
                 }else{
                     logger.info('getRoute'+'success');
@@ -126,10 +126,10 @@ const addInquiryOrderByAdmin = (req,res,next) => {
                 params.dateId = moment().format("YYYYMMDD");
                 inquiryOrderDAO.addInquiryOrder(params,(error,result)=>{
                     if(error){
-                        logger.error('addInquiryOrder' + error.message);
+                        logger.error('addInquiryOrderByAdmin addInquiryOrder ' + error.message);
                         reject(error);
                     }else{
-                        logger.info('addInquiryOrder'+'success');
+                        logger.info('addInquiryOrderByAdmin addInquiryOrder '+'success');
                         resolve();
                     }
                 })
@@ -137,10 +137,10 @@ const addInquiryOrderByAdmin = (req,res,next) => {
                 new Promise((resolve,reject)=>{
                     inquiryDAO.updateInquiryStatus({status:2,inquiryId:params.inquiryId},(error,result)=>{
                         if(error){
-                            logger.error('updateInquiryStatus' + error.message);
+                            logger.error('addInquiryOrderByAdmin updateInquiryStatus ' + error.message);
                             reject(error);
                         }else{
-                            logger.info('updateInquiryStatus'+'success');
+                            logger.info('addInquiryOrderByAdmin updateInquiryStatus '+'success');
                             resUtil.resetUpdateRes(res,result,null);
                             return next();
                         }
@@ -156,10 +156,10 @@ const putInquiryOrder = (req,res,next) => {
     let params = req.params;
     inquiryOrderDAO.putInquiryOrder(params,(error,result)=>{
         if(error){
-            logger.error('putInquiryOrder' + error.message);
+            logger.error('putInquiryOrder ' + error.message);
             resUtil.resetFailedRes(error,res,next);
         }else{
-            logger.info('putInquiryOrder' + 'success');
+            logger.info('putInquiryOrder ' + 'success');
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
@@ -206,10 +206,10 @@ const putReceiveInfo = (req,res,next) => {
     let params = req.params;
     inquiryOrderDAO.updateById(params,(error,result)=>{
         if(error){
-            logger.error('putReceiveInfo' + error.message);
+            logger.error('putReceiveInfo ' + error.message);
             resUtil.resInternalError(error,res,next);
         }else{
-            logger.info('putReceiveInfo' + 'success');
+            logger.info('putReceiveInfo ' + 'success');
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
@@ -219,10 +219,10 @@ const putFreightPrice = (req,res,next) => {
     let params = req.params;
     inquiryOrderDAO.putFreightPrice(params,(error,result)=>{
         if(error){
-            logger.error('putFreightPrice' + error.message);
+            logger.error('putFreightPrice ' + error.message);
             resUtil.resInternalError(error,res,next);
         }else{
-            logger.info('putFreightPrice' + 'success');
+            logger.info('putFreightPrice ' + 'success');
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
@@ -232,10 +232,10 @@ const putStatus = (req,res,next) => {
     let params = req.params;
     inquiryOrderDAO.updateById(params,(error,rows)=>{
         if(error){
-            logger.error('updateStatus' + error.message);
+            logger.error('putStatus ' + error.message);
             resUtil.resInternalError(error,res,next);
         }else{
-            logger.info('updateStatus' + 'success');
+            logger.info('putStatus ' + 'success');
             resUtil.resetUpdateRes(res,rows,null);
             return next;
         }
@@ -245,10 +245,10 @@ const getOrder = (req,res,next) => {
     let params = req.params;
     inquiryOrderDAO.getOrder(params,(error,result)=>{
         if(error){
-            logger.error('getOrder' + error.message);
+            logger.error('getOrder ' + error.message);
             resUtil.resInternalError(error,res,next);
         }else{
-            logger.info('getOrder' + 'success');
+            logger.info('getOrder ' + 'success');
             resUtil.resetQueryRes(res,result,null);
             return next();
         }
@@ -264,10 +264,10 @@ const getOrderByUser = (req,res,next) => {
     }
     inquiryOrderDAO.getOrderByUser(params,(error,result)=>{
         if(error){
-            logger.error('getOrderByUser' + error.message);
+            logger.error('getOrderByUser ' + error.message);
             resUtil.resInternalError(error,res,next);
         }else{
-            logger.info('getOrderByUser' + 'success');
+            logger.info('getOrderByUser ' + 'success');
             resUtil.resetQueryRes(res,result,null);
             return next();
         }
@@ -277,10 +277,10 @@ const putAdminMark = (req,res,next) => {
     let params = req.params;
     inquiryOrderDAO.putAdminMark(params,(error,result)=>{
         if(error){
-            logger.error('putAdminMark' + error.message);
+            logger.error('putAdminMark ' + error.message);
             resUtil.resInternalError(error,res,next);
         }else{
-            logger.info('putAdminMark' + 'success');
+            logger.info('putAdminMark ' + 'success');
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
@@ -291,10 +291,10 @@ const cancelOrder = (req,res,next) => {
     params.myDate = new Date();
     inquiryOrderDAO.cancelOrder(params,(error,result)=>{
         if(error){
-            logger.error('cancelOrder' + error.message);
+            logger.error('cancelOrder ' + error.message);
             resUtil.resInternalError(error,res,next);
         }else{
-            logger.info('cancelOrder' + 'success');
+            logger.info('cancelOrder ' + 'success');
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
@@ -304,10 +304,10 @@ const putSendInfo = (req,res,next) => {
     let params = req.params;
     inquiryOrderDAO.updateById(params,(error,result)=>{
         if(error){
-            logger.error('putSendInfo' + error.message);
+            logger.error('putSendInfo ' + error.message);
             resUtil.resInternalError(error,res,next);
         }else{
-            logger.info('putSendInfo' + 'success');
+            logger.info('putSendInfo ' + 'success');
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
@@ -328,13 +328,13 @@ const addOrder = (req,res,next) => {
     new Promise((resolve,reject)=>{
         routeDAO.getRoute({routeId:params.routeId},(error,rows)=>{
             if(error){
-                logger.error('getRoute' + error.message);
+                logger.error('addOrder getRoute ' + error.message);
                 reject(error);
             }else if(rows && rows.length < 1){
-                logger.warn('getRoute'+'没有这个路线');
+                logger.warn('addOrder getRoute '+'There is no such route！');
                 resUtil.resetFailedRes(res,'没有这个路线',null);
             }else{
-                logger.info('getRoute'+'success');
+                logger.info('addOrder getRoute '+'success');
                 params.distance = rows[0].distance;
                 resolve();
             }
@@ -343,13 +343,13 @@ const addOrder = (req,res,next) => {
         new Promise((resolve,reject)=>{
             cityDAO.queryCity({cityId:params.routeStartId},(error,rows)=>{
                 if(error){
-                    logger.error('queryCity' + error.message);
+                    logger.error('addOrder queryCity ' + error.message);
                     reject(error);
                 }else if(rows && rows.length < 1){
-                    logger.warn('queryCity'+'没有这个城市');
+                    logger.warn('addOrder queryCity '+'There is no city！');
                     resUtil.resetFailedRes(res,'没有这个城市',null);
                 }else{
-                    logger.info('queryCity'+'success');
+                    logger.info('addOrder queryCity '+'success');
                     params.routeStart = rows[0].city_name;
                     resolve();
                 }
@@ -358,13 +358,13 @@ const addOrder = (req,res,next) => {
             new Promise((resolve,reject)=>{
                 cityDAO.queryCity({cityId:params.routeEndId},(error,rows)=>{
                     if(error){
-                        logger.error('queryCity' + error.message);
+                        logger.error('addOrder queryCity ' + error.message);
                         reject(error);
                     }else if(rows && rows.length < 1){
-                        logger.warn('queryCity'+'没有这个城市');
+                        logger.warn('addOrder queryCity '+'There is no city！');
                         resUtil.resetFailedRes(res,'没有这个城市',null);
                     }else{
-                        logger.info('queryCity'+'success');
+                        logger.info('addOrder queryCity '+'success');
                         params.routeEnd = rows[0].city_name;
                         resolve();
                     }
@@ -374,10 +374,10 @@ const addOrder = (req,res,next) => {
                     params.dateId = moment().format("YYYYMMDD");
                     inquiryOrderDAO.addOrder(params,(error,rows)=>{
                         if(error){
-                            logger.error('addOrder' + error.message);
+                            logger.error('addOrder ' + error.message);
                             reject(error);
                         }else{
-                            logger.info('addOrder' + 'success');
+                            logger.info('addOrder ' + 'success');
                             resUtil.resetCreateRes(res,rows,null);
                             return next();
                         }
@@ -393,10 +393,10 @@ const getOrderNew = (req,res,next) => {
     let params = req.params;
     inquiryOrderDAO.getOrderNew(params,(error,result)=>{
         if(error){
-            logger.error('getOrderNew' + error.message);
+            logger.error('getOrderNew ' + error.message);
             resUtil.resInternalError(error,res,next);
         }else{
-            logger.info('getOrderNew' + 'success');
+            logger.info('getOrderNew ' + 'success');
             resUtil.resetQueryRes(res,result,null);
             return next();
         }
@@ -406,10 +406,10 @@ const updatePaymentRemark = (req,res,next) => {
     let params = req.params;
     inquiryOrderDAO.updatePaymentRemark(params,(error,result)=>{
         if(error){
-            logger.error('updatePaymentRemark:' + error.message);
+            logger.error('updatePaymentRemark ' + error.message);
             resUtil.resInternalError(error,res,next);
         }else{
-            logger.info('updatePaymentRemark:' + 'success');
+            logger.info('updatePaymentRemark ' + 'success');
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
@@ -419,10 +419,10 @@ const updateById = (req,res,next) => {
     let params = req.params;
     inquiryOrderDAO.updateById(params,(error,result)=>{
         if(error){
-            logger.error('updateById:' + error.message);
+            logger.error('updateById ' + error.message);
             resUtil.resInternalError(error,res,next);
         }else{
-            logger.info('updateById:' + 'success');
+            logger.info('updateById ' + 'success');
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
@@ -434,11 +434,11 @@ const selfMentionAddress = (req,res,next) => {
     new Promise((resolve,reject)=>{
         inquiryOrderDAO.getById({orderId:params.orderId},(error,rows)=>{
             if(error){
-                logger.error('getOrderInfoById:' + error.message);
+                logger.error('selfMentionAddress getById ' + error.message);
                 resUtil.resInternalError(error,res,next);
                 reject(error);
             }else{
-                logger.info('getOrderInfoById:' + 'success');
+                logger.info('selfMentionAddress getById ' + 'success');
                 if (rows.length > 0){
                     orderServiceType = rows[0].service_type;
                     resolve();
@@ -451,10 +451,10 @@ const selfMentionAddress = (req,res,next) => {
         if (orderServiceType == sysConsts.ORDER.serviceType.selfMention) {
             inquiryOrderDAO.updateById(params,(error,result)=>{
                 if(error){
-                    logger.error('updateById:' + error.message);
+                    logger.error('selfMentionAddress updateById ' + error.message);
                     resUtil.resInternalError(error,res,next);
                 }else{
-                    logger.info('updateById:' + 'success');
+                    logger.info('selfMentionAddress updateById ' + 'success');
                     resUtil.resetUpdateRes(res,result,null);
                     return next();
                 }
@@ -468,10 +468,10 @@ const getOrderProfit = (req,res,next) => {
     let params = req.params;
     inquiryOrderDAO.getOrderProfit(params,(error,result)=>{
         if(error){
-            logger.error('getOrderProfit' + error.message);
+            logger.error('getOrderProfit ' + error.message);
             resUtil.resInternalError(error,res,next);
         }else{
-            logger.info('getOrderProfit' + 'success');
+            logger.info('getOrderProfit ' + 'success');
             resUtil.resetQueryRes(res,result,null);
             return next();
         }
@@ -481,10 +481,10 @@ const getOrderCostOfCar = (req,res,next) => {
     let params = req.params;
     orderItemDAO.getOrderCostOfCar(params,(error,result)=>{
         if(error){
-            logger.error('getOrderCostOfCar' + error.message);
+            logger.error('getOrderCostOfCar ' + error.message);
             resUtil.resInternalError(error,res,next);
         }else{
-            logger.info('getOrderCostOfCar' + 'success');
+            logger.info('getOrderCostOfCar ' + 'success');
             resUtil.resetQueryRes(res,result,null);
             return next();
         }
@@ -498,11 +498,11 @@ const orderWithoutInquiry =(req,res,next)=>{
     new Promise((resolve,reject)=>{
         routeDAO.getRoute({routeStartId:params.routeStartId,routeEndId:params.routeEndId},(error,result)=>{
             if(error){
-                logger.error('getRouteDistance' + error.message);
+                logger.error('orderWithoutInquiry getRoute ' + error.message);
                 resUtil.resInternalError(error,res,next);
                 reject(error);
             }else{
-                logger.info('getRouteDistance' + 'success');
+                logger.info('orderWithoutInquiry getRoute ' + 'success');
                 params.distance = result[0].distance;
                 resolve();
             }
@@ -518,11 +518,11 @@ const orderWithoutInquiry =(req,res,next)=>{
             params.adminId =0;
             inquiryOrderDAO.addOrder(params,(error,result)=>{
                 if(error){
-                    logger.error('addOrder' + error.message);
+                    logger.error('orderWithoutInquiry addOrder ' + error.message);
                     resUtil.resInternalError(error,res,next);
                     reject(error);
                 }else{
-                    logger.info('addOrder' + 'success');
+                    logger.info('orderWithoutInquiry addOrder ' + 'success');
                     params.orderId = result.insertId;
                     resultCallback = result;
                     resolve();
@@ -542,10 +542,10 @@ const orderWithoutInquiry =(req,res,next)=>{
                     oraInsurePrice += price.insure;
                     orderItemDAO.addOrderCar(orderItemList[i],(error,result)=>{
                         if(error){
-                            logger.error('addOrderCar' + error.message);
+                            logger.error('orderWithoutInquiry addOrderCar ' + error.message);
                             resUtil.resInternalError(error,res,next);
                         }else{
-                            logger.info('addOrderCar' + 'success');
+                            logger.info('orderWithoutInquiry addOrderCar ' + 'success');
                         }
                     });
                     if (i == orderItemList.length-1){
@@ -561,10 +561,10 @@ const orderWithoutInquiry =(req,res,next)=>{
                 }
                 inquiryOrderDAO.updateById(options,(error,result)=>{
                     if(error){
-                        logger.error('updateOrderOraPrice' + error.message);
+                        logger.error('orderWithoutInquiry updateById ' + error.message);
                         resUtil.resInternalError(error,res,next);
                     }else{
-                        logger.info('updateOrderOraPrice' + 'success');
+                        logger.info('orderWithoutInquiry updateById ' + 'success');
                         resUtil.resetCreateRes(res,resultCallback,null);
                         return next();
                     }
