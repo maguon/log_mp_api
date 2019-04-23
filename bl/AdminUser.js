@@ -382,7 +382,6 @@ module.exports = {
     getAdminUserInfo,
     updateAdminInfo,
     changeAdminPassword,
-    changeAdminPasswordPromise,
     addAdminUser,
     updateAdminStatus,
     changeToken
