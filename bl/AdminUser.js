@@ -241,38 +241,53 @@ const updateAdminInfo = (req,res,next) => {
 }
 const changeAdminPassword = (req,res,next) => {
     let params = req.params;
-    new Promise((resolve,reject) => {
-        adminUserDao.queryAdminUser(params,(error,rows)=>{
-            if(error){
-                logger.error('changeAdminPassword queryAdminUser ' + error.message);
-                resUtil.resInternalError(error,res,next);
-            }else{
-                if(rows && rows.length<1){
-                    logger.warn('changeAdminPassword queryAdminUser ' + sysMsg.ADMIN_LOGIN_USER_UNREGISTERED);
-                    resUtil.resetFailedRes(res,sysMsg.ADMIN_LOGIN_USER_UNREGISTERED);
-                    return next();
-                }else if(encrypt.encryptByMd5(params.originPassword) != rows[0].password){
-                    logger.warn('changeAdminPassword queryAdminUser ' + sysMsg.CUST_ORIGIN_PSWD_ERROR);
-                    resUtil.resetFailedRes(res,sysMsg.CUST_ORIGIN_PSWD_ERROR);
-                    return next();
-                }else{
-                    resolve();
+    const getAdminInfo = ()=>{
+        return new Promise( (resolve, reject) =>{
+            adminUserDao.queryAdminUser(params,(error,rows)=>{
+                if(error){
+                    logger.error('changeAdminPassword queryAdminUser ' + error.message);
+                    reject({err:error});
+                }else {
+                    if(rows  && rows.length>=1){
+                        if(encrypt.encryptByMd5(params.originPassword) != rows[0].password){
+                            logger.warn(' changeAdminPassword queryAdminUser '+params.adminId+ ' ' +sysMsg.CUST_ORIGIN_PSWD_ERROR)
+                            reject({msg:sysMsg.CUST_ORIGIN_PSWD_ERROR});
+                        }else{
+                            resolve(rows[0]);
+                        }
+                    }else{
+                        logger.warn('changeAdminPassword queryAdminUser ' +params.adminId + ' ' +sysMsg.ADMIN_LOGIN_USER_UNREGISTERED);
+                        reject({msg:sysMsg.ADMIN_LOGIN_USER_UNREGISTERED});
+                    }
                 }
-            }
-        })
-    }).then(() => {
-        params.password = encrypt.encryptByMd5(params.newPassword);
-        adminUserDao.updatePassword(params,(error,result)=>{
-            if(error){
-                logger.error('changeAdminPassword updatePassword ' + error.message);
-                resUtil.resInternalError(error,res,next);
+            })
+        });
+    }
+    const updateAdminPassword = (adminInfo)=>{
+        return new Promise( (resolve, reject) => {
+            params.password = encrypt.encryptByMd5(params.newPassword);
+            adminUserDao.updatePassword(params,(error,result)=>{
+                if(error){
+                    logger.error('changeAdminPassword updatePassword ' + error.message);
+                    reject({err:error})
+                }else{
+                    logger.info('changeAdminPassword updatePassword ' + 'success');
+                    resUtil.resetUpdateRes(res,result,null);
+                    return next();
+                }
+            })
+        });
+    }
+    getAdminInfo()
+        .then(updateAdminPassword)
+        .catch((reject)=>{
+            if(reject.err){
+                resUtil.resInternalError(reject.err,res,next);
             }else{
-                logger.info('changeAdminPassword updatePassword ' + 'success');
-                resUtil.resetUpdateRes(res,result,null);
+                resUtil.resetFailedRes(res,reject.msg);
                 return next();
             }
         })
-    })
 }
 const addAdminUser = (req,res,next) => {
     let params = req.params;
@@ -367,6 +382,7 @@ module.exports = {
     getAdminUserInfo,
     updateAdminInfo,
     changeAdminPassword,
+    changeAdminPasswordPromise,
     addAdminUser,
     updateAdminStatus,
     changeToken
