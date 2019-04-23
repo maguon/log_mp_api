@@ -110,91 +110,108 @@ const adminUserLogin = (req,res,next) => {
 const adminUserMobileLogin = (req,res,next) =>{
     let params = req.params;
     let userMsg={};
-    new Promise((resolve,reject)=>{
-        //根据userName查询用户信息
-        adminUserDao.queryAdminUser({userName:params.userName},(error,rows)=>{
-            if(error){
-                logger.error('adminUserMobileLogin queryAdminUser ' + error.message);
-                resUtil.resInternalError(error,res,next);
-            }else{
-                //判断用户密码
-                if(rows && rows.length<0){
-                    logger.warn('adminUserMobileLogin queryAdminUser ' +params.adminId+' '+sysMsg.CUST_SIGNUP_REGISTERED);
-                    resUtil.resetFailedRes(res,sysMsg.CUST_SIGNUP_REGISTERED) ;//用户不存在
-                    // return next();
+    const getAdminInfo = () =>{
+        return new Promise((resolve,reject) => {
+            adminUserDao.queryAdminUser({userName:params.userName},(error,rows)=>{
+                if(error){
+                    logger.error('adminUserMobileLogin queryAdminUser ' + error.message);
+                    reject({err: error});
                 }else{
-                    let passwordMd5 = encrypt.encryptByMd5(params.password);
-                    if(passwordMd5 != rows[0].password){
-                        //密码不匹配
-                        logger.warn('adminUserMobileLogin queryPassword: ' +params.adminId+' '+sysMsg.CUST_LOGIN_PSWD_ERROR);
-                        resUtil.resetFailedRes(res,sysMsg.CUST_LOGIN_PSWD_ERROR) ;
-                        //return next();
+                    //判断用户密码
+                    if(rows && rows.length<0){
+                        logger.warn('adminUserMobileLogin queryAdminUser ' +params.adminId+' '+sysMsg.CUST_SIGNUP_REGISTERED);
+                        reject({registeredMsg:sysMsg.CUST_SIGNUP_REGISTERED});
                     }else{
-                        //密码正确
-                        if(rows[0].status == listOfValue.ADMIN_USER_STATUS_NOT_ACTIVE){
-                            logger.info('adminUserMobileLogin queryStatus ' +params.userName+ " not verified ");
-                            resUtil.resetFailedRes(res,"该管理员不可用!");
-                         }else {
-                            params.adminId  = rows[0].id;
-                            params.status  = rows[0].status;
-                            logger.info('queryAdminUser: ' +params.userName+ " not verified ");
-                            userMsg.userName = rows[0].user_name;
-                            userMsg.userId = rows[0].id;
-                            userMsg.status = rows[0].status;
-                            //resUtil.resetQueryRes(res,user,null);
-                            //return next();
-                            resolve();
+                        let passwordMd5 = encrypt.encryptByMd5(params.password);
+                        if(passwordMd5 != rows[0].password){
+                            //密码不匹配
+                            logger.warn('adminUserMobileLogin queryPassword: ' +params.adminId+' '+sysMsg.CUST_LOGIN_PSWD_ERROR);
+                            reject({pawdMsg:sysMsg.CUST_SIGNUP_REGISTERED});
+                        }else{
+                            //密码正确
+                            if(rows[0].status == listOfValue.ADMIN_USER_STATUS_NOT_ACTIVE){
+                                logger.info('adminUserMobileLogin queryStatus ' +params.userName+ " not verified ");
+                                reject({staMsg:sysMsg.CUST_SIGNUP_REGISTERED});
+                            }else {
+                                params.adminId  = rows[0].id;
+                                params.status  = rows[0].status;
+                                logger.info('queryAdminUser: ' +params.userName+ " not verified ");
+                                userMsg.userName = rows[0].user_name;
+                                userMsg.userId = rows[0].id;
+                                userMsg.status = rows[0].status;
+                                resolve(params);
+                            }
                         }
                     }
                 }
-            }
-        })
-    }).then(()=> {
-        //查询管理员设备信息
-        new Promise((resolve,reject)=>{
-            adminDeviceInfoDao.getDeviceInfo({adminId:params.adminId,deviceType:params.deviceType,deviceToken:params.deviceToken},(error,rows)=>{
+            })
+        });
+    }
+    const getAdminDeviceInfo = (devinfo) => {
+        return new Promise((resolve,reject)=>{
+            adminDeviceInfoDao.getDeviceInfo({adminId:devinfo.adminId,deviceType:devinfo.deviceType,deviceToken:devinfo.deviceToken},(error,rows)=>{
                 if(error){
                     logger.error('adminUserMobileLogin getDeviceInfo ' + error.message);
-                    resUtil.resInternalError(error,res,next);
-                    reject(error);
-                    // return next();
+                    reject({err: error});
                 } else {
-                    //查询到相同数据后，更新数据
                     if(rows && rows.length>0){
-                        logger.info('adminUserMobileLogin getDeviceInfo ' + params.adminId +' '+sysMsg.CUST_SIGNUP_REGISTERED);
-                        //resUtil.resetFailedRes(res,sysMsg.CUST_SIGNUP_REGISTERED) ;
-                        //更新设备信息
-                        adminDeviceInfoDao.updateDeviceInfo({adminId:rows[0].id,appType:params.appType,appVersion:params.appVersion},(error,rows)=>{
-                            if(error){
-                                logger.error('adminUserMobileLogin updateDeviceInfo ' + error.message);
-                                resUtil.resetFailedRes(error,res,next);
-                            }else{
-                                logger.info('adminUserMobileLogin updateDeviceInfo ' + 'success');
-                                resUtil.resetQueryRes(res,userMsg,null);
-                                // resUtil.resetCreateRes(res,result,null);
-                                //return next();
-                            }
-                        })
+                        logger.info('adminUserMobileLogin getDeviceInfo ' + devinfo.adminId +' '+sysMsg.CUST_SIGNUP_REGISTERED);
+                        resolve({rows:rows[0]});
                     }else{
-                        resolve();
+                        resolve({info:devinfo});
                     }
                 }
             })
-        }).then(()=>{
-            //添加设备信息
-            adminDeviceInfoDao.addDeviceInfo(params,(error,rows)=>{
+        });
+    }
+    const updataDeviceInfo = (row) =>{
+        return new Promise((resolve,reject) =>{
+            adminDeviceInfoDao.updateDeviceInfo({adminId:row.id,appType:params.appType,appVersion:params.appVersion},(error,rows)=>{
                 if(error){
-                    logger.error('adminUserMobileLogin addDeviceInfo ' + error.message);
-                    resUtil.resetFailedRes(error,res,next);
+                    logger.error('adminUserMobileLogin updateDeviceInfo ' + error.message);
+                    reject({err: error});
                 }else{
-                    logger.info('adminUserMobileLogin addDeviceInfo ' + 'success');
+                    logger.info('adminUserMobileLogin updateDeviceInfo ' + 'success');
                     resUtil.resetQueryRes(res,userMsg,null);
-                    // resUtil.resetCreateRes(res,result,null);
                     return next();
                 }
             })
+        });
+    }
+    const insterDeviceInfo = (devinfo) =>{
+        return new Promise((resolve,reject)=>{
+            adminDeviceInfoDao.addDeviceInfo(devinfo,(error,rows)=>{
+                if(error){
+                    logger.error('adminUserMobileLogin addDeviceInfo ' + error.message);
+                    reject({err: error});
+                }else{
+                    logger.info('adminUserMobileLogin addDeviceInfo ' + 'success');
+                    resUtil.resetQueryRes(res,userMsg,null);
+                    return next();
+                }
+            })
+        });
+    }
+    getAdminInfo()
+        .then(getAdminDeviceInfo)
+        .then((resolve)=>{
+            if(resolve.info){
+                insterDeviceInfo(resolve.info);
+            }else{
+                updataDeviceInfo(resolve.rows);
+            }
         })
-    });
+        .catch((reject)=>{
+            if(reject.err){
+                resUtil.resInternalError(reject.err,res,next);
+            }else if(reject.registeredMsg){
+                resUtil.resetFailedRes(res,reject.registeredMsg) ;//用户不存在
+            }else if(reject.pawdMsg){
+                resUtil.resetFailedRes(res,reject.pawdMsg) ;//密码不正确
+            }else if(reject.staMsg){
+                resUtil.resetFailedRes(res,"该管理员不可用!");
+            }
+        })
 }
 const getAdminUserInfo = (req,res,next) => {
     let params = req.params;
