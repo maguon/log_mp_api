@@ -66,7 +66,7 @@ const updateCity = (req,res,next) =>{
     })
 }
 
-const updateCityPY = (req,res,next) =>{
+const updateCitySpell = (req,res,next) =>{
     let params = req.params;
     cityInfoDAO.queryCity(params,(error,rows)=>{
         if(error){
@@ -120,6 +120,6 @@ module.exports = {
     addCity,
     queryCity,
     updateCity,
-    updateCityPY,
+    updateCitySpell,
     queryCityAdmin
 }
