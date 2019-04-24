@@ -547,43 +547,6 @@
         }
       }
     },
-    "/createAdmin": {
-      "post": {
-        "tags": [
-          "admin"
-        ],
-        "summary": "insert",
-        "description": "createAdmin",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "createAdmin",
-            "in": "body",
-            "description": "createAdmin",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/createAdmin"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/createAdmin"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
     "/admin/do/login": {
       "post": {
         "tags": [

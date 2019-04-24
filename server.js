@@ -230,7 +230,6 @@ const createServer=()=>{
     /**
      admin_user
      */
-    server.post({path:'/api/createAdmin',contentType: 'application/json'},adminUser.createAdminUser);
     server.get('/api/adminUser' ,adminUser.getAdminUserInfo);
     server.post({path:'/api/admin/do/login',contentType: 'application/json'},adminUser.adminUserLogin);
     server.put({path:'/api/admin/:adminId',contentType: 'application/json'} ,adminUser.updateAdminInfo);
