@@ -12079,10 +12079,7 @@
         "password": {
           "type": "string"
         },
-        "phone": {
-          "type": "string"
-        },
-        "status": {
+        "type": {
           "type": "integer"
         }
       },

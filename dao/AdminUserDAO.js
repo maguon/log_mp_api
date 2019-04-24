@@ -5,12 +5,13 @@ const serverLogger = require('../util/ServerLogger.js');
 const logger = serverLogger.createLogger('AdminUserDAO.js');
 
 const createAdminUser = (params,callback) => {
-    let query = " insert into admin_user (user_name,real_name,password,phone,status) values ( ? , ? , ? , ? , ? )";
+    let query = " insert into admin_user (user_name,real_name,password,type,phone,status) values ( ? , ? , ? ,? ,? , ? )";
     let paramsArray=[],i=0;
     paramsArray[i++]=params.userName;
     paramsArray[i++]=params.realName;
     paramsArray[i++]=params.password;
-    paramsArray[i++]=params.phone;
+    paramsArray[i++]=params.type;
+    paramsArray[i++]=params.userName;//电话号
     paramsArray[i]=params.status;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug(' createAdminUser ');

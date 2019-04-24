@@ -14,45 +14,58 @@ const sysConsts = require("../util/SystemConst");
 
 const createAdminUser = (req,res,next) => {
     let params = req.params;
-    new Promise((resolve,reject)=>{
-        adminUserDao.queryAdminUser({phone:params.phone},(error,rows)=>{
-            if (error) {
-                logger.error('createAdminUser queryAdminUser ' + error.message );
-                resUtil.resInternalError(error,res,next);
-                return next();
-            } else {
-                if(rows && rows.length>0){
-                    logger.warn('createAdminUser queryAdminUser ' +params.phone+' '+sysMsg.CUST_SIGNUP_REGISTERED );
-                    resUtil.resetFailedRes(res,sysMsg.CUST_SIGNUP_REGISTERED) ;
-                    return next();
-                }else{
-                    resolve();
-                }
-            }
-        })
-    }).then(()=>{
-        params.password = encrypt.encryptByMd5(params.password);
-        adminUserDao.createAdminUser(params,(error,result)=>{
-            if (error) {
-                logger.error(' createAdminUser ' + error.message );
-                resUtil.resInternalError(error,res,next);
-            } else {
-                if(result && result.insertId>0){
-                    logger.info(' createAdminUser ' + 'success ');
-                    let user = {
-                        userId : result.insertId,
-                        userStatus : listOfValue.USER_STATUS_ACTIVE
+    const getAdminUser = () =>{
+        return new Promise((resolve,reject)=>{
+            adminUserDao.queryAdminUser({userName:params.userName},(error,rows)=>{
+                if (error) {
+                    logger.error('createAdminUser queryAdminUser ' + error.message );
+                    reject({err:error});
+                } else {
+                    if(rows && rows.length>0){
+                        logger.warn('createAdminUser queryAdminUser ' +params.userName+' '+sysMsg.CUST_SIGNUP_REGISTERED );
+                        reject({msg:sysMsg.CUST_SIGNUP_REGISTERED});
+                    }else{
+                        params.status = sysConsts.ADMIN_INFO.Status.available;
+                        resolve(params);
                     }
-                    user.accessToken = oAuthUtil.createAccessToken(oAuthUtil.clientType.user,user.userId,user.userStatus);
-                    resUtil.resetQueryRes(res,user,null);
-                }else{
-                    logger.warn(' createAdminUser ' + 'false ');
-                    resUtil.resetFailedRes(res,sysMsg.SYS_INTERNAL_ERROR_MSG);
                 }
-                return next();
+            })
+        });
+    }
+    const createAdminUser = (adminInfo) => {
+        return new Promise((resolve,reject)=>{
+            adminInfo.password = encrypt.encryptByMd5(adminInfo.password);
+            adminUserDao.createAdminUser(adminInfo,(error,result)=>{
+                if (error) {
+                    logger.error(' createAdminUser ' + error.message );
+                    reject({err:error});
+                } else {
+                    if(result && result.insertId>0){
+                        logger.info(' createAdminUser ' + 'success ');
+                        let user = {
+                            userId : result.insertId,
+                            userStatus : listOfValue.USER_STATUS_ACTIVE
+                        }
+                        user.accessToken = oAuthUtil.createAccessToken(oAuthUtil.clientType.user,user.userId,user.userStatus);
+                        resUtil.resetQueryRes(res,user,null);
+                        return next();
+                    }else{
+                        logger.warn(' createAdminUser ' + 'false ');
+                        reject({msg:sysMsg.SYS_INTERNAL_ERROR_MSG});
+                    }
+                }
+            })
+        });
+    }
+    getAdminUser()
+        .then(createAdminUser)
+        .catch((reject)=>{
+            if(reject.err){
+                resUtil.resInternalError(reject.err,res,next);
+            }else{
+                resUtil.resetFailedRes(res,reject.msg) ;
             }
         })
-    })
 }
 const adminUserLogin = (req,res,next) => {
     let params = req.params;
@@ -106,7 +119,6 @@ const adminUserLogin = (req,res,next) => {
         }
     })
 }
-
 const adminUserMobileLogin = (req,res,next) =>{
     let params = req.params;
     let userMsg={};
@@ -120,18 +132,18 @@ const adminUserMobileLogin = (req,res,next) =>{
                     //判断用户密码
                     if(rows && rows.length<0){
                         logger.warn('adminUserMobileLogin queryAdminUser ' +params.adminId+' '+sysMsg.CUST_SIGNUP_REGISTERED);
-                        reject({registeredMsg:sysMsg.CUST_SIGNUP_REGISTERED});
+                        reject({msg:sysMsg.CUST_SIGNUP_REGISTERED});
                     }else{
                         let passwordMd5 = encrypt.encryptByMd5(params.password);
                         if(passwordMd5 != rows[0].password){
                             //密码不匹配
                             logger.warn('adminUserMobileLogin queryPassword: ' +params.adminId+' '+sysMsg.CUST_LOGIN_PSWD_ERROR);
-                            reject({pawdMsg:sysMsg.CUST_SIGNUP_REGISTERED});
+                            reject({msg:sysMsg.CUST_SIGNUP_REGISTERED});
                         }else{
                             //密码正确
                             if(rows[0].status == listOfValue.ADMIN_USER_STATUS_NOT_ACTIVE){
                                 logger.info('adminUserMobileLogin queryStatus ' +params.userName+ " not verified ");
-                                reject({staMsg:sysMsg.CUST_SIGNUP_REGISTERED});
+                                reject({msg:"该管理员不可用!"});
                             }else {
                                 params.adminId  = rows[0].id;
                                 params.status  = rows[0].status;
@@ -204,12 +216,8 @@ const adminUserMobileLogin = (req,res,next) =>{
         .catch((reject)=>{
             if(reject.err){
                 resUtil.resInternalError(reject.err,res,next);
-            }else if(reject.registeredMsg){
-                resUtil.resetFailedRes(res,reject.registeredMsg) ;//用户不存在
-            }else if(reject.pawdMsg){
-                resUtil.resetFailedRes(res,reject.pawdMsg) ;//密码不正确
-            }else if(reject.staMsg){
-                resUtil.resetFailedRes(res,"该管理员不可用!");
+            }else if(reject.msg){
+                resUtil.resetFailedRes(res,reject.msg) ;
             }
         })
 }

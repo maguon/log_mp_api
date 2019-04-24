@@ -157,6 +157,12 @@ const CALCULATED_AMOUNT = {
     notOldCarRatio:0.1,//非二手车估值0.1
     kmUnitPrice:1.2//公里单价1.2元
 }
+const ADMIN_INFO ={
+    Status:{
+        disable:0,//停用
+        available:1//可用
+    }
+}
 module.exports = {
     CAR_MODEL,
     PAYMENT,
@@ -173,5 +179,6 @@ module.exports = {
     SUPPLIER,
     LOAD_TASK_STATUS,
     LOAD_TASK_PAYMENTFLAG,
-    CALCULATED_AMOUNT
+    CALCULATED_AMOUNT,
+    ADMIN_INFO
 }
