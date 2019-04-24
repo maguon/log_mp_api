@@ -142,44 +142,6 @@ const updateCitySpell = (req,res,next) =>{
                 resUtil.resetFailedRes(res,reject.msg);
             }
         })
-
-/*
-    //==========================================================
-    cityInfoDAO.queryCity(params,(error,rows)=>{
-        if(error){
-            logger.error('updateCityPY queryCity ' + error.message);
-            resUtil.resInternalError(error,res,next);
-        }else if(rows && rows.length < 1){
-            logger.warn('updateCityPY queryCity ' + 'No city information!');
-            resUtil.resetFailedRes(res,'无城市信息');
-            return next();
-        }else{
-            //rows.forEach(function (row){
-            for(let i = 0 ; i < rows.length ; i++){
-                let pinyin = trans.slugify(rows[i].city_name);
-                params.cityPinYin = pinyin.replace(new RegExp("-","g"),"");
-                params.cityPY = "";
-                let index = pinyin.split("-");
-                for (let i =0;i<index.length;i++){
-                    params.cityPY += index[i].substr(0,1);
-                }
-                params.cityName = rows[i].city_name;
-                params.cityId = rows[i].id;
-                cityInfoDAO.updateCity(params,(error,result)=>{
-                    if(error){
-                        logger.error('updateCityPY updateCity ' + error.message);
-                        resUtil.resInternalError(error,res,next);
-                    }else{
-                        logger.info('updateCityPY updateCity ' + 'success');
-                        resUtil.resetCreateRes(res,result,null);
-                        return next();
-                    }
-                })
-            }
-        }
-    })
-
- */
 }
 //暂时不适用queryCityAdmin
 const queryCityAdmin = (req,res,next) => {
