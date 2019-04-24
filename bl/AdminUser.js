@@ -12,61 +12,6 @@ const serverLogger = require('../util/ServerLogger.js');
 const logger = serverLogger.createLogger('AdminUser.js');
 const sysConsts = require("../util/SystemConst");
 
-const createAdminUser = (req,res,next) => {
-    let params = req.params;
-    const getAdminUser = () =>{
-        return new Promise((resolve,reject)=>{
-            adminUserDao.queryAdminUser({userName:params.userName},(error,rows)=>{
-                if (error) {
-                    logger.error('createAdminUser queryAdminUser ' + error.message );
-                    reject({err:error});
-                } else {
-                    if(rows && rows.length>0){
-                        logger.warn('createAdminUser queryAdminUser ' +params.userName+' '+sysMsg.CUST_SIGNUP_REGISTERED );
-                        reject({msg:sysMsg.CUST_SIGNUP_REGISTERED});
-                    }else{
-                        params.status = sysConsts.ADMIN_INFO.Status.available;
-                        resolve(params);
-                    }
-                }
-            })
-        });
-    }
-    const createAdminUser = (adminInfo) => {
-        return new Promise((resolve,reject)=>{
-            adminInfo.password = encrypt.encryptByMd5(adminInfo.password);
-            adminUserDao.createAdminUser(adminInfo,(error,result)=>{
-                if (error) {
-                    logger.error(' createAdminUser ' + error.message );
-                    reject({err:error});
-                } else {
-                    if(result && result.insertId>0){
-                        logger.info(' createAdminUser ' + 'success ');
-                        let user = {
-                            userId : result.insertId,
-                            userStatus : listOfValue.USER_STATUS_ACTIVE
-                        }
-                        user.accessToken = oAuthUtil.createAccessToken(oAuthUtil.clientType.user,user.userId,user.userStatus);
-                        resUtil.resetQueryRes(res,user,null);
-                        return next();
-                    }else{
-                        logger.warn(' createAdminUser ' + 'false ');
-                        reject({msg:sysMsg.SYS_INTERNAL_ERROR_MSG});
-                    }
-                }
-            })
-        });
-    }
-    getAdminUser()
-        .then(createAdminUser)
-        .catch((reject)=>{
-            if(reject.err){
-                resUtil.resInternalError(reject.err,res,next);
-            }else{
-                resUtil.resetFailedRes(res,reject.msg) ;
-            }
-        })
-}
 const adminUserLogin = (req,res,next) => {
     let params = req.params;
     adminUserDao.queryAdminUser({userName:params.userName},(error,rows)=>{
@@ -316,37 +261,71 @@ const changeAdminPassword = (req,res,next) => {
 }
 const addAdminUser = (req,res,next) => {
     let params = req.params;
-    new Promise((resolve,reject)=>{
-        adminUserDao.queryAdminUser({adminId:params.adminId},(error,rows)=>{
-            if(error){
-                logger.error('addAdminUser queryAdminUser ' + error.message);
-                resUtil.resInternalError(error,res,next);
-                reject(error);
-            }else{
-                logger.info('addAdminUser queryAdminUser ' + 'success');
-                if (rows[0].type == sysConsts.SUPER_ADMIN_TYPE){
-                    resolve();
-                }else {
-                    resUtil.resetFailedRes(res,sysMsg.ADMIN_SUPER_USER_CREATE);
+    const getAdminId = () =>{
+        return new Promise((resolve,reject)=>{
+            adminUserDao.queryAdminUser({adminId:params.adminId},(error,rows)=>{
+                if(error){
+                    logger.error('addAdminUser getAdminId ' + error.message);
+                    reject(error);
+                }else{
+                    logger.info('addAdminUser getAdminId ' + 'success');
+                    if (rows[0].type == sysConsts.SUPER_ADMIN_TYPE){
+                        resolve(params);
+                    }else {
+                        reject({msg:sysMsg.ADMIN_SUPER_USER_CREATE});
+
+                    }
                 }
+            })
+
+        });
+    }
+    const getAdminInfo = (adminInfo) =>{
+        return new Promise((resolve,reject)=>{
+            adminUserDao.queryAdminUser({phone:adminInfo.phone},(error,rows)=>{
+                if (error) {
+                    logger.error('addAdminUser getAdminInfo ' + error.message );
+                    reject({err:error});
+                } else {
+                    if(rows && rows.length>0){
+                        logger.warn('addAdminUser getAdminInfo ' +adminInfo.phone+' '+sysMsg.CUST_SIGNUP_REGISTERED );
+                        reject({msg:sysMsg.CUST_SIGNUP_REGISTERED});
+                    }else{
+                        params.status = sysConsts.ADMIN_INFO.Status.available;
+                        resolve(adminInfo);
+                    }
+                }
+            })
+        });
+    }
+    const insterAdminInfo = (adminInfo) =>{
+        return new Promise((resolve,reject)=>{
+            adminInfo.userName = adminInfo.phone;
+            adminInfo.password = encrypt.encryptByMd5(adminInfo.password);
+            adminUserDao.add(adminInfo,(error,rows)=>{
+                if(error){
+                    logger.error('addAdminUser insterAdminInfo ' + error.message);
+                    reject(error);
+                }else{
+                    logger.info('addAdminUser insterAdminInfo ' + 'success');
+                    if (rows.insertId){
+                        resUtil.resetCreateRes(res,rows,null);
+                        return next();
+                    }
+                }
+            })
+        });
+    }
+    getAdminId()
+        .then(getAdminInfo)
+        .then(insterAdminInfo)
+        .catch((reject)=>{
+            if(reject.err){
+                resUtil.resInternalError(reject.err,res,next);
+            }else{
+                resUtil.resetFailedRes(res,reject.msg);
             }
         })
-    }).then(()=>{
-        params.userName = params.phone;
-        params.password = encrypt.encryptByMd5(params.password);
-        adminUserDao.add(params,(error,rows)=>{
-            if(error){
-                logger.error('addAdminUser add ' + error.message);
-                resUtil.resInternalError(error,res,next);
-            }else{
-                logger.info('addAdminUser add ' + 'success');
-                if (rows.insertId){
-                    resUtil.resetCreateRes(res,rows,null);
-                    return next;
-                }
-            }
-        })
-    })
 }
 const updateAdminStatus = (req,res,next) => {
     let params = req.params;
@@ -401,7 +380,6 @@ const changeToken=(req,res,next)=>{
     })
 };
 module.exports = {
-    createAdminUser,
     adminUserLogin,
     adminUserMobileLogin,
     getAdminUserInfo,
