@@ -68,6 +68,83 @@ const updateCity = (req,res,next) =>{
 
 const updateCitySpell = (req,res,next) =>{
     let params = req.params;
+    let updateResult = {
+        success:0,
+        failed : 0
+    }
+    const getCityList = () =>{
+        return new Promise((resolve,reject)=>{
+            cityInfoDAO.queryCity(params,(error,rows)=>{
+                if(error) {
+                    logger.error('updateCitySpell getCityList ' + error.message);
+                    reject({err:error});
+                }else{
+                    if(rows && rows.length > 1) {
+                        resolve(rows);
+                    }else{
+                        logger.warn('updateCitySpell getCityList ' + ' no city info! ');
+                        reject({msg:'无城市信息'});
+                    }
+                }
+            })
+        });
+    }
+    const updateCityPY= (cityParams) =>{
+        return new Promise((resolve,reject)=>{
+            cityInfoDAO.updateCity(cityParams,(error,result)=>{
+                if(error){
+                    logger.error('updateCitySpell updateCity ' + error.message);
+                    reject({err:error});
+                }else{
+                    logger.info('updateCitySpell updateCity ' + 'success');
+                    return resolve(result);
+                }
+            })
+        });
+    }
+    const updateCiytListPY = (cityArray) =>{
+        let subRes = Promise.resolve();
+        cityArray.forEach((cityItem,i)=>{
+            let pinyin = trans.slugify(cityItem.city_name);
+            let cityParams  = {};
+            cityParams.cityPinYin = pinyin.replace(new RegExp("-","g"),"");
+            cityParams.cityPY = "";
+            let index = pinyin.split("-");
+            for (let i =0;i<index.length;i++){
+                cityParams.cityPY += index[i].substr(0,1);
+            }
+            cityParams.cityName = cityItem.city_name;
+            cityParams.cityId = cityItem.id;
+            subRes.then(()=>{
+                return updateCityPY(cityParams).then((res)=>{
+                    if (res && res.affectedRows > 0) {
+                        updateResult.success += 1;
+                    } else {
+                        updateResult.failed += 1;
+                    }
+                });
+            })
+        })
+        return new subRes.then(()=>{
+            return updateResult
+        });
+    }
+    getCityList()
+        .then(updateCiytListPY)
+        .then((result) =>{
+            resUtil.resetQueryRes(res,updateResult,null);
+            return next();
+        })
+        .catch((reject)=>{
+            if(reject.err){
+                resUtil.resInternalError(reject.err, res, next);
+            }else{
+                resUtil.resetFailedRes(res,reject.msg);
+            }
+        })
+
+/*
+    //==========================================================
     cityInfoDAO.queryCity(params,(error,rows)=>{
         if(error){
             logger.error('updateCityPY queryCity ' + error.message);
@@ -101,6 +178,8 @@ const updateCitySpell = (req,res,next) =>{
             }
         }
     })
+
+ */
 }
 //暂时不适用queryCityAdmin
 const queryCityAdmin = (req,res,next) => {
