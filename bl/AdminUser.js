@@ -14,55 +14,75 @@ const sysConsts = require("../util/SystemConst");
 
 const adminUserLogin = (req,res,next) => {
     let params = req.params;
-    adminUserDao.queryAdminUser({userName:params.userName},(error,rows)=>{
-        if(error){
-            logger.error('adminUserLogin queryAdminUser ' + error.message );
-            resUtil.resInternalError(error,res,next);
-        }else{
-            if(rows && rows.length < 1){
-                logger.warn('adminUserLogin queryAdminUser ' +params.userName+' '+sysMsg.ADMIN_LOGIN_USER_UNREGISTERED );
-                resUtil.resetFailedRes(res,sysMsg.ADMIN_LOGIN_USER_UNREGISTERED) ;
-                return next();
-            }else{
-                let passwordMd5 = encrypt.encryptByMd5(params.password);
-                if(passwordMd5 != rows[0].password){
-                    logger.warn('adminUserLogin queryPassword ' +params.phone+' '+sysMsg.CUST_LOGIN_PSWD_ERROR);
-                    resUtil.resetFailedRes(res,sysMsg.CUST_LOGIN_PSWD_ERROR) ;
-                    return next();
+    const getAdmin = () =>{
+        return new Promise((resolve,reject)=>{
+            adminUserDao.queryAdminUser({userName:params.userName},(error,rows)=>{
+                if(error) {
+                    logger.error('adminUserLogin getAdmin ' + error.message);
+                    reject({err:error});
                 }else{
-                    if(rows[0].status == listOfValue.ADMIN_USER_STATUS_NOT_ACTIVE){
-                        let user = {
-                            userId : rows[0].id,
-                            userStatus : rows[0].status
-                        }
-                        logger.info('adminUserLogin queryStatus ' +params.userName+ " not verified");
-                        resUtil.resetQueryRes(res,user,null);
-                        return next();
+                    if(rows && rows.length < 1) {
+                        logger.warn('adminUserLogin getAdmin ' + params.userName + ' ' + sysMsg.ADMIN_LOGIN_USER_UNREGISTERED);
+                        reject({msg:sysMsg.ADMIN_LOGIN_USER_UNREGISTERED});
                     }else{
-                        let user = {
-                            userId : rows[0].id,
-                            status : rows[0].status,
-                            type: rows[0].type
-                        }
-                        user.accessToken = oAuthUtil.createAccessToken(oAuthUtil.clientType.admin,user.userId,user.status);
-                        oAuthUtil.saveToken(user,function(error,result){
-                            if(error){
-                                logger.error('adminUserLogin changeUserToken ' + error.stack);
-                                return next(sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG))
-                            }else{
-                                logger.info('adminUserLogin changeUserToken ' +params.userId+ " success");
-                                resUtil.resetQueryRes(res,user,null);
-                                return next();
-                            }
-                        })
-                        // logger.info('adminUserLogin' +params.userName+ " success");
-                        // resUtil.resetQueryRes(res,user,null);
-                        // return next();
+                        resolve(rows[0]);
                     }
                 }
+            })
+        });
+    }
+    const getPassword = (adminInfo) =>{
+        return new Promise((resolve,reject)=>{
+            let passwordMd5 = encrypt.encryptByMd5(params.password);
+            if(passwordMd5 != adminInfo.password) {
+                logger.warn('adminUserLogin getPassword ' + params.phone + ' ' + sysMsg.CUST_LOGIN_PSWD_ERROR);
+                reject({msg:sysMsg.CUST_LOGIN_PSWD_ERROR});
+            }else{
+                if(adminInfo.status == listOfValue.ADMIN_USER_STATUS_NOT_ACTIVE) {
+                    let user = {
+                        userId: adminInfo.id,
+                        userStatus: adminInfo.status
+                    }
+                    logger.info('adminUserLogin getPassword ' + params.userName + " not verified");
+                    resUtil.resetQueryRes(res, user, null);
+                    return next();
+                }else{
+                    resolve(adminInfo);
+                }
             }
-        }
-    })
+        });
+    }
+    const adminLogin = (adminInfo) =>{
+        return new Promise(()=>{
+            let user = {
+                userId : adminInfo.id,
+                status : adminInfo.status,
+                type: adminInfo.type
+            }
+            user.accessToken = oAuthUtil.createAccessToken(oAuthUtil.clientType.admin,user.userId,user.status);
+            oAuthUtil.saveToken(user,function(error,result){
+                if(error){
+                    logger.error('adminUserLogin adminLogin ' + error.stack);
+                    return next(sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG))
+                }else{
+                    logger.info('adminUserLogin adminLogin ' +adminInfo.userId+ " success");
+                    resUtil.resetQueryRes(res,user,null);
+                    return next();
+                }
+            })
+
+        });
+    }
+    getAdmin()
+        .then(getPassword)
+        .then(adminLogin)
+        .catch((reject)=>{
+            if(reject.err) {
+                resUtil.resInternalError(reject.err, res, next);
+            }else{
+                resUtil.resetFailedRes(res, reject.msg);
+            }
+        })
 }
 const adminUserMobileLogin = (req,res,next) =>{
     let params = req.params;
