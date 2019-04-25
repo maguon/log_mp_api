@@ -54,19 +54,19 @@ const adminUserLogin = (req,res,next) => {
     }
     const adminLogin = (adminInfo) =>{
         return new Promise(()=>{
-            let user = {
+            let admin = {
                 userId : adminInfo.id,
                 status : adminInfo.status,
                 type: adminInfo.type
             }
-            user.accessToken = oAuthUtil.createAccessToken(oAuthUtil.clientType.admin,user.userId,user.status);
-            oAuthUtil.saveToken(user,function(error,result){
+            admin.accessToken = oAuthUtil.createAccessToken(oAuthUtil.clientType.admin,admin.userId,admin.status);
+            oAuthUtil.saveToken(admin,function(error,result){
                 if(error){
                     logger.error('adminUserLogin adminLogin ' + error.stack);
                     return next(sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG))
                 }else{
                     logger.info('adminUserLogin adminLogin ' +adminInfo.userId+ " success");
-                    resUtil.resetQueryRes(res,user,null);
+                    resUtil.resetQueryRes(res,admin,null);
                     return next();
                 }
             })
@@ -374,44 +374,63 @@ const updateAdminStatus = (req,res,next) => {
         }
     })
 }
-const changeToken=(req,res,next)=>{
+const changeAdminToken=(req,res,next)=>{
     let params = req.params;
     let adminUser ={
         userId:params.adminId
     }
-    new Promise((resolve,reject)=>{
-        adminUserDao.queryAdminUser(params,(error,rows)=>{
-            if(error){
-                logger.error('changeToken queryUser: ' + error.message);
-                resUtil.resetFailedRes(error,res,next);
-                reject(error);
-            }else{
-                logger.info('changeToken queryUser: ' + 'success');
-                adminUser.status = rows[0].status;
-                resolve();
-            }
+    const getAdminUser = () =>{
+        return new Promise((resolve,reject)=>{
+            adminUserDao.queryAdminUser(params,(error,rows)=>{
+                if(error){
+                    logger.error('changeAdminToken getAdminUser ' + error.message);
+                    reject(error);
+                }else{
+                    logger.info('changeAdminToken getAdminUser ' + 'success');
+                    adminUser.status = rows[0].status;
+                    resolve(adminUser);
+                }
+            });
         });
-    }).then(()=>{
-        user.accessToken = oAuthUtil.createAccessToken(oAuthUtil.clientType.user,adminUser.userId,adminUser.status);
-        oAuthUtil.removeToken({accessToken:params.token},function(error,result){
-            if(error) {
-                logger.error('changeAdminUserToken ' + error.stack);
-                resUtil.resInternalError(error,res,next);
-            }else {
-                logger.info(' changeAdminUserToken ' + 'success');
-                oAuthUtil.saveToken(user,function(error,result){
-                    if(error){
-                        logger.error(' changeAdminUserToken ' + error.stack);
-                        return next(sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG))
-                    }else{
-                        logger.info(' changeAdminUserToken ' +params.adminId+ " success");
-                        resUtil.resetQueryRes(res,adminUser,null);
-                        return next();
-                    }
-                })
+    }
+    const removeToken = (adminInfo) =>{
+        return new Promise((resolve,reject)=>{
+            adminInfo.accessToken = oAuthUtil.createAccessToken(oAuthUtil.clientType.admin,adminInfo.userId,adminInfo.status);
+            oAuthUtil.removeToken({accessToken:params.token},function(error,result) {
+                if (error) {
+                    logger.error('changeAdminToken removeToken ' + error.stack);
+                    reject(error);
+                }else{
+                    logger.info(' changeAdminToken removeToken ' + 'success');
+                    resolve(adminInfo);
+                }
+            });
+        });
+    }
+    const saveToken = (adminInfo) =>{
+        return new Promise((resolve,reject)=>{
+            oAuthUtil.saveToken(adminInfo,function(error,result){
+                if(error){
+                    logger.error(' changeAdminToken saveToken ' + error.stack);
+                    return next(sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG))
+                }else{
+                    logger.info(' changeAdminToken saveToken ' +adminInfo.adminId+ " success");
+                    resUtil.resetQueryRes(res,adminInfo,null);
+                    return next();
+                }
+            })
+        });
+    }
+    getAdminUser()
+        .then(removeToken)
+        .then(saveToken)
+        .catch((reject)=>{
+            if(reject.err){
+                resUtil.resInternalError(reject.err,res,next);
+            }else{
+                resUtil.resetFailedRes(res,reject.msg);
             }
         })
-    })
 };
 module.exports = {
     adminUserLogin,
@@ -421,5 +440,5 @@ module.exports = {
     changeAdminPassword,
     addAdminUser,
     updateAdminStatus,
-    changeToken
+    changeAdminToken
 }
