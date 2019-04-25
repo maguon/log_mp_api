@@ -201,33 +201,47 @@ const getAdminUserInfo = (req,res,next) => {
 }
 const updateAdminInfo = (req,res,next) => {
     let params = req.params;
-    new Promise((resolve,reject)=>{
-        adminUserDao.queryAdminUser({adminId:params.id},(error,rows)=>{
-            if(error){
-                logger.error('updateAdminInfo queryAdminUser ' + error.message);
-                resUtil.resInternalError(error,res,next);
-                reject(error);
-            }else{
-                logger.info('updateAdminInfo queryAdminUser ' + 'success');
-                if(rows.length > 0){
-                    resolve();
-                }else {
-                    resUtil.resetFailedRes(res,sysMsg.ADMIN_NO_USER);
+    const getAdminUser = () => {
+        return new Promise((resolve,reject)=>{
+            adminUserDao.queryAdminUser({adminId:params.id},(error,rows)=>{
+                if(error){
+                    logger.error('updateAdminInfo getAdminUser ' + error.message);
+                    reject(error);
+                }else{
+                    if(rows.length > 0){
+                        logger.info('updateAdminInfo getAdminUser ' + 'success');
+                        resolve(params);
+                    }else {
+                        logger.warn('updateAdminInfo getAdminUser ' + params.id +' '+ sysMsg.ADMIN_NO_USER);
+                        reject({msg:sysMsg.ADMIN_NO_USER});
+                    }
                 }
-            }
-        })
-    }).then(()=>{
-        adminUserDao.updateInfo(params,(error,result)=>{
-            if(error){
-                logger.error('updateAdminInfo updateInfo ' + error.message);
-                resUtil.resInternalError(error,res,next);
+            })
+        });
+    }
+    const updateAdmin = (adminInfo) =>{
+        return new Promise((resolve,reject)=>{
+            adminUserDao.updateInfo(adminInfo,(error,result)=>{
+                if(error){
+                    logger.error('updateAdminInfo updateAdmin ' + error.message);
+                    reject(error);
+                }else{
+                    logger.info('updateAdminInfo updateAdmin ' + 'success');
+                    resUtil.resetUpdateRes(res,result,null);
+                    return next();
+                }
+            })
+        });
+    }
+    getAdminUser()
+        .then(updateAdmin)
+        .catch((reject)=>{
+            if(reject.err){
+                resUtil.resInternalError(reject.err,res,next);
             }else{
-                logger.info('updateAdminInfo updateInfo ' + 'success');
-                resUtil.resetUpdateRes(res,result,null);
-                return next();
+                resUtil.resetFailedRes(res,reject.msg);
             }
         })
-    })
 }
 const changeAdminPassword = (req,res,next) => {
     let params = req.params;
