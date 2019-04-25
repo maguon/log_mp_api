@@ -31,6 +31,52 @@ const sendAccountConfirmEmail = (req,res,next) => {
         text: sysConfig.accountMailConfig.name,
         html: mailTemplate.processTemplate(mailTemplate.accountWelcomeTemplate.html)
     };
+    const sendMail = ()=>{
+        return new Promise((resolve,reject)=>{
+            mailConnection.accountTransport.sendMail(mailOptions,(error,info)=>{
+                //console.log(info.messageId);
+                if (error) {
+                    //添加邮件发送失败记录
+                    params.status = 0;
+                    resolve(params);
+                }else{
+                    //添加邮件发送成功记录
+                    params.status = 1;
+                    resolve(params);
+                }
+            })
+        });
+    }
+    const addMailRecord = (mailRec)=>{
+        return new Promise((resolve,reject)=>{
+            emailHistoryDao.addMailRecord(mailRec,(error,result)=>{
+                if(error){
+                    logger.error('sendAccountConfirmEmail addMailRecord ' + error.message);
+                    reject(error.message);
+                }else{
+                    logger.info('sendAccountConfirmEmail addMailRecord '  + mailRec.email);
+                    if(mailRec.status == 1){
+                        resUtil.resetCreateRes(res,result,null);
+                        return next();
+                    }
+                }
+            });
+            if(mailRec.status == 0){
+                throw sysError.InternalError(error.message,sysError.InternalError);
+                return next();
+            }
+        });
+    }
+    sendMail()
+        .then(addMailRecord)
+        .catch((reject)=>{
+            if(reject){
+                resUtil.resInternalError(reject,res,next);
+            }
+        })
+
+    /*
+    //=====================================================
     mailConnection.accountTransport.sendMail(mailOptions,(error,info)=>{
         console.log(info.messageId);
         if (error) {
@@ -60,8 +106,8 @@ const sendAccountConfirmEmail = (req,res,next) => {
         }
         return next();
     });
-
-};
+*/
+}
 module.exports = {
     sendAccountConfirmEmail,
     queryMailRecord
