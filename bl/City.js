@@ -10,34 +10,55 @@ const cityInfoDAO = require('../dao/CityInfoDAO.js');
 
 const addCity = (req,res,next) =>{
     let params = req.params;
-    cityInfoDAO.queryCity(params,(error,rows)=>{
-        if(error){
-            logger.error('addCity queryCity ' + error.message);
-            resUtil.resInternalError(error,res,next);
-        }else if(rows && rows.length < 1){
-            let pinyin = trans.slugify(params.cityName);
-            params.cityPinYin = pinyin.replace(new RegExp("-","g"),"");
-            params.cityPY = "";
+    const getCity = () =>{
+        return new Promise((resolve,reject)=>{
+            cityInfoDAO.queryCity(params,(error,rows)=> {
+                if (error) {
+                    logger.error('addCity queryCity ' + error.message);
+                    resUtil.resInternalError(error, res, next);
+                }else{
+                    if(rows && rows.length < 1) {
+                        logger.warn('addCity getCity ' + 'success');
+                        resolve(params);
+                    }else{
+                        logger.warn('addCity getCity ' + 'The city has been added!');
+                        reject({msg:'已经添加该城市'});
+                    }
+
+                }
+            })
+        });
+    }
+    const addCity = (cityInfo) =>{
+        return new Promise((resolve,reject)=>{
+            let pinyin = trans.slugify(cityInfo.cityName);
+            cityInfo.cityPinYin = pinyin.replace(new RegExp("-","g"),"");
+            cityInfo.cityPY = "";
             let index = pinyin.split("-");
             for (let i =0;i<index.length;i++){
-                params.cityPY += index[i].substr(0,1);
+                cityInfo.cityPY += index[i].substr(0,1);
             }
-            cityInfoDAO.addCity(params,(error,result)=>{
+            cityInfoDAO.addCity(cityInfo,(error,result)=>{
                 if(error){
-                    logger.error(' addCity: ' + error.message);
-                    resUtil.resInternalError(error,res,next);
+                    logger.error(' addCity ' + error.message);
+                    reject({err:error.message});
                 }else{
-                    logger.info(' addCity: ' + 'success');
+                    logger.info(' addCity ' + 'success');
                     resUtil.resetCreateRes(res,result,null);
                     return next();
                 }
             })
-        }else{
-            logger.warn('addCity queryCity ' + 'The city has been added!');
-            resUtil.resetFailedRes(res,'已经添加该城市');
-            return next();
-        }
-    })
+        });
+    }
+    getCity()
+        .then(addCity)
+        .catch((reject)=>{
+            if(reject.err){
+                resUtil.resInternalError(reject.err,res,next);
+            }else{
+                resUtil.resetFailedRes(res,reject.msg);
+            }
+        })
 }
 const queryCity = (req,res,next) => {
     let params = req.params;
