@@ -230,13 +230,13 @@ const createServer=()=>{
     /**
      admin_user
      */
-    server.get('/api/adminUser' ,adminUser.getAdminUserInfo);
+    server.get('/api/admin' ,adminUser.getAdminUserInfo);
     server.post({path:'/api/admin/do/login',contentType: 'application/json'},adminUser.adminUserLogin);
     server.put({path:'/api/admin/:adminId',contentType: 'application/json'} ,adminUser.updateAdminInfo);
     server.put({path:'/api/admin/:adminId/password',contentType: 'application/json'} ,adminUser.changeAdminPassword);
     server.post({path:'/api/admin/:adminId',contentType: 'application/json'},adminUser.addAdminUser);
     server.put({path:'/api/admin/:adminId/status/:status',contentType: 'application/json'} ,adminUser.updateAdminStatus);
-    server.get('/api/admin/:adminId/token/:token' ,adminUser.changeToken);
+    server.get('/api/admin/:adminId/token/:token' ,adminUser.changeAdminToken);
     server.post({path:'/api/admin/:adminId/MobileLogin',contentType: 'application/json'},adminUser.adminUserMobileLogin);
 
     /**
