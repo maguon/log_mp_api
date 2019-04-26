@@ -55,17 +55,17 @@ const adminUserLogin = (req,res,next) => {
     const adminLogin = (adminInfo) =>{
         return new Promise(()=>{
             let admin = {
-                userId : adminInfo.id,
+                adminId : adminInfo.id,
                 status : adminInfo.status,
                 type: adminInfo.type
             }
-            admin.accessToken = oAuthUtil.createAccessToken(oAuthUtil.clientType.admin,admin.userId,admin.status);
+            admin.accessToken = oAuthUtil.createAccessToken(oAuthUtil.clientType.admin,admin.adminId,admin.status);
             oAuthUtil.saveToken(admin,function(error,result){
                 if(error){
                     logger.error('adminUserLogin adminLogin ' + error.stack);
                     return next(sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG))
                 }else{
-                    logger.info('adminUserLogin adminLogin ' +adminInfo.userId+ " success");
+                    logger.info('adminUserLogin adminLogin ' + admin.adminId + " success");
                     resUtil.resetQueryRes(res,admin,null);
                     return next();
                 }
