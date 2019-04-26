@@ -12,6 +12,7 @@ const systemConst = require('../util/SystemConst.js');
 const commonUtil = require("../util/CommonUtil");
 
 const addRouteInquiry = (req,res,next) => {
+    /*
     let params = req.params;
     params.dateId = moment().format("YYYYMMDD");
     const insetRouInq = () =>{
@@ -113,7 +114,8 @@ const addRouteInquiry = (req,res,next) => {
                 resUtil.resetFailedRes(res,reject.msg);
             }
         })
-    /*
+    */
+
     //=========================================================
     new Promise((resolve,reject)=>{
         params.dateId = moment().format("YYYYMMDD");
@@ -197,7 +199,7 @@ const addRouteInquiry = (req,res,next) => {
     }).catch((error)=>{
         resUtil.resInternalError(error,res,next);
     })
-     */
+
 }
 const getInquiryByUserId = (req,res,next) => {
     let params = req.params;
