@@ -35,32 +35,38 @@ const addInquiryBank = (req,res,next) => {
 }
 const updateInquiryBank = (req,res,next) => {
     let params = req.params;
-    new Promise((resolve,reject)=>{
-        inquiryBankDAO.updateInquiryBankStatus(params,(error,result)=>{
-            if(error){
-                logger.error('updateInquiryBank updateInquiryBankStatus ' + error.message);
-                reject();
-            }else{
-                logger.info('updateInquiryBank updateInquiryBankStatus '+'Modify the success!');
-                resolve();
-            }
-        })
-    }).then(()=>{
-        new Promise((resolve,reject)=>{
-            inquiryBankDAO.updateInquiryBank(params,(error,result)=>{
+    const updateStatus = () =>{
+        return new Promise((resolve,reject)=>{
+            inquiryBankDAO.updateInquiryBankStatus(params,(error,result)=>{
                 if(error){
-                    logger.error('updateInquiryBank ' + error.message);
-                    reject();
+                    logger.error('updateInquiryBank updateStatus ' + error.message);
+                    reject(error);
                 }else{
-                    logger.info('updateInquiryBank ' + 'success');
+                    logger.info('updateInquiryBank updateStatus '+'Modify the success!');
+                    resolve(params);
+                }
+            })
+        });
+    }
+    const updateBank = (inquiryBank) =>{
+        return new Promise((resolve,reject)=>{
+            inquiryBankDAO.updateInquiryBank(inquiryBank,(error,result)=>{
+                if(error){
+                    logger.error('updateInquiryBank updateBank ' + error.message);
+                    reject(error);
+                }else{
+                    logger.info('updateInquiryBank updateBank ' + 'success');
                     resUtil.resetUpdateRes(res,result,null);
                     return next();
                 }
             })
+        });
+    }
+    updateStatus()
+        .then(updateBank)
+        .catch((reject)=>{
+            resUtil.resInternalError(reject.err,res,next);
         })
-    }).catch((error)=>{
-        resUtil.resInternalError(error,res,next);
-    })
 }
 const deleteUserBank = (req,res,next) => {
     let params = req.params;
