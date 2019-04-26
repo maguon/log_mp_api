@@ -13,6 +13,107 @@ const commonUtil = require("../util/CommonUtil");
 
 const addRouteInquiry = (req,res,next) => {
     let params = req.params;
+    const insetRouInq = () =>{
+        return new Promise((resolve,reject)=>{
+            inquiryDAO.addRouteInquiry(params,(error,result)=> {
+                if (error) {
+                    logger.error('addRouteInquiry insetRouInq ' + error.message);
+                    reject(error);
+                }else{
+                    if(result && result.insertId < 1) {
+                        logger.warn('addRouteInquiry insetRouInq ' + ' Inquiry information creation failed!');
+                        reject({msg:'询价信息创建失败!'});
+                    }else{
+                        logger.info('addRouteInquiry insetRouInq ' + 'success');
+                        params.inquiryId = result.insertId;
+                        resolve(params.carInfo);
+                    }
+                }
+            })
+        });
+    }
+    const addCar = (CarRecords) =>{
+        return new Promise((resolve,reject)=>{
+            let x =0;
+            CarRecords.forEach((record,i)=>{
+                params.modelId = record.modelId;
+                params.oldCar = record.oldCar;
+                params.safeStatus = record.safeStatus;
+                params.plan = record.plan;
+                params.carNum = record.carNum;
+                let price = commonUtil.calculatedAmount(params.serviceType,record.oldCar,record.modelId,params.distance,record.safeStatus, record.plan);
+                params.transPrice = price.trans * record.carNum;
+                params.insurePrice = price.insure * record.carNum;
+                params.status = systemConst.CAR.inquiryStatus.showInUser;
+                inquiryCarDAO.addCar(params,(error,result)=>{
+                    if(error){
+                        logger.error('addRouteInquiry addCar ' + error.message);
+                        reject(error);
+                    }else{
+                        logger.info('addRouteInquiry addCar '+ i + ' success');
+                        x++;
+                        if (x == params.length){
+                            setTimeout(()=>{
+                                resolve();
+                            },500);
+                        }
+                    }
+                })
+            })
+        });
+    }
+    const getSum = ()=>{
+        return new Promise((resolve,reject)=>{
+            inquiryCarDAO.getSumPrice({inquiryId:params.inquiryId,status:systemConst.CAR.inquiryStatus.showInUser},(error,rows)=>{
+                if(error){
+                    logger.error('addRouteInquiry getSum ' + error.message);
+                    reject(error);
+                }else {
+                    if(rows && rows.length < 1){
+                        logger.warn('addRouteInquiry getSum '+'No vehicle valuation information available!');
+                        reject({msg:'查无此车辆估值信息!'});
+                    }else{
+                        logger.info('addRouteInquiry getSum '+'success');
+                        params.fee = rows[0].trans_price;
+                        params.safePrice = rows[0].insure_price;
+                        params.carNum = rows[0].sum_car_num;;
+                        resolve(params);
+                    }
+                }
+            })
+        });
+    }
+    const updateFee = (record) =>{
+        return new Promise((resolve,reject)=>{
+            inquiryDAO.updateFee({carNum:record.carNum,inquiryId:record.inquiryId,fee:record.fee,safePrice:record.safePrice},(error,result)=>{
+                if(error){
+                    logger.error('addRouteInquiry updateFee ' + error.message);
+                    reject(error);
+                }else{
+                    logger.info('addRouteInquiry updateFee '+'success');
+                    let inquiry_id = [{
+                        inquiryId:record.inquiryId
+                    }]
+                    resUtil.resetQueryRes(res,inquiry_id,null);
+                    return next();
+                }
+            })
+        });
+    }
+
+    insetRouInq()
+        .then(addCar)
+        .then(getSum)
+        .then(updateFee)
+        .catch((reject)=>{
+            if(reject.err){
+                resUtil.resInternalError(reject.err,res,next);
+            }else{
+                resUtil.resetFailedRes(res,reject.msg);
+            }
+        })
+    /*
+    //=========================================================
     new Promise((resolve,reject)=>{
         params.dateId = moment().format("YYYYMMDD");
         inquiryDAO.addRouteInquiry(params,(error,result)=>{
@@ -95,6 +196,7 @@ const addRouteInquiry = (req,res,next) => {
     }).catch((error)=>{
         resUtil.resInternalError(error,res,next);
     })
+     */
 }
 const getInquiryByUserId = (req,res,next) => {
     let params = req.params;
