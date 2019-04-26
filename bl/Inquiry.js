@@ -13,6 +13,7 @@ const commonUtil = require("../util/CommonUtil");
 
 const addRouteInquiry = (req,res,next) => {
     let params = req.params;
+    params.dateId = moment().format("YYYYMMDD");
     const insetRouInq = () =>{
         return new Promise((resolve,reject)=>{
             inquiryDAO.addRouteInquiry(params,(error,result)=> {
