@@ -54,7 +54,7 @@ const addRouteInquiry = (req,res,next) => {
                     }else{
                         logger.info('addRouteInquiry addCar '+ i + ' success');
                         x++;
-                        if (x == params.length){
+                        if (x == CarRecords.length){
                             setTimeout(()=>{
                                 resolve();
                             },500);
