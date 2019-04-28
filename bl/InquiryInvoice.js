@@ -31,14 +31,14 @@ const addInquiryInvoice = (req,res,next) => {
                     reject(error);
                 }else{
                     logger.info('addInquiryInvoice updateInvoice '+'success');
-                    resolve();
+                    resolve(params);
                 }
             })
         });
     }
-    const addInvoice = ()=>{
+    const addInvoice = (invoiceInfo)=>{
         return new Promise((resolve,reject)=>{
-            inquiryInvoiceDAO.addInquiryInvoice(params,(error,result)=>{
+            inquiryInvoiceDAO.addInquiryInvoice(invoiceInfo,(error,result)=>{
                 if(error){
                     logger.error('addInquiryInvoice addInvoice ' + error.message);
                     reject(error);
@@ -58,34 +58,40 @@ const addInquiryInvoice = (req,res,next) => {
 }
 const updateInquiryInvoiceStatus = (req,res,next) => {
     let params = req.params;
-    new Promise((resolve,reject)=>{
-        params.status = sysConsts.USER_INVOICE.status.normal;
-        inquiryInvoiceDAO.updateInquiryInvoiceStatusByUserId(params,(error,result)=>{
-            if(error){
-                logger.error('updateInquiryInvoiceStatus updateInquiryInvoiceStatusByUserId ' + error.message);
-                reject(error);
-            }else{
-                logger.info('updateInquiryInvoiceStatus updateInquiryInvoiceStatusByUserId '+'success');
-                resolve();
-            }
-        })
-    }).then(()=>{
-        new Promise((resolve,reject)=>{
-            params.status = sysConsts.USER_INVOICE.status.default;
-            inquiryInvoiceDAO.updateInquiryInvoiceStatus(params,(error,result)=>{
+    const updateStatusByUserId = ()=>{
+        return new Promise((resolve,reject)=>{
+            params.status = sysConsts.USER_INVOICE.status.normal;
+            inquiryInvoiceDAO.updateInquiryInvoiceStatusByUserId(params,(error,result)=>{
                 if(error){
-                    logger.error('updateInquiryInvoiceStatus ' + error.message);
+                    logger.error('updateInquiryInvoiceStatus updateStatusByUserId ' + error.message);
                     reject(error);
                 }else{
-                    logger.info('updateInquiryInvoiceStatus ' + 'success');
+                    logger.info('updateInquiryInvoiceStatus updateStatusByUserId '+'success');
+                    resolve(params);
+                }
+            })
+        });
+    }
+    const updateInvoice = (invoiceInfo)=>{
+        return new Promise((resolve,reject)=>{
+            invoiceInfo.status = sysConsts.USER_INVOICE.status.default;
+            inquiryInvoiceDAO.updateInquiryInvoiceStatus(invoiceInfo,(error,result)=>{
+                if(error){
+                    logger.error('updateInquiryInvoiceStatus updateInvoice ' + error.message);
+                    reject(error);
+                }else{
+                    logger.info('updateInquiryInvoiceStatus updateInvoice ' + 'success');
                     resUtil.resetUpdateRes(res,result,null);
                     return next();
                 }
             })
+        });
+    }
+    updateStatusByUserId()
+        .then(updateInvoice)
+        .catch((reject)=>{
+            resUtil.resInternalError(reject,res,next);
         })
-    }).catch((error)=>{
-        resUtil.resInternalError(error,res,next);
-    })
 }
 const deleteUserInvoice = (req,res,next) => {
     let params = req.params;
