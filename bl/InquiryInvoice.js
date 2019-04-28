@@ -23,29 +23,38 @@ const getInquiryInvoice = (req,res,next) => {
 }
 const addInquiryInvoice = (req,res,next) => {
     let params = req.params;
-    new Promise((resolve,reject)=>{
-        params.status = sysConsts.USER_INVOICE.status.normal;
-        inquiryInvoiceDAO.updateInquiryInvoiceStatusByUserId(params,(error,result)=>{
-            if(error){
-                logger.error('addInquiryInvoice updateInquiryInvoiceStatusByUserId ' + error.message);
-                reject(error);
-            }else{
-                logger.info('addInquiryInvoice updateInquiryInvoiceStatusByUserId '+'success');
-                resolve();
-            }
+    const updateInvoice = ()=>{
+        return new Promise((resolve,reject)=>{
+            inquiryInvoiceDAO.updateInquiryInvoiceStatusByUserId(params,(error,result)=>{
+                if(error){
+                    logger.error('addInquiryInvoice updateInvoice ' + error.message);
+                    reject(error);
+                }else{
+                    logger.info('addInquiryInvoice updateInvoice '+'success');
+                    resolve();
+                }
+            })
+        });
+    }
+    const addInvoice = ()=>{
+        return new Promise((resolve,reject)=>{
+            inquiryInvoiceDAO.addInquiryInvoice(params,(error,result)=>{
+                if(error){
+                    logger.error('addInquiryInvoice addInvoice ' + error.message);
+                    reject(error);
+                }else{
+                    logger.info('addInquiryInvoice addInvoice ' + 'success');
+                    resUtil.resetCreateRes(res,result,null);
+                    return next();
+                }
+            })
+        });
+    }
+    updateInvoice()
+        .then(addInvoice)
+        .catch((reject)=>{
+            resUtil.resInternalError(reject,res,next);
         })
-    }).then(()=>{
-        inquiryInvoiceDAO.addInquiryInvoice(params,(error,result)=>{
-            if(error){
-                logger.error('addInquiryInvoice ' + error.message);
-                resUtil.resInternalError(error,res,next);
-            }else{
-                logger.info('addInquiryInvoice ' + 'success');
-                resUtil.resetCreateRes(res,result,null);
-                return next();
-            }
-        })
-    })
 }
 const updateInquiryInvoiceStatus = (req,res,next) => {
     let params = req.params;
