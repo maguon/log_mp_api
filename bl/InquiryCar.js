@@ -26,76 +26,95 @@ const getInquiryCarByInquiryId = (req,res,next) => {
 const addCar = (req,res,next) => {
     let params = req.params;
     let priceItem;
-    new Promise((resolve,reject)=>{
-        inquiryDAO.getById({inquiryId:params.inquiryId},(error,rows)=>{
-            if(error){
-                logger.error('addCar getById ' + error.message);
-                reject(error);
-            }else{
-                logger.info('addCar getById ' + 'success');
-                if (rows.length >0){
-                    params.distance = rows[0].distance;
-                    resolve();
-                } else {
-                    resUtil.resetFailedRes(res,sysMsg.USER_GET_NO_INQUIRY);
+    const getInquiryInfo = () =>{
+        return new Promise((resolve,reject)=>{
+            inquiryDAO.getById({inquiryId:params.inquiryId},(error,rows)=>{
+                if(error){
+                    logger.error('addCar getInquiryInfo ' + error.message);
+                    reject({err:erroe});
+                }else{
+                    logger.info('addCar getInquiryInfo ' + 'success');
+                    if (rows.length >0){
+                        params.distance = rows[0].distance;
+                        resolve(params);
+                    } else {
+                        reject({msg:sysMsg.USER_GET_NO_INQUIRY});
+                    }
                 }
+            })
+        });
+    }
+    const addInfo = (inqInfo)=>{
+        return new Promise((resolve,reject)=>{
+            priceItem = commonUtil.calculatedAmount(inqInfo.serviceType,inqInfo.oldCar,inqInfo.modelId,inqInfo.distance,inqInfo.safeStatus,inqInfo.plan);
+            inqInfo.transPrice = inqInfo.carNum * priceItem.trans;
+            inqInfo.insurePrice = inqInfo.carNum * priceItem.insure;
+            inquiryCarDAO.addCar(inqInfo,(error,result)=>{
+                if(error){
+                    logger.error('addCar addInfo ' + error.message);
+                    reject({err:error});
+                }else{
+                    if(result && result.insertId < 1){
+                        logger.warn('addCar addInfo '+'Failed to create vehicle valuation!');
+                        reject({msg:'创建车辆估值失败'});
+                        reject(error);
+                    }else{
+                        logger.info('addCar addInfo ' + 'success');
+                        resolve(inqInfo);
+                    }
+                }
+            })
+        });
+    }
+    const getSum = (inqInfo)=>{
+        return new Promise((resolve,reject)=>{
+            inquiryCarDAO.getSumPrice({inquiryId:inqInfo.inquiryId,status:sysConsts.CAR.inquiryStatus.showInUser},(error,rows)=>{
+                if(error){
+                    logger.error('addCar getSum ' + error.message);
+                    reject({err:error});
+                }else{
+                    if(rows && rows.length < 1){
+                        logger.warn('addCar getSum '+'No vehicle valuation information available!');
+                        reject({msg:'查无此车辆估值信息'});
+                    }else{
+                        logger.info('addCar getSum '+'success');
+                        inqInfo.fee = rows[0].trans_price;
+                        inqInfo.safePrice = rows[0].insure_price;
+                        inqInfo.carNum = rows[0].sum_car_num;;
+                        resolve(inqInfo);
+                    }
+                }
+            })
+        });
+    }
+    const updateFee = (feeInfo)=>{
+        return new Promise((resolve,reject)=>{
+            inquiryDAO.updateFee({carNum:feeInfo.carNum,inquiryId:feeInfo.inquiryId,fee:feeInfo.fee,safePrice:feeInfo.safePrice},(error,result)=>{
+                if(error){
+                    logger.error('addCar updateFee ' + error.message);
+                    reject({err:error});
+                }else{
+                    logger.info('addCar updateFee '+'success');
+                    let inquiry_id = [{
+                        inquiryId:feeInfo.inquiryId
+                    }]
+                    resUtil.resetQueryRes(res,inquiry_id,null);
+                    return next();
+                }
+            })
+        });
+    }
+    getInquiryInfo()
+        .then(addInfo)
+        .then(getSum)
+        .then(updateFee)
+        .catch((reject)=>{
+            if(reject.err){
+                resUtil.resInternalError(reject.err,res,next);
+            }else{
+                resUtil.resetFailedRes(res,reject.msg);
             }
         })
-    }).then(()=>{
-        new Promise((resolve,reject)=>{
-            priceItem = commonUtil.calculatedAmount(params.serviceType,params.oldCar,params.modelId,params.distance,params.safeStatus,params.plan);
-            params.transPrice = params.carNum * priceItem.trans;
-            params.insurePrice = params.carNum * priceItem.insure;
-            inquiryCarDAO.addCar(params,(error,result)=>{
-                if(error){
-                    logger.error('addCar ' + error.message);
-                    reject(error);
-                }else if(result && result.insertId < 1){
-                    logger.warn('addCar '+'Failed to create vehicle valuation!');
-                    resUtil.resetFailedRes(res,'创建车辆估值失败',null);
-                    reject(error);
-                }else{
-                    logger.info('addCar ' + 'success');
-                    resolve();
-                }
-            })
-        }).then(()=>{
-            new Promise((resolve,reject)=>{
-                inquiryCarDAO.getSumPrice({inquiryId:params.inquiryId,status:sysConsts.CAR.inquiryStatus.showInUser},(error,rows)=>{
-                    if(error){
-                        logger.error('addCar getSumPrice ' + error.message);
-                        reject(error);
-                    }else if(rows && rows.length < 1){
-                        logger.warn('addCar getSumPrice '+'No vehicle valuation information available!');
-                        resUtil.resetFailedRes(res,'查无此车辆估值信息',null);
-                    }else{
-                        logger.info('addCar getSumPrice '+'success');
-                        params.fee = rows[0].trans_price;
-                        params.safePrice = rows[0].insure_price;
-                        params.carNum = rows[0].sum_car_num;;
-                        resolve();
-                    }
-                })
-            }).then(()=>{
-                inquiryDAO.updateFee({carNum:params.carNum,inquiryId:params.inquiryId,fee:params.fee,safePrice:params.safePrice},(error,result)=>{
-                    if(error){
-                        logger.error('addCar updateFee ' + error.message);
-                        resUtil.resInternalError(error,res,next);
-                    }else{
-                        logger.info('addCar updateFee '+'success');
-                        let inquiry_id = [{
-                            inquiryId:params.inquiryId
-                        }]
-                        resUtil.resetQueryRes(res,inquiry_id,null);
-                        return next();
-                    }
-                })
-            })
-        })
-
-    }).catch((error)=>{
-        resUtil.resInternalError(error,res,next);
-    })
 }
 const addCarByOrder = (req,res,next) => {
     let params = req.params;
