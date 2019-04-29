@@ -476,83 +476,100 @@ const orderWithoutInquiry =(req,res,next)=>{
     let oraTransPrice = 0;
     let oraInsurePrice = 0;
     let resultCallback;
-    new Promise((resolve,reject)=>{
-        routeDAO.getRoute({routeStartId:params.routeStartId,routeEndId:params.routeEndId},(error,result)=>{
-            if(error){
-                logger.error('orderWithoutInquiry getRoute ' + error.message);
-                resUtil.resInternalError(error,res,next);
-                reject(error);
-            }else{
-                logger.info('orderWithoutInquiry getRoute ' + 'success');
-                params.distance = result[0].distance;
-                resolve();
-            }
-        })
-    }).then(()=>{
-        new Promise((resolve,reject)=>{
-            params.dateId = moment().format("YYYYMMDD");
-            if (params.routeStartId > params.routeEndId){
-                params.routeId = parseInt(params.routeEndId.toString()+params.routeStartId.toString());
+    const getRoute = ()=>{
+        return new Promise((resolve,reject)=>{
+            routeDAO.getRoute({routeStartId:params.routeStartId,routeEndId:params.routeEndId},(error,rows)=>{
+                if(error){
+                    logger.error('orderWithoutInquiry getRoute ' + error.message);
+                    reject({err:error});
+                }else{
+                    logger.info('orderWithoutInquiry getRoute ' + 'success');
+                    params.distance = rows[0].distance;
+                    resolve(params);
+                }
+            })
+        });
+    }
+    const addOrder = (orderInfo)=>{
+        return new Promise((resolve,reject)=>{
+            orderInfo.dateId = moment().format("YYYYMMDD");
+            if (orderInfo.routeStartId > orderInfo.routeEndId){
+                orderInfo.routeId = parseInt(orderInfo.routeEndId.toString()+orderInfo.routeStartId.toString());
             } else {
-                params.routeId = parseInt(params.routeStartId.toString()+params.routeEndId.toString());
+                orderInfo.routeId = parseInt(orderInfo.routeStartId.toString()+orderInfo.routeEndId.toString());
             }
-            params.adminId =0;
-            inquiryOrderDAO.addOrder(params,(error,result)=>{
+            orderInfo.adminId =0;
+            inquiryOrderDAO.addOrder(orderInfo,(error,result)=>{
                 if(error){
                     logger.error('orderWithoutInquiry addOrder ' + error.message);
-                    resUtil.resInternalError(error,res,next);
-                    reject(error);
+                    reject({err:error});
                 }else{
                     logger.info('orderWithoutInquiry addOrder ' + 'success');
-                    params.orderId = result.insertId;
+                    orderInfo.orderId = result.insertId;
                     resultCallback = result;
-                    resolve();
+                    resolve(orderInfo);
                 }
             })
-        }).then(()=>{
-            new Promise((resolve,reject)=>{
-                let orderItemList = params.orderItemArray;
-                for (let i in orderItemList) {
-                    let price = commonUtil.calculatedAmount(params.serviceType,orderItemList[i].oldCar,orderItemList[i].modelType,params.distance,orderItemList[i].safeStatus, orderItemList[i].valuation);
-                    orderItemList[i].oraTransPrice = price.trans;
-                    orderItemList[i].oraInsurePrice = price.insure;
-                    orderItemList[i].distance = params.distance;
-                    orderItemList[i].orderId = params.orderId;
-                    orderItemList[i].userId = params.userId;
-                    oraTransPrice += price.trans;
-                    oraInsurePrice += price.insure;
-                    orderItemDAO.addOrderCar(orderItemList[i],(error,result)=>{
-                        if(error){
-                            logger.error('orderWithoutInquiry addOrderCar ' + error.message);
-                            resUtil.resInternalError(error,res,next);
-                        }else{
-                            logger.info('orderWithoutInquiry addOrderCar ' + 'success');
-                        }
-                    });
-                    if (i == orderItemList.length-1){
-                        resolve();
-                    }
-                }
-            }).then(()=>{
-                let options ={
-                    oraTransPrice:oraTransPrice,
-                    oraInsurePrice:oraInsurePrice,
-                    orderId:params.orderId,
-                    status:sysConsts.ORDER.status.priceToBeImproved
-                }
-                inquiryOrderDAO.updateById(options,(error,result)=>{
+        });
+    }
+    const addCar = (CarInfo)=>{
+        return new Promise((resolve,reject)=>{
+            let orderItemList = CarInfo.orderItemArray;
+            for (let i in orderItemList) {
+                let price = commonUtil.calculatedAmount(CarInfo.serviceType,orderItemList[i].oldCar,orderItemList[i].modelType,CarInfo.distance,orderItemList[i].safeStatus, orderItemList[i].valuation);
+                orderItemList[i].oraTransPrice = price.trans;
+                orderItemList[i].oraInsurePrice = price.insure;
+                orderItemList[i].distance = CarInfo.distance;
+                orderItemList[i].orderId = CarInfo.orderId;
+                orderItemList[i].userId = CarInfo.userId;
+                oraTransPrice += price.trans;
+                oraInsurePrice += price.insure;
+                orderItemDAO.addOrderCar(orderItemList[i],(error,result)=>{
                     if(error){
-                        logger.error('orderWithoutInquiry updateById ' + error.message);
+                        logger.error('orderWithoutInquiry addCar ' + error.message);
                         resUtil.resInternalError(error,res,next);
+                        reject({err:error})
                     }else{
-                        logger.info('orderWithoutInquiry updateById ' + 'success');
-                        resUtil.resetCreateRes(res,resultCallback,null);
-                        return next();
+                        logger.info('orderWithoutInquiry addCar ' + 'success');
                     }
-                })
+                });
+                if (i == orderItemList.length-1){
+                    resolve(CarInfo);
+                }
+            }
+        });
+    }
+    const updateOrder = (orderInfo)=>{
+        return new Promise((resolve,reject)=>{
+            let options ={
+                oraTransPrice:oraTransPrice,
+                oraInsurePrice:oraInsurePrice,
+                orderId:orderInfo.orderId,
+                status:sysConsts.ORDER.status.priceToBeImproved
+            }
+            inquiryOrderDAO.updateById(options,(error,result)=>{
+                if(error){
+                    logger.error('orderWithoutInquiry updateOrder ' + error.message);
+                    reject({err:error});
+                }else{
+                    logger.info('orderWithoutInquiry updateOrder ' + 'success');
+                    resUtil.resetCreateRes(res,resultCallback,null);
+                    return next();
+                }
             })
+        });
+    }
+    getRoute()
+        .then(addOrder)
+        .then(addCar)
+        .then(updateOrder)
+        .catch((reject)=>{
+            if(reject.err){
+                resUtil.resInternalError(reject.err,res,next);
+            }else{
+                resUtil.resetFailedRes(res,reject.msg);
+            }
         })
-    })
 }
 module.exports = {
     addInquiryOrderByAdmin,
