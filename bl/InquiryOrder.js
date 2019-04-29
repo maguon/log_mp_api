@@ -147,10 +147,10 @@ const addInquiryOrderByAdmin = (req,res,next) => {
         return new Promise((resolve,reject)=>{
             inquiryDAO.updateInquiryStatus({status:2,inquiryId:inquiryInfo.inquiryId},(error,result)=>{
                 if(error){
-                    logger.error('addInquiryOrderByAdmin updateInquiryStatus ' + error.message);
+                    logger.error('addInquiryOrderByAdmin updateStatus ' + error.message);
                     reject({err:error});
                 }else{
-                    logger.info('addInquiryOrderByAdmin updateInquiryStatus '+'success');
+                    logger.info('addInquiryOrderByAdmin updateStatus '+'success');
                     resUtil.resetUpdateRes(res,result,null);
                     return next();
                 }
