@@ -14,6 +14,7 @@ const moment = require('moment/moment.js');
 const orderItemDAO = require("../dao/OrderItemDAO");
 const commonUtil = require("../util/CommonUtil");
 
+//没有用到
 const addInquiryOrderByUser = (req,res,next) => {
     let params = req.params;
     new Promise((resolve,reject)=>{
@@ -77,80 +78,96 @@ const addInquiryOrderByUser = (req,res,next) => {
 }
 const addInquiryOrderByAdmin = (req,res,next) => {
     let params = req.params;
-    new Promise((resolve,reject)=>{
-        inquiryDAO.getInquiryByUserId(params,(error,rows)=>{
-            if(error){
-                logger.error('addInquiryOrderByAdmin getInquiryByUserId ' + error.message);
-                reject(error);
-            }else if(rows && rows.length < 1){
-                logger.warn('addInquiryOrderByAdmin getInquiryByUserId '+'No inquiry information!');
-                resUtil.resetFailedRes(res,'查无此询价信息',null);
-            }else{
-                logger.info('addInquiryOrderByAdmin getInquiryByUserId '+'success');
-                let feePrice = 0;
-                let count = 0;
-                feePrice = feePrice + rows[0].fee_price;
-                count = count + rows[0].car_num;
-                params.userId = rows[0].user_id;
-                params.feePrice = feePrice;
-                params.carNum = count;
-                params.serviceType = rows[0].service_type;
-                params.createdType = sysConsts.ORDER.type.extrnal;
-                params.routeStartId = rows[0].start_id;
-                params.routeEndId = rows[0].end_id;
-                params.routeStart = rows[0].start_city;
-                params.routeEnd = rows[0].end_city;
-                params.routeId = rows[0].route_id;
-                params.oraTransPrice = rows[0].ora_trans_price;
-                params.oraInsurePrice = rows[0].ora_insure_price;
-                resolve();
-            }
-        })
-    }).then(()=>{
-        new Promise((resolve,reject)=>{
-            routeDAO.getRoute({routeId:params.routeId},(error,rows)=>{
+    const getInquiryId = ()=>{
+        return new Promise((resolve,reject)=>{
+            inquiryDAO.getInquiryByUserId(params,(error,rows)=> {
                 if(error){
-                    logger.error('addInquiryOrderByAdmin getRoute ' + error.message);
-                    reject(error);
-                }else if(rows && rows.length < 1){
-                    logger.warn('addInquiryOrderByAdmin getRoute '+'There is no such route！');
-                    resUtil.resetFailedRes(res,'没有这个路线',null);
+                    logger.error('addInquiryOrderByAdmin getInquiryId ' + error.message);
+                    reject({err:error});
                 }else{
-                    logger.info('getRoute'+'success');
-                    params.distance = rows[0].distance;
-                    resolve();
+                    if(rows && rows.length < 1){
+                        logger.warn('addInquiryOrderByAdmin getInquiryId '+'No inquiry information!');
+                        reject({msg:'查无此询价信息'});
+                    }else{
+                        logger.info('addInquiryOrderByAdmin getInquiryId '+'success');
+                        let feePrice = 0;
+                        let count = 0;
+                        feePrice = feePrice + rows[0].fee_price;
+                        count = count + rows[0].car_num;
+                        params.userId = rows[0].user_id;
+                        params.feePrice = feePrice;
+                        params.carNum = count;
+                        params.serviceType = rows[0].service_type;
+                        params.createdType = sysConsts.ORDER.type.extrnal;
+                        params.routeStartId = rows[0].start_id;
+                        params.routeEndId = rows[0].end_id;
+                        params.routeStart = rows[0].start_city;
+                        params.routeEnd = rows[0].end_city;
+                        params.routeId = rows[0].route_id;
+                        params.oraTransPrice = rows[0].ora_trans_price;
+                        params.oraInsurePrice = rows[0].ora_insure_price;
+                        resolve(params);
+                    }
                 }
             })
-        }).then(()=>{
-            new Promise((resolve,reject)=>{
-                params.dateId = moment().format("YYYYMMDD");
-                inquiryOrderDAO.addInquiryOrder(params,(error,result)=>{
-                    if(error){
-                        logger.error('addInquiryOrderByAdmin addInquiryOrder ' + error.message);
-                        reject(error);
-                    }else{
-                        logger.info('addInquiryOrderByAdmin addInquiryOrder '+'success');
-                        resolve();
-                    }
-                })
-            }).then(()=>{
-                new Promise((resolve,reject)=>{
-                    inquiryDAO.updateInquiryStatus({status:2,inquiryId:params.inquiryId},(error,result)=>{
-                        if(error){
-                            logger.error('addInquiryOrderByAdmin updateInquiryStatus ' + error.message);
-                            reject(error);
-                        }else{
-                            logger.info('addInquiryOrderByAdmin updateInquiryStatus '+'success');
-                            resUtil.resetUpdateRes(res,result,null);
-                            return next();
-                        }
-                    })
-                })
+        });
+    }
+    const getRoute = (inquiryInfo)=>{
+        return new Promise((resolve,reject)=>{
+            routeDAO.getRoute({routeId:inquiryInfo.routeId},(error,rows)=>{
+                if(error){
+                    logger.error('addInquiryOrderByAdmin getRoute ' + error.message);
+                    reject({err:error});
+                }else if(rows && rows.length < 1){
+                    logger.warn('addInquiryOrderByAdmin getRoute '+'There is no such route！');
+                    reject({msg:'没有这个路线'});
+                }else{
+                    logger.info('addInquiryOrderByAdmin getRoute '+'success');
+                    inquiryInfo.distance = rows[0].distance;
+                    resolve(inquiryInfo);
+                }
             })
+        });
+    }
+    const addInquiry = (inquiryInfo)=>{
+        return new Promise((resolve,reject)=>{
+            inquiryInfo.dateId = moment().format("YYYYMMDD");
+            inquiryOrderDAO.addInquiryOrder(inquiryInfo,(error,result)=>{
+                if(error){
+                    logger.error('addInquiryOrderByAdmin addInquiryOrder ' + error.message);
+                    reject({err:error});
+                }else{
+                    logger.info('addInquiryOrderByAdmin addInquiryOrder '+'success');
+                    resolve(inquiryInfo);
+                }
+            })
+        });
+    }
+    const updateStatus = (inquiryInfo)=>{
+        return new Promise((resolve,reject)=>{
+            inquiryDAO.updateInquiryStatus({status:2,inquiryId:inquiryInfo.inquiryId},(error,result)=>{
+                if(error){
+                    logger.error('addInquiryOrderByAdmin updateInquiryStatus ' + error.message);
+                    reject({err:error});
+                }else{
+                    logger.info('addInquiryOrderByAdmin updateInquiryStatus '+'success');
+                    resUtil.resetUpdateRes(res,result,null);
+                    return next();
+                }
+            })
+        });
+    }
+    getInquiryId()
+        .then(getRoute)
+        .then(addInquiry)
+        .then(updateStatus)
+        .catch((reject)=>{
+            if(reject.err){
+                resUtil.resInternalError(reject.err,res,next);
+            }else{
+                resUtil.resetFailedRes(res,reject.msg);
+            }
         })
-    }).catch((error)=>{
-        resUtil.resInternalError(error,res,next);
-    })
 }
 const putInquiryOrder = (req,res,next) => {
     let params = req.params;
@@ -592,6 +609,6 @@ module.exports = {
     selfMentionAddress,
     getOrderProfit,
     getOrderCostOfCar,
-    orderWithoutInquiry
+    orderWithoutInquiry//微信直接生成订单
 }
 
