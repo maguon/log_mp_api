@@ -159,7 +159,6 @@ const createServer=()=>{
     /**
      order_info
      */
-    server.post({path:'/api/user/:userId/inquiry/:inquiryId/order',contentType: 'application/json'},inquiryOrder.addInquiryOrderByUser);
     server.post({path:'/api/admin/:adminId/inquiry/:inquiryId/order',contentType: 'application/json'},inquiryOrder.addInquiryOrderByAdmin);
     server.post({path:'/api/admin/:adminId/order',contentType: 'application/json'},inquiryOrder.addOrder);
     server.put({path:'/api/admin/:adminId/order/:orderId/oraPrice',contentType: 'application/json'},inquiryOrder.putInquiryOrder);

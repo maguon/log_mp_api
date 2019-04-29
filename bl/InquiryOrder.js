@@ -14,68 +14,6 @@ const moment = require('moment/moment.js');
 const orderItemDAO = require("../dao/OrderItemDAO");
 const commonUtil = require("../util/CommonUtil");
 
-//没有用到
-const addInquiryOrderByUser = (req,res,next) => {
-    let params = req.params;
-    new Promise((resolve,reject)=>{
-        inquiryDAO.getInquiryByUserId(params,(error,rows)=>{
-            if(error){
-                logger.error('addInquiryOrderByUser getInquiryByUserId ' + error.message);
-                reject(error);
-            }else if(rows && rows.length < 1){
-                logger.warn('addInquiryOrderByUser getInquiryByUserId '+'No inquiry information!');
-                resUtil.resetFailedRes(res,'查无此询价信息',null);
-            }else{
-                logger.info('addInquiryOrderByUser getInquiryByUserId '+'success');
-                let feePrice = 0;
-                let count = 0;
-                feePrice = feePrice + rows[0].total_trans_price;
-                params.totalInsurePrice = feePrice + rows[0].total_insure_price;
-                count = count +rows[0].car_num;
-                params.feePrice = feePrice;
-                params.count = count;
-                params.serviceType = rows[0].service_type;
-                params.createdType = 1;
-                params.routeStartId = rows[0].start_id;
-                params.routeEndId = rows[0].end_id;
-                params.routeStart = rows[0].start_city;
-                params.routeEnd = rows[0].end_city;
-                params.routeId = rows[0].route_id;
-                params.oraTransPrice = rows[0].ora_trans_price;
-                params.oraInsurePrice = rows[0].ora_insure_price;
-                resolve();
-            }
-        })
-    }).then(()=>{
-        new Promise((resolve,reject)=>{
-            params.dateId = moment().format("YYYYMMDD");
-            inquiryOrderDAO.addInquiryOrder(params,(error,result)=>{
-                if(error){
-                    logger.error('addInquiryOrderByUser addInquiryOrder ' + error.message);
-                    reject(error);
-                }else{
-                    logger.info('addInquiryOrderByUser addInquiryOrder '+'success');
-                    resolve();
-                }
-            })
-        }).then(()=>{
-            new Promise((resolve,reject)=>{
-                inquiryDAO.updateInquiryStatus({status:2,inquiryId:params.inquiryId},(error,result)=>{
-                    if(error){
-                        logger.error('addInquiryOrderByUser updateInquiryStatus ' + error.message);
-                        reject(error);
-                    }else{
-                        logger.info('addInquiryOrderByUser updateInquiryStatus '+'success');
-                        resUtil.resetUpdateRes(res,result,null);
-                        return next();
-                    }
-                })
-            });
-        })
-    }).catch((error)=>{
-        resUtil.resInternalError(error,res,next);
-    })
-}
 const addInquiryOrderByAdmin = (req,res,next) => {
     let params = req.params;
     const getInquiryId = ()=>{

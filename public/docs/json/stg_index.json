@@ -2499,48 +2499,6 @@
         }
       }
     },
-    "/user/{userId}/inquiry/{inquiryId}/order": {
-      "post": {
-        "tags": [
-          "order"
-        ],
-        "summary": "insert",
-        "description": "inquiryManageOrder query by inquiryManageId",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "userId",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "inquiryId",
-            "in": "path",
-            "description": "inquiryId",
-            "required": true,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/inquiryManage"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid user id"
-          }
-        }
-      }
-    },
     "/admin/{adminId}/inquiryBank": {
       "get": {
         "tags": [
