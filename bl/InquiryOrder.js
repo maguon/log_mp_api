@@ -272,6 +272,101 @@ const addOrder = (req,res,next) => {
     let params = req.params;
     let routeStartId = "";
     let routeEndId = "";
+    const getRouteId = () =>{
+        return new Promise((resolve,reject)=>{
+            params.createdType = sysConsts.ORDER.type.internal;
+            routeStartId = routeStartId + params.routeStartId;
+            routeEndId = routeEndId + params.routeEndId;
+            if(params.routeStartId > params.routeEndId){
+                params.routeId =routeEndId + routeStartId;
+            }else{
+                params.routeId = routeStartId + routeEndId;
+            }
+            resolve(params);
+        });
+    }
+    const getRoute = (routeInfo)=>{
+        return new Promise((resolve,reject)=>{
+            routeDAO.getRoute({routeId:routeInfo.routeId},(error,rows)=>{
+                if(error){
+                    logger.error('addOrder getRoute ' + error.message);
+                    reject({err:error});
+                }else if(rows && rows.length < 1){
+                    logger.warn('addOrder getRoute '+'There is no such route！');
+                    reject({msg:'没有这个路线'});
+                }else{
+                    logger.info('addOrder getRoute '+'success');
+                    routeInfo.distance = rows[0].distance;
+                    resolve(routeInfo);
+                }
+            })
+        });
+    }
+    const getStartCity = (cityInfo)=>{
+        return new Promise((resolve,reject)=>{
+            cityDAO.queryCity({cityId:cityInfo.routeStartId},(error,rows)=>{
+                if(error){
+                    logger.error('addOrder getStartCity ' + error.message);
+                    reject({err:error});
+                }else if(rows && rows.length < 1){
+                    logger.warn('addOrder getStartCity '+'There is no city！');
+                    reject({msg:'没有这个城市'});
+                }else{
+                    logger.info('addOrder getStartCity '+'success');
+                    cityInfo.routeStart = rows[0].city_name;
+                    resolve(cityInfo);
+                }
+            })
+        });
+    }
+    const getEndCity = (cityInfo)=>{
+        return new Promise((resolve,reject) =>{
+            cityDAO.queryCity({cityId:cityInfo.routeEndId},(error,rows)=>{
+                if(error){
+                    logger.error('addOrder getEndCity ' + error.message);
+                    reject({err:error});
+                }else if(rows && rows.length < 1){
+                    logger.warn('addOrder getEndCity '+'There is no city！');
+                    reject({msg:'没有这个城市'});
+                }else{
+                    logger.info('addOrder getEndCity '+'success');
+                    cityInfo.routeEnd = rows[0].city_name;
+                    resolve(cityInfo);
+                }
+            })
+        });
+    }
+    const insterOrder = (orderInfo)=>{
+        return new Promise((resolve,reject)=>{
+            orderInfo.dateId = moment().format("YYYYMMDD");
+            inquiryOrderDAO.addOrder(orderInfo,(error,rows)=>{
+                if(error){
+                    logger.error('addOrder insterOrder' + error.message);
+                    reject({err:error});
+                }else{
+                    logger.info('addOrder insterOrder' + 'success');
+                    resUtil.resetCreateRes(res,rows,null);
+                    return next();
+                }
+            })
+        });
+    }
+    getRouteId()
+        .then(getRoute)
+        .then(getStartCity)
+        .then(getEndCity)
+        .then(insterOrder)
+        .catch((reject)=>{
+            if(reject.err){
+                resUtil.resInternalError(reject.err,res,next);
+            }else{
+                resUtil.resetFailedRes(res,reject.msg);
+            }
+        })
+
+
+    /*
+    //=============================================
     params.createdType = sysConsts.ORDER.type.internal;
     routeStartId = routeStartId + params.routeStartId;
     routeEndId = routeEndId + params.routeEndId;
@@ -343,6 +438,8 @@ const addOrder = (req,res,next) => {
     }).catch((error)=>{
         resUtil.resInternalError(error,res,next);
     })
+
+     */
 }
 const getOrderNew = (req,res,next) => {
     let params = req.params;
@@ -530,7 +627,6 @@ const orderWithoutInquiry =(req,res,next)=>{
 }
 module.exports = {
     addInquiryOrderByAdmin,
-    addInquiryOrderByUser,
     putInquiryOrder,
     putReceiveInfo,
     putFreightPrice,
