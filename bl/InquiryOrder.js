@@ -412,38 +412,52 @@ const updateById = (req,res,next) => {
 const selfMentionAddress = (req,res,next) => {
     let params = req.params;
     let orderServiceType = null ;
-    new Promise((resolve,reject)=>{
-        inquiryOrderDAO.getById({orderId:params.orderId},(error,rows)=>{
-            if(error){
-                logger.error('selfMentionAddress getById ' + error.message);
-                resUtil.resInternalError(error,res,next);
-                reject(error);
-            }else{
-                logger.info('selfMentionAddress getById ' + 'success');
-                if (rows.length > 0){
-                    orderServiceType = rows[0].service_type;
-                    resolve();
-                } else {
-                    resUtil.resetFailedRes(res,sysMsg.ORDER_NO_EXISTE);
-                }
-            }
-        })
-    }).then(()=>{
-        if (orderServiceType == sysConsts.ORDER.serviceType.selfMention) {
-            inquiryOrderDAO.updateById(params,(error,result)=>{
+    const getById = ()=>{
+        return new Promise((resolve,reject)=>{
+            inquiryOrderDAO.getById({orderId:params.orderId},(error,rows)=>{
                 if(error){
-                    logger.error('selfMentionAddress updateById ' + error.message);
-                    resUtil.resInternalError(error,res,next);
+                    logger.error('selfMentionAddress getById ' + error.message);
+                    reject({err:error});
                 }else{
-                    logger.info('selfMentionAddress updateById ' + 'success');
-                    resUtil.resetUpdateRes(res,result,null);
-                    return next();
+                    logger.info('selfMentionAddress getById ' + 'success');
+                    if (rows.length > 0){
+                        orderServiceType = rows[0].service_type;
+                        resolve(params);
+                    } else {
+                        reject({msg:sysMsg.ORDER_NO_EXISTE});
+                    }
                 }
             })
-        }else {
-            resUtil.resetFailedRes(res,sysMsg.ORDER_SERVICETYPE_SELFMENTION_UPDATE_ADDRESS)
-        }
-    })
+        });
+    }
+    const updateById = ()=>{
+        return new Promise((resolve,reject)=>{
+            if (orderServiceType == sysConsts.ORDER.serviceType.selfMention) {
+                inquiryOrderDAO.updateById(params,(error,result)=>{
+                    if(error){
+                        logger.error('selfMentionAddress updateById ' + error.message);
+                        reject({err:error});
+                    }else{
+                        logger.info('selfMentionAddress updateById ' + 'success');
+                        resUtil.resetUpdateRes(res,result,null);
+                        return next();
+                    }
+                })
+            }else {
+                reject({msg:sysMsg.ORDER_SERVICETYPE_SELFMENTION_UPDATE_ADDRESS});
+            }
+        });
+    }
+
+    getById()
+        .then(updateById)
+        .catch((reject)=>{
+            if(reject.err){
+                resUtil.resInternalError(reject.err,res,next);
+            }else{
+                resUtil.resetFailedRes(res,reject.msg);
+            }
+        })
 }
 const getOrderProfit = (req,res,next) => {
     let params = req.params;
