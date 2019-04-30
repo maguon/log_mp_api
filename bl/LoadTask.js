@@ -17,59 +17,70 @@ const supplierInfo = require("../dao/SupplierDAO");
 
 const addLoadTask = (req,res,next) => {
     let params = req.params;
-    new Promise((resolve,reject)=>{
-        orderInfoDAO.getById({orderId:params.orderId},(error,rows)=>{
-            if(error){
-                logger.error('addLoadTask getOrder ' + error.message);
-                resUtil.resInternalError(error,res,next);
-                reject(error);
-            }else{
-                logger.info('addLoadTask getOrder ' + 'success');
-                if (rows.length > 0){
-                    resolve();
-                }else {
-                    resUtil.resetFailedRes(res,sysMsg.ORDER_NO_EXISTE);
+    const getOrderInfo = ()=>{
+        return new Promise((resolve,reject)=>{
+            orderInfoDAO.getById({orderId:params.orderId},(error,rows)=>{
+                if(error){
+                    logger.error('addLoadTask getOrderInfo ' + error.message);
+                    reject({err:error});
+                }else{
+                    logger.info('addLoadTask getOrderInfo ' + 'success');
+                    if (rows.length > 0){
+                        resolve(params);
+                    }else {
+                        reject({msg:sysMsg.ORDER_NO_EXISTE});
+                    }
                 }
+            })
+        });
+    }
+    const getRequireTask = (requireInfo)=>{
+        return new Promise((resolve,reject)=>{
+            requireTaskDAO.getById({requireId:requireInfo.requireId},(error,rows)=>{
+                if(error){
+                    logger.error('addLoadTask getRequireTask ' + error.message);
+                    reject({err:error});
+                }else{
+                    logger.info('addLoadTask getRequireTask ' + 'success');
+                    if (rows.length > 0){
+                        resolve(requireInfo);
+                    }else {
+                        reject({msg:sysMsg.REQUIRE_NO_EXISTE});
+                    }
+                }
+            })
+        });
+    }
+    const addLoadTask = (taskInfo)=>{
+        return new Promise((resolve,reject)=>{
+            taskInfo.planDate = moment(taskInfo.planDate).format("YYYYMMDD");
+            taskInfo.planDateTime = moment(taskInfo.planDate).format("YYYY-MM-DD");
+            loadTaskDAO.add(taskInfo,(error,rows)=>{
+                if(error){
+                    logger.error('addLoadTask addLoadTask ' + error.message);
+                    reject({err:error});
+                }else{
+                    logger.info('addLoadTask addLoadTask ' + 'success');
+                    if (rows.insertId){
+                        resUtil.resetCreateRes(res,rows,null);
+                        return next;
+                    }else {
+                        reject({msg:sysMsg.LOADTASK_ADD_NULL});
+                    }
+                }
+            })
+        });
+    }
+    getOrderInfo()
+        .then(getRequireTask)
+        .then(addLoadTask)
+        .catch((reject)=>{
+            if(reject.err){
+                resUtil.resInternalError(reject.err,res,next);
+            }else{
+                resUtil.resetFailedRes(res,reject.msg);
             }
         })
-    }).then(()=>{
-        new Promise((resolve,reject)=>{
-            requireTaskDAO.getById({requireId:params.requireId},(error,rows)=>{
-                if(error){
-                    logger.error('addLoadTask getById ' + error.message);
-                    resUtil.resInternalError(error,res,next);
-                    reject(error);
-                }else{
-                    logger.info('addLoadTask getById ' + 'success');
-                    if (rows.length > 0){
-                        resolve();
-                    }else {
-                        resUtil.resetFailedRes(res,sysMsg.REQUIRE_NO_EXISTE);
-                    }
-                }
-            })
-        }).then(()=>{
-            new Promise((resolve,reject)=>{
-                params.planDate = moment(params.planDate).format("YYYYMMDD");
-                params.planDateTime = moment(params.planDate).format("YYYY-MM-DD");
-                loadTaskDAO.add(params,(error,rows)=>{
-                    if(error){
-                        logger.error('addLoadTask add ' + error.message);
-                        resUtil.resInternalError(error,res,next);
-                        reject(error);
-                    }else{
-                        logger.info('addLoadTask add ' + 'success');
-                        if (rows.insertId){
-                            resUtil.resetCreateRes(res,rows,null);
-                            return next;
-                        }else {
-                            resUtil.resetFailedRes(res,sysMsg.LOADTASK_ADD_NULL)
-                        }
-                    }
-                })
-            })
-        })
-    })
 }
 const submitToSupplier = (req,res,next) => {
     let params = req.params;
