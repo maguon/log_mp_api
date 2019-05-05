@@ -427,7 +427,7 @@ const submitToSupplier = (req,res,next) => {
 
      */
 }
-const getLoadTaskWithDetail = (req,res,next) => {
+const getLoadTaskWithDetail = (req,res,next) => {//未使用
     let params = req.params;
     new Promise((resolve,reject)=>{
         orderInfoDAO.getById({orderId:params.orderId},(error,rows)=>{
@@ -601,9 +601,76 @@ const delLoadTask = (req,res,next) => {
             }
         })
 }
-const updateLoadTask = (req,res,next) => {
+const updateLoadTask = (req,res,next) => { //感觉没必要查询RequireTask
     let params = req.params;
     let loadTaskHookId = 0;
+    const getReqLoadTask = ()=>{
+        return new Promise((resolve,reject)=>{
+            requireTaskDAO.getById({requireId:params.requireId},(error,rows)=>{
+                if(error){
+                    logger.error('updateLoadTask getReqLoadTask  ' + error.message);
+                    reject({err:error});
+                }else{
+                    logger.info('updateLoadTask getReqLoadTask ' + 'success');
+                    if (rows.length > 0){
+                        resolve(params);
+                    }else {
+                        reject({msg:sysMsg.REQUIRE_NO_EXISTE});
+                    }
+                }
+            })
+        });
+    }
+    const getLoadTask =(taskInfo)=>{
+        return new Promise((resolve,reject)=>{
+            loadTaskDAO.getById({loadTaskId:taskInfo.loadTaskId},(error,rows)=>{
+                if(error){
+                    logger.error('updateLoadTask getLoadTask ' + error.message);
+                    reject({err:error});
+                }else{
+                    logger.info('updateLoadTask getLoadTask ' + 'success');
+                    if (rows.length > 0){
+                        loadTaskHookId = rows[0].hook_id;
+                        if (loadTaskHookId == 0){
+                            resolve(taskInfo);
+                        }else{
+                            reject({msg:sysMsg.LOCKTASK_UPDATE_ALREADY_SYNC});
+                        }
+                    }else {
+                        reject({msg:sysMsg.LOAD_TASK_NO_EXISTS});
+                    }
+                }
+            })
+        });
+    }
+    const updateTask = (taskInfo)=>{
+        return new Promise((resolve,reject)=>{
+            taskInfo.planDateId = moment(taskInfo.planDate.toString()).format("YYYYMMDD");
+            loadTaskDAO.updateById(taskInfo,(error,rows)=>{
+                if(error){
+                    logger.error('updateLoadTask updateTask ' + error.message);
+                    reject({err:error});
+                }else{
+                    logger.info('updateLoadTask updateTask ' + 'success');
+                    resUtil.resetUpdateRes(res,rows,null);
+                    return next;
+                }
+            })
+        });
+    }
+    getReqLoadTask()
+        .then(getLoadTask)
+        .then(updateTask)
+        .catch((reject)=>{
+            if(reject.err){
+                resUtil.resInternalError(reject.err,res,next);
+            }else{
+                resUtil.resetFailedRes(res,reject.msg);
+            }
+        })
+
+/*
+    //================================================
     new Promise((resolve,reject)=>{
         requireTaskDAO.getById({requireId:params.requireId},(error,rows)=>{
             if(error){
@@ -654,6 +721,8 @@ const updateLoadTask = (req,res,next) => {
             }
         })
     })
+
+ */
 }
 const updateLoadTaskStatus = (req,res,next) => {
     let params = req.params;
