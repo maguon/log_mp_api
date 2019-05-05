@@ -478,113 +478,128 @@ const delLoadTask = (req,res,next) => {
     let params = req.params;
     let loadTaskHookId = 0;
     let supplierId =0;
-    new Promise((resolve,reject)=>{
-        loadTaskDAO.getById({loadTaskId:params.loadTaskId,orderId:params.orderId,requireId:params.requireId},(error,rows)=>{
-            if(error){
-                logger.error('delLoadTask getById ' + error.message);
-                resUtil.resInternalError(error,res,next);
-                reject(error);
-            }else{
-                logger.info('delLoadTask getById ' + 'success');
-                if (rows.length > 0){
-                    loadTaskHookId = rows[0].hook_id;
-                    supplierId = rows[0].supplier_id;
-                    resolve();
-                }else {
-                    resUtil.resetFailedRes(res,sysMsg.LOAD_TASK_NO_EXISTS)
-                }
-            }
-        })
-    }).then(()=>{
-        new Promise((resolve,reject)=>{
-            supplierInfo.querySupplier({supplierId:supplierId},(error,rows)=>{
+    const getLoadTask = ()=>{
+        return new Promise((resolve,reject)=>{
+            loadTaskDAO.getById({loadTaskId:params.loadTaskId,orderId:params.orderId,requireId:params.requireId},(error,rows)=>{
                 if(error){
-                    logger.error('delLoadTask querySupplier ' + error.message);
-                    resUtil.resInternalError(error,res,next);
-                    reject(error);
+                    logger.error('delLoadTask getLoadTask ' + error.message);
+                    reject({err:error});
                 }else{
-                    logger.info('delLoadTask querySupplier ' + 'success');
+                    logger.info('delLoadTask getLoadTask ' + 'success');
                     if (rows.length > 0){
-                        if (loadTaskHookId != 0){
+                        loadTaskHookId = rows[0].hook_id;
+                        supplierId = rows[0].supplier_id;
+                        resolve(loadTaskHookId,supplierId);
+                    }else {
+                        reject({msg:sysMsg.LOAD_TASK_NO_EXISTS});
+                    }
+                }
+            })
+        });
+    }
+    const getSupplier = (loadTaskHookId,supplierId)=>{
+        return new Promise((resolve,reject)=>{
+            supplierInfo.querySupplier({supplierId:supplierId},(error,rows)=> {
+                if (error) {
+                    logger.error('delLoadTask getSupplier ' + error.message);
+                    reject({err:error});
+                } else {
+                    logger.info('delLoadTask getSupplier ' + 'success');
+                    if (rows.length > 0) {
+                        if (loadTaskHookId != 0) {
                             if (!(rows[0].app_id || rows[0].app_url)) {
-                                resUtil.resetFailedRes(res,sysMsg.SUPPLIER_NO_APP_MSG);
-                            }else {
-                                let options ={
-                                    entrustId:rows[0].app_id,
-                                    dpDemandId:loadTaskHookId,
-                                    demandStatus:0,//删除
-                                    appUrl:hostPort(rows[0].app_url)
+                                reject({msg:sysMsg.SUPPLIER_NO_APP_MSG});
+                            } else {
+                                let options = {
+                                    entrustId: rows[0].app_id,
+                                    dpDemandId: loadTaskHookId,
+                                    demandStatus: 0,//删除
+                                    appUrl: hostPort(rows[0].app_url)
                                 }
                                 exRouteRequireDAO.putLoadTaskStatusToSupplier(options,(error,result)=>{
                                     if(error){
                                         logger.error('delLoadTask putLoadTaskStatusToSupplier ' + error.message);
-                                        resUtil.resInternalError(error,res,next);
-                                        reject(error);
+                                        reject({err:error});
                                     }else{
                                         logger.info('delLoadTask putLoadTaskStatusToSupplier ' + 'success');
                                         if (result.success){
-                                            resolve();
+                                            resolve(params);
                                         } else {
-                                            resUtil.resetFailedRes(res,result.msg);
+                                            reject({msg:result.msg});
                                         }
                                     }
                                 })
                             }
-                        }else {
-                            resolve();
+                        }else{//if (loadTaskHookId != 0)
+                            resolve(params);
                         }
-                    }else {
-                        resUtil.resetFailedRes(res,sysMsg.SUPPLIER_NOT_EXISTS)
+                    }else{//if (rows.length > 0)
+                        reject({msg:sysMsg.SUPPLIER_NOT_EXISTS});
+                    }
+                }
+            });
+        });
+    }
+    const delLoad = (taskInfo)=>{
+        return new Promise((resolve,reject)=>{
+            loadTaskDAO.deleteById({loadTaskId:taskInfo.loadTaskId},(error,rows)=>{
+                if(error){
+                    logger.error('delLoadTask delLoad ' + error.message);
+                    reject({err:error});
+                }else{
+                    logger.info('delLoadTask delLoad ' + 'success');
+                    if (rows.affectedRows > 0){
+                        resolve(taskInfo);
+                    } else {
+                        reject({msg:sysMsg.LOADTASK_DO_FAIL});
                     }
                 }
             })
-        }).then(()=>{
-            new Promise((resolve,reject)=>{
-                loadTaskDAO.deleteById({loadTaskId:params.loadTaskId},(error,rows)=>{
-                    if(error){
-                        logger.error('delLoadTask deleteById ' + error.message);
-                        resUtil.resInternalError(error,res,next);
-                        reject(error);
-                    }else{
-                        logger.info('delLoadTask deleteById ' + 'success');
-                        if (rows.affectedRows > 0){
-                            resolve();
-                        } else {
-                            resUtil.resetFailedRes(res,sysMsg.LOADTASK_DO_FAIL);
-                        }
+        });
+    }
+    const getTaskDetail = (taskInfo)=>{
+        return new Promise((resolve,reject)=>{
+            loadTaskDetailDAO.getById({loadTaskId:taskInfo.loadTaskId},(error,rows)=>{
+                if(error){
+                    logger.error('delLoadTask getTaskDetail ' + error.message);
+                    reject({err:error});
+                }else{
+                    logger.info('delLoadTask getTaskDetail ' + 'success');
+                    if (rows.length > 0){
+                        resolve(taskInfo);
+                    } else {
+                        resUtil.resetQueryRes(res,taskInfo.loadTaskId,null);
                     }
-                })
-            }).then(()=>{
-                new Promise((resolve,reject)=>{
-                    loadTaskDetailDAO.getById({loadTaskId:params.loadTaskId},(error,rows)=>{
-                        if(error){
-                            logger.error('delLoadTask getById ' + error.message);
-                            resUtil.resInternalError(error,res,next);
-                            reject(error);
-                        }else{
-                            logger.info('delLoadTask getById ' + 'success');
-                            if (rows.length > 0){
-                                resolve();
-                            } else {
-                                resUtil.resetQueryRes(res,params.loadTaskId,null);
-                            }
-                        }
-                    })
-                }).then(()=>{
-                    loadTaskDetailDAO.deleteById({loadTaskId:params.loadTaskId},(error,rows)=>{
-                        if(error){
-                            logger.error('delLoadTask deleteById ' + error.message);
-                            resUtil.resInternalError(error,res,next);
-                        }else{
-                            logger.info('delLoadTask deleteById ' + 'success');
-                            resUtil.resetUpdateRes(res,rows,null);
-                            return next;
-                        }
-                    })
-                })
+                }
             })
+        });
+    }
+    const delTaskDetail = (taskInfo)=>{
+        return new Promise((resolve,reject)=>{
+            loadTaskDetailDAO.deleteById({loadTaskId:taskInfo.loadTaskId},(error,rows)=>{
+                if(error){
+                    logger.error('delLoadTask delTaskDetail ' + error.message);
+                    reject({err:error});
+                }else{
+                    logger.info('delLoadTask delTaskDetail ' + 'success');
+                    resUtil.resetUpdateRes(res,rows,null);
+                    return next;
+                }
+            })
+        });
+    }
+    getLoadTask()
+        .then(getSupplier)
+        .then(delLoad)
+        .then(getTaskDetail)
+        .then(delTaskDetail)
+        .catch((reject)=>{
+            if(reject.err){
+                resUtil.resInternalError(reject.err,res,next);
+            }else{
+                resUtil.resetFailedRes(res,reject.msg);
+            }
         })
-    })
 }
 const updateLoadTask = (req,res,next) => {
     let params = req.params;
@@ -972,8 +987,8 @@ const statisticsPrice = (req,res,next) => {
 }
 module.exports={
     addLoadTask,
-    submitToSupplier,
-    getLoadTaskWithDetail,
+    submitToSupplier,//供应商同步需求
+    getLoadTaskWithDetail,//未使用
     delLoadTask,
     updateLoadTask,
     updateLoadTaskStatus,
