@@ -84,6 +84,195 @@ const addLoadTask = (req,res,next) => {
 }
 const submitToSupplier = (req,res,next) => {
     let params = req.params;
+    const getLoadTask = ()=>{
+        return new Promise((resolve,reject)=>{
+            loadTaskDetailDAO.getById({loadTaskId:params.loadTaskId},(error,rows)=>{
+                if(error){
+                    logger.error('submitToSupplier getLoadTask ' + error.message);
+                    reject({err:error});
+                }else{
+                    logger.info('submitToSupplier getLoadTask ' + 'success');
+                    if (rows.length > 0){
+                        resolve(params);
+                    }else {
+                        reject({msg:sysMsg.LOADTASK_DETAIL_SYNC_NULL});
+                    }
+                }
+            })
+        });
+    }
+    const getLoadTaskOrder = (taskOrder)=>{
+        return new Promise((resolve,reject)=>{
+            loadTaskDAO.getLoadTaskOrder({loadTaskId:taskOrder.loadTaskId},(error,rows)=> {
+                if (error) {
+                    logger.error('submitToSupplier getLoadTaskOrder ' + error.message);
+                    reject(error);
+                } else {
+                    logger.info('submitToSupplier getLoadTaskOrder ' + 'success');
+                    if (rows.length > 0){
+                        taskOrder.supplierId = rows[0].supplier_id;
+                        taskOrder.options = {
+                            routeStart:rows[0].route_start,
+                            routeEnd:rows[0].route_end,
+                            preCount:rows[0].car_count,
+                            dateId:rows[0].plan_date_id
+                        }
+                        // if (rows[0].service_type == sysConsts.ORDER.serviceType.selfMention){
+                        taskOrder.options.remark = "发货地址:"+rows[0].route_start_detail + ";收货地址:"+rows[0].route_end_detail;
+                        // }else if (rows[0].service_type == sysConsts.ORDER.serviceType.doorToDoor){
+                        //     taskOrder.options.remark = "发货地址:"+rows[0].send_address + ";收货地址:"+rows[0].recv_address;
+                        // }
+                        resolve(taskOrder);
+                    }else {
+                        reject({msg:sysMsg.ORDER_NO_EXISTE});
+                    }
+                }
+            });
+        });
+    }
+    const getSupplier = (info)=>{
+        return new Promise((resolve,reject)=>{
+            supplierInfo.querySupplier({supplierId:info.supplierId},(error,rows)=>{
+                if(error){
+                    logger.error('submitToSupplier getSupplier ' + error.message);
+                    reject({err:error});
+                }else {
+                    logger.info('submitToSupplier getSupplier ' + 'success');
+                    if (rows.length >0){
+                        if (rows[0].close_flag == sysConsts.SUPPLIER.closeFlag.close){
+                            reject({msg:sysMsg.SUPPLIER_CLOSE_NOTALLOW_SYNC});
+                        }else{
+                            if (rows[0].close_flag == sysConsts.SUPPLIER.closeFlag.open){
+                                info.appId = rows[0].app_id;
+                                info.baseAddrId = rows[0].base_addr_id;
+                                info.makeId = rows[0].car_module_id;
+                                info.appUrl = hostPort(rows[0].app_url);
+                                info.options.baseAddrId = info.baseAddrId;
+                                info.options.receiveId = rows[0].receive_id;
+                                resolve(info);
+                            }else{
+                                reject({msg:'closeFlag error!'});
+                            }
+                        }
+                    }else {
+                        reject({msg:sysMsg.SUPPLIER_NOT_EXISTS});
+                    }
+                }
+            })
+        });
+    }
+    const saveSupplier = (taskInfo)=>{
+        return new Promise((resolve,reject)=>{
+            taskInfo.req = req;
+            exRouteRequireDAO.saveLoadTaskToSupplier(taskInfo,(error,result)=>{
+                if(error){
+                    logger.error('submitToSupplier saveSupplier ' + error.message);
+                    reject({err:error});
+                }else{
+                    logger.info('submitToSupplier saveSupplier ' + 'success');
+                    if (result.success){
+                        taskInfo.hookId = result.id;
+                        resolve(taskInfo);
+                    } else {
+                        reject({msg:"对方服务器:"+result.msg});
+                    }
+                }
+            })
+        });
+    }
+    const updatLoadTask = (taskInfo)=>{
+        return new Promise((resolve,reject)=>{
+            loadTaskDAO.updateById({loadTaskId:taskInfo.loadTaskId,hookId:taskInfo.hookId},(error,rows)=>{
+                if(error){
+                    logger.error('submitToSupplier updatLoadTask ' + error.message);
+                    reject({err:error});
+                }else{
+                    logger.info('submitToSupplier updatLoadTask ' + 'success');
+                    resolve(taskInfo);
+                }
+            })
+        });
+    }
+    const getDetail =(taskInfo)=>{
+        return new Promise((resolve,reject)=>{
+            loadTaskDAO.getLoadTaskWithDetail({loadTaskId:taskInfo.loadTaskId},(error,rows)=> {
+                if (error) {
+                    logger.error('submitToSupplier getDetail ' + error.message);
+                    reject({err: error});
+                } else {
+                    logger.info('submitToSupplier getDetail ' + 'success');
+                    resolve(rows);
+                }
+            });
+        });
+    }
+    const saveDetail = (info)=>{
+        return new Promise((resolve,reject)=>{
+            for (let i in rows) {
+                params.req = req;
+                params.options = {
+                    vin: info[i].vin,
+                    makeId: params.makeId,
+                    routeStart: info[i].route_start,
+                    baseAddrId: params.baseAddrId,
+                    entrustId: params.appId
+                    // orderDate:moment(rows[i].plan_date_id.toString()).format("YYYY-MM-DD")
+                }
+                saveDetailToSupplier(params,rows[i].id);
+            }
+            logger.info('submitToSupplier saveDetail ' + 'success');
+            resUtil.resetQueryRes(res,params.hookId,null);
+        });
+    }
+    const saveDetailToSupplier = (detailInfo,rowId)=>{
+        return new Promise((resolve,reject)=>{
+            exRouteRequireDAO.saveLoadTaskDetailToSupplier(detailInfo,(error,result)=> {
+                if (error) {
+                    logger.error('submitToSupplier saveDetailToSupplier ' + error.message);
+                    reject({err:error});
+                } else {
+                    logger.info('submitToSupplier saveDetailToSupplier ' + 'success');
+                    if (result.success) {
+                        detailInfo.detailHookId = result.id;
+                        updataLoadTaskToFor(result.id,rowId);
+                        resolve();
+                    }else{
+                        reject({msg:"对方服务器:"+result.msg});
+                    }
+                }
+            });
+        });
+    }
+    const updataLoadTaskToFor = (hookId,rowId)=>{
+        return new Promise((resolve,reject)=>{
+            loadTaskDetailDAO.updateById({detailHookId:hookId,loadTaskDetailId:rowId},(error,result)=>{
+                if(error){
+                    logger.error('submitToSupplier updataLoadTaskToFor ' + error.message);
+                    reject({err:error});
+                }else{
+                    logger.info('submitToSupplier updataLoadTaskToFor ' + 'success');
+                    resolve();
+                }
+            })
+        });
+    }
+    getLoadTask()
+        .then(getLoadTaskOrder)
+        .then(getSupplier)
+        .then(saveSupplier)
+        .then(updatLoadTask)
+        .then(getDetail)
+        .then(saveDetail)
+        .catch((reject)=>{
+            if(reject.err){
+                resUtil.resInternalError(reject.err,res,next);
+            }else{
+                resUtil.resetFailedRes(res,reject.msg);
+            }
+        })
+
+    /*
+    //===============================================
     new Promise((resolve,reject)=>{
         loadTaskDetailDAO.getById({loadTaskId:params.loadTaskId},(error,rows)=>{
             if(error){
@@ -235,6 +424,8 @@ const submitToSupplier = (req,res,next) => {
             })
         })
     })
+
+     */
 }
 const getLoadTaskWithDetail = (req,res,next) => {
     let params = req.params;
