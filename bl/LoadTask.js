@@ -728,9 +728,11 @@ const updateLoadTaskStatus = (req,res,next) => {
     if (params.status == sysConsts.LOAD_TASK_STATUS.loading){
         params.loadDateId = moment().format("YYYYMMDD");
         params.loadDate = moment().format("YYYY-MM-DD");
-    } else if (params.status == sysConsts.LOAD_TASK_STATUS.served){
-        params.arriveDateId = moment().format("YYYYMMDD");
-        params.arriveDate = moment().format("YYYY-MM-DD");
+    } else{
+        if (params.status == sysConsts.LOAD_TASK_STATUS.served){
+            params.arriveDateId = moment().format("YYYYMMDD");
+            params.arriveDate = moment().format("YYYY-MM-DD");
+        }
     }
     loadTaskDAO.updateById(params,(error,rows)=>{
         if(error){
