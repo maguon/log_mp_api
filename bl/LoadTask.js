@@ -668,7 +668,6 @@ const updateLoadTask = (req,res,next) => { //感觉没必要查询RequireTask
                 resUtil.resetFailedRes(res,reject.msg);
             }
         })
-
 /*
     //================================================
     new Promise((resolve,reject)=>{
@@ -746,50 +745,64 @@ const updateLoadTaskStatus = (req,res,next) => {
 }
 const getOrderLoadTask = (req,res,next) => {
     let params = req.params;
-    new Promise((resolve,reject)=>{
-        orderInfoDAO.getById({orderId:params.orderId},(error,rows)=>{
-            if(error){
-                logger.error('getOrderLoadTask getByIdOrder ' + error.message);
-                resUtil.resInternalError(error,res,next);
-                reject(error);
-            }else{
-                logger.info('getOrderLoadTask getByIdOrder ' + 'success');
-                if (rows.length > 0){
-                    resolve();
-                }else {
-                    resUtil.resetFailedRes(res,sysMsg.ORDER_NO_EXISTE);
-                }
-            }
-        })
-    }).then(()=>{
-        new Promise((resolve,reject)=>{
-            requireTaskDAO.getById({requireId:params.requireId},(error,rows)=>{
+    const getOrderInfo =()=>{
+        return new Promise((resolve,reject)=>{
+            orderInfoDAO.getById({orderId:params.orderId},(error,rows)=>{
                 if(error){
-                    logger.error('getOrderLoadTask getByIdRequireTask ' + error.message);
-                    resUtil.resInternalError(error,res,next);
-                    reject(error);
+                    logger.error('getOrderLoadTask getOrderInfo ' + error.message);
+                    reject({err:error});
                 }else{
-                    logger.info('getOrderLoadTask getByIdRequireTask ' + 'success');
+                    logger.info('getOrderLoadTask getOrderInfo ' + 'success');
                     if (rows.length > 0){
-                        resolve();
+                        resolve(params);
                     }else {
-                        resUtil.resetFailedRes(res,sysMsg.REQUIRE_NO_EXISTE);
+                        reject({msg:sysMsg.ORDER_NO_EXISTE});
                     }
                 }
             })
-        }).then(()=>{
-            loadTaskDAO.getLoadTask(params,(error,rows)=>{
+        });
+    }
+    const getReqLoadTask = (reqInfo)=>{
+        return new Promise((resolve,reject)=>{
+            requireTaskDAO.getById({requireId:reqInfo.requireId},(error,rows)=>{
+                if(error){
+                    logger.error('getOrderLoadTask getReqLoadTask ' + error.message);
+                    reject({err:error});
+                }else{
+                    logger.info('getOrderLoadTask getReqLoadTask ' + 'success');
+                    if (rows.length > 0){
+                        resolve(reqInfo);
+                    }else {
+                        reject({msg:sysMsg.REQUIRE_NO_EXISTE});
+                    }
+                }
+            })
+        });
+    }
+    const getLoadTask = (taskInfo)=>{
+        return new Promise((resolve,reject)=>{
+            loadTaskDAO.getLoadTask(taskInfo,(error,rows)=>{
                 if(error){
                     logger.error('getOrderLoadTask getLoadTask ' + error.message);
-                    resUtil.resInternalError(error,res,next);
+                    reject({err:error});
                 }else{
                     logger.info('getOrderLoadTask getLoadTask ' + 'success');
                     resUtil.resetQueryRes(res,rows,null);
                     return next;
                 }
             })
+        });
+    }
+    getOrderInfo()
+        .then(getReqLoadTask)
+        .then(getLoadTask)
+        .catch((reject)=>{
+            if(reject.err){
+                resUtil.resInternalError(reject.err,res,next);
+            }else{
+                resUtil.resetFailedRes(res,reject.msg);
+            }
         })
-    })
 }
 const getLoadTaskProfitOfCar = (req,res,next) => {
     let params = req.params;
