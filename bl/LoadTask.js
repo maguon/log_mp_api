@@ -208,7 +208,7 @@ const submitToSupplier = (req,res,next) => {
     }
     const saveDetail = (info)=>{
         return new Promise((resolve,reject)=>{
-            for (let i in rows) {
+            for (let i in info) {
                 params.req = req;
                 params.options = {
                     vin: info[i].vin,
@@ -216,9 +216,9 @@ const submitToSupplier = (req,res,next) => {
                     routeStart: info[i].route_start,
                     baseAddrId: params.baseAddrId,
                     entrustId: params.appId
-                    // orderDate:moment(rows[i].plan_date_id.toString()).format("YYYY-MM-DD")
+                    // orderDate:moment(info[i].plan_date_id.toString()).format("YYYY-MM-DD")
                 }
-                saveDetailToSupplier(params,rows[i].id);
+                saveDetailToSupplier(params,info[i].id);
             }
             logger.info('submitToSupplier saveDetail ' + 'success');
             resUtil.resetQueryRes(res,params.hookId,null);
