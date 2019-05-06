@@ -218,42 +218,37 @@ const submitToSupplier = (req,res,next) => {
                     entrustId: params.appId
                     // orderDate:moment(info[i].plan_date_id.toString()).format("YYYY-MM-DD")
                 }
-                saveDetailToSupplier(params,info[i].id);
+                saveDetailToSupplier(params,info[i].dltd_id);
             }
             logger.info('submitToSupplier saveDetail ' + 'success');
             resUtil.resetQueryRes(res,params.hookId,null);
         });
     }
-    const saveDetailToSupplier = (detailInfo,rowId)=>{
+    const saveDetailToSupplier = (taskInfo,dltdId)=>{
         return new Promise((resolve,reject)=>{
-            exRouteRequireDAO.saveLoadTaskDetailToSupplier(detailInfo,(error,result)=> {
+            exRouteRequireDAO.saveLoadTaskDetailToSupplier(taskInfo,(error,result)=> {
                 if (error) {
                     logger.error('submitToSupplier saveDetailToSupplier ' + error.message);
                     reject({err:error});
                 } else {
                     logger.info('submitToSupplier saveDetailToSupplier ' + 'success');
                     if (result.success) {
-                        detailInfo.detailHookId = result.id;
-                        updataLoadTaskToFor(result.id,rowId);
+                        taskInfo.detailHookId = result.id;
+                        loadTaskDetailDAO.updateById({detailHookId:result.id,loadTaskDetailId:dltdId},(error,result)=>{
+                            if(error){
+                                logger.error('submitToSupplier updateLoadTaskDetailHookId ' + error.message);
+                                resUtil.resInternalError(error,res,next);
+                                reject(error);
+                            }else{
+                                logger.info('submitToSupplier updateLoadTaskDetailHookId ' + 'success');
+                            }
+                        })
                         resolve();
                     }else{
                         reject({msg:"对方服务器:"+result.msg});
                     }
                 }
             });
-        });
-    }
-    const updataLoadTaskToFor = (hookId,rowId)=>{
-        return new Promise((resolve,reject)=>{
-            loadTaskDetailDAO.updateById({detailHookId:hookId,loadTaskDetailId:rowId},(error,result)=>{
-                if(error){
-                    logger.error('submitToSupplier updataLoadTaskToFor ' + error.message);
-                    reject({err:error});
-                }else{
-                    logger.info('submitToSupplier updataLoadTaskToFor ' + 'success');
-                    resolve();
-                }
-            })
         });
     }
     getLoadTask()

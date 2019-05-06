@@ -177,7 +177,7 @@ const updateById =(params,callback) => {
 }
 const getLoadTaskWithDetail = (params,callback) => {
     let query = "select dlt.*,dltd.id detail_id,dltd.order_item_id, dltd.vin,dltd.status,si.supplier_full,si.supplier_short,";
-    query += "dltd.supplier_trans_price detail_supplier_trans_price,dltd.supplier_insure_price detail_supplier_insure_price,dltd.hook_id detail_hook_id";
+    query += "dltd.supplier_trans_price detail_supplier_trans_price,dltd.supplier_insure_price detail_supplier_insure_price,dltd.hook_id detail_hook_id,dltd.id dltd_id";
     query += " from dp_load_task dlt";
     query += " left join dp_load_task_detail dltd on dlt.id = dltd.dp_load_task_id ";
     query += " left join supplier_info si on si.id = dlt.supplier_id where 1=1";
