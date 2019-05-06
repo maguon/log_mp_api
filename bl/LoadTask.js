@@ -554,29 +554,12 @@ const delLoadTask = (req,res,next) => {
             }
         })
 }
-const updateLoadTask = (req,res,next) => { //感觉没必要查询RequireTask
+const updateLoadTask = (req,res,next) => {
     let params = req.params;
     let loadTaskHookId = 0;
-    const getReqLoadTask = ()=>{
+    const getLoadTask =()=>{
         return new Promise((resolve,reject)=>{
-            requireTaskDAO.getById({requireId:params.requireId},(error,rows)=>{
-                if(error){
-                    logger.error('updateLoadTask getReqLoadTask  ' + error.message);
-                    reject({err:error});
-                }else{
-                    logger.info('updateLoadTask getReqLoadTask ' + 'success');
-                    if (rows.length > 0){
-                        resolve(params);
-                    }else {
-                        reject({msg:sysMsg.REQUIRE_NO_EXISTE});
-                    }
-                }
-            })
-        });
-    }
-    const getLoadTask =(taskInfo)=>{
-        return new Promise((resolve,reject)=>{
-            loadTaskDAO.getById({loadTaskId:taskInfo.loadTaskId},(error,rows)=>{
+            loadTaskDAO.getById({loadTaskId:params.loadTaskId},(error,rows)=>{
                 if(error){
                     logger.error('updateLoadTask getLoadTask ' + error.message);
                     reject({err:error});
@@ -585,7 +568,7 @@ const updateLoadTask = (req,res,next) => { //感觉没必要查询RequireTask
                     if (rows.length > 0){
                         loadTaskHookId = rows[0].hook_id;
                         if (loadTaskHookId == 0){
-                            resolve(taskInfo);
+                            resolve(params);
                         }else{
                             reject({msg:sysMsg.LOCKTASK_UPDATE_ALREADY_SYNC});
                         }
@@ -611,8 +594,7 @@ const updateLoadTask = (req,res,next) => { //感觉没必要查询RequireTask
             })
         });
     }
-    getReqLoadTask()
-        .then(getLoadTask)
+    getLoadTask()
         .then(updateTask)
         .catch((reject)=>{
             if(reject.err){
@@ -621,60 +603,6 @@ const updateLoadTask = (req,res,next) => { //感觉没必要查询RequireTask
                 resUtil.resetFailedRes(res,reject.msg);
             }
         })
-/*
-    //================================================
-    new Promise((resolve,reject)=>{
-        requireTaskDAO.getById({requireId:params.requireId},(error,rows)=>{
-            if(error){
-                logger.error('updateLoadTask getById  ' + error.message);
-                resUtil.resInternalError(error,res,next);
-                reject(error);
-            }else{
-                logger.info('updateLoadTask getById ' + 'success');
-                if (rows.length > 0){
-                    resolve();
-                }else {
-                    resUtil.resetFailedRes(res,sysMsg.REQUIRE_NO_EXISTE);
-                }
-            }
-        })
-    }).then(()=>{
-        new Promise((resolve,reject)=>{
-            loadTaskDAO.getById({loadTaskId:params.loadTaskId},(error,rows)=>{
-                if(error){
-                    logger.error('updateLoadTask getById2 ' + error.message);
-                    resUtil.resInternalError(error,res,next);
-                    reject(error);
-                }else{
-                    logger.info('updateLoadTask getById2 ' + 'success');
-                    if (rows.length > 0){
-                        loadTaskHookId = rows[0].hook_id;
-                        resolve();
-                    }else {
-                        resUtil.resetFailedRes(res,sysMsg.LOAD_TASK_NO_EXISTS)
-                    }
-                }
-            })
-        }).then(()=>{
-            if (loadTaskHookId == 0){
-                params.planDateId = moment(params.planDate.toString()).format("YYYYMMDD");
-                loadTaskDAO.updateById(params,(error,rows)=>{
-                    if(error){
-                        logger.error('updateLoadTask updateById ' + error.message);
-                        resUtil.resInternalError(error,res,next);
-                    }else{
-                        logger.info('updateLoadTask updateById ' + 'success');
-                        resUtil.resetUpdateRes(res,rows,null);
-                        return next;
-                    }
-                })
-            } else {
-                resUtil.resetFailedRes(res,sysMsg.LOCKTASK_UPDATE_ALREADY_SYNC);
-            }
-        })
-    })
-
- */
 }
 const updateLoadTaskStatus = (req,res,next) => {
     let params = req.params;
