@@ -698,85 +698,100 @@ const getLoadTaskProfitOfCar = (req,res,next) => {
 const getSyncLoadTask = (req,res,next) => {
     let params = req.params;
     let resultData ={};
-    new Promise((resolve,reject)=>{
-        loadTaskDAO.getById({loadTaskId:params.loadTaskId},(error,rows)=>{
-            if(error){
-                logger.error('getSyncLoadTask getByIdLoadTask ' + error.message);
-                resUtil.resInternalError(error,res,next);
-                reject(error);
-            }else{
-                logger.info('getSyncLoadTask getByIdLoadTask ' + 'success');
-                if (rows.length > 0){
-                    if (rows[0].hook_id){
-                        params.hookId = rows[0].hook_id;
-                        params.supplierId = rows[0].supplier_id;
-                        resolve();
-                    } else {
-                        resUtil.resetFailedRes(res,sysMsg.LOADTASK_NO_HOOKID);
+    const getLoadTask = ()=>{
+        return new Promise((resolve,reject)=>{
+            loadTaskDAO.getById({loadTaskId:params.loadTaskId},(error,rows)=>{
+                if(error){
+                    logger.error('getSyncLoadTask getLoadTask ' + error.message);
+                    reject({err:error});
+                }else{
+                    logger.info('getSyncLoadTask getLoadTask ' + 'success');
+                    if (rows.length > 0){
+                        if (rows[0].hook_id){
+                            params.hookId = rows[0].hook_id;
+                            params.supplierId = rows[0].supplier_id;
+                            resolve(params);
+                        } else {
+                            reject({msg:sysMsg.LOADTASK_NO_HOOKID});
+                        }
+                    }else {
+                        reject({msg:sysMsg.REQUIRE_NO_EXISTE});
                     }
-                }else {
-                    resUtil.resetFailedRes(res,sysMsg.REQUIRE_NO_EXISTE);
                 }
+            })
+        });
+    }
+    const getSupplier = (taskinfo)=>{
+        return new Promise((resolve,reject)=>{
+            supplierInfo.querySupplier({supplierId:taskinfo.supplierId},(error,rows)=>{
+                if(error){
+                    logger.error('getSyncLoadTask getSupplier ' + error.message);
+                    reject({err:error});
+                }else{
+                    logger.info('getSyncLoadTask getSupplier ' + 'success');
+                    if (rows.length > 0){
+                        taskinfo.appUrl = hostPort(rows[0].app_url);
+                        taskinfo.entrustId = rows[0].app_id;
+                        resolve(taskinfo);
+                    }else {
+                        reject({msg:sysMsg.SUPPLIER_NOT_EXISTS});
+                    }
+                }
+            })
+        });
+    }
+    const getDemand = (taskinfo)=>{
+        return new Promise((resolve,reject)=>{
+            let options ={
+                dpDemandId:taskinfo.hookId
+            }
+            taskinfo.options = options;
+            exRouteRequireDAO.getDpDemand(taskinfo,(error,result)=>{
+                if(error){
+                    logger.error('getSyncLoadTask getDemand ' + error.message);
+                    reject({err:error});
+                }else{
+                    logger.info('getSyncLoadTask getDemand ' + 'success');
+                    if (result.success){
+                        resultData.require = result.result;
+                        resolve(taskinfo);
+                    } else {
+                        reject({msg:"对方服务器:"+result.msg});
+                    }
+                }
+            })
+        });
+    }
+    const getRouteLoadTask = (taskinfo)=>{
+        return new Promise((resolve,reject)=>{
+            exRouteRequireDAO.getRouteLoadTask(taskinfo,(error,result)=>{
+                if(error){
+                    logger.error('getSyncLoadTask getRouteLoadTask ' + error.message);
+                    reject({err:error});
+                }else{
+                    logger.info('getSyncLoadTask getRouteLoadTask ' + 'success');
+                    if (result.success){
+                        resultData.routeLoadTask = result.result;
+                        resUtil.resetQueryRes(res,resultData,null);
+                        return next;
+                    } else {
+                        reject({msg:"对方服务器:"+result.msg});
+                    }
+                }
+            })
+        });
+    }
+    getLoadTask()
+        .then(getSupplier)
+        .then(getDemand)
+        .then(getRouteLoadTask)
+        .catch((reject)=>{
+            if(reject.err){
+                resUtil.resInternalError(reject.err,res,next);
+            }else{
+                resUtil.resetFailedRes(res,reject.msg);
             }
         })
-    }).then(()=>{
-        new Promise((resolve,reject)=>{
-            supplierInfo.querySupplier({supplierId:params.supplierId},(error,rows)=>{
-                if(error){
-                    logger.error('getSyncLoadTask querySupplier ' + error.message);
-                    resUtil.resInternalError(error,res,next);
-                    reject(error);
-                }else{
-                    logger.info('getSyncLoadTask querySupplier ' + 'success');
-                    if (rows.length > 0){
-                        params.appUrl = hostPort(rows[0].app_url);
-                        params.entrustId = rows[0].app_id;
-                        resolve();
-                    }else {
-                        resUtil.resetFailedRes(res,sysMsg.SUPPLIER_NOT_EXISTS);
-                    }
-                }
-            })
-        }).then(()=>{
-            new Promise((resolve,reject)=>{
-                let options ={
-                    dpDemandId:params.hookId
-                }
-                params.options = options;
-                exRouteRequireDAO.getDpDemand(params,(error,result)=>{
-                    if(error){
-                        logger.error('getSyncLoadTask getDpDemand ' + error.message);
-                        resUtil.resInternalError(error,res,next);
-                        reject(error);
-                    }else{
-                        logger.info('getSyncLoadTask getDpDemand ' + 'success');
-                        if (result.success){
-                            resultData.require = result.result;
-                            resolve();
-                        } else {
-                            resUtil.resetFailedRes(res,"对方服务器:"+result.msg);
-                        }
-                    }
-                })
-            }).then(()=>{
-                exRouteRequireDAO.getRouteLoadTask(params,(error,result)=>{
-                    if(error){
-                        logger.error('getSyncLoadTask getRouteLoadTask ' + error.message);
-                        resUtil.resInternalError(error,res,next);
-                    }else{
-                        logger.info('getSyncLoadTask getRouteLoadTask ' + 'success');
-                        if (result.success){
-                            resultData.routeLoadTask = result.result;
-                            resUtil.resetQueryRes(res,resultData,null);
-                            return next;
-                        } else {
-                            resUtil.resetFailedRes(res,"对方服务器:"+result.msg);
-                        }
-                    }
-                })
-            })
-        })
-    })
 }
 const syncComplete = (req,res,next) => {
     let params = req.params;
