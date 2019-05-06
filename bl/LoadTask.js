@@ -639,68 +639,82 @@ const getSyncLoadTask = (req,res,next) => {
 }
 const syncComplete = (req,res,next) => {
     let params = req.params;
-    new Promise((resolve,reject)=>{
-        loadTaskDAO.getById({loadTaskId:params.loadTaskId},(error,rows)=>{
-            if(error){
-                logger.error('syncComplete getById ' + error.message);
-                resUtil.resInternalError(error,res,next);
-                reject(error);
-            }else{
-                logger.info('syncComplete getById ' + 'success');
-                if (rows.length > 0){
-                    if (rows[0].hook_id){
-                        params.hookId = rows[0].hook_id;
-                        params.supplierId = rows[0].supplier_id;
-                        resolve();
-                    } else {
-                        resUtil.resetFailedRes(res,sysMsg.LOADTASK_NO_HOOKID);
-                    }
-                }else {
-                    resUtil.resetFailedRes(res,sysMsg.LOAD_TASK_NO_EXISTS);
-                }
-            }
-        })
-    }).then(()=>{
-        new Promise((resolve,reject)=>{
-            supplierInfo.querySupplier({supplierId:params.supplierId},(error,rows)=>{
+    const getLoadTask =()=>{
+        return new Promise((resolve,reject)=>{
+            loadTaskDAO.getById({loadTaskId:params.loadTaskId},(error,rows)=>{
                 if(error){
-                    logger.error('syncComplete querySupplier ' + error.message);
-                    resUtil.resInternalError(error,res,next);
-                    reject(error);
+                    logger.error('syncComplete getLoadTask ' + error.message);
+                    reject({err:error});
                 }else{
-                    logger.info('syncComplete querySupplier ' + 'success');
+                    logger.info('syncComplete getLoadTask ' + 'success');
                     if (rows.length > 0){
-                        params.appUrl = hostPort(rows[0].app_url);
-                        params.entrustId = rows[0].app_id;
-                        resolve();
+                        if (rows[0].hook_id){
+                            params.hookId = rows[0].hook_id;
+                            params.supplierId = rows[0].supplier_id;
+                            resolve(params);
+                        } else {
+                            reject({msg:sysMsg.LOADTASK_NO_HOOKID});
+                        }
                     }else {
-                        resUtil.resetFailedRes(res,sysMsg.SUPPLIER_NOT_EXISTS);
+                        reject({msg:sysMsg.LOAD_TASK_NO_EXISTS});
                     }
                 }
             })
-        }).then(()=>{
+        });
+    }
+    const getSupplier = (taskInfo)=>{
+        return new Promise((resolve,reject)=>{
+            supplierInfo.querySupplier({supplierId:taskInfo.supplierId},(error,rows)=>{
+                if(error){
+                    logger.error('syncComplete getSupplier ' + error.message);
+                    reject({err:error});
+                }else{
+                    logger.info('syncComplete getSupplier ' + 'success');
+                    if (rows.length > 0){
+                        taskInfo.appUrl = hostPort(rows[0].app_url);
+                        taskInfo.entrustId = rows[0].app_id;
+                        resolve(taskInfo);
+                    }else {
+                        reject({msg:sysMsg.SUPPLIER_NOT_EXISTS});
+                    }
+                }
+            })
+        });
+    }
+    const putTaskStu = (taskInfo)=>{
+        return new Promise((resolve,reject)=>{
             let options ={
-                entrustId:params.entrustId,
-                dpDemandId:params.hookId,
+                entrustId:taskInfo.entrustId,
+                dpDemandId:taskInfo.hookId,
                 demandStatus:2,//完成
-                appUrl:params.appUrl
+                appUrl:taskInfo.appUrl
             }
             exRouteRequireDAO.putLoadTaskStatusToSupplier(options,(error,result)=>{
                 if(error){
-                    logger.error('syncComplete putLoadTaskStatusToSupplier ' + error.message);
-                    resUtil.resInternalError(error,res,next);
+                    logger.error('syncComplete putTaskStu ' + error.message);
+                    reject({err:error});
                 }else{
-                    logger.info('syncComplete putLoadTaskStatusToSupplier ' + 'success');
+                    logger.info('syncComplete putTaskStu ' + 'success');
                     if (result.success){
                         resUtil.resetQueryRes(res,result,null);
                         return next;
                     } else {
-                        resUtil.resetFailedRes(res,"对方服务器:"+result.msg);
+                        reject({msg:"对方服务器:"+result.msg});
                     }
                 }
             })
+        });
+    }
+    getLoadTask()
+        .then(getSupplier)
+        .then(putTaskStu)
+        .catch((reject)=>{
+            if(reject.err){
+                resUtil.resInternalError(reject.err,res,next);
+            }else{
+                resUtil.resetFailedRes(res,reject.msg);
+            }
         })
-    })
 }
 const getRouteLoadTask = (req,res,next) => {
     let params = req.params;
