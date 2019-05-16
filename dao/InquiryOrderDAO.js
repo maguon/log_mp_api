@@ -574,10 +574,10 @@ const updateById =(params,callback) => {
         paramsArray[i++] = params.departureTime;
         query += " ,departure_time = ?"
     }
-    if (params.remark) {
+    //if (params.remark) {
         paramsArray[i++] = params.remark;
         query += " ,remark = ?"
-    }
+    //}
     if (params.adminRemark) {
         paramsArray[i++] = params.adminRemark;
         query += " ,admin_mark = ?"
