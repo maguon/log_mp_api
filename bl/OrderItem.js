@@ -126,10 +126,26 @@ const delOrderCar = (req,res,next) => {
                         reject(error);
                     }else{
                         logger.info('delOrderCar getPriceSum ' + 'success');
-                        params.oraTransPrice = rows[0].sum_ora_trans_price;
-                        params.oraInsurePrice = rows[0].sum_ora_insure_price;
-                        params.totalTransPrice = rows[0].sum_act_trans_price;
-                        params.totalInsurePrice = rows[0].sum_act_insure_price;
+                        if(rows[0].sum_ora_trans_price == null){
+                            params.oraTransPrice = 0;
+                        }else{
+                            params.oraTransPrice = rows[0].sum_ora_trans_price;
+                        }
+                        if(rows[0].sum_ora_insure_price == null){
+                            params.oraInsurePrice = 0;
+                        }else{
+                            params.oraInsurePrice = rows[0].sum_ora_insure_price;
+                        }
+                        if(rows[0].sum_act_trans_price == null){
+                            params.totalTransPrice = 0;
+                        }else{
+                            params.totalTransPrice = rows[0].sum_act_trans_price;
+                        }
+                        if(rows[0].sum_act_insure_price = null){
+                            params.totalInsurePrice = 0;
+                        }else{
+                            params.totalInsurePrice = rows[0].sum_act_insure_price;
+                        }
                         params.carNum = rows[0].sum_car_num;
                         resolve();
                     }
