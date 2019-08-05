@@ -11,6 +11,10 @@ const encrypt = require('../util/Encrypt.js');
 const getDeviceInfo = (params,callback) => {
     let query = "select * from admin_device_info where id is not null ";
     let paramsArray = [],i=0;
+    if(params.adminDeviceId){
+        paramsArray[i++] = params.adminDeviceId;
+        query = query + " and id = ? ";
+    }
     if(params.adminId){
         paramsArray[i++] = params.adminId;
         query = query + " and admin_id = ? ";
