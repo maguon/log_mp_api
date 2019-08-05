@@ -103,7 +103,7 @@ const adminUserMobileLogin = (req,res,next) =>{
                         if(passwordMd5 != rows[0].password){
                             //密码不匹配
                             logger.warn('adminUserMobileLogin queryPassword: ' +params.adminId+' '+sysMsg.CUST_LOGIN_PSWD_ERROR);
-                            reject({msg:sysMsg.CUST_SIGNUP_REGISTERED});
+                            reject({msg:sysMsg.CUST_LOGIN_PSWD_ERROR});
                         }else{
                             //密码正确
                             if(rows[0].status == listOfValue.ADMIN_USER_STATUS_NOT_ACTIVE){
