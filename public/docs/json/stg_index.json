@@ -547,6 +547,43 @@
         }
       }
     },
+    "/MobileLogin": {
+      "post": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "insert",
+        "description": "管理员登录成功后，存储登录设备和APP信息",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "device",
+            "in": "body",
+            "description": "device",
+            "required": true,
+            "schema":{
+              "$ref": "#/definitions/adminUserMobileLogin"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/adminUserMobileLogin"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
     "/admin/do/login": {
       "post": {
         "tags": [
@@ -665,181 +702,6 @@
         }
       }
     },
-    "/admin": {
-      "get": {
-        "tags": [
-          "admin"
-        ],
-        "summary": "select",
-        "description": "Get admin user info",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "query",
-            "description": "admin Id",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "realName",
-            "in": "query",
-            "description": "realName",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "gender",
-            "in": "query",
-            "description": "0:女 1:男",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "department",
-            "in": "query",
-            "description": "department",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "status",
-            "in": "query",
-            "description": "状态(0-停用,1-可用)",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "isSuperUserFlag",
-            "in": "query",
-            "description": "状态(0-否,1-是)",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "start",
-            "in": "query",
-            "description": "",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "size",
-            "in": "query",
-            "description": "size",
-            "required": false,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/admin"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/token/{token}": {
-      "get": {
-        "tags": [
-          "admin"
-        ],
-        "summary": "select",
-        "description": "Get admin token",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "admin Id",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "token",
-            "in": "path",
-            "description": "token",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/admin"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/adminDevice": {
-      "get": {
-        "tags": [
-          "admin"
-        ],
-        "summary": "select",
-        "description": "Get admin user info",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminDeviceId",
-            "in": "query",
-            "description": "adminDeviceId",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "adminId",
-            "in": "query",
-            "description": "admin Id",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "deviceToken",
-            "in": "query",
-            "description": "deviceToken",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/admin"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
     "/admin/{adminId}/password": {
       "put": {
         "tags": [
@@ -926,25 +788,72 @@
         }
       }
     },
-    "/MobileLogin": {
-      "post": {
+    "/admin": {
+      "get": {
         "tags": [
           "admin"
         ],
-        "summary": "insert",
-        "description": "管理员登录成功后，存储登录设备和APP信息",
+        "summary": "select",
+        "description": "Get admin user info",
         "produces": [
           "application/json"
         ],
         "parameters": [
           {
-            "name": "device",
-            "in": "body",
-            "description": "device",
-            "required": true,
-            "schema":{
-              "$ref": "#/definitions/adminUserMobileLogin"
-            }
+            "name": "adminId",
+            "in": "query",
+            "description": "admin Id",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "realName",
+            "in": "query",
+            "description": "realName",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "gender",
+            "in": "query",
+            "description": "0:女 1:男",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "department",
+            "in": "query",
+            "description": "department",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "状态(0-停用,1-可用)",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "isSuperUserFlag",
+            "in": "query",
+            "description": "状态(0-否,1-是)",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "size",
+            "required": false,
+            "type": "integer"
           }
         ],
         "responses": {
@@ -953,7 +862,98 @@
             "schema": {
               "type": "object",
               "items": {
-                "$ref": "#/definitions/adminUserMobileLogin"
+                "$ref": "#/definitions/admin"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/adminDevice": {
+      "get": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "select",
+        "description": "Get admin user info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminDeviceId",
+            "in": "query",
+            "description": "adminDeviceId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "adminId",
+            "in": "query",
+            "description": "admin Id",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "deviceToken",
+            "in": "query",
+            "description": "deviceToken",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/admin"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/token/{token}": {
+      "get": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "select",
+        "description": "Get admin token",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "admin Id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "token",
+            "in": "path",
+            "description": "token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/admin"
               }
             }
           },
