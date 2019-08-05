@@ -72,7 +72,7 @@ const getRequireOrder = (req,res,next) => {
         }
     })
 }
-const updateStatus = (req,res,next) => {
+const updateStatus2 = (req,res,next) => {
     let params = req.params;
     let loadTaskCount = 0;
     let serLoadTaskCount =0;
@@ -167,6 +167,120 @@ const updateStatus = (req,res,next) => {
         })
     })
 }
+
+const updateStatus = (req,res,next) => {
+    let params = req.params;
+
+    const getRequireTask =()=>{
+        return new Promise((resolve, reject) => {
+            requireTask.getById(params,(error,rows)=>{
+                if(error){
+                    logger.error('updateStatus getRequireTask ' + error.message);
+                    reject({err:error})
+                }else{
+                    logger.info('updateStatus getRequireTask ' + 'success');
+                    if (rows.length > 0){
+                        resolve(rows[0].order_id);
+                    } else {
+                        reject({msg:sysMsg.REQUIRE_NO_EXISTE});
+                    }
+                }
+            })
+        });
+    }
+
+    const getParamsStatus = (orderId) =>{
+        return new Promise((resolve, reject) => {
+            let options = {
+                orderId:orderId
+            }
+            if (params.status == sysConsts.REQUIRE_TASK.status.arranged) {
+                // status = 1,已安排
+                options.status = sysConsts.ORDER.status.inExecution;
+                options.logStatus = sysConsts.ORDER.logStatus.tpShipped;
+                resolve(options);
+            }else{
+                if (params.status == sysConsts.REQUIRE_TASK.status.complete) {
+                    // status = 9,已完成
+                    let loadParams = {
+                        orderId: orderId
+                    }
+                    loadTaskDAO.getById(loadParams, (error, allRows) => {
+                        if (error) {
+                            logger.error('updateStatus getParamsStatus ' + error.message);
+                            reject({err: error});
+                        } else {
+                            let servedRowNum = 0;
+                            logger.info('updateStatus getParamsStatus ' + 'success');
+                            if (allRows.length > 0) {
+                                allRows.forEach((record, i) => {
+                                    if (record.load_task_status == sysConsts.LOAD_TASK_STATUS.served) {
+                                        servedRowNum++;
+                                    }
+                                });
+                                if (allRows.length == servedRowNum) {
+                                    logger.info('updateStatus getParamsStatus true');
+                                    options.status = sysConsts.ORDER.status.completed;
+                                    resolve(options);
+                                } else {
+                                    logger.info('updateStatus getParamsStatus ' + sysMsg.LOAD_TASK_INCOMPLETE);
+                                    reject({msg:sysMsg.LOAD_TASK_INCOMPLETE});
+                                }
+                            } else {
+                                logger.info('updateStatus getParamsStatus ' + sysMsg.LOAD_TASK_NO_EXISTS);
+                                reject({msg:sysMsg.LOAD_TASK_NO_EXISTS});
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+    const updateOrder =(options)=>{
+        return new Promise(((resolve, reject) => {
+            orderInfoDAO.updateById(options,(error,rows)=>{
+                if(error){
+                    logger.error('updateStatus updateOrder ' + error.message);
+                    reject({err:error});
+                }else{
+                    logger.info('updateStatus updateOrder ' + 'success');
+                    resolve();
+                }
+            })
+        }));
+    }
+
+    const updateRequire =()=>{
+        return new Promise(((resolve, reject) => {
+            requireTask.updateById(params,(error,rows)=>{
+                if(error){
+                    logger.error('updateStatus updateRequire ' + error.message);
+                    resUtil.resInternalError(error,res,next);
+                    reject(error);
+                }else{
+                    logger.info('updateStatus updateRequire ' + 'success');
+                    resUtil.resetQueryRes(res,rows,null);
+                    return next();
+                }
+            })
+        }));
+    }
+
+    getRequireTask()
+        .then(getParamsStatus)
+        .then(updateOrder)
+        .then(updateRequire)
+        .catch((reject)=>{
+            if(reject.err){
+                resUtil.resetFailedRes(res, reject.err);
+            }else{
+                resUtil.resetFailedRes(res, reject.msg);
+            }
+        })
+
+
+}
+
 module.exports={
     addRequireTask,
     getRequireOrder,
