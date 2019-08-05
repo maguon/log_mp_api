@@ -236,7 +236,7 @@ const createServer=()=>{
     server.post({path:'/api/admin/:adminId',contentType: 'application/json'},adminUser.addAdminUser);
     server.put({path:'/api/admin/:adminId/status/:status',contentType: 'application/json'} ,adminUser.updateAdminStatus);
     server.get('/api/admin/:adminId/token/:token' ,adminUser.changeAdminToken);
-    server.post({path:'/api/admin/MobileLogin',contentType: 'application/json'},adminUser.adminUserMobileLogin);
+    server.post({path:'/api/MobileLogin',contentType: 'application/json'},adminUser.adminUserMobileLogin);
 
     /**
      user_info
