@@ -791,6 +791,55 @@
         }
       }
     },
+    "/adminDevice": {
+      "get": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "select",
+        "description": "Get admin user info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminDeviceId",
+            "in": "query",
+            "description": "adminDeviceId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "adminId",
+            "in": "query",
+            "description": "admin Id",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "deviceToken",
+            "in": "query",
+            "description": "deviceToken",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/admin"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
     "/admin/{adminId}/password": {
       "put": {
         "tags": [

@@ -455,6 +455,20 @@ const changeAdminToken=(req,res,next)=>{
             }
         })
 };
+const adminDevice=(req,res,next)=>{
+    let params = req.params;
+    adminDeviceInfoDao.getDeviceInfo(params,(error,rows)=>{
+        if(error){
+            logger.error('adminDevice ' + error.message);
+            resUtil.resInternalError(error,res,next);
+        } else {
+            logger.info(' adminDevice ' + 'success');
+            resUtil.resetQueryRes(res,rows,null);
+            return next();
+        }
+    })
+};
+
 module.exports = {
     adminUserLogin,
     adminUserMobileLogin,
@@ -463,5 +477,6 @@ module.exports = {
     changeAdminPassword,
     addAdminUser,
     updateAdminStatus,
-    changeAdminToken
+    changeAdminToken,
+    adminDevice
 }
