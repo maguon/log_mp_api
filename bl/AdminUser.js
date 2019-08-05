@@ -96,8 +96,8 @@ const adminUserMobileLogin = (req,res,next) =>{
                 }else{
                     //判断用户密码
                     if(rows && rows.length<0){
-                        logger.warn('adminUserMobileLogin queryAdminUser ' +params.adminId+' '+sysMsg.CUST_SIGNUP_REGISTERED);
-                        reject({msg:sysMsg.CUST_SIGNUP_REGISTERED});
+                        logger.warn('adminUserMobileLogin queryAdminUser ' +params.adminId+' '+sysMsg.ADMIN_LOGIN_USER_UNREGISTERED);
+                        reject({msg:sysMsg.ADMIN_LOGIN_USER_UNREGISTERED});
                     }else{
                         let passwordMd5 = encrypt.encryptByMd5(params.password);
                         if(passwordMd5 != rows[0].password){
@@ -132,7 +132,7 @@ const adminUserMobileLogin = (req,res,next) =>{
                     reject({err: error});
                 } else {
                     if(rows && rows.length>0){
-                        logger.info('adminUserMobileLogin getDeviceInfo ' + devinfo.adminId +' '+sysMsg.CUST_SIGNUP_REGISTERED);
+                        logger.info('adminUserMobileLogin getDeviceInfo ' + devinfo.adminId +'Once landed! ');
                         resolve({rows:rows[0]});
                     }else{
                         resolve({info:devinfo});

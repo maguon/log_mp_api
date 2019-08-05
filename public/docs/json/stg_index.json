@@ -877,7 +877,7 @@
         }
       }
     },
-    "/admin/{adminId}/MobileLogin": {
+    "/admin/MobileLogin": {
       "post": {
         "tags": [
           "admin"
