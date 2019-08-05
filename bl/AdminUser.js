@@ -86,7 +86,7 @@ const adminUserLogin = (req,res,next) => {
 }
 const adminUserMobileLogin = (req,res,next) =>{
     let params = req.params;
-    let userMsg={};
+    let admin;
     const getAdminInfo = () =>{
         return new Promise((resolve,reject) => {
             adminUserDao.queryAdminUser({userName:params.userName},(error,rows)=>{
@@ -112,11 +112,10 @@ const adminUserMobileLogin = (req,res,next) =>{
                             }else {
                                 params.adminId  = rows[0].id;
                                 params.status  = rows[0].status;
-                                logger.info('queryAdminUser: ' +params.userName+ " not verified ");
-                                userMsg.userName = rows[0].user_name;
-                                userMsg.userId = rows[0].id;
-                                userMsg.status = rows[0].status;
-                                resolve(params);
+                                params.type = rows[0].type;
+                                params.real_name = rows[0].real_name;
+                                params.user_name = rows[0].user_name;
+                                resolve();
                             }
                         }
                     }
@@ -124,18 +123,41 @@ const adminUserMobileLogin = (req,res,next) =>{
             })
         });
     }
-    const getAdminDeviceInfo = (devinfo) => {
+    const getToken = () =>{
+        return new Promise((resolve, reject)=>{
+            admin = {
+                adminId : params.adminId,
+                adminRealName : params.real_name,
+                adminName : params.user_name,
+                status : params.status,
+                type: params.type
+            }
+            admin.accessToken = oAuthUtil.createAccessToken(oAuthUtil.clientType.admin,admin.adminId,admin.status);
+            oAuthUtil.saveToken(admin,function(error,result){
+                if(error){
+                    logger.error('adminUserLogin adminLogin ' + error.stack);
+                    reject({err:sysMsg.SYS_INTERNAL_ERROR_MSG});
+                }else{
+                    logger.info('adminUserLogin adminLogin ' + admin.adminId + " success");
+                    resolve();
+                }
+            })
+
+        });
+    }
+
+    const getAdminDeviceInfo = () => {
         return new Promise((resolve,reject)=>{
-            adminDeviceInfoDao.getDeviceInfo({adminId:devinfo.adminId,deviceType:devinfo.deviceType,deviceToken:devinfo.deviceToken},(error,rows)=>{
+            adminDeviceInfoDao.getDeviceInfo({adminId:params.adminId,deviceType:params.deviceType,deviceToken:params.deviceToken},(error,rows)=>{
                 if(error){
                     logger.error('adminUserMobileLogin getDeviceInfo ' + error.message);
                     reject({err: error});
                 } else {
                     if(rows && rows.length>0){
-                        logger.info('adminUserMobileLogin getDeviceInfo ' + devinfo.adminId +'Once landed! ');
+                        logger.info('adminUserMobileLogin getDeviceInfo ' + params.adminId +'Once landed! ');
                         resolve({rows:rows[0]});
                     }else{
-                        resolve({info:devinfo});
+                        resolve({info:params});
                     }
                 }
             })
@@ -149,7 +171,7 @@ const adminUserMobileLogin = (req,res,next) =>{
                     reject({err: error});
                 }else{
                     logger.info('adminUserMobileLogin updateDeviceInfo ' + 'success');
-                    resUtil.resetQueryRes(res,userMsg,null);
+                    resUtil.resetQueryRes(res,admin,null);
                     return next();
                 }
             })
@@ -163,13 +185,14 @@ const adminUserMobileLogin = (req,res,next) =>{
                     reject({err: error});
                 }else{
                     logger.info('adminUserMobileLogin addDeviceInfo ' + 'success');
-                    resUtil.resetQueryRes(res,userMsg,null);
+                    resUtil.resetQueryRes(res,admin,null);
                     return next();
                 }
             })
         });
     }
     getAdminInfo()
+        .then(getToken)
         .then(getAdminDeviceInfo)
         .then((resolve)=>{
             if(resolve.info){
