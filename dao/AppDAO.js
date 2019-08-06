@@ -58,8 +58,8 @@ const getApp = (params,callback) => {
 const updateApp = (params,callback)=>{
     let query = " update app set app_type = ? , device_type = ?, version = ? ,version_num = ?,min_version_num = ?,force_update = ?,url = ?,Remarks = ?,status = ? where id = ?";
     let paramsArray=[],i=0;
-    paramsArray[i++]=params.appType;
-    paramsArray[i++]=params.deviceType;
+    paramsArray[i++] = params.appType;
+    paramsArray[i++] = params.deviceType;
     paramsArray[i++] = params.version;
     paramsArray[i++] = params.versionNum;
     paramsArray[i++] = params.minVersionNum;

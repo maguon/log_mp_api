@@ -11915,16 +11915,16 @@
           {
             "name": "appType",
             "in": "query",
-            "description": "app类型",
+            "description": "app类型(1-广运车)",
             "required": false,
             "type": "string"
           },
           {
             "name": "deviceType",
             "in": "query",
-            "description": "系统类型",
+            "description": "系统类型(0-安卓,1-苹果)",
             "required": false,
-            "type": "string"
+            "type": "integer"
           },
           {
             "name": "version",
@@ -13704,7 +13704,7 @@
           "type": "string"
         },
         "deviceType": {
-          "type": "string"
+          "type": "integer"
         },
         "version": {
           "type": "string"
