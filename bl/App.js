@@ -15,7 +15,7 @@ const getApp = (req,res,next) => {
             resUtil.resInternalError(error,res,next);
         }else{
             logger.info(' getApp ' + 'success');
-            resUtil.resetQueryRes(res,rows,null);
+            resUtil.resetQueryRes(res,rows[0],null);
             return next();
         }
     })

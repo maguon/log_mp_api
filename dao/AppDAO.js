@@ -50,6 +50,7 @@ const getApp = (params,callback) => {
         paramsArray[i] = params.status;
         query = query + " and status = ? "
     }
+    query = query + " order by version_num desc ";
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('getApp');
         callback(error,rows);
