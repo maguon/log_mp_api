@@ -12199,9 +12199,6 @@
         "deviceToken": {
           "type": "string"
         },
-        "appType": {
-          "type": "integer"
-        },
         "appVersion": {
           "type": "string"
         }
