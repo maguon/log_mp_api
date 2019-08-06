@@ -11897,49 +11897,7 @@
         }
       }
     },
-    "/admin/{adminId}/app": {
-      "post": {
-        "tags": [
-          "app"
-        ],
-        "summary": "insert",
-        "description": "admin create app version",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "deviceInfo",
-            "in": "body",
-            "description": "deviceInfo",
-            "required": true,
-            "schema":{
-              "$ref": "#/definitions/appVersion"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/appVersion"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      },
+    "/app": {
       "get": {
         "tags": [
           "app"
@@ -11950,13 +11908,6 @@
           "application/json"
         ],
         "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "integer"
-          },
           {
             "name": "appType",
             "in": "query",
@@ -12019,6 +11970,50 @@
             "description": "状态（0-停用，1-启用）",
             "required": false,
             "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/appVersion"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/app": {
+      "post": {
+        "tags": [
+          "app"
+        ],
+        "summary": "insert",
+        "description": "admin create app version",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "deviceInfo",
+            "in": "body",
+            "description": "deviceInfo",
+            "required": true,
+            "schema":{
+              "$ref": "#/definitions/appVersion"
+            }
           }
         ],
         "responses": {

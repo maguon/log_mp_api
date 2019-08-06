@@ -437,8 +437,8 @@ const createServer=()=>{
     /**
      * app
      */
+    server.get('/api/app',app.getApp);
     server.post({path:'/api/admin/:adminId/app',contentType: 'application/json'},app.addApp);
-    server.get('/api/admin/:adminId/app',app.getApp);
     server.put({path:'/api/admin/:adminId/app/:appId',contentType: 'application/json'},app.updateApp);
 
     server.on('NotFound', function (req, res ,next) {
