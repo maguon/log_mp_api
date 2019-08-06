@@ -399,21 +399,32 @@ const updateAdminStatus = (req,res,next) => {
 }
 const changeAdminToken=(req,res,next)=>{
     let params = req.params;
+    var tokenObj = oAuthUtil.parseAccessToken(params.token);
     let adminUser ={
         userId:params.adminId
     }
     const getAdminUser = () =>{
         return new Promise((resolve,reject)=>{
-            adminUserDao.queryAdminUser(params,(error,rows)=>{
-                if(error){
-                    logger.error('changeAdminToken getAdminUser ' + error.message);
-                    reject(error);
+            if(tokenObj){
+                if(params.adminId==tokenObj.userId){
+                    adminUserDao.queryAdminUser(params,(error,rows)=>{
+                        if(error){
+                            logger.error('changeAdminToken getAdminUser ' + error.message);
+                            reject(error);
+                        }else{
+                            logger.info('changeAdminToken getAdminUser ' + 'success');
+                            adminUser.status = rows[0].status;
+                            resolve(adminUser);
+                        }
+                    });
                 }else{
-                    logger.info('changeAdminToken getAdminUser ' + 'success');
-                    adminUser.status = rows[0].status;
-                    resolve(adminUser);
+                    logger.warn(' changeAdminToken getAdminUser' +params.adminId+ " failed");
+                    reject({msg:sysMsg.SYS_AUTH_TOKEN_ERROR});
                 }
-            });
+            }else{
+                logger.warn(' changeAdminToken getAdminUser' +params.adminId+ " failed");
+                reject({msg:sysMsg.SYS_AUTH_TOKEN_ERROR});
+            }
         });
     }
     const removeToken = (adminInfo) =>{
