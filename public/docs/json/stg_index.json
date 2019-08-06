@@ -11922,7 +11922,7 @@
           {
             "name": "deviceType",
             "in": "query",
-            "description": "系统类型(0-安卓,1-苹果)",
+            "description": "系统类型(1-安卓 2-苹果)",
             "required": false,
             "type": "integer"
           },
