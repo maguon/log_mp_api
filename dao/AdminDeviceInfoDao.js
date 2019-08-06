@@ -19,6 +19,10 @@ const getDeviceInfo = (params,callback) => {
         paramsArray[i++] = params.adminId;
         query = query + " and admin_id = ? ";
     }
+    if(params.deviceId){
+        paramsArray[i++] = params.deviceId;
+        query = query + " and device_id = ?";
+    }
     if(params.deviceType){
         paramsArray[i++] = params.deviceType;
         query = query + " and device_type = ?";
@@ -57,9 +61,10 @@ const updateDeviceInfo = (params,callback)=>{
 }
 
 const addDeviceInfo = (params,callback)=>{
-    let query = "insert into admin_device_info (admin_id,device_type,device_token,app_type,app_version,status) values(?,?,?,?,?,?) ";
+    let query = "insert into admin_device_info (admin_id,device_id,device_type,device_token,app_type,app_version,status) values(?,?,?,?,?,?,?) ";
     let paramsArray = [],i=0;
     paramsArray[i++]=params.adminId;
+    paramsArray[i++]=params.deviceId;
     paramsArray[i++]=params.deviceType;
     paramsArray[i++]=params.deviceToken;
     paramsArray[i++]=params.appType;
@@ -70,10 +75,23 @@ const addDeviceInfo = (params,callback)=>{
         callback(error,rows);
     });
 }
-
+const updateUserDeviceToken = (params,callback)=>{
+    let query = " update admin_device_info set device_token = ? " +
+        " where admin_id = ? and device_id = ? and app_type = ? ";
+    let paramsArray=[],i=0;
+    paramsArray[i++]=params.deviceToken;
+    paramsArray[i++] = params.adminId;
+    paramsArray[i++] = params.deviceId;
+    paramsArray[i++] = params.appType;
+    db.dbQuery(query,paramsArray,function(error,rows){
+        logger.debug(' updateUserDeviceToken ');
+        return callback(error,rows);
+    });
+}
 module.exports = {
     getDeviceInfo,
     updateDeviceInfo,
     addDeviceInfo,
+    updateUserDeviceToken
 
 }

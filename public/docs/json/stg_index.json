@@ -792,6 +792,64 @@
         }
       }
     },
+    "/admin/{adminId}/device/{deviceId}/appType/{appType}/adminDeviceToken": {
+      "put": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "update",
+        "description": "reset user deviceToken",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "admin Id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "deviceId",
+            "in": "path",
+            "description": "deviceId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "appType",
+            "in": "path",
+            "description": "appType",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "adminDevice",
+            "in": "body",
+            "description": "adminDevice",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/adminUserDevice"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/password"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
     "/admin": {
       "get": {
         "tags": [
@@ -12115,6 +12173,26 @@
         "password": {
           "type": "string"
         },
+        "deviceId": {
+          "type": "integer"
+        },
+        "deviceType": {
+          "type": "integer"
+        },
+        "appType": {
+          "type": "integer"
+        },
+        "appVersion": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "adminUserMobileLogin"
+      }
+    },
+    "adminUserDevice":{
+      "type": "object",
+      "properties": {
         "deviceType": {
           "type": "integer"
         },
@@ -12122,7 +12200,7 @@
           "type": "string"
         },
         "appType": {
-          "type": "string"
+          "type": "integer"
         },
         "appVersion": {
           "type": "string"

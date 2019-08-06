@@ -230,15 +230,16 @@ const createServer=()=>{
     /**
      admin_user
      */
+    server.get('/api/adminDevice' ,adminUser.adminDevice);
     server.get('/api/admin' ,adminUser.getAdminUserInfo);
+    server.get('/api/admin/:adminId/token/:token' ,adminUser.changeAdminToken);
+    server.post({path:'/api/MobileLogin',contentType: 'application/json'},adminUser.adminUserMobileLogin);
     server.post({path:'/api/admin/do/login',contentType: 'application/json'},adminUser.adminUserLogin);
+    server.post({path:'/api/admin/:adminId',contentType: 'application/json'},adminUser.addAdminUser);
     server.put({path:'/api/admin/:adminId',contentType: 'application/json'} ,adminUser.updateAdminInfo);
     server.put({path:'/api/admin/:adminId/password',contentType: 'application/json'} ,adminUser.changeAdminPassword);
-    server.post({path:'/api/admin/:adminId',contentType: 'application/json'},adminUser.addAdminUser);
     server.put({path:'/api/admin/:adminId/status/:status',contentType: 'application/json'} ,adminUser.updateAdminStatus);
-    server.get('/api/admin/:adminId/token/:token' ,adminUser.changeAdminToken);
-    server.get('/api/adminDevice' ,adminUser.adminDevice);
-    server.post({path:'/api/MobileLogin',contentType: 'application/json'},adminUser.adminUserMobileLogin);
+    server.put({path:'/api/admin/:adminId/device/:deviceId/appType/:appType/adminDeviceToken',contentType: 'application/json'} ,adminUser.updateUserDeviceToken);
 
 
     /**

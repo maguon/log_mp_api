@@ -468,7 +468,19 @@ const adminDevice=(req,res,next)=>{
         }
     })
 };
-
+const updateUserDeviceToken =(req,res,next)=>{
+    let params = req.params;
+    adminDeviceInfoDao.updateUserDeviceToken(params,function(error,result){
+        if (error) {
+            logger.error(' updateUserDeviceToken ' + error.message);
+            throw sysError.InternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
+        } else {
+            logger.info(' updateUserDeviceToken ' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
+}
 module.exports = {
     adminUserLogin,
     adminUserMobileLogin,
@@ -478,5 +490,6 @@ module.exports = {
     addAdminUser,
     updateAdminStatus,
     changeAdminToken,
-    adminDevice
+    adminDevice,
+    updateUserDeviceToken
 }
