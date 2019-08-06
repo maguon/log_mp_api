@@ -12024,7 +12024,7 @@
             "in": "query",
             "description": "备注",
             "required": false,
-            "type": "integer"
+            "type": "string"
           },
           {
             "name": "status",
