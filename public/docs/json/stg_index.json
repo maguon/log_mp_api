@@ -11974,14 +11974,14 @@
             "name": "appType",
             "in": "query",
             "description": "app类型(1-广运车)",
-            "required": false,
+            "required": true,
             "type": "string"
           },
           {
             "name": "deviceType",
             "in": "query",
             "description": "系统类型(1-安卓 2-苹果)",
-            "required": false,
+            "required": true,
             "type": "integer"
           },
           {
