@@ -61,7 +61,7 @@
     },
     {
       "name": "city",
-      "description":"city of log api"
+      "description": "city of log api"
     },
     {
       "name": "route",
@@ -142,6 +142,10 @@
     {
       "name": "customerServicePhone",
       "description":"customerServicePhone of log api"
+    },
+    {
+      "name": "app",
+      "description":"app version"
     }
   ],
   "schemes": [
