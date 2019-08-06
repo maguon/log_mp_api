@@ -815,7 +815,7 @@
             "in": "path",
             "description": "deviceId",
             "required": true,
-            "type": "integer"
+            "type": "string"
           },
           {
             "name": "appType",
