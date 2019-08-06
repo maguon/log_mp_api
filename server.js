@@ -40,6 +40,7 @@ const loadTaskDetail = require("./bl/LoadTaskDetail");
 const recommend = require("./bl/Recommend");
 const userDeviceInfo = require("./bl/UserDeviceInfo");
 const customerServicePhone = require("./bl/CustomerServicePhone");
+const app = require('./bl/App');
 
 /**
  * Returns a server with all routes defined on it
@@ -432,6 +433,13 @@ const createServer=()=>{
     server.del({path:'/api/admin/:adminId/customerPhone',contentType: 'application/json'},customerServicePhone.deleteCustomerPhone);
     server.put({path:'/api/admin/:adminId/customerPhone/:id',contentType: 'application/json'},customerServicePhone.updateCustomerPhone);
     server.get('/api/user/:userId/customerPhone',customerServicePhone.getCustomerPhone);
+
+    /**
+     * app
+     */
+    server.post({path:'/api/admin/:adminId/app',contentType: 'application/json'},app.addApp);
+    server.get('/api/admin/:adminId/app',app.getApp);
+    server.put({path:'/api/admin/:adminId/app/:appId',contentType: 'application/json'},app.updateApp);
 
     server.on('NotFound', function (req, res ,next) {
         logger.warn(req.url + " not found");
