@@ -14121,6 +14121,9 @@
         },
         "delStatus": {
           "type": "integer"
+        },
+        "showStatus": {
+          "type": "integer"
         }
       },
       "xml": {

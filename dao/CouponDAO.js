@@ -53,7 +53,7 @@ const getCoupon = (params,callback) => {
     })
 }
 const updateCoupon = (params,callback)=>{
-    let query = " update coupon set coupon_name = ? , effective_days = ?, valid_date_from = ? ,valid_date_to = ?,threshold_cost = ?,price = ?,status = ?,del_status = ? where id = ?";
+    let query = " update coupon set coupon_name = ? , effective_days = ?, valid_date_from = ? ,valid_date_to = ?,threshold_cost = ?,price = ?,status = ?,del_status = ? ,show_status = ? where id = ?";
     let paramsArray=[],i=0;
     paramsArray[i++]=params.couponName;
     paramsArray[i++]=params.effectiveDays;
@@ -63,6 +63,7 @@ const updateCoupon = (params,callback)=>{
     paramsArray[i++]=params.price;
     paramsArray[i++]=params.status;
     paramsArray[i++]=params.delStatus;
+    paramsArray[i++]=params.showStatus;
     paramsArray[i] = params.couponId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug(' updateCoupon ');
@@ -89,7 +90,7 @@ const addCoupon = (params,callback)=>{
     paramsArray[i++]=params.thresholdCost;
     paramsArray[i++]=params.price;
     paramsArray[i++]=params.status;
-    paramsArray[i]=params.delStatus;
+    paramsArray[i++]=params.delStatus;
     paramsArray[i]=params.showStatus;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('addCoupon');
