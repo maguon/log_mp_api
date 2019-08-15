@@ -12235,14 +12235,14 @@
           {
             "name": "start",
             "in": "query",
-            "description": "coupon info",
+            "description": "start",
             "required": false,
             "type": "integer"
           },
           {
             "name": "size",
             "in": "query",
-            "description": "coupon info",
+            "description": "size",
             "required": false,
             "type": "integer"
           }
