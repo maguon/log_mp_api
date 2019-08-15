@@ -12214,7 +12214,7 @@
           {
             "name": "status",
             "in": "query",
-            "description": "状态（0:启用,1:停用）",
+            "description": "状态（0:停用,1:启用）",
             "required": false,
             "type": "integer"
           },
@@ -12231,6 +12231,20 @@
             "description": "备注",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "coupon info",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "coupon info",
+            "required": false,
+            "type": "integer"
           }
         ],
         "responses": {
@@ -12391,7 +12405,7 @@
         }
       }
     },
-    "/admin/{adminId}/coupon/{couponId}/showStatus/{showStatus}": {
+    "/admin/{adminId}/coupon/{couponId}/showStatus": {
       "delete": {
         "tags": [
           "coupon"
@@ -12413,13 +12427,6 @@
             "name": "couponId",
             "in": "path",
             "description": "coupon Id",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "showStatus",
-            "in": "path",
-            "description": "0-未删除,1-删除",
             "required": true,
             "type": "integer"
           }

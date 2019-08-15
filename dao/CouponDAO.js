@@ -31,26 +31,33 @@ const getCoupon = (params,callback) => {
         query = query + " and valid_date_to = ? "
     }
     if(params.thresholdCost){
-        paramsArray[i] = params.thresholdCost;
+        paramsArray[i++] = params.thresholdCost;
         query = query + " and threshold_cost = ? "
     }
     if(params.price){
-        paramsArray[i] = params.price;
+        paramsArray[i++] = params.price;
         query = query + " and price = ? "
     }
     if(params.status){
-        paramsArray[i] = params.status;
+        paramsArray[i++] = params.status;
         query = query + " and status = ? "
     }
     if(params.delStatus){
-        paramsArray[i] = params.delStatus;
+        paramsArray[i++] = params.delStatus;
         query = query + " and del_status = ? "
     }
     if(params.remarks){
-        paramsArray[i] = params.remarks;
+        paramsArray[i++] = params.remarks;
         query = query + " and Remarks = ? "
     }
     query = query + " and show_status = 0 "
+    query = query + " order by id desc";
+    if(params.start && params.size){
+        paramsArray[i++] = parseInt(params.start);
+        paramsArray[i] = parseInt(params.size);
+        query = query + " limit ?,? ";
+
+    }
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('getCoupon');
         callback(error,rows);
@@ -104,9 +111,8 @@ const addCoupon = (params,callback)=>{
     });
 }
 const deleteCoupon = (params,callback) => {
-    let query = " update coupon set show_status = ?  where id = ?";
+    let query = " update coupon set show_status = 1  where id = ?";
     let paramsArray=[],i=0;
-    paramsArray[i++] = params.showStatus;
     paramsArray[i] = params.couponId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug(' deleteCoupon ');
