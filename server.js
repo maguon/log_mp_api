@@ -446,6 +446,7 @@ const createServer=()=>{
     server.post({path:'/api/admin/:adminId/coupon',contentType: 'application/json'},coupon.addCoupon);
     server.put({path:'/api/admin/:adminId/coupon/:couponId',contentType: 'application/json'},coupon.updateCoupon);
     server.put({path:'/api/admin/:adminId/coupon/:couponId/status/:status',contentType: 'application/json'},coupon.updateStatus);
+    server.del({path:'/api/admin/:adminId/coupon/:couponId/showStatus/:showStatus',contentType: 'application/json'},coupon.deleteCoupon);
 
     server.on('NotFound', function (req, res ,next) {
         logger.warn(req.url + " not found");

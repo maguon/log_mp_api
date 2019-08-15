@@ -35,54 +35,16 @@ const addCoupon = (req,res,next)=>{
 };
 const updateCoupon = (req,res,next) => {
     let params = req.params;
-
-    const getDelStatus = ()=>{
-        return new Promise((resolve, reject) => {
-            couponDao.getCoupon({couponId:params.couponId},(error,rows)=>{
-                if(error){
-                    logger.error('updateCoupon getDelStatus ' + error.message);
-                    reject({err:error});
-                    // resUtil.resInternalError(error,res,next);
-                } else {
-                    logger.info(' updateCoupon getDelStatus ' + 'success');
-                    if(rows.length>0){
-                        let delStatus = rows[0].del_status;
-                        if(delStatus ==1 ){
-                            reject({msg:sysMsg.COUPON_NOT_MODIFIED});
-                        }else{
-                            resolve();
-                        }
-                    }else{
-                        reject({msg:sysMsg.COUPON_NO_EXISTS});
-                    }
-                }
-            })
-        });
-    }
-    const updateInfo =()=>{
-        return new Promise(() =>{
-            couponDao.updateCoupon(params,(error,result)=>{
-                if(error){
-                    logger.error('updateCoupon updateInfo ' + error.message);
-                    resUtil.resetFailedRes(error,res,next);
-                }else{
-                    logger.info('updateCoupon  updateInfo ' + 'success');
-                    resUtil.resetUpdateRes(res,result,null);
-                    return next();
-                }
-            })
-        });
-    }
-
-    getDelStatus()
-        .then(updateInfo)
-        .catch((reject)=>{
-            if(reject.err){
-                resUtil.resetFailedRes(res,reject.err);
-            }else{
-                resUtil.resetFailedRes(res,reject.msg);
-            }
-        })
+    couponDao.updateCoupon(params,(error,result)=>{
+        if(error){
+            logger.error('updateCoupon ' + error.message);
+            resUtil.resetFailedRes(error,res,next);
+        }else{
+            logger.info('updateCoupon  ' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
 }
 const updateStatus = (req,res,next) => {
     let params = req.params;
@@ -97,9 +59,59 @@ const updateStatus = (req,res,next) => {
         }
     })
 }
+const deleteCoupon = (req,res,next) => {
+    let params = req.params;
+
+    const getDelStatus = ()=>{
+        return new Promise((resolve, reject) => {
+            couponDao.getCoupon({couponId:params.couponId},(error,rows)=>{
+                if(error){
+                    logger.error('deleteCoupon getDelStatus ' + error.message);
+                    reject({err:error});
+                } else {
+                    logger.info(' deleteCoupon getDelStatus ' + 'success');
+                    if(rows.length>0){
+                        let delStatus = rows[0].del_status;
+                        if(delStatus ==1 ){
+                            reject({msg:sysMsg.COUPON_NOT_DELETE});
+                        }else{
+                            resolve();
+                        }
+                    }else{
+                        reject({msg:sysMsg.COUPON_NO_EXISTS});
+                    }
+                }
+            })
+        });
+    }
+    const deleteInfo =()=> {
+        return new Promise(() => {
+            couponDao.deleteCoupon(params,(error,result)=>{
+                if(error){
+                    logger.error(' deleteCoupon deleteInfo ' + error.message);
+                    resUtil.resInternalError(error,res,next);
+                }else{
+                    logger.info(' deleteCoupon deleteInfo ' + 'success');
+                    resUtil.resetUpdateRes(res,result,null);
+                    return next();
+                }
+            })
+        });
+    }
+    getDelStatus()
+        .then(deleteInfo)
+        .catch((reject)=>{
+            if(reject.err){
+                resUtil.resetFailedRes(res,reject.err);
+            }else{
+                resUtil.resetFailedRes(res,reject.msg);
+            }
+        })
+}
 module.exports={
     getCoupon,
     addCoupon,
     updateCoupon,
-    updateStatus
+    updateStatus,
+    deleteCoupon
 }

@@ -46,6 +46,7 @@ const getCoupon = (params,callback) => {
         paramsArray[i] = params.delStatus;
         query = query + " and del_status = ? "
     }
+    query = query + " and show_status = 0 "
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('getCoupon');
         callback(error,rows);
@@ -79,7 +80,7 @@ const updateStatus = (params,callback) => {
     });
 }
 const addCoupon = (params,callback)=>{
-    let query = "insert into coupon (coupon_name,effective_days,valid_date_from,valid_date_to,threshold_cost,price,status,del_status) values(?,?,?,?,?,?,?,?) ";
+    let query = "insert into coupon (coupon_name,effective_days,valid_date_from,valid_date_to,threshold_cost,price,status,del_status,show_status) values(?,?,?,?,?,?,?,?,?) ";
     let paramsArray = [],i=0;
     paramsArray[i++]=params.couponName;
     paramsArray[i++]=params.effectiveDays;
@@ -89,14 +90,26 @@ const addCoupon = (params,callback)=>{
     paramsArray[i++]=params.price;
     paramsArray[i++]=params.status;
     paramsArray[i]=params.delStatus;
+    paramsArray[i]=params.showStatus;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('addCoupon');
         callback(error,rows);
+    });
+}
+const deleteCoupon = (params,callback) => {
+    let query = " update coupon set show_status = ?  where id = ?";
+    let paramsArray=[],i=0;
+    paramsArray[i++] = params.showStatus;
+    paramsArray[i] = params.couponId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug(' deleteCoupon ');
+        return callback(error,rows);
     });
 }
 module.exports = {
     getCoupon,
     updateCoupon,
     updateStatus,
-    addCoupon
+    addCoupon,
+    deleteCoupon
 }

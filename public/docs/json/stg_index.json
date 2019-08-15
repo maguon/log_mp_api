@@ -12383,6 +12383,55 @@
           }
         }
       }
+    },
+    "/admin/{adminId}/coupon/{couponId}/showStatus/{showStatus}": {
+      "delete": {
+        "tags": [
+          "coupon"
+        ],
+        "summary": "update",
+        "description": "update coupon user status",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "couponId",
+            "in": "path",
+            "description": "coupon Id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "showStatus",
+            "in": "path",
+            "description": "0-未删除,1-删除",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/coupon"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
     }
   },
   "definitions": {
