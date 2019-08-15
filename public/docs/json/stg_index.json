@@ -12170,6 +12170,13 @@
             "type": "integer"
           },
           {
+            "name": "couponId",
+            "in": "query",
+            "description": "优惠券ID",
+            "required": false,
+            "type": "string"
+          },
+          {
             "name": "couponName",
             "in": "query",
             "description": "优惠券名称",
