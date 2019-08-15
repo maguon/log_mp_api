@@ -94,6 +94,11 @@ let LOADTASK_DETAIL_SYNC_NULL = "没有需要同步的车辆，无法同步";
  * recommend_info
  */
 let RECOMMEND_TASK_NO_EXISTS = "推荐信息不存在";
+/**
+ * coupon
+ */
+let COUPON_NO_EXISTS = "该优惠卷信息不存在！";
+let COUPON_NOT_MODIFIED = "该优惠卷不允许修改！";
 module.exports = {
     SYS_AUTH_TOKEN_ERROR,
     SYS_VALIDATE_EMAIL_ERROR,
@@ -148,5 +153,7 @@ module.exports = {
     LOADTASK_NO_HOOKID,
     LOADTASK_DETAIL_SYNC_NULL,
     SUPPLIER_NO_APP_MSG,
-    RECOMMEND_TASK_NO_EXISTS
+    RECOMMEND_TASK_NO_EXISTS,
+    COUPON_NO_EXISTS,
+    COUPON_NOT_MODIFIED
 }

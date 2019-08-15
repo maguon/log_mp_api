@@ -41,6 +41,7 @@ const recommend = require("./bl/Recommend");
 const userDeviceInfo = require("./bl/UserDeviceInfo");
 const customerServicePhone = require("./bl/CustomerServicePhone");
 const app = require('./bl/App');
+const coupon = require('./bl/Coupon');
 
 /**
  * Returns a server with all routes defined on it
@@ -420,12 +421,10 @@ const createServer=()=>{
     server.put({path:'/api/admin/:adminId/recommend/:recommendId/advertisement',contentType: 'application/json'},recommend.addAdvertisement);
     server.post({path:'/api/recommend/:recommendId/wxCodeImage',contentType: 'application/json'},recommend.postWxCodeImage);
     server.get('/api/admin/:adminId/achievement',recommend.getAchievement);
-
     /**
      * user_device_info
      */
     server.post({path:'/api/user/:userId/device',contentType: 'application/json'},userDeviceInfo.addUserDeviceInfo);
-
     /**
      * customer_service_phone
      */
@@ -434,13 +433,19 @@ const createServer=()=>{
     server.del({path:'/api/admin/:adminId/customerPhone',contentType: 'application/json'},customerServicePhone.deleteCustomerPhone);
     server.put({path:'/api/admin/:adminId/customerPhone/:id',contentType: 'application/json'},customerServicePhone.updateCustomerPhone);
     server.get('/api/user/:userId/customerPhone',customerServicePhone.getCustomerPhone);
-
     /**
      * app
      */
     server.get('/api/app',app.getApp);
     server.post({path:'/api/admin/:adminId/app',contentType: 'application/json'},app.addApp);
     server.put({path:'/api/admin/:adminId/app/:appId',contentType: 'application/json'},app.updateApp);
+    /**
+     * coupon
+     */
+    server.get('/api/admin/:adminId/coupon',coupon.getCoupon);
+    server.post({path:'/api/admin/:adminId/coupon',contentType: 'application/json'},coupon.addCoupon);
+    server.put({path:'/api/admin/:adminId/coupon/:couponId',contentType: 'application/json'},coupon.updateCoupon);
+    server.put({path:'/api/admin/:adminId/coupon/:couponId/status/:status',contentType: 'application/json'},coupon.updateStatus);
 
     server.on('NotFound', function (req, res ,next) {
         logger.warn(req.url + " not found");

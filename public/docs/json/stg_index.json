@@ -14,6 +14,7 @@
   },
   "host": "stg.myxxjs.com:9101",
   "basePath": "/api",
+
   "tags": [
     {
       "name": "wechat",
@@ -146,12 +147,15 @@
     {
       "name": "app",
       "description":"app version"
+    },
+    {
+      "name": "coupon",
+      "description":"coupon version"
     }
   ],
   "schemes": [
     "http"
   ],
-
   "paths": {
     "/user/{userId}/customerPhone": {
       "get": {
@@ -11959,6 +11963,7 @@
         }
       }
     },
+
     "/app": {
       "get": {
         "tags": [
@@ -12136,6 +12141,240 @@
               "type": "object",
               "items": {
                 "$ref": "#/definitions/appVersion"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+
+    "/admin/{adminId}/coupon": {
+      "get": {
+        "tags": [
+          "coupon"
+        ],
+        "summary": "select",
+        "description": "Get coupon version",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "当前登录管理员ID",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "couponName",
+            "in": "query",
+            "description": "优惠券名称",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "effectiveDays",
+            "in": "query",
+            "description": "有效天数",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "validDateFrom",
+            "in": "query",
+            "description": "有效日期从",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "validDateTo",
+            "in": "query",
+            "description": "有效日期到",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "thresholdCost",
+            "in": "query",
+            "description": "门槛费用",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "price",
+            "in": "query",
+            "description": "金额（元）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "状态（0:启用,1:停用）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "delStatus",
+            "in": "query",
+            "description": "删除许可（0:允许删除,1:不允许删除）",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/coupon"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "coupon"
+        ],
+        "summary": "insert",
+        "description": "admin create coupon version",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "couponInfo",
+            "in": "body",
+            "description": "couponInfo",
+            "required": true,
+            "schema":{
+              "$ref": "#/definitions/coupon"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/coupon"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/coupon/{couponId}": {
+      "put": {
+        "tags": [
+          "coupon"
+        ],
+        "summary": "update",
+        "description": "update coupon version",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "admin Id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "couponId",
+            "in": "path",
+            "description": "coupon Id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "appVersion",
+            "in": "body",
+            "description": "appVersion",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/coupon"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/coupon"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/coupon/{couponId}/status/{status}": {
+      "put": {
+        "tags": [
+          "coupon"
+        ],
+        "summary": "update",
+        "description": "update coupon user status",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "couponId",
+            "in": "path",
+            "description": "coupon Id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "path",
+            "description": "状态(0-停用,1-可用)",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/coupon"
               }
             }
           },
@@ -13804,7 +14043,39 @@
         }
       },
       "xml": {
-        "name": "orderItemArray"
+        "name": "appVersion"
+      }
+    },
+    "coupon": {
+      "type": "object",
+      "properties": {
+        "couponName": {
+          "type": "string"
+        },
+        "effectiveDays": {
+          "type": "integer"
+        },
+        "validDateFrom": {
+          "type": "string"
+        },
+        "validDateTo": {
+          "type": "string"
+        },
+        "thresholdCost": {
+          "type": "integer"
+        },
+        "price": {
+          "type": "integer"
+        },
+        "status": {
+          "type": "integer"
+        },
+        "delStatus": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "coupon"
       }
     }
   }
