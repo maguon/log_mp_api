@@ -12224,6 +12224,13 @@
             "description": "删除许可（0:允许删除,1:不允许删除）",
             "required": false,
             "type": "integer"
+          },
+          {
+            "name": "remarks",
+            "in": "query",
+            "description": "备注",
+            "required": false,
+            "type": "string"
           }
         ],
         "responses": {
@@ -14124,6 +14131,9 @@
         },
         "showStatus": {
           "type": "integer"
+        },
+        "remarks": {
+          "type": "string"
         }
       },
       "xml": {
