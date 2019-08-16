@@ -22,6 +22,16 @@ const getCoupon = (req,res,next) => {
 }
 const addCoupon = (req,res,next)=>{
     let params = req.params;
+    if(params.couponType == 0 ){
+        params.start_date = '';
+        params.end_date = '';
+    }else{
+        params.effectiveDays = 0;
+    }
+    params.status = 1;
+    params.delStatus = 0;
+    params.showStatus = 0;
+
     couponDao.addCoupon(params,(error,result)=>{
         if(error){
             logger.error('addCoupon ' + error.message);
@@ -35,6 +45,15 @@ const addCoupon = (req,res,next)=>{
 };
 const updateCoupon = (req,res,next) => {
     let params = req.params;
+    if(params.couponType == 0 ){
+        params.start_date = '';
+        params.end_date = '';
+    }else{
+        params.effectiveDays = 0;
+    }
+    params.status = 1;
+    params.delStatus = 0;
+    params.showStatus = 0;
     couponDao.updateCoupon(params,(error,result)=>{
         if(error){
             logger.error('updateCoupon ' + error.message);

@@ -18,21 +18,25 @@ const getCoupon = (params,callback) => {
         paramsArray[i++] = params.couponName;
         query = query + " and coupon_name = ?";
     }
+    if(params.couponType){
+        paramsArray[i++] = params.couponType;
+        query = query + " and coupon_type = ?";
+    }
     if(params.effectiveDays){
         paramsArray[i++] = params.effectiveDays;
         query = query + " and effective_days = ? "
     }
-    if(params.validDateFrom){
-        paramsArray[i++] = params.validDateFrom;
-        query = query + " and valid_date_from = ?";
+    if(params.startDate){
+        paramsArray[i++] = params.startDate;
+        query = query + " and start_date = ?";
     }
-    if(params.validDateTo){
-        paramsArray[i++] = params.validDateTo;
-        query = query + " and valid_date_to = ? "
+    if(params.endDate){
+        paramsArray[i++] = params.endDate;
+        query = query + " and end_date = ? "
     }
-    if(params.thresholdCost){
-        paramsArray[i++] = params.thresholdCost;
-        query = query + " and threshold_cost = ? "
+    if(params.floorPrice){
+        paramsArray[i++] = params.floorPrice;
+        query = query + " and floor_price = ? "
     }
     if(params.price){
         paramsArray[i++] = params.price;
@@ -56,7 +60,6 @@ const getCoupon = (params,callback) => {
         paramsArray[i++] = parseInt(params.start);
         paramsArray[i] = parseInt(params.size);
         query = query + " limit ?,? ";
-
     }
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('getCoupon');
@@ -64,13 +67,14 @@ const getCoupon = (params,callback) => {
     })
 }
 const updateCoupon = (params,callback)=>{
-    let query = " update coupon set coupon_name = ? , effective_days = ?, valid_date_from = ? ,valid_date_to = ?,threshold_cost = ?,price = ?,status = ?,del_status = ? ,show_status = ? ,remarks = ? where id = ?";
+    let query = " update coupon set coupon_name = ? ,coupon_type = ? ,effective_days = ?, start_date = ? ,end_date = ?,floor_price = ?,price = ?,status = ?,del_status = ? ,show_status = ? ,remarks = ? where id = ?";
     let paramsArray=[],i=0;
     paramsArray[i++]=params.couponName;
+    paramsArray[i++]=params.couponType;
     paramsArray[i++]=params.effectiveDays;
-    paramsArray[i++]=params.validDateFrom;
-    paramsArray[i++]=params.validDateTo;
-    paramsArray[i++]=params.thresholdCost;
+    paramsArray[i++]=params.startDate;
+    paramsArray[i++]=params.endDate;
+    paramsArray[i++]=params.floorPrice;
     paramsArray[i++]=params.price;
     paramsArray[i++]=params.status;
     paramsArray[i++]=params.delStatus;
@@ -93,13 +97,14 @@ const updateStatus = (params,callback) => {
     });
 }
 const addCoupon = (params,callback)=>{
-    let query = "insert into coupon (coupon_name,effective_days,valid_date_from,valid_date_to,threshold_cost,price,status,del_status,show_status,remarks) values(?,?,?,?,?,?,?,?,?,?) ";
+    let query = "insert into coupon (coupon_name,coupon_type,effective_days,start_date,end_date,floor_price,price,status,del_status,show_status,remarks) values(?,?,?,?,?,?,?,?,?,?,?) ";
     let paramsArray = [],i=0;
     paramsArray[i++]=params.couponName;
+    paramsArray[i++]=params.couponType;
     paramsArray[i++]=params.effectiveDays;
-    paramsArray[i++]=params.validDateFrom;
-    paramsArray[i++]=params.validDateTo;
-    paramsArray[i++]=params.thresholdCost;
+    paramsArray[i++]=params.startDate;
+    paramsArray[i++]=params.endDate;
+    paramsArray[i++]=params.floorPrice;
     paramsArray[i++]=params.price;
     paramsArray[i++]=params.status;
     paramsArray[i++]=params.delStatus;

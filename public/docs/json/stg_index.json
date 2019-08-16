@@ -12184,6 +12184,13 @@
             "type": "string"
           },
           {
+            "name": "couponType",
+            "in": "query",
+            "description": "优惠券类型（0:天数,1:日期）",
+            "required": false,
+            "type": "string"
+          },
+          {
             "name": "effectiveDays",
             "in": "query",
             "description": "有效天数",
@@ -12191,21 +12198,21 @@
             "type": "integer"
           },
           {
-            "name": "validDateFrom",
+            "name": "startDate",
             "in": "query",
             "description": "有效日期从",
             "required": false,
             "type": "string"
           },
           {
-            "name": "validDateTo",
+            "name": "endDate",
             "in": "query",
             "description": "有效日期到",
             "required": false,
             "type": "string"
           },
           {
-            "name": "thresholdCost",
+            "name": "floorPrice",
             "in": "query",
             "description": "门槛费用",
             "required": false,
@@ -14122,28 +14129,22 @@
         "couponName": {
           "type": "string"
         },
+        "couponType": {
+          "type": "integer"
+        },
         "effectiveDays": {
           "type": "integer"
         },
-        "validDateFrom": {
+        "startDate": {
           "type": "string"
         },
-        "validDateTo": {
+        "endDate": {
           "type": "string"
         },
-        "thresholdCost": {
+        "floorPrice": {
           "type": "integer"
         },
         "price": {
-          "type": "integer"
-        },
-        "status": {
-          "type": "integer"
-        },
-        "delStatus": {
-          "type": "integer"
-        },
-        "showStatus": {
           "type": "integer"
         },
         "remarks": {
