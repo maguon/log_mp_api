@@ -12151,7 +12151,7 @@
       }
     },
 
-    "/admin/{adminId}/coupon": {
+    "/coupon": {
       "get": {
         "tags": [
           "coupon"
@@ -12164,9 +12164,9 @@
         "parameters": [
           {
             "name": "adminId",
-            "in": "path",
-            "description": "当前登录管理员ID",
-            "required": true,
+            "in": "query",
+            "description": "优惠券创建人ID",
+            "required": false,
             "type": "integer"
           },
           {
@@ -12174,7 +12174,7 @@
             "in": "query",
             "description": "优惠券ID",
             "required": false,
-            "type": "string"
+            "type": "integer"
           },
           {
             "name": "couponName",
@@ -12275,7 +12275,9 @@
             "description": "Invalid token value or invalid admin id"
           }
         }
-      },
+      }
+    },
+    "/admin/{adminId}/coupon": {
       "post": {
         "tags": [
           "coupon"
