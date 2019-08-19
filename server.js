@@ -42,6 +42,7 @@ const userDeviceInfo = require("./bl/UserDeviceInfo");
 const customerServicePhone = require("./bl/CustomerServicePhone");
 const app = require('./bl/App');
 const coupon = require('./bl/Coupon');
+const userCoupon = require('./bl/UserCoupon');
 
 /**
  * Returns a server with all routes defined on it
@@ -442,11 +443,21 @@ const createServer=()=>{
     /**
      * coupon
      */
-    server.get('/api/coupon',coupon.getCoupon);
+    server.get('/api/admin/:adminId/coupon',coupon.getCoupon);
     server.post({path:'/api/admin/:adminId/coupon',contentType: 'application/json'},coupon.addCoupon);
     server.put({path:'/api/admin/:adminId/coupon/:couponId',contentType: 'application/json'},coupon.updateCoupon);
     server.put({path:'/api/admin/:adminId/coupon/:couponId/status/:status',contentType: 'application/json'},coupon.updateStatus);
     server.del({path:'/api/admin/:adminId/coupon/:couponId/showStatus',contentType: 'application/json'},coupon.deleteCoupon);
+    /**
+     * user_coupon
+     */
+    server.get('/api/admin/:adminId/userCoupon',userCoupon.getUserCoupon);
+    server.post({path:'/api/admin/:adminId/user/:userId/coupon/:couponId/userCoupon',contentType: 'application/json'},userCoupon.addUserCoupon);
+    server.put({path:'/api/admin/:adminId/userCoupon/:userCouponId',contentType: 'application/json'},userCoupon.updateUserCoupon);
+    server.put({path:'/api/admin/:adminId/userCoupon/:userCouponId/status/:status',contentType: 'application/json'},userCoupon.updateStatus);
+    server.del({path:'/api/admin/:adminId/userCoupon/:userCouponId/showStatus',contentType: 'application/json'},userCoupon.deleteUserCoupon);
+
+
 
     server.on('NotFound', function (req, res ,next) {
         logger.warn(req.url + " not found");
