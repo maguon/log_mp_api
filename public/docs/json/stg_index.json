@@ -12190,7 +12190,7 @@
           {
             "name": "couponType",
             "in": "query",
-            "description": "优惠券类型（0:天数,1:日期）",
+            "description": "优惠券类型（0:天数,1:日期,2:专属）",
             "required": false,
             "type": "string"
           },
