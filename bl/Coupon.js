@@ -2,10 +2,8 @@
 const serverLogger = require('../util/ServerLogger.js');
 const resUtil = require('../util/ResponseUtil.js');
 const sysMsg = require('../util/SystemMsg.js');
-const sysError = require('../util/SystemError.js');
 const logger = serverLogger.createLogger('Coupon.js');
 const couponDao = require('../dao/CouponDAO.js');
-const sysConsts = require("../util/SystemConst");
 
 const getCoupon = (req,res,next) => {
     let params = req.params;

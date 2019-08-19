@@ -2,18 +2,11 @@
 
 const serverLogger = require('../util/ServerLogger.js');
 const logger = serverLogger.createLogger('CouponDAO.js');
-const sysConfig = require("../config/SystemConfig");
-const httpUtil = require('../util/HttpUtil');
 const db = require('../db/connection/MysqlDb.js');
-const encrypt = require('../util/Encrypt.js');
 
 const getCoupon = (params,callback) => {
     let query = "select * from coupon where id is not null ";
     let paramsArray = [],i=0;
-    if(params.adminId){
-        paramsArray[i++] = params.adminId;
-        query = query + " and admin_id = ? ";
-    }
     if(params.couponId){
         paramsArray[i++] = params.couponId;
         query = query + " and id = ? ";
@@ -59,7 +52,7 @@ const getCoupon = (params,callback) => {
         query = query + " and Remarks = ? "
     }
     query = query + " and show_status = 0 "
-    query = query + " order by id desc";
+    query = query + " order by id asc";
     if(params.start && params.size){
         paramsArray[i++] = parseInt(params.start);
         paramsArray[i] = parseInt(params.size);
