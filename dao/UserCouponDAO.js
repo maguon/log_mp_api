@@ -5,45 +5,55 @@ const logger = serverLogger.createLogger('UserCouponDAO.js');
 const db = require('../db/connection/MysqlDb.js');
 
 const getUserCoupon = (params,callback) => {
-    let query = "select * from user_coupon where id is not null ";
+    let query = "select * from user_coupon uc " +
+        " left join order_coupon_rel ocr on uc.id = ocr.user_coupon_id " +
+        " where uc.id is not null ";
     let paramsArray = [],i=0;
+    if(params.orderId){
+        paramsArray[i++] = params.orderId;
+        query = query + " and ocr.order_id = ? ";
+    }
+    if(params.paymentId){
+        paramsArray[i++] = params.paymentId;
+        query = query + " and ocr.payment_id = ? ";
+    }
     if(params.founderId){
         paramsArray[i++] = params.founderId;
-        query = query + " and admin_id = ? ";
+        query = query + " and uc.admin_id = ? ";
     }
     if(params.founderName){
         paramsArray[i++] = params.founderName;
-        query = query + " and admin_name = ? ";
+        query = query + " and uc.admin_name = ? ";
     }
     if(params.userId){
         paramsArray[i++] = params.userId;
-        query = query + " and user_id = ? ";
+        query = query + " and uc.user_id = ? ";
     }
     if(params.userName){
         paramsArray[i++] = params.userName;
-        query = query + " and user_name = ? ";
+        query = query + " and uc.user_name = ? ";
     }
     if(params.couponId){
         paramsArray[i++] = params.couponId;
-        query = query + " and coupon_id = ? ";
+        query = query + " and uc.coupon_id = ? ";
     }
     if(params.userCouponId){
         paramsArray[i++] = params.userCouponId;
-        query = query + " and id = ? ";
+        query = query + " and uc.id = ? ";
     }
     if(params.ReceiveDateStart){
         paramsArray[i++] = params.ReceiveDateStart + " 00:00:00 ";
-        query = query + " and created_on >= ? "
+        query = query + " and uc.created_on >= ? "
     }
     if(params.ReceiveDateEnd){
         paramsArray[i++] = params.ReceiveDateEnd + " 23:59:59 ";
-        query = query + " and created_on <= ? "
+        query = query + " and uc.created_on <= ? "
     }
     if(params.status){
         paramsArray[i++] = params.status;
-        query = query + " and status = ? "
+        query = query + " and uc.status = ? "
     }
-    query = query + " order by id asc";
+    query = query + " order by uc.id asc";
     if(params.start && params.size){
         paramsArray[i++] = parseInt(params.start);
         paramsArray[i] = parseInt(params.size);
