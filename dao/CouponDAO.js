@@ -11,45 +11,9 @@ const getCoupon = (params,callback) => {
         paramsArray[i++] = params.couponId;
         query = query + " and id = ? ";
     }
-    if(params.couponName){
-        paramsArray[i++] = params.couponName;
-        query = query + " and coupon_name = ?";
-    }
-    if(params.couponType){
-        paramsArray[i++] = params.couponType;
-        query = query + " and coupon_type = ?";
-    }
-    if(params.effectiveDays){
-        paramsArray[i++] = params.effectiveDays;
-        query = query + " and effective_days = ? "
-    }
-    if(params.startDate){
-        paramsArray[i++] = params.startDate;
-        query = query + " and start_date = ?";
-    }
-    if(params.endDate){
-        paramsArray[i++] = params.endDate;
-        query = query + " and end_date = ? "
-    }
-    if(params.floorPrice){
-        paramsArray[i++] = params.floorPrice;
-        query = query + " and floor_price = ? "
-    }
-    if(params.price){
-        paramsArray[i++] = params.price;
-        query = query + " and price = ? "
-    }
     if(params.status){
         paramsArray[i++] = params.status;
         query = query + " and status = ? "
-    }
-    if(params.delStatus){
-        paramsArray[i++] = params.delStatus;
-        query = query + " and del_status = ? "
-    }
-    if(params.remarks){
-        paramsArray[i++] = params.remarks;
-        query = query + " and Remarks = ? "
     }
     query = query + " and show_status = 0 "
     query = query + " order by id asc";
