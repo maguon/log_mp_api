@@ -55,7 +55,7 @@ const getUserCoupon = (params,callback) => {
     })
 }
 const addUserCoupon = (params,callback)=>{
-    let query = "insert into user_coupon (admin_id,admin_name,user_id,user_name,phone,coupon_id,coupon_name,coupon_type,start_date,end_date,floor_price,price,status,remarks) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+    let query = "insert into user_coupon (admin_id,admin_name,user_id,user_name,phone,coupon_id,coupon_name,coupon_type,effective_days,start_date,end_date,floor_price,price,status,remarks) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
     let paramsArray = [],i=0;
     paramsArray[i++]=params.adminId;
     paramsArray[i++]=params.adminName;
@@ -65,6 +65,7 @@ const addUserCoupon = (params,callback)=>{
     paramsArray[i++]=params.couponId;
     paramsArray[i++]=params.couponName;
     paramsArray[i++]=params.couponType;
+    paramsArray[i++]=params.effectiveDays;
     paramsArray[i++]=params.startDate;
     paramsArray[i++]=params.endDate;
     paramsArray[i++]=params.floorPrice;

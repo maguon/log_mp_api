@@ -14273,10 +14273,10 @@
         "phone": {
           "type": "string"
         },
-        "phone": {
-          "type": "string"
-        },
         "couponType": {
+          "type": "integer"
+        },
+        "effectiveDays": {
           "type": "integer"
         },
         "startDate": {

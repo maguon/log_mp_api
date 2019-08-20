@@ -19,6 +19,12 @@ const getUserCoupon = (req,res,next) => {
 }
 const addUserCoupon = (req,res,next)=>{
     let params = req.params;
+    if(params.couponType == 0 ){
+        params.startDate = '';
+        params.endDate = '';
+    }else{
+        params.effectiveDays = 0;
+    }
     params.status = 1;
     params.couponId = "0";
     params.couponName = "专属优惠卷";
