@@ -33,7 +33,11 @@ let CUST_WECHAT_CHECK_IDENTITY = "用户身份校验失败";
  * The module for admin
  */
 let ADMIN_LOGIN_USER_UNREGISTERED = "用户不存在"; //Customer use a email that not exist in system to login.
-
+let ADMIN_UNREGISTERED = "操作员不存在";
+/**
+ * The module for user
+ */
+let USER_UNREGISTERED = "用户不存在";
 /**
  * The payment for admin
  */
@@ -122,6 +126,10 @@ module.exports = {
     CUST_CHANGE_EMAIL_DATA_ERROR,
     CUST_CREATE_EXISTING,
     ADMIN_LOGIN_USER_UNREGISTERED,
+    ADMIN_UNREGISTERED,
+
+    USER_UNREGISTERED,
+
     ADMIN_PAYMENT_UPDATE_PERMISSION,
     ADMIN_PAYMENT_NO_MSG,
     ADMIN_ORDER_INVOICE_APPLY_REVOKE,

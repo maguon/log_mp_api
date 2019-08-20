@@ -14264,17 +14264,11 @@
     "userCoupon": {
       "type": "object",
       "properties": {
-        "adminName": {
-          "type": "string"
-        },
-        "userName": {
-          "type": "string"
-        },
-        "phone": {
-          "type": "string"
-        },
         "couponType": {
           "type": "integer"
+        },
+        "couponName": {
+          "type": "string"
         },
         "effectiveDays": {
           "type": "integer"
@@ -14284,6 +14278,9 @@
         },
         "endDate": {
           "type": "string"
+        },
+        "floorPrice": {
+          "type": "integer"
         },
         "price": {
           "type": "integer"
