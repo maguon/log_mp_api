@@ -11,9 +11,17 @@ const getUserCoupon = (params,callback) => {
         paramsArray[i++] = params.founderId;
         query = query + " and admin_id = ? ";
     }
+    if(params.founderName){
+        paramsArray[i++] = params.founderName;
+        query = query + " and admin_name = ? ";
+    }
     if(params.userId){
         paramsArray[i++] = params.userId;
         query = query + " and user_id = ? ";
+    }
+    if(params.userName){
+        paramsArray[i++] = params.userName;
+        query = query + " and user_name = ? ";
     }
     if(params.couponId){
         paramsArray[i++] = params.couponId;
@@ -47,10 +55,13 @@ const getUserCoupon = (params,callback) => {
     })
 }
 const addUserCoupon = (params,callback)=>{
-    let query = "insert into user_coupon (admin_id,user_id,coupon_id,coupon_name,coupon_type,start_date,end_date,floor_price,price,status,remarks) values(?,?,?,?,?,?,?,?,?,?,?) ";
+    let query = "insert into user_coupon (admin_id,admin_name,user_id,user_name,phone,coupon_id,coupon_name,coupon_type,start_date,end_date,floor_price,price,status,remarks) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
     let paramsArray = [],i=0;
     paramsArray[i++]=params.adminId;
+    paramsArray[i++]=params.adminName;
     paramsArray[i++]=params.userId;
+    paramsArray[i++]=params.userName;
+    paramsArray[i++]=params.phone;
     paramsArray[i++]=params.couponId;
     paramsArray[i++]=params.couponName;
     paramsArray[i++]=params.couponType;

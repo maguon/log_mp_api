@@ -12432,9 +12432,16 @@
           {
             "name": "founderId",
             "in": "query",
-            "description": "创建人",
+            "description": "发放人ID",
             "required": false,
             "type": "integer"
+          },
+          {
+            "name": "founderName",
+            "in": "path",
+            "description": "发放人",
+            "required": false,
+            "type": "string"
           },
           {
             "name": "userId",
@@ -12442,6 +12449,13 @@
             "description": "领取用户账号",
             "required": false,
             "type": "integer"
+          },
+          {
+            "name": "userName",
+            "in": "query",
+            "description": "领取用户名称",
+            "required": false,
+            "type": "string"
           },
           {
             "name": "couponId",
@@ -14250,6 +14264,18 @@
     "userCoupon": {
       "type": "object",
       "properties": {
+        "adminName": {
+          "type": "string"
+        },
+        "userName": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
         "couponType": {
           "type": "integer"
         },
