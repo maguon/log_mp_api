@@ -452,11 +452,8 @@ const createServer=()=>{
      * user_coupon
      */
     server.get('/api/admin/:adminId/userCoupon',userCoupon.getUserCoupon);
-    server.post({path:'/api/admin/:adminId/user/:userId/coupon/:couponId/userCoupon',contentType: 'application/json'},userCoupon.addUserCoupon);
-    server.put({path:'/api/admin/:adminId/userCoupon/:userCouponId',contentType: 'application/json'},userCoupon.updateUserCoupon);
-    server.put({path:'/api/admin/:adminId/userCoupon/:userCouponId/status/:status',contentType: 'application/json'},userCoupon.updateStatus);
-    server.del({path:'/api/admin/:adminId/userCoupon/:userCouponId/showStatus',contentType: 'application/json'},userCoupon.deleteUserCoupon);
-
+    server.post({path:'/api/admin/:adminId/user/:userId/userCoupon',contentType: 'application/json'},userCoupon.addUserCoupon);
+;
 
 
     server.on('NotFound', function (req, res ,next) {

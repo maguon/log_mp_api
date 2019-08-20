@@ -20,8 +20,9 @@ const getUserCoupon = (req,res,next) => {
 const addUserCoupon = (req,res,next)=>{
     let params = req.params;
     params.status = 1;
-    params.showStatus = 0;
-
+    params.couponId = "0";
+    params.couponName = "专属优惠卷";
+    params.floorPrice = 0;
     userCouponDao.addUserCoupon(params,(error,result)=>{
         if(error){
             logger.error('addUserCoupon ' + error.message);
@@ -33,51 +34,7 @@ const addUserCoupon = (req,res,next)=>{
         }
     });
 };
-const updateUserCoupon = (req,res,next) => {
-    let params = req.params;
-    params.status = 1;
-    params.showStatus = 0;
-    userCouponDao.updateUserCoupon(params,(error,result)=>{
-        if(error){
-            logger.error('updateUserCoupon ' + error.message);
-            resUtil.resetFailedRes(error,res,next);
-        }else{
-            logger.info('updateUserCoupon  ' + 'success');
-            resUtil.resetUpdateRes(res,result,null);
-            return next();
-        }
-    })
-}
-const updateStatus = (req,res,next) => {
-    let params = req.params;
-    userCouponDao.updateStatus(params,(error,result)=>{
-        if(error){
-            logger.error(' updateStatus ' + error.message);
-            resUtil.resInternalError(error,res,next);
-        }else{
-            logger.info(' updateStatus ' + 'success');
-            resUtil.resetUpdateRes(res,result,null);
-            return next();
-        }
-    })
-}
-const deleteUserCoupon = (req,res,next) => {
-    let params = req.params;
-    userCouponDao.deleteUserCoupon(params,(error,result)=>{
-        if(error){
-            logger.error(' deleteUserCoupon ' + error.message);
-            resUtil.resInternalError(error,res,next);
-        }else{
-            logger.info(' deleteUserCoupon ' + 'success');
-            resUtil.resetUpdateRes(res,result,null);
-            return next();
-        }
-    })
-}
 module.exports={
     getUserCoupon,
     addUserCoupon,
-    updateUserCoupon,
-    updateStatus,
-    deleteUserCoupon
 }
