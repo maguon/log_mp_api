@@ -5,7 +5,7 @@ const logger = serverLogger.createLogger('UserCouponDAO.js');
 const db = require('../db/connection/MysqlDb.js');
 
 const getUserCoupon = (params,callback) => {
-    let query = "select * from user_coupon uc " +
+    let query = "select uc.*,ocr.order_id,ocr.payment_id from user_coupon uc " +
         " left join order_coupon_rel ocr on uc.id = ocr.user_coupon_id " +
         " where uc.id is not null ";
     let paramsArray = [],i=0;
