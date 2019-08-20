@@ -43,6 +43,7 @@ const customerServicePhone = require("./bl/CustomerServicePhone");
 const app = require('./bl/App');
 const coupon = require('./bl/Coupon');
 const userCoupon = require('./bl/UserCoupon');
+const applyCoupon = require('./bl/ApplyCoupon');
 
 /**
  * Returns a server with all routes defined on it
@@ -453,8 +454,10 @@ const createServer=()=>{
      */
     server.get('/api/admin/:adminId/userCoupon',userCoupon.getUserCoupon);
     server.post({path:'/api/admin/:adminId/user/:userId/userCoupon',contentType: 'application/json'},userCoupon.addUserCoupon);
-;
-
+    /**
+     * apply_coupon
+     */
+    server.get('/api/admin/:adminId/applyCoupon',applyCoupon.getApplyCoupon);
 
     server.on('NotFound', function (req, res ,next) {
         logger.warn(req.url + " not found");

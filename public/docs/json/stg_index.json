@@ -155,6 +155,10 @@
     {
       "name": "userCoupon",
       "description":"userCoupon version"
+    },
+    {
+      "name": "applyCoupon",
+      "description":"applyCoupon version"
     }
   ],
   "schemes": [
@@ -12563,6 +12567,40 @@
           },
           "400": {
             "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+
+    "/admin/{adminId}/applyCoupon": {
+      "get": {
+        "tags": [
+          "applyCoupon"
+        ],
+        "summary": "select",
+        "description": "Get applyCoupon version",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "当前登录管理员ID",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "userCouponId",
+            "in": "query",
+            "description": "领取编号",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid token value or invalid userCoupon id"
           }
         }
       }
