@@ -23,6 +23,14 @@ const getUserCoupon = (params,callback) => {
         paramsArray[i++] = params.userCouponId;
         query = query + " and id = ? ";
     }
+    if(params.ReceiveDateStart){
+        paramsArray[i++] = params.ReceiveDateStart;
+        query = query + " and created_on >= ? "
+    }
+    if(params.ReceiveDateEnd){
+        paramsArray[i++] = params.ReceiveDateEnd;
+        query = query + " and created_on <= ? "
+    }
     if(params.status){
         paramsArray[i++] = params.status;
         query = query + " and status = ? "
