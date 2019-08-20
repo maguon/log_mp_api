@@ -34,7 +34,7 @@ const addUserCoupon = (req,res,next)=>{
 
     const getAdminUserInfo = () => {
         return new Promise((resolve, reject) =>{
-            adminUserDao.queryAdminInfo(params.adminId,(error,rows)=>{
+            adminUserDao.queryAdminInfo({adminId:params.adminId},(error,rows)=>{
                 if(error){
                     logger.error(' addUserCoupon getAdminUserInfo ' + error.message);
                     reject({err:error});
@@ -52,7 +52,7 @@ const addUserCoupon = (req,res,next)=>{
     }
     const queryUser = ()=>{
         return new Promise((resolve, reject) =>{
-            userDao.queryUser(params.userId,(error,rows)=>{
+            userDao.queryUser({userId:params.userId},(error,rows)=>{
                 if(error){
                     logger.error('addUserCoupon queryUser ' + error.message);
                     reject({err:error});

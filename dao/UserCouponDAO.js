@@ -32,11 +32,11 @@ const getUserCoupon = (params,callback) => {
         query = query + " and id = ? ";
     }
     if(params.ReceiveDateStart){
-        paramsArray[i++] = params.ReceiveDateStart;
+        paramsArray[i++] = params.ReceiveDateStart + " 00:00:00 ";
         query = query + " and created_on >= ? "
     }
     if(params.ReceiveDateEnd){
-        paramsArray[i++] = params.ReceiveDateEnd;
+        paramsArray[i++] = params.ReceiveDateEnd + " 23:59:59 ";
         query = query + " and created_on <= ? "
     }
     if(params.status){
