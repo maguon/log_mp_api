@@ -6,7 +6,7 @@ const logger = serverLogger.createLogger('UserCoupon.js');
 const adminUserDao = require('../dao/AdminUserDAO.js');
 const userCouponDao = require('../dao/UserCouponDAO.js');
 const userDao = require('../dao/UserDAO.js');
-
+const moment = require('moment/moment.js');
 
 const getUserCoupon = (req,res,next) => {
     let params = req.params;
@@ -24,9 +24,14 @@ const getUserCoupon = (req,res,next) => {
 const addUserCoupon = (req,res,next)=>{
     let params = req.params;
     if(params.couponType == 0 ){
-        params.startDate = '';
-        params.endDate = '';
+        //天数优惠卷
+        params.startDate = new Date().toLocaleString(); //获取当前时间
+
+        var time = new Date().getTime(); //得到毫秒数
+        time = time + params.effectiveDays * 24 * 60 * 60 * 1000;
+        params.endDate = moment(time).format('YYYY-MM-DD HH:MM:SS');
     }else{
+        //日期
         params.effectiveDays = 0;
     }
     params.status = 1;
