@@ -12156,6 +12156,39 @@
       }
     },
 
+    "/admin/{adminId}/coupon/{couponId}/count": {
+      "get": {
+        "tags": [
+          "coupon"
+        ],
+        "summary": "select",
+        "description": "Get coupon count version",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "当前登录管理员ID",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "couponId",
+            "in": "path",
+            "description": "优惠券ID",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
     "/admin/{adminId}/coupon": {
       "get": {
         "tags": [

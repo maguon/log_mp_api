@@ -443,6 +443,7 @@ const createServer=()=>{
     /**
      * coupon
      */
+    server.get('/api/admin/:adminId/coupon/:couponId/count',coupon.getCouponCount);
     server.get('/api/admin/:adminId/coupon',coupon.getCoupon);
     server.post({path:'/api/admin/:adminId/coupon',contentType: 'application/json'},coupon.addCoupon);
     server.put({path:'/api/admin/:adminId/coupon/:couponId',contentType: 'application/json'},coupon.updateCoupon);

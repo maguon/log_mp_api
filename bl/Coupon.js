@@ -4,7 +4,52 @@ const resUtil = require('../util/ResponseUtil.js');
 const sysMsg = require('../util/SystemMsg.js');
 const logger = serverLogger.createLogger('Coupon.js');
 const couponDao = require('../dao/CouponDAO.js');
+const userCouponDao = require('../dao/UserCouponDAO.js');
 
+const getCouponCount = (req,res,next) => {
+    let params = req.params;
+    let statistics;
+    const getReceiveNum = ()=>{
+        return new Promise((resolve, reject) => {
+            userCouponDao.getUserCoupon({couponId:params.couponId},(error,rows)=>{
+                if(error){
+                    logger.error(' getCouponCount getReceiveNum ' + error.message);
+                    reject({err:error});
+                }else{
+                    logger.info(' getCouponCount getReceiveNum ' + 'success');
+                    resolve(rows.length);
+                }
+            })
+        });
+    }
+    const getUseNum = (receiveNum)=>{
+        return new Promise(() => {
+            userCouponDao.getUse({couponId:params.couponId},(error,rows)=>{
+                if(error){
+                    logger.error(' getCouponCount getUseNum ' + error.message);
+                    resUtil.resInternalError(error,res,next);
+                }else{
+                    logger.info(' getCouponCount getUseNum ' + 'success');
+                    statistics={
+                        receiveNum:receiveNum,
+                        useNum:rows.length
+                    }
+                    resUtil.resetQueryRes(res,statistics,null);
+                    return next();
+                }
+            })
+        });
+    }
+    getReceiveNum()
+        .then(getUseNum)
+        .catch((reject)=>{
+            if(reject){
+                resUtil.resetFailedRes(res,reject.err);
+            }else{
+                resUtil.resetFailedRes(res,reject.msg);
+            }
+        })
+}
 const getCoupon = (req,res,next) => {
     let params = req.params;
     couponDao.getCoupon(params,(error,rows)=>{
@@ -126,6 +171,7 @@ const deleteCoupon = (req,res,next) => {
         })
 }
 module.exports={
+    getCouponCount,
     getCoupon,
     addCoupon,
     updateCoupon,

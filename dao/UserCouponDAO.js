@@ -64,6 +64,21 @@ const getUserCoupon = (params,callback) => {
         callback(error,rows);
     })
 }
+const getUse = (params,callback) => {
+    let query = "select uc.*,ocr.order_id,ocr.payment_id from user_coupon uc " +
+        " left join order_coupon_rel ocr on uc.id = ocr.user_coupon_id " +
+        " where uc.id is not null ";
+    let paramsArray = [],i=0;
+    if(params.couponId){
+        paramsArray[i++] = params.couponId;
+        query = query + " and uc.coupon_id = ? ";
+    }
+    query = query + "and ocr.order_id is not null ";
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('getUse');
+        callback(error,rows);
+    })
+}
 const addUserCoupon = (params,callback)=>{
     let query = "insert into user_coupon (admin_id,admin_name,user_id,user_name,phone,coupon_id,coupon_name,coupon_type,effective_days,start_date,end_date,floor_price,price,status,remarks) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
     let paramsArray = [],i=0;
@@ -90,5 +105,6 @@ const addUserCoupon = (params,callback)=>{
 
 module.exports = {
     getUserCoupon,
+    getUse,
     addUserCoupon,
 }
