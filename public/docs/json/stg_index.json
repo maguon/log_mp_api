@@ -12465,7 +12465,7 @@
             "type": "string"
           },
           {
-            "name": "price",
+            "name": "actualPrice",
             "in": "query",
             "description": "售价",
             "required": false,
@@ -14619,16 +14619,16 @@
         "commodityName": {
           "type": "string"
         },
-        "picture": {
+        "image": {
           "type": "string"
         },
-        "introduce": {
+        "desc": {
           "type": "string"
         },
         "originalPrice": {
           "type": "integer"
         },
-        "price": {
+        "actualPrice": {
           "type": "integer"
         },
         "type": {

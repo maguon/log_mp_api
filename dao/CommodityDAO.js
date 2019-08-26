@@ -15,9 +15,9 @@ const getCommodity = (params,callback) => {
         paramsArray[i++] = params.commodityName;
         query = query + " and commodity_name = ? ";
     }
-    if(params.price){
-        paramsArray[i++] = params.price;
-        query = query + " and price = ? ";
+    if(params.actualPrice){
+        paramsArray[i++] = params.actualPrice;
+        query = query + " and actual_price = ? ";
     }
     if(params.type){
         paramsArray[i++] = params.type;
@@ -40,13 +40,13 @@ const getCommodity = (params,callback) => {
     })
 }
 const addCommodity = (params,callback)=>{
-    let query = "insert into commodity_info (commodity_name,picture,introduce,original_price,price,type,earnest_money,quantity,saled_quantity,status) values(?,?,?,?,?,?,?,?,?,?) ";
+    let query = "insert into commodity_info (commodity_name,image,desc,original_actual_price,actual_price,type,earnest_money,quantity,saled_quantity,status) values(?,?,?,?,?,?,?,?,?,?) ";
     let paramsArray = [],i=0;
     paramsArray[i++]=params.commodityName;
-    paramsArray[i++]=params.picture;
-    paramsArray[i++]=params.introduce;
+    paramsArray[i++]=params.image;
+    paramsArray[i++]=params.desc;
     paramsArray[i++]=params.originalPrice;
-    paramsArray[i++]=params.price;
+    paramsArray[i++]=params.actualPrice;
     paramsArray[i++]=params.type;
     paramsArray[i++]=params.earnestMoney;
     paramsArray[i++]=params.quantity;
@@ -58,13 +58,13 @@ const addCommodity = (params,callback)=>{
     });
 }
 const updateCommodity = (params,callback)=>{
-    let query = " update commodity_info set commodity_name=?, picture=? ,introduce=?, original_price=?, price=?, type=?, earnest_money=?, quantity=?, saled_quantity=? where id = ?";
+    let query = " update commodity_info set commodity_name=?, image=? ,desc=?, original_actual_price=?, actual_price=?, type=?, earnest_money=?, quantity=?, saled_quantity=? where id = ?";
     let paramsArray=[],i=0;
     paramsArray[i++]=params.commodityName;
-    paramsArray[i++]=params.picture;
-    paramsArray[i++]=params.introduce;
+    paramsArray[i++]=params.image;
+    paramsArray[i++]=params.desc;
     paramsArray[i++]=params.originalPrice;
-    paramsArray[i++]=params.price;
+    paramsArray[i++]=params.actualPrice;
     paramsArray[i++]=params.type;
     paramsArray[i++]=params.earnestMoney;
     paramsArray[i++]=params.quantity;
