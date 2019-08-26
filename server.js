@@ -40,9 +40,10 @@ const loadTaskDetail = require("./bl/LoadTaskDetail");
 const recommend = require("./bl/Recommend");
 const userDeviceInfo = require("./bl/UserDeviceInfo");
 const customerServicePhone = require("./bl/CustomerServicePhone");
-const app = require('./bl/App');
 const coupon = require('./bl/Coupon');
 const userCoupon = require('./bl/UserCoupon');
+const commodity = require('./bl/Commodity');
+const app = require('./bl/App');
 
 /**
  * Returns a server with all routes defined on it
@@ -435,12 +436,6 @@ const createServer=()=>{
     server.put({path:'/api/admin/:adminId/customerPhone/:id',contentType: 'application/json'},customerServicePhone.updateCustomerPhone);
     server.get('/api/user/:userId/customerPhone',customerServicePhone.getCustomerPhone);
     /**
-     * app
-     */
-    server.get('/api/app',app.getApp);
-    server.post({path:'/api/admin/:adminId/app',contentType: 'application/json'},app.addApp);
-    server.put({path:'/api/admin/:adminId/app/:appId',contentType: 'application/json'},app.updateApp);
-    /**
      * coupon
      */
     server.get('/api/admin/:adminId/coupon/:couponId/count',coupon.getCouponCount);
@@ -454,7 +449,20 @@ const createServer=()=>{
      */
     server.get('/api/admin/:adminId/userCoupon',userCoupon.getUserCoupon);
     server.post({path:'/api/admin/:adminId/user/:userId/userCoupon',contentType: 'application/json'},userCoupon.addUserCoupon);
-
+    /**
+     * commodity
+     */
+    server.get('/api/admin/:adminId/commodity',commodity.getCommodity);
+    server.post({path:'/api/admin/:adminId/commodity',contentType: 'application/json'},commodity.addCommodity);
+    server.put({path:'/api/admin/:adminId/commodity/:commodityId',contentType: 'application/json'},commodity.updateCommodity);
+    server.put({path:'/api/admin/:adminId/commodity/:commodityId/status/:status',contentType: 'application/json'},commodity.updateStatus);
+    server.del({path:'/api/admin/:adminId/commodity/:commodityId/del',contentType: 'application/json'},commodity.deleteCommodity);
+    /**
+     * app
+     */
+    server.get('/api/app',app.getApp);
+    server.post({path:'/api/admin/:adminId/app',contentType: 'application/json'},app.addApp);
+    server.put({path:'/api/admin/:adminId/app/:appId',contentType: 'application/json'},app.updateApp);
     server.on('NotFound', function (req, res ,next) {
         logger.warn(req.url + " not found");
         res.send(404,{success:false,msg:" service not found !"});

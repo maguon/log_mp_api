@@ -145,16 +145,20 @@
       "description":"customerServicePhone of log api"
     },
     {
-      "name": "app",
-      "description":"app version"
-    },
-    {
       "name": "coupon",
       "description":"coupon version"
     },
     {
       "name": "userCoupon",
       "description":"userCoupon version"
+    },
+    {
+      "name": "commodity",
+      "description":"commodity version"
+    },
+    {
+      "name": "app",
+      "description":"app version"
     }
   ],
   "schemes": [
@@ -11969,193 +11973,6 @@
       }
     },
 
-    "/app": {
-      "get": {
-        "tags": [
-          "app"
-        ],
-        "summary": "select",
-        "description": "Get app version",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "appType",
-            "in": "query",
-            "description": "app类型(1-广运车)",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "deviceType",
-            "in": "query",
-            "description": "系统类型(1-安卓 2-苹果)",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "version",
-            "in": "query",
-            "description": "版本号",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "versionNum",
-            "in": "query",
-            "description": "版本序号",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "minVersionNum",
-            "in": "query",
-            "description": "支持最低版本序号",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "forceUpdate",
-            "in": "query",
-            "description": "强制更新(0-否,1-是)",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "url",
-            "in": "query",
-            "description": "下载地址",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "remarks",
-            "in": "query",
-            "description": "备注",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "status",
-            "in": "query",
-            "description": "状态（0-停用，1-启用）",
-            "required": false,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/appVersion"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/app": {
-      "post": {
-        "tags": [
-          "app"
-        ],
-        "summary": "insert",
-        "description": "admin create app version",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "deviceInfo",
-            "in": "body",
-            "description": "deviceInfo",
-            "required": true,
-            "schema":{
-              "$ref": "#/definitions/appVersion"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/appVersion"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/app/{appId}": {
-      "put": {
-        "tags": [
-          "app"
-        ],
-        "summary": "update",
-        "description": "update app version",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "admin Id",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "appId",
-            "in": "path",
-            "description": "app Id",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "appVersion",
-            "in": "body",
-            "description": "appVersion",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/appVersion"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/appVersion"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-
     "/admin/{adminId}/coupon/{couponId}/count": {
       "get": {
         "tags": [
@@ -12605,6 +12422,462 @@
               "type": "object",
               "items": {
                 "$ref": "#/definitions/coupon"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+
+    "/admin/{adminId}/commodity": {
+      "get": {
+        "tags": [
+          "commodity"
+        ],
+        "summary": "select",
+        "description": "Get commodity version",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "当前登录管理员ID",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "commodityId",
+            "in": "query",
+            "description": "商品销售ID",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "commodityName",
+            "in": "query",
+            "description": "商品名称",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "price",
+            "in": "query",
+            "description": "售价",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "购付方式（1:全款购车 2:定金购车 3:货到付款）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "状态（0:已售 1:在售 2:下架）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/commodity"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "commodity"
+        ],
+        "summary": "insert",
+        "description": "admin create commodity version",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "commodityInfo",
+            "in": "body",
+            "description": "commodityInfo",
+            "required": true,
+            "schema":{
+              "$ref": "#/definitions/commodity"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/commodity"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/commodity/{commodityId}": {
+      "put": {
+        "tags": [
+          "commodity"
+        ],
+        "summary": "update",
+        "description": "update commodity version",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "admin Id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "commodityId",
+            "in": "path",
+            "description": "commodity Id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "commodityInfo",
+            "in": "body",
+            "description": "commodityInfo",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/commodity"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/commodity"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/commodity/{commodityId}/status/{status}": {
+      "put": {
+        "tags": [
+          "commodity"
+        ],
+        "summary": "update",
+        "description": "update commodity user status",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "commodityId",
+            "in": "path",
+            "description": "commodityId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "path",
+            "description": "状态（0:已售 1:在售 2:下架）",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/commodity"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/commodity/{commodityId}/del": {
+      "delete": {
+        "tags": [
+          "commodity"
+        ],
+        "summary": "update",
+        "description": "update commodity user del",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "commodityId",
+            "in": "path",
+            "description": "commodity Id",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/commodity"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+
+    "/app": {
+      "get": {
+        "tags": [
+          "app"
+        ],
+        "summary": "select",
+        "description": "Get app version",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "appType",
+            "in": "query",
+            "description": "app类型(1-广运车)",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "deviceType",
+            "in": "query",
+            "description": "系统类型(1-安卓 2-苹果)",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "version",
+            "in": "query",
+            "description": "版本号",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "versionNum",
+            "in": "query",
+            "description": "版本序号",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "minVersionNum",
+            "in": "query",
+            "description": "支持最低版本序号",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "forceUpdate",
+            "in": "query",
+            "description": "强制更新(0-否,1-是)",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "url",
+            "in": "query",
+            "description": "下载地址",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "remarks",
+            "in": "query",
+            "description": "备注",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "状态（0-停用，1-启用）",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/appVersion"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/app": {
+      "post": {
+        "tags": [
+          "app"
+        ],
+        "summary": "insert",
+        "description": "admin create app version",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "deviceInfo",
+            "in": "body",
+            "description": "deviceInfo",
+            "required": true,
+            "schema":{
+              "$ref": "#/definitions/appVersion"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/appVersion"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/app/{appId}": {
+      "put": {
+        "tags": [
+          "app"
+        ],
+        "summary": "update",
+        "description": "update app version",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "admin Id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "appId",
+            "in": "path",
+            "description": "app Id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "appVersion",
+            "in": "body",
+            "description": "appVersion",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/appVersion"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/appVersion"
               }
             }
           },
@@ -14338,6 +14611,41 @@
       },
       "xml": {
         "name": "userCoupon"
+      }
+    },
+    "commodity": {
+      "type": "object",
+      "properties": {
+        "commodityName": {
+          "type": "string"
+        },
+        "picture": {
+          "type": "string"
+        },
+        "introduce": {
+          "type": "string"
+        },
+        "originalPrice": {
+          "type": "integer"
+        },
+        "price": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "integer"
+        },
+        "earnestMoney": {
+          "type": "integer"
+        },
+        "quantity": {
+          "type": "integer"
+        },
+        "saledQuantity": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "commodity"
       }
     }
   }
