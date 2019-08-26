@@ -92,3 +92,26 @@ CREATE TABLE `order_coupon_rel`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;
+-- ----------------------------
+-- Table structure for commodity_info
+-- ----------------------------
+DROP TABLE IF EXISTS `commodity_info`;
+CREATE TABLE `commodity_info`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `commodity_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '商品名称',
+  `picture` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '图片',
+  `introduce` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '介绍',
+  `original_price` decimal(10, 2) NULL DEFAULT NULL COMMENT '原价',
+  `price` decimal(10, 2) NULL DEFAULT NULL COMMENT '售价',
+  `type` tinyint(1) NULL DEFAULT NULL COMMENT '购付方式（1:全款购车 2:定金购车 3:货到付款）',
+  `earnest_money` decimal(10, 2) NULL DEFAULT NULL COMMENT '定金',
+  `quantity` int(10) NULL DEFAULT NULL COMMENT '数量',
+  `saled_quantity` int(10) NULL DEFAULT NULL COMMENT '已售数量',
+  `status` tinyint(1) NOT NULL DEFAULT 1 COMMENT '状态（2-下架 1-在售 0-已售）',
+  `show_status` tinyint(1) NULL DEFAULT 0 COMMENT '删除（0:未删除1:已删除）',
+  `created_on` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
+  `updated_on` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+SET FOREIGN_KEY_CHECKS = 1;
