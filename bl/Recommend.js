@@ -236,7 +236,7 @@ const getWXACodeUnlimit=(params,callback)=>{
             wxCodeResult.success = true;
             let ws = fs.createWriteStream(params.photoSrc);
             wxRes.pipe(ws);
-            callback(null,wxCodeResult);
+            //callback(null,wxCodeResult);
         }
         wxRes.on('end',()=>{
             callback(null,wxCodeResult);
