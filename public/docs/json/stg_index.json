@@ -12465,11 +12465,11 @@
             "type": "string"
           },
           {
-            "name": "actualPrice",
+            "name": "cityId",
             "in": "query",
-            "description": "售价",
+            "description": "城市编号",
             "required": false,
-            "type": "integer"
+            "type": "string"
           },
           {
             "name": "type",
@@ -12481,7 +12481,14 @@
           {
             "name": "status",
             "in": "query",
-            "description": "状态（0:已售 1:在售 2:下架）",
+            "description": "状态（0:已售 1:在售 2:已预定）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "showStatus",
+            "in": "query",
+            "description": "下架(0:未下架 1:已下架)",
             "required": false,
             "type": "integer"
           },
@@ -12558,7 +12565,58 @@
         }
       }
     },
-    "/admin/{adminId}/commodity/{commodityId}": {
+    "/admin/{adminId}/commodity/{commodityId}/image": {
+      "put": {
+        "tags": [
+          "commodity"
+        ],
+        "summary": "update",
+        "description": "update commodity version",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "admin Id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "commodityId",
+            "in": "path",
+            "description": "commodity Id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "image",
+            "in": "body",
+            "description": "image",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/image"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/commodity"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/commodity/{commodityId}/info": {
       "put": {
         "tags": [
           "commodity"
@@ -12637,7 +12695,7 @@
           {
             "name": "status",
             "in": "path",
-            "description": "状态（0:已售 1:在售 2:下架）",
+            "description": "状态（0:已售 1:在售 2:已预定）",
             "required": true,
             "type": "integer"
           }
@@ -12658,13 +12716,13 @@
         }
       }
     },
-    "/admin/{adminId}/commodity/{commodityId}/del": {
-      "delete": {
+    "/admin/{adminId}/commodity/{commodityId}/showStatus/{showStatus}": {
+      "put": {
         "tags": [
           "commodity"
         ],
         "summary": "update",
-        "description": "update commodity user del",
+        "description": "update commodity showStatus",
         "produces": [
           "application/json"
         ],
@@ -12680,6 +12738,13 @@
             "name": "commodityId",
             "in": "path",
             "description": "commodity Id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "showStatus",
+            "in": "path",
+            "description": "下架状态(0:未下架 1:已下架)",
             "required": true,
             "type": "integer"
           }
@@ -14616,13 +14681,16 @@
     "commodity": {
       "type": "object",
       "properties": {
+        "cityId": {
+          "type": "integer"
+        },
         "commodityName": {
           "type": "string"
         },
-        "image": {
+        "info": {
           "type": "string"
         },
-        "desc": {
+        "productionDate": {
           "type": "string"
         },
         "originalPrice": {
@@ -14639,13 +14707,21 @@
         },
         "quantity": {
           "type": "integer"
-        },
-        "saledQuantity": {
-          "type": "integer"
         }
       },
       "xml": {
         "name": "commodity"
+      }
+    },
+    "image": {
+      "type": "object",
+      "properties": {
+        "image": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "image"
       }
     }
   }

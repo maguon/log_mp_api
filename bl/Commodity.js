@@ -4,6 +4,7 @@ const resUtil = require('../util/ResponseUtil.js');
 const sysMsg = require("../util/SystemMsg");
 const logger = serverLogger.createLogger('Commodity.js');
 const commodityDAO = require('../dao/CommodityDAO.js');
+const cityInfoDAO = require('../dao/CityInfoDAO.js');
 const moment = require('moment/moment.js');
 
 const getCommodity = (req,res,next) => {
@@ -34,18 +35,65 @@ const addCommodity = (req,res,next)=>{
     }
     params.status = 1;
     params.showStatus = 0;
+    params.image = '';
+    params.saledQuantity = 0;
 
-    commodityDAO.addCommodity(params,(error,result)=>{
+    const getCity = ()=>{
+        return new Promise((resolve, reject) => {
+            cityInfoDAO.queryCity({cityId:params.cityId},(error,result)=>{
+                if(error){
+                    logger.error('addCommodity getCity ' + error.message);
+                    reject({err:error});
+                }else{
+                    logger.info('addCommodity getCity ' + 'success');
+                    if(result.length){
+                        params.cityName = result[0].city_name;
+                        resolve();
+                    }else{
+                        reject({msg:sysMsg.CITY_ID_ERROR});
+                    }
+                }
+            })
+        });
+    }
+
+    const add =()=>{
+        return new Promise(()=>{
+            commodityDAO.addCommodity(params,(error,result)=>{
+                if(error){
+                    logger.error('addCommodity add ' + error.message);
+                    resUtil.resetFailedRes(error,res,next);
+                }else{
+                    logger.info('addCommodity add ' + 'success');
+                    resUtil.resetCreateRes(res,result,null);
+                    return next();
+                }
+            });
+        });
+    }
+    getCity()
+        .then(add)
+        .catch((reject)=>{
+            if(reject.err){
+                resUtil.resetFailedRes(res,reject.err);
+            }else{
+                resUtil.resetFailedRes(res,reject.msg);
+            }
+        })
+};
+const updateImage = (req,res,next) => {
+    let params = req.params;
+    commodityDAO.updateImage(params,(error,result)=>{
         if(error){
-            logger.error('addCommodity ' + error.message);
+            logger.error('updateImage ' + error.message);
             resUtil.resetFailedRes(error,res,next);
         }else{
-            logger.info('addCommodity ' + 'success');
-            resUtil.resetCreateRes(res,result,null);
+            logger.info('updateImage  ' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
             return next();
         }
-    });
-};
+    })
+}
 const updateCommodity = (req,res,next) => {
     let params = req.params;
     if(params.type == 1 ){
@@ -61,16 +109,50 @@ const updateCommodity = (req,res,next) => {
     }
     params.status = 1;
     params.showStatus = 0;
-    commodityDAO.updateCommodity(params,(error,result)=>{
-        if(error){
-            logger.error('updateCommodity ' + error.message);
-            resUtil.resetFailedRes(error,res,next);
-        }else{
-            logger.info('updateCommodity  ' + 'success');
-            resUtil.resetUpdateRes(res,result,null);
-            return next();
-        }
-    })
+
+    const getCity = ()=>{
+        return new Promise((resolve, reject) => {
+            cityInfoDAO.queryCity({cityId:params.cityId},(error,result)=>{
+                if(error){
+                    logger.error('updateCommodity getCity ' + error.message);
+                    reject({err:error});
+                }else{
+                    logger.info('updateCommodity getCity ' + 'success');
+                    if(result.length){
+                        params.cityName = result[0].city_name;
+                        resolve();
+                    }else{
+                        reject({msg:sysMsg.CITY_ID_ERROR});
+                    }
+                }
+            })
+        });
+    }
+
+    const updateInfo =()=>{
+        return new Promise(()=>{
+            commodityDAO.updateCommodity(params,(error,result)=>{
+                if(error){
+                    logger.error('updateCommodity updateInfo ' + error.message);
+                    resUtil.resetFailedRes(error,res,next);
+                }else{
+                    logger.info('updateCommodity updateInfo  ' + 'success');
+                    resUtil.resetUpdateRes(res,result,null);
+                    return next();
+                }
+            })
+        });
+    }
+    getCity()
+        .then(updateInfo)
+        .catch((reject)=>{
+            if(reject.err){
+                resUtil.resetFailedRes(res,reject.err);
+            }else{
+                resUtil.resetFailedRes(res,reject.msg);
+            }
+        })
+
 }
 const updateStatus = (req,res,next) => {
     let params = req.params;
@@ -85,15 +167,14 @@ const updateStatus = (req,res,next) => {
         }
     })
 }
-const deleteCommodity = (req,res,next) => {
+const updateShowStatus = (req,res,next) => {
     let params = req.params;
-
-    commodityDAO.deleteCommodity(params,(error,result)=>{
+    commodityDAO.updateShowStatus(params,(error,result)=>{
         if(error){
-            logger.error(' deleteCommodity ' + error.message);
+            logger.error(' updateShowStatus ' + error.message);
             resUtil.resInternalError(error,res,next);
         }else{
-            logger.info(' deleteCommodity ' + 'success');
+            logger.info(' updateShowStatus ' + 'success');
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
@@ -102,7 +183,8 @@ const deleteCommodity = (req,res,next) => {
 module.exports={
     getCommodity,
     addCommodity,
+    updateImage,
     updateCommodity,
     updateStatus,
-    deleteCommodity
+    updateShowStatus
 }

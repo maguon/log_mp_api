@@ -454,9 +454,10 @@ const createServer=()=>{
      */
     server.get('/api/admin/:adminId/commodity',commodity.getCommodity);
     server.post({path:'/api/admin/:adminId/commodity',contentType: 'application/json'},commodity.addCommodity);
-    server.put({path:'/api/admin/:adminId/commodity/:commodityId',contentType: 'application/json'},commodity.updateCommodity);
+    server.put({path:'/api/admin/:adminId/commodity/:commodityId/image',contentType: 'application/json'},commodity.updateImage);
+    server.put({path:'/api/admin/:adminId/commodity/:commodityId/info',contentType: 'application/json'},commodity.updateCommodity);
     server.put({path:'/api/admin/:adminId/commodity/:commodityId/status/:status',contentType: 'application/json'},commodity.updateStatus);
-    server.del({path:'/api/admin/:adminId/commodity/:commodityId/del',contentType: 'application/json'},commodity.deleteCommodity);
+    server.put({path:'/api/admin/:adminId/commodity/:commodityId/showStatus/:showStatus',contentType: 'application/json'},commodity.updateShowStatus);
     /**
      * app
      */
