@@ -160,7 +160,7 @@ const postWxCodeImage= (req,res,next)=>{
             });
         }).then(()=>{
             let mpUrl = "http://"+sysConfig.hosts.wx.host+":"+sysConfig.hosts.wx.port+"/wx_img/"+params.fileName+".png";
-            log.info('create wxImage Url '+mpUrl);
+            logger.info('create wxImage Url '+mpUrl);
             recommendInfoDAO.update({recommendId: params.recommendId,mpUrl:mpUrl},(error,result)=>{
                 if(error){
                     logger.error('postWxCodeImage update ' + error.message);
