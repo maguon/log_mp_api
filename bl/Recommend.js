@@ -151,6 +151,7 @@ const postWxCodeImage= (req,res,next)=>{
                     reject(error);
                 } else {
                     logger.info('postWxCodeImage getWXACodeUnlimit ' + 'success');
+                    logger.info('result:' + result);
                     if (result.success){
                         resolve();
                     } else {
