@@ -12642,6 +12642,57 @@
             "type": "integer"
           },
           {
+            "name": "info",
+            "in": "body",
+            "description": "info",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/info"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/commodity"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/commodity/{commodityId}/commodityInfo": {
+      "put": {
+        "tags": [
+          "commodity"
+        ],
+        "summary": "update",
+        "description": "update commodity version",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "admin Id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "commodityId",
+            "in": "path",
+            "description": "commodity Id",
+            "required": true,
+            "type": "integer"
+          },
+          {
             "name": "commodityInfo",
             "in": "body",
             "description": "commodityInfo",
@@ -14687,9 +14738,6 @@
         "commodityName": {
           "type": "string"
         },
-        "info": {
-          "type": "string"
-        },
         "productionDate": {
           "type": "string"
         },
@@ -14722,6 +14770,17 @@
       },
       "xml": {
         "name": "image"
+      }
+    },
+    "info": {
+      "type": "object",
+      "properties": {
+        "info": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "info"
       }
     }
   }

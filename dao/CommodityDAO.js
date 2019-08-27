@@ -74,13 +74,22 @@ const updateImage = (params,callback) => {
         return callback(error,rows);
     });
 }
+const updateInfo = (params,callback) => {
+    let query = " update commodity_info set info = ?  where id = ?";
+    let paramsArray=[],i=0;
+    paramsArray[i++] = params.info;
+    paramsArray[i] = params.commodityId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug(' updateInfo ');
+        return callback(error,rows);
+    });
+}
 const updateCommodity = (params,callback)=>{
-    let query = " update commodity_info set city_id=?, city_name=?,commodity_name=? ,info=?,production_date=?, original_price=?, actual_price=?, type=?, earnest_money=?, quantity=? where id = ?";
+    let query = " update commodity_info set city_id=?, city_name=?,commodity_name=? ,production_date=?, original_price=?, actual_price=?, type=?, earnest_money=?, quantity=? where id = ?";
     let paramsArray=[],i=0;
     paramsArray[i++]=params.cityId;
     paramsArray[i++]=params.cityName;
     paramsArray[i++]=params.commodityName;
-    paramsArray[i++]=params.info;
     paramsArray[i++]=params.productionDate;
     paramsArray[i++]=params.originalPrice;
     paramsArray[i++]=params.actualPrice;
@@ -117,6 +126,7 @@ module.exports = {
     getCommodity,
     addCommodity,
     updateImage,
+    updateInfo,
     updateCommodity,
     updateStatus,
     updateShowStatus

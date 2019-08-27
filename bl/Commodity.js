@@ -36,6 +36,7 @@ const addCommodity = (req,res,next)=>{
     params.status = 1;
     params.showStatus = 0;
     params.image = '';
+    params.info = '';
     params.saledQuantity = 0;
 
     const getCity = ()=>{
@@ -89,6 +90,19 @@ const updateImage = (req,res,next) => {
             resUtil.resetFailedRes(error,res,next);
         }else{
             logger.info('updateImage  ' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
+}
+const updateInfo = (req,res,next) => {
+    let params = req.params;
+    commodityDAO.updateInfo(params,(error,result)=>{
+        if(error){
+            logger.error('updateInfo ' + error.message);
+            resUtil.resetFailedRes(error,res,next);
+        }else{
+            logger.info('updateInfo  ' + 'success');
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
@@ -184,6 +198,7 @@ module.exports={
     getCommodity,
     addCommodity,
     updateImage,
+    updateInfo,
     updateCommodity,
     updateStatus,
     updateShowStatus
