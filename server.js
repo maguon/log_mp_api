@@ -43,6 +43,7 @@ const customerServicePhone = require("./bl/CustomerServicePhone");
 const coupon = require('./bl/Coupon');
 const userCoupon = require('./bl/UserCoupon');
 const commodity = require('./bl/Commodity');
+const productOrder = require('./bl/ProductOrder');
 const app = require('./bl/App');
 
 /**
@@ -464,9 +465,8 @@ const createServer=()=>{
     /**
      * product_order_info
      */
-    // server.get('/api/admin/:adminId/commodity',commodity.getCommodity);
-    // server.post({path:'/api/admin/:adminId/commodity',contentType: 'application/json'},commodity.addCommodity);
-
+    server.get('/api/admin/:adminId/commodity',productOrder.getProductOrder);
+    server.put({path:'/api/admin/:adminId/productOrder/:productOrderId/status/:status',contentType: 'application/json'},productOrder.updateStatus);
 
     /**
      * app

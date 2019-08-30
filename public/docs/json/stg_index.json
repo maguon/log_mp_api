@@ -157,6 +157,10 @@
       "description":"commodity version"
     },
     {
+      "name": "productOrder",
+      "description":"product order version"
+    },
+    {
       "name": "app",
       "description":"app version"
     }
@@ -12894,6 +12898,151 @@
               }
             }
           },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+
+
+    "/admin/{adminId}/productOrder": {
+      "get": {
+        "tags": [
+          "productOrder"
+        ],
+        "summary": "select",
+        "description": "admin get productOrderInfo version",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "当前登录管理员ID",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "productOrderId",
+            "in": "query",
+            "description": "销售订单ID",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "commodityId",
+            "in": "query",
+            "description": "商品ID",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "cityId",
+            "in": "query",
+            "description": "城市ID",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "用户ID",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "userName",
+            "in": "query",
+            "description": "用户昵称",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "phone",
+            "in": "query",
+            "description": "电话",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "销售类型（1:全款购车 2:定金购车 3:货到付款）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "paymentStatus",
+            "in": "query",
+            "description": "支付状态（0:未支付 1:已支付）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "订单状态（1:待发货 2:已发货 3:已送达 4:已取消）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/productOrder/{productOrderId}/status/{status}": {
+      "put": {
+        "tags": [
+          "productOrder"
+        ],
+        "summary": "update",
+        "description": "admin update productOrder user status",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "productOrderId",
+            "in": "path",
+            "description": "productOrderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "path",
+            "description": "订单状态（1:待发货 2:已发货 3:已送达 4:已取消）",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
           "400": {
             "description": "Invalid token value or invalid admin id"
           }
