@@ -12967,13 +12967,6 @@
             "type": "integer"
           },
           {
-            "name": "type",
-            "in": "query",
-            "description": "销售类型（1:全款购车 2:定金购车 3:货到付款）",
-            "required": false,
-            "type": "integer"
-          },
-          {
             "name": "paymentStatus",
             "in": "query",
             "description": "支付状态（0:未支付 1:已支付）",

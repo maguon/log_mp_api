@@ -26,10 +26,6 @@ const getProductOrder = (params,callback) => {
         paramsArray[i++] = params.cityId;
         query = query + " and poit.city_id = ? ";
     }
-    if(params.type){
-        paramsArray[i++] = params.type;
-        query = query + " and poit.type = ? "
-    }
     if(params.status){
         paramsArray[i++] = params.status;
         query = query + " and poi.status = ? "
