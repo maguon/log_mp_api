@@ -465,7 +465,7 @@ const createServer=()=>{
     /**
      * product_order_info
      */
-    server.get('/api/admin/:adminId/commodity',productOrder.getProductOrder);
+    server.get('/api/admin/:adminId/productOrder',productOrder.getProductOrder);
     server.put({path:'/api/admin/:adminId/productOrder/:productOrderId/status/:status',contentType: 'application/json'},productOrder.updateStatus);
 
     /**
