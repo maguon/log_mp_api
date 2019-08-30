@@ -12432,13 +12432,97 @@
       }
     },
 
-    "/admin/{adminId}/commodity": {
+    "/user/{userId}/commodity": {
       "get": {
         "tags": [
           "commodity"
         ],
         "summary": "select",
         "description": "Get commodity version",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "当前登录用户ID",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "commodityId",
+            "in": "query",
+            "description": "商品销售ID",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "cityId",
+            "in": "query",
+            "description": "城市编号",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "购付方式（1:全款购车 2:定金购车 3:货到付款）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "状态（0:已售 1:在售 2:已预定）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "showStatus",
+            "in": "query",
+            "description": "下架(0:未下架 1:已下架)",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/commodity"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/commodity": {
+      "get": {
+        "tags": [
+          "commodity"
+        ],
+        "summary": "select",
+        "description": "admin get commodity version",
         "produces": [
           "application/json"
         ],
@@ -12571,7 +12655,7 @@
           "commodity"
         ],
         "summary": "update",
-        "description": "update commodity version",
+        "description": "admin update commodity version",
         "produces": [
           "application/json"
         ],
@@ -12622,7 +12706,7 @@
           "commodity"
         ],
         "summary": "update",
-        "description": "update commodity version",
+        "description": "admin update commodity version",
         "produces": [
           "application/json"
         ],
@@ -12673,7 +12757,7 @@
           "commodity"
         ],
         "summary": "update",
-        "description": "update commodity version",
+        "description": "admin update commodity version",
         "produces": [
           "application/json"
         ],
@@ -12724,7 +12808,7 @@
           "commodity"
         ],
         "summary": "update",
-        "description": "update commodity user status",
+        "description": "admin update commodity user status",
         "produces": [
           "application/json"
         ],
@@ -12773,7 +12857,7 @@
           "commodity"
         ],
         "summary": "update",
-        "description": "update commodity showStatus",
+        "description": "admin update commodity showStatus",
         "produces": [
           "application/json"
         ],
