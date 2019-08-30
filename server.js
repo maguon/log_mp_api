@@ -452,6 +452,7 @@ const createServer=()=>{
     /**
      * commodity
      */
+    server.get('/api/commodity/:commodityId/view',commodity.getCommodityPage);
     server.get('/api/admin/:adminId/commodity',commodity.getCommodity);
     server.post({path:'/api/admin/:adminId/commodity',contentType: 'application/json'},commodity.addCommodity);
     server.put({path:'/api/admin/:adminId/commodity/:commodityId/image',contentType: 'application/json'},commodity.updateImage);
@@ -460,11 +461,19 @@ const createServer=()=>{
     server.put({path:'/api/admin/:adminId/commodity/:commodityId/status/:status',contentType: 'application/json'},commodity.updateStatus);
     server.put({path:'/api/admin/:adminId/commodity/:commodityId/showStatus/:showStatus',contentType: 'application/json'},commodity.updateShowStatus);
     /**
+     * product_order_info
+     */
+    // server.get('/api/admin/:adminId/commodity',commodity.getCommodity);
+    // server.post({path:'/api/admin/:adminId/commodity',contentType: 'application/json'},commodity.addCommodity);
+
+
+    /**
      * app
      */
     server.get('/api/app',app.getApp);
     server.post({path:'/api/admin/:adminId/app',contentType: 'application/json'},app.addApp);
     server.put({path:'/api/admin/:adminId/app/:appId',contentType: 'application/json'},app.updateApp);
+
     server.on('NotFound', function (req, res ,next) {
         logger.warn(req.url + " not found");
         res.send(404,{success:false,msg:" service not found !"});

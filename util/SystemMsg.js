@@ -108,6 +108,10 @@ let COUPON_NOT_DELETE = "该优惠卷不允许删除！";
  * city
  */
 let CITY_ID_ERROR = "城市信息不存在！";
+/**
+ * commodity
+ */
+let COMMODITY_ID_ERROR = "商品信息不存在！";
 module.exports = {
     SYS_AUTH_TOKEN_ERROR,
     SYS_VALIDATE_EMAIL_ERROR,
@@ -170,5 +174,6 @@ module.exports = {
     COUPON_NO_EXISTS,
     COUPON_NOT_MODIFIED,
     COUPON_NOT_DELETE,
-    CITY_ID_ERROR
+    CITY_ID_ERROR,
+    COMMODITY_ID_ERROR
 }
