@@ -18,6 +18,25 @@ const getProductOrder = (req,res,next) => {
         }
     })
 }
+const addProductOrder = (req,res,next) =>{
+    let params = req.params;
+    const add =()=>{
+        return new Promise(()=>{
+            commodityDAO.addCommodity(params,(error,result)=>{
+                if(error){
+                    logger.error('addCommodity add ' + error.message);
+                    resUtil.resetFailedRes(error,res,next);
+                }else{
+                    logger.info('addCommodity add ' + 'success');
+                    resUtil.resetCreateRes(res,result,null);
+                    return next();
+                }
+            });
+        });
+    }
+
+
+}
 const updateStatus = (req,res,next) => {
     let params = req.params;
     productOrderDAO.updateStatus(params,(error,result)=>{
@@ -33,5 +52,6 @@ const updateStatus = (req,res,next) => {
 }
 module.exports={
     getProductOrder,
+    addProductOrder,
     updateStatus
 }
