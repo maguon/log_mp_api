@@ -112,6 +112,11 @@ let CITY_ID_ERROR = "城市信息不存在！";
  * commodity
  */
 let COMMODITY_ID_ERROR = "商品信息不存在！";
+/**
+ * reminders
+ */
+let REMINDERS_ID_ERROR = "不存在该提醒！";
+let REMINDERS_STATUS_NO_MODIFY = "已提醒，不允许重复提醒！";
 module.exports = {
     SYS_AUTH_TOKEN_ERROR,
     SYS_VALIDATE_EMAIL_ERROR,
@@ -175,5 +180,7 @@ module.exports = {
     COUPON_NOT_MODIFIED,
     COUPON_NOT_DELETE,
     CITY_ID_ERROR,
-    COMMODITY_ID_ERROR
+    COMMODITY_ID_ERROR,
+    REMINDERS_ID_ERROR,
+    REMINDERS_STATUS_NO_MODIFY
 }

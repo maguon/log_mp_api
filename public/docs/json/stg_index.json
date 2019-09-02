@@ -13140,7 +13140,7 @@
         }
       }
     },
-    "/admin/{adminId}/reminders/{remindersId}/remarks": {
+    "/admin/{adminId}/reminders/{reminderId}/": {
       "put": {
         "tags": [
           "reminders"
@@ -13159,60 +13159,20 @@
             "type": "integer"
           },
           {
-            "name": "remindersId",
+            "name": "reminderId",
             "in": "path",
-            "description": "reminders Id",
+            "description": "reminderId",
             "required": true,
             "type": "integer"
           },
           {
-            "name": "remarks",
+            "name": "remindersInfo",
             "in": "body",
-            "description": "remarks",
+            "description": "remindersInfo",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/remarks"
+              "$ref": "#/definitions/remindersInfo"
             }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/reminders/{remindersId}/status/{status}": {
-      "put": {
-        "tags": [
-          "reminders"
-        ],
-        "summary": "update",
-        "description": "admin update reminders user status",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "remindersId",
-            "in": "path",
-            "description": "remindersId",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "status",
-            "in": "path",
-            "description": "状态（0:未联系,1:已联系）",
-            "required": true,
-            "type": "integer"
           }
         ],
         "responses": {
@@ -15189,15 +15149,18 @@
         "name": "info"
       }
     },
-    "remarks": {
+    "remindersInfo": {
       "type": "object",
       "properties": {
         "remarks": {
           "type": "string"
+        },
+        "status": {
+          "type": "integer"
         }
       },
       "xml": {
-        "name": "remarks"
+        "name": "remindersInfo"
       }
     }
   }

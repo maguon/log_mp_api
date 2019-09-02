@@ -475,8 +475,7 @@ const createServer=()=>{
      */
     server.post({path:'/api/user/:userId/commodity/:commodityId/reminders',contentType: 'application/json'},reminders.addReminders);
     server.get('/api/admin/:adminId/reminders',reminders.getReminders);
-    server.put({path:'/api/admin/:adminId/reminders/:remindersId/remarks',contentType: 'application/json'},reminders.updateRemarks);
-    server.put({path:'/api/admin/:adminId/reminders/:remindersId/status/:status',contentType: 'application/json'},reminders.updateStatus);
+    server.put({path:'/api/admin/:adminId/reminders/:reminderId/',contentType: 'application/json'},reminders.updateReminders);
 
     /**
      * app

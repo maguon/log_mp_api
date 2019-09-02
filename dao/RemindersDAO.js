@@ -10,6 +10,10 @@ const getReminders = (params,callback) => {
         " left join commodity_info ci on ci.id = re.commodity_id " +
         " where re.id is not null ";
     let paramsArray = [],i=0;
+    if(params.reminderId){
+        paramsArray[i++] = params.reminderId;
+        query = query + " and re.id = ? ";
+    }
     if(params.commodityId){
         paramsArray[i++] = params.commodityId;
         query = query + " and re.commodity_id = ? ";
@@ -45,29 +49,19 @@ const addReminders = (params,callback)=>{
         callback(error,rows);
     });
 }
-const updateRemarks = (params,callback) => {
-    let query = " update reminders set remarks = ?  where id = ?";
+const updateReminders = (params,callback) => {
+    let query = " update reminders set remarks = ?,reminders_status = ?  where id = ?";
     let paramsArray=[],i=0;
     paramsArray[i++] = params.remarks;
-    paramsArray[i] = params.remindersId;
-    db.dbQuery(query,paramsArray,(error,rows)=>{
-        logger.debug(' updateRemarks ');
-        return callback(error,rows);
-    });
-}
-const updateStatus = (params,callback) => {
-    let query = " update reminders set reminders_status = ?  where id = ?";
-    let paramsArray=[],i=0;
     paramsArray[i++] = params.status;
-    paramsArray[i] = params.remindersId;
+    paramsArray[i] = params.reminderId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
-        logger.debug(' updateStatus ');
+        logger.debug(' updateReminders ');
         return callback(error,rows);
     });
 }
 module.exports = {
     getReminders,
     addReminders,
-    updateRemarks,
-    updateStatus
+    updateReminders
 }

@@ -163,6 +163,12 @@ const ADMIN_INFO ={
         available:1//可用
     }
 }
+const REMINDERS_INFO ={
+    status:{
+        no_contact:0,//未联系
+        contacted:1//已联系
+    }
+}
 module.exports = {
     CAR_MODEL,
     PAYMENT,
@@ -180,5 +186,6 @@ module.exports = {
     LOAD_TASK_STATUS,
     LOAD_TASK_PAYMENTFLAG,
     CALCULATED_AMOUNT,
-    ADMIN_INFO
+    ADMIN_INFO,
+    REMINDERS_INFO
 }
