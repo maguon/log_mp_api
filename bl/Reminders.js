@@ -22,7 +22,7 @@ const getReminders = (req,res,next) => {
 const addReminders = (req,res,next) =>{
     let params = req.params;
     params.remarks = '';
-    params.status = 0;
+    params.status = 1;
     remindersDAO.addReminders(params,(error,result)=>{
         if(error){
             logger.error('addReminders ' + error.message);
