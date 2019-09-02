@@ -34,7 +34,7 @@ const getReminders = (params,callback) => {
     })
 }
 const addReminders = (params,callback)=>{
-    let query = "insert into Reminders (user_id,commodity_id,status,remarks) values(?,?,?,?) ";
+    let query = "insert into Reminders (user_id,commodity_id,reminders_status,remarks) values(?,?,?,?) ";
     let paramsArray = [],i=0;
     paramsArray[i++]=params.userId;
     paramsArray[i++]=params.commodityId;
