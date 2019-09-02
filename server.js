@@ -44,6 +44,7 @@ const coupon = require('./bl/Coupon');
 const userCoupon = require('./bl/UserCoupon');
 const commodity = require('./bl/Commodity');
 const productOrder = require('./bl/ProductOrder');
+const reminders = require('./bl/Reminders');
 const app = require('./bl/App');
 
 /**
@@ -465,8 +466,17 @@ const createServer=()=>{
     /**
      * product_order_info
      */
+    server.post({path:'/api/user/:userId/productOrder',contentType: 'application/json'},productOrder.addProductOrder);
     server.get('/api/admin/:adminId/productOrder',productOrder.getProductOrder);
     server.put({path:'/api/admin/:adminId/productOrder/:productOrderId/status/:status',contentType: 'application/json'},productOrder.updateStatus);
+
+    /**
+     * reminders
+     */
+    server.post({path:'/api/user/:userId/commodity/:commodityId/reminders',contentType: 'application/json'},reminders.addReminders);
+    server.get('/api/admin/:adminId/reminders',reminders.getReminders);
+    server.put({path:'/api/admin/:adminId/reminders/:remindersId/remarks',contentType: 'application/json'},reminders.updateRemarks);
+    server.put({path:'/api/admin/:adminId/reminders/:remindersId/status/:status',contentType: 'application/json'},reminders.updateStatus);
 
     /**
      * app

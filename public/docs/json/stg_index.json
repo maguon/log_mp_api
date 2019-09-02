@@ -161,6 +161,10 @@
       "description":"product order version"
     },
     {
+      "name": "reminders",
+      "description":"reminders order version"
+    },
+    {
       "name": "app",
       "description":"app version"
     }
@@ -12905,7 +12909,6 @@
       }
     },
 
-
     "/admin/{adminId}/productOrder": {
       "get": {
         "tags": [
@@ -13031,6 +13034,183 @@
             "name": "status",
             "in": "path",
             "description": "订单状态（1:待发货 2:已发货 3:已送达 4:已取消）",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+
+    "/user/{userId}/commodity/{commodityId}/reminders": {
+      "post": {
+        "tags": [
+          "reminders"
+        ],
+        "summary": "insert",
+        "description": "create reminders version",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "commodityId",
+            "in": "path",
+            "description": "commodityId",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/reminders": {
+      "get": {
+        "tags": [
+          "reminders"
+        ],
+        "summary": "select",
+        "description": "admin get reminders version",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "当前登录管理员ID",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "commodityId",
+            "in": "query",
+            "description": "商品ID",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "userName",
+            "in": "query",
+            "description": "用户昵称",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "状态（0:已售 1:在售 2:已预定）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/reminders/{remindersId}/remarks": {
+      "put": {
+        "tags": [
+          "reminders"
+        ],
+        "summary": "update",
+        "description": "admin update reminders version",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "admin Id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "remindersId",
+            "in": "path",
+            "description": "reminders Id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "remarks",
+            "in": "body",
+            "description": "remarks",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/remarks"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/reminders/{remindersId}/status/{status}": {
+      "put": {
+        "tags": [
+          "reminders"
+        ],
+        "summary": "update",
+        "description": "admin update reminders user status",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "remindersId",
+            "in": "path",
+            "description": "remindersId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "path",
+            "description": "状态（0:未联系,1:已联系）",
             "required": true,
             "type": "integer"
           }
@@ -15007,6 +15187,17 @@
       },
       "xml": {
         "name": "info"
+      }
+    },
+    "remarks": {
+      "type": "object",
+      "properties": {
+        "remarks": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "remarks"
       }
     }
   }
