@@ -50,10 +50,22 @@ const addReminders = (params,callback)=>{
     });
 }
 const updateReminders = (params,callback) => {
-    let query = " update reminders set remarks = ?,reminders_status = ?  where id = ?";
+    let query = " update reminders";
     let paramsArray=[],i=0;
-    paramsArray[i++] = params.remarks;
-    paramsArray[i++] = params.status;
+    if(params.remarks){
+        query += " set remarks = ?";
+        paramsArray[i++] = params.remarks;
+    }
+    if(params.status){
+        if(params.remarks){
+            query += " ,reminders_status = ?";
+            paramsArray[i++] = params.status;
+        }else{
+            query += " set reminders_status = ?";
+            paramsArray[i++] = params.status;
+        }
+    }
+    query += " where id = ?";
     paramsArray[i] = params.reminderId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug(' updateReminders ');
