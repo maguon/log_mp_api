@@ -41,8 +41,8 @@ const addUserProductOrder = (req,res,next) =>{
     let actTransPrice = 0;//售总价
     let earnestMoney = 0;//应支付总定金
     params.paymentEarnestMoney = 0;//支付总金额
-    params.paymentStatus = sysConst.PRODUCT_ORDER.payment_status.unPaid;//支付状态（1:未支付 2:部分支付 3.支付完成 4.已退款）
-    params.status = sysConst.PRODUCT_ORDER.status.tpShipped;//订单状态（1:待发货 2:已发货 3:已送达 4.已完成 5:已取消）
+    params.paymentStatus = sysConst.PRODUCT_ORDER.payment_status.unPaid;//支付状态（1:未支付 3.支付完成 4.已退款）
+    params.status = sysConst.PRODUCT_ORDER.status.tpShipped;//订单状态（1:待发货 4:已发货 6:已取消  8:已送达 ）
     params.dateId = moment().format("YYYYMMDD");
 
     let resultCallback;

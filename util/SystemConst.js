@@ -171,9 +171,9 @@ const PRODUCT_ORDER ={
     },
     payment_status:{
         unPaid:1,//未支付
-        partial:2,//部分支付
         complete:3,//支付完成
-        refund:4,//支付完成
+        refund:4,//已退款
+
     },
     status:{
         tpShipped:1,//待发货
