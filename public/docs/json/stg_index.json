@@ -12909,6 +12909,109 @@
       }
     },
 
+    "/user/{userId}/productOrder": {
+      "get": {
+        "tags": [
+          "productOrder"
+        ],
+        "summary": "select",
+        "description": " query by routeId id look order",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "query",
+            "description": "订单ID",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "paymentStatus",
+            "in": "query",
+            "description": "支付状态（1:未支付 2:部分支付 3.支付完成 4.已退款）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "订单状态（1:待发货 2:已发货 3:已送达 4.已完成 5:已取消）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "productOrder"
+        ],
+        "summary": "insert",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "productOrderMsg",
+            "in": "body",
+            "description": "productOrderMsg",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/userProductOrderMsg"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/productOrderMsg"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
     "/admin/{adminId}/productOrder": {
       "get": {
         "tags": [
@@ -12930,7 +13033,7 @@
           {
             "name": "productOrderId",
             "in": "query",
-            "description": "销售订单ID",
+            "description": "订单ID",
             "required": false,
             "type": "integer"
           },
@@ -12939,7 +13042,7 @@
             "in": "query",
             "description": "商品ID",
             "required": false,
-            "type": "string"
+            "type": "integer"
           },
           {
             "name": "cityId",
@@ -12972,14 +13075,14 @@
           {
             "name": "paymentStatus",
             "in": "query",
-            "description": "支付状态（0:未支付 1:已支付）",
+            "description": "支付状态（1:未支付 2:部分支付 3.支付完成 4.已退款）",
             "required": false,
             "type": "integer"
           },
           {
             "name": "status",
             "in": "query",
-            "description": "订单状态（1:待发货 2:已发货 3:已送达 4:已取消）",
+            "description": "订单状态（1:待发货 2:已发货 3:已送达 4.已完成 5:已取消）",
             "required": false,
             "type": "integer"
           },
@@ -12996,6 +13099,48 @@
             "description": "size",
             "required": false,
             "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/productOrder/{productOrderId}/remark": {
+      "put": {
+        "tags": [
+          "productOrder"
+        ],
+        "summary": "update",
+        "description": "admin update productOrder version",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "admin Id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "productOrderId",
+            "in": "path",
+            "description": "productOrderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "remark",
+            "in": "body",
+            "description": "remark",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/remark"
+            }
           }
         ],
         "responses": {
@@ -13033,7 +13178,7 @@
           {
             "name": "status",
             "in": "path",
-            "description": "订单状态（1:待发货 2:已发货 3:已送达 4:已取消）",
+            "description": "订单状态（1:待发货 2:已发货 3:已送达 4.已完成 5:已取消）",
             "required": true,
             "type": "integer"
           }
@@ -15161,6 +15306,54 @@
       },
       "xml": {
         "name": "remindersInfo"
+      }
+    },
+    "userProductOrderMsg": {
+      "type": "object",
+      "properties": {
+        "sendName": {
+          "type": "string"
+        },
+        "sendPhone": {
+          "type": "integer"
+        },
+        "sendAddress": {
+          "type": "string"
+        },
+        "remark": {
+          "type": "string"
+        },
+        "productOrderItemArray": {
+          "type": "array",
+          "items":{
+            "$ref": "#/definitions/productOrderItemArray"
+          }
+        }
+      },
+      "xml": {
+        "name": "userProductOrderMsg"
+      }
+    },
+    "productOrderItemArray": {
+      "type": "object",
+      "properties": {
+        "commodityId": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "productOrderItemArray"
+      }
+    },
+    "remark": {
+      "type": "object",
+      "properties": {
+        "remark": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "remark"
       }
     }
   }

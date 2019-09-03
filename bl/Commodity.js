@@ -2,6 +2,7 @@
 const serverLogger = require('../util/ServerLogger.js');
 const resUtil = require('../util/ResponseUtil.js');
 const sysMsg = require("../util/SystemMsg");
+const sysConst = require("../util/SystemConst");
 const logger = serverLogger.createLogger('Commodity.js');
 const commodityDAO = require('../dao/CommodityDAO.js');
 const cityInfoDAO = require('../dao/CityInfoDAO.js');
@@ -88,14 +89,14 @@ const getCommodityPage = (req,res,next) =>{
 }
 const addCommodity = (req,res,next)=>{
     let params = req.params;
-    if(params.type == 1 ){
+    if(params.type == sysConst.PRODUCT_ORDER.type.whole ){
         //全款购车
         params.earnestMoney = 0;
     }
-    if(params.type == 2 ){
+    if(params.type == sysConst.PRODUCT_ORDER.type.earnestMoney ){
         //定金购车
     }
-    if(params.type == 3 ){
+    if(params.type == sysConst.PRODUCT_ORDER.type.arrivalOfGoods ){
         //到货付款
         params.earnestMoney = 0;
     }

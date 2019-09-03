@@ -163,6 +163,26 @@ const ADMIN_INFO ={
         available:1//可用
     }
 }
+const PRODUCT_ORDER ={
+    type:{
+        whole :1,//全款购车
+        earnestMoney :2,//定金购车
+        arrivalOfGoods :3//货到付款
+    },
+    payment_status:{
+        unPaid:1,//未支付
+        partial:2,//部分支付
+        complete:3,//支付完成
+        refund:4,//支付完成
+    },
+    status:{
+        tpShipped:1,//待发货
+        shipped:2,//已发货
+        served:3,//已送达
+        completed:4,//已完成
+        cancelled:5,//已取消
+    },
+}
 const REMINDERS_INFO ={
     status:{
         no_contact:0,//未联系
@@ -187,5 +207,6 @@ module.exports = {
     LOAD_TASK_PAYMENTFLAG,
     CALCULATED_AMOUNT,
     ADMIN_INFO,
-    REMINDERS_INFO
+    REMINDERS_INFO,
+    PRODUCT_ORDER
 }

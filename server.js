@@ -466,8 +466,10 @@ const createServer=()=>{
     /**
      * product_order_info
      */
-    server.post({path:'/api/user/:userId/productOrder',contentType: 'application/json'},productOrder.addProductOrder);
+    server.get('/api/user/:userId/productOrder',productOrder.getUserProductOrder);
+    server.post({path:'/api/user/:userId/productOrder',contentType: 'application/json'},productOrder.addUserProductOrder);
     server.get('/api/admin/:adminId/productOrder',productOrder.getProductOrder);
+    server.put({path:'/api/admin/:adminId/productOrder/:productOrderId/remark',contentType: 'application/json'},productOrder.updateRemark);
     server.put({path:'/api/admin/:adminId/productOrder/:productOrderId/status/:status',contentType: 'application/json'},productOrder.updateStatus);
 
     /**
