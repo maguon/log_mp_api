@@ -182,6 +182,16 @@ const PRODUCT_ORDER ={
         served:8//已送达
     },
 }
+const PRODUCT_PAYMENT ={
+    type:{
+        payment:1,//支付
+        refund:2//退款
+    },
+    status:{
+        unPaid:1,//未付款
+        paid:2//已付款
+    }
+}
 const REMINDERS_INFO ={
     status:{
         no_contact:0,//未联系
@@ -207,5 +217,6 @@ module.exports = {
     CALCULATED_AMOUNT,
     ADMIN_INFO,
     REMINDERS_INFO,
+    PRODUCT_PAYMENT,
     PRODUCT_ORDER
 }
