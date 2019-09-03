@@ -12941,7 +12941,7 @@
           {
             "name": "paymentStatus",
             "in": "query",
-            "description": "支付状态（1:未支付 2:部分支付 3.支付完成 4.已退款）",
+            "description": "支付状态（1:未支付 3.支付完成 4.已退款）",
             "required": false,
             "type": "integer"
           },
@@ -13079,7 +13079,7 @@
           {
             "name": "paymentStatus",
             "in": "query",
-            "description": "支付状态（1:未支付 2:部分支付 3.支付完成 4.已退款）",
+            "description": "支付状态（1:未支付 3.支付完成 4.已退款）",
             "required": false,
             "type": "integer"
           },
