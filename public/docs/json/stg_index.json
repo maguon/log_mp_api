@@ -161,6 +161,10 @@
       "description":"product order version"
     },
     {
+      "name": "productOrderPayment",
+      "description": "productOrderPayment of log api"
+    },
+    {
       "name": "reminders",
       "description":"reminders order version"
     },
@@ -12944,7 +12948,7 @@
           {
             "name": "status",
             "in": "query",
-            "description": "订单状态（1:待发货 2:已发货 3:已送达 4.已完成 5:已取消）",
+            "description": "订单状态（1:待发货 4:已发货 6:已取消  8:已送达 ）",
             "required": false,
             "type": "integer"
           },
@@ -13082,7 +13086,7 @@
           {
             "name": "status",
             "in": "query",
-            "description": "订单状态（1:待发货 2:已发货 3:已送达 4.已完成 5:已取消）",
+            "description": "订单状态（1:待发货 4:已发货 6:已取消  8:已送达 ）",
             "required": false,
             "type": "integer"
           },
@@ -13178,7 +13182,7 @@
           {
             "name": "status",
             "in": "path",
-            "description": "订单状态（1:待发货 2:已发货 3:已送达 4.已完成 5:已取消）",
+            "description": "订单状态（1:待发货 4:已发货 6:已取消  8:已送达 ）",
             "required": true,
             "type": "integer"
           }
@@ -13186,6 +13190,58 @@
         "responses": {
           "400": {
             "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+
+    "/user/{userId}/productOrder/{productOrderId}/wechatPayment": {
+      "post": {
+        "tags": [
+          "productOrderPayment"
+        ],
+        "summary": "put address",
+        "description": "put address",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "productOrderId",
+            "in": "path",
+            "description": "productOrderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "wechatPayment",
+            "in": "body",
+            "description": "wechatPayment",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/wechatPayment"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/wechatPayment"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
           }
         }
       }

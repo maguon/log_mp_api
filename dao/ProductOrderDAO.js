@@ -165,10 +165,6 @@ const updateStatus = (params,callback) => {
         query += " ,arrive_time = ?";
         paramsArray[i++] = params.arriveTime;
     }
-    if(params.receivingGoodsTime){
-        query += " ,receiving_goods_time = ?";
-        paramsArray[i++] = params.receivingGoodsTime;
-    }
     paramsArray[i] = params.productOrderId;
     query += "where id = ?";
     db.dbQuery(query,paramsArray,(error,rows)=>{

@@ -154,18 +154,14 @@ const updateRemark = (req,res,next) => {
 }
 const updateStatus = (req,res,next) => {
     let params = req.params;
-    //订单状态（1:待发货 2:已发货 3:已送达 4.已完成 5:已取消）
+    //订单状态（1:待发货 4:已发货 6:已取消  8:已送达 ）
     if(params.status == sysConst.PRODUCT_ORDER.status.shipped){
-        //2.已发货
+        //4.已发货
         params.departureTime = moment().format("YYYY-MM-DD HH:MM:SS");
     }
     if(params.status == sysConst.PRODUCT_ORDER.status.served){
-        //3.已送达
+        //8.已送达
         params.arriveTime = moment().format("YYYY-MM-DD HH:MM:SS");
-    }
-    if(params.status == sysConst.PRODUCT_ORDER.status.completed){
-        //4.已完成
-        params.receivingGoodsTime = moment().format("YYYY-MM-DD HH:MM:SS");
     }
     productOrderDAO.updateStatus(params,(error,result)=>{
         if(error){
