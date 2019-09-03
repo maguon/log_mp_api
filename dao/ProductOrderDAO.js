@@ -24,7 +24,7 @@ const getUserProductOrder = (params,callback) => {
     }
     if(params.paymentStatus){
         paramsArray[i++] = params.paymentStatus;
-        query = query + " and poi.paymentStatus = ? "
+        query = query + " and poi.payment_status = ? "
     }
     query = query + " order by poi.id asc";
     if(params.start && params.size){
