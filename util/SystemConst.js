@@ -177,10 +177,9 @@ const PRODUCT_ORDER ={
     },
     status:{
         tpShipped:1,//待发货
-        shipped:2,//已发货
-        served:3,//已送达
-        completed:4,//已完成
-        cancelled:5,//已取消
+        shipped:4,//已发货
+        cancelled:6,//已取消
+        served:8//已送达
     },
 }
 const REMINDERS_INFO ={
