@@ -475,6 +475,7 @@ const createServer=()=>{
     /**
      * product_order_payment
      */
+    server.get('/api/user/:userId/productOrderPayment' ,productOrderPayment.getPayment);
     server.post({path:'/api/user/:userId/productOrder/:productOrderId/wechatPayment',contentType: 'application/json'},productOrderPayment.wechatPayment);
 
     /**
@@ -482,7 +483,7 @@ const createServer=()=>{
      */
     server.post({path:'/api/user/:userId/commodity/:commodityId/reminders',contentType: 'application/json'},reminders.addReminders);
     server.get('/api/admin/:adminId/reminders',reminders.getReminders);
-    server.put({path:'/api/admin/:adminId/reminders/:reminderId/',contentType: 'application/json'},reminders.updateReminders);
+    server.put({path:'/api/admin/:adminId/reminders/:reminderId',contentType: 'application/json'},reminders.updateReminders);
 
     /**
      * app

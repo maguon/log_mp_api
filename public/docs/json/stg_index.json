@@ -13195,6 +13195,97 @@
       }
     },
 
+    "/user/{userId}/productOrderPayment": {
+      "get": {
+        "tags": [
+          "productOrderPayment"
+        ],
+        "summary": "get productOrderPayment",
+        "description": "get productOrderPayment",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "user Id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "productOrderId",
+            "in": "query",
+            "description": "productOrderId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "paymentId",
+            "in": "query",
+            "description": "paymentId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "phone",
+            "in": "query",
+            "description": "phone",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "userName",
+            "in": "query",
+            "description": "userName",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "交易类型（1:支付 2:退款）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "支付状态（1:未付款 2:已付款）)",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/payment"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
     "/user/{userId}/productOrder/{productOrderId}/wechatPayment": {
       "post": {
         "tags": [
@@ -13341,7 +13432,7 @@
         }
       }
     },
-    "/admin/{adminId}/reminders/{reminderId}/": {
+    "/admin/{adminId}/reminders/{reminderId}": {
       "put": {
         "tags": [
           "reminders"

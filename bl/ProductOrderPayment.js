@@ -163,7 +163,21 @@ const getParams =(req,res,params)=>{
     result.options = options;
     return result;
 }
-
+const getPayment = (req,res,next)=>{
+    let params = req.params;
+    params.unWxUnpaid = 0;
+    productPaymentDAO.getPayment(params,(error,result)=>{
+        if(error){
+            logger.error('getPayment ' + error.message);
+            resUtil.resInternalError(error, res, next);
+        }else{
+            logger.info('getPayment ' + 'success');
+            resUtil.resetQueryRes(res,result,null);
+            return next();
+        }
+    });
+}
 module.exports = {
-    wechatPayment
+    wechatPayment,
+    getPayment
 }
