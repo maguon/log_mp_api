@@ -58,7 +58,7 @@ const getProductOrder = (params,callback) => {
     }
     if(params.userId){
         paramsArray[i++] = params.userId;
-        query = query + " and poi.id = ? ";
+        query = query + " and poi.user_id = ? ";
     }
     if(params.userName){
         paramsArray[i++] = params.userName;
@@ -74,7 +74,7 @@ const getProductOrder = (params,callback) => {
     }
     if(params.paymentStatus){
         paramsArray[i++] = params.paymentStatus;
-        query = query + " and poi.paymentStatus = ? "
+        query = query + " and poi.payment_status = ? "
     }
     query = query + " order by poi.id asc";
     if(params.start && params.size){
