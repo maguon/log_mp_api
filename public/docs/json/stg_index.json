@@ -13349,6 +13349,74 @@
         }
       }
     },
+    "/admin/{adminId}/productOrderPayment": {
+      "get": {
+        "tags": [
+          "productOrderPayment"
+        ],
+        "summary": "get payment",
+        "description": "get payment",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "admin Id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "user Id",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "productOrderId",
+            "in": "query",
+            "description": "productOrderId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "productPaymentId",
+            "in": "query",
+            "description": "productPaymentId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "交易类型（1:支付 2:退款）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
 
     "/user/{userId}/commodity/{commodityId}/reminders": {
       "post": {
