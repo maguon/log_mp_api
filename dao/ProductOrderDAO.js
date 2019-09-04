@@ -89,7 +89,7 @@ const getProductOrder = (params,callback) => {
 }
 const addProductOrder = (params,callback)=>{
     let query = "insert into product_order_info (" +
-        "user_id,date_id,ora_trans_price,act_trans_price,earnest_money,payment_earnest_money,payment_status,status,send_name,send_phone,send_address,remark,payment_remark" +
+        "user_id,date_id,ora_trans_price,act_trans_price,earnest_money,real_payment_price,payment_status,status,send_name,send_phone,send_address,remark,payment_remark" +
         ")values(?,?,?,?,?,?,?,?,?,?,?,?,?) ";
     let paramsArray = [],i=0;
     paramsArray[i++]=params.userId;
@@ -97,7 +97,7 @@ const addProductOrder = (params,callback)=>{
     paramsArray[i++]=params.oraTransPrice;
     paramsArray[i++]=params.actTransPrice;
     paramsArray[i++]=params.earnestMoney;
-    paramsArray[i++]=params.paymentEarnestMoney;
+    paramsArray[i++]=params.realPaymentPrice;
     paramsArray[i++]=params.paymentStatus;
     paramsArray[i++]=params.status;
     paramsArray[i++]=params.sendName;
@@ -136,6 +136,7 @@ const updateProductOrder = (params,callback) => {
         query += " ,earnest_money = ?";
         paramsArray[i++] = params.earnestMoney;
     }
+    paramsArray[i++] = params.paymentStatus;
     query += " where id = ?";
     paramsArray[i] = params.productOrderId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
@@ -172,11 +173,30 @@ const updateStatus = (params,callback) => {
         return callback(error,rows);
     });
 }
+const updateStatusOrPrice = (params,callback) => {
+    let query = " update product_order_info set ";
+    let paramsArray=[],i=0
+    if(params.paymentStatus){
+        query += " payment_status = ?";
+        paramsArray[i++] = params.paymentStatus;
+    }
+    if(params.realPaymentPrice){
+        query += " real_payment_price = ?";
+        paramsArray[i++] = params.realPaymentPrice;
+    }
+    paramsArray[i] = params.productOrderId;
+    query += "where id = ?";
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug(' updateStatusOrPrice ');
+        return callback(error,rows);
+    });
+}
 module.exports = {
     getUserProductOrder,
     getProductOrder,
     addProductOrder,
     updateProductOrder,
     updateRemark,
-    updateStatus
+    updateStatus,
+    updateStatusOrPrice
 }

@@ -117,6 +117,14 @@ let COMMODITY_ID_ERROR = "商品信息不存在！";
  */
 let REMINDERS_ID_ERROR = "不存在该提醒！";
 let REMINDERS_STATUS_NO_MODIFY = "已提醒，不允许重复提醒！";
+/**
+ * productOrder
+ */
+let PRODUCT_ORDER_ID_ERROR = "没有此订单信息！";
+/**
+ * productOrderPayment
+ */
+let PRODUCT_PAYMENT_ID_ERROR = "没有此支付信息！";
 module.exports = {
     SYS_AUTH_TOKEN_ERROR,
     SYS_VALIDATE_EMAIL_ERROR,
@@ -182,5 +190,7 @@ module.exports = {
     CITY_ID_ERROR,
     COMMODITY_ID_ERROR,
     REMINDERS_ID_ERROR,
-    REMINDERS_STATUS_NO_MODIFY
+    REMINDERS_STATUS_NO_MODIFY,
+    PRODUCT_ORDER_ID_ERROR,
+    PRODUCT_PAYMENT_ID_ERROR
 }

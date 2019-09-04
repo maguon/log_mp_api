@@ -30,10 +30,14 @@ const wechatPayment =(req,res,next)=>{
                     reject({err:error});
                 }else{
                     logger.info('wechatPayment getPayementStatus ' + 'success');
-                    if (rows[0].payment_status == sysConsts.PRODUCT_ORDER.payment_status.complete) {
-                        reject(res,{msg:sysMsg.ORDER_PAYMENT_STATUS_COMPLETE});
-                    }else {
-                        resolve();
+                    if(rows.length >0){
+                        if (rows[0].payment_status == sysConsts.PRODUCT_ORDER.payment_status.complete) {
+                            reject({msg:sysMsg.ORDER_PAYMENT_STATUS_COMPLETE});
+                        }else {
+                            resolve();
+                        }
+                    }else{
+                        reject({msg:sysMsg.PRODUCT_ORDER_ID_ERROR});
                     }
                 }
             });
@@ -163,9 +167,185 @@ const getParams =(req,res,params)=>{
     result.options = options;
     return result;
 }
+const updateOrderMsgByPrice = (params,callback)=>{
+    let realPaymentPrice = 0;//实际支付总额（支付-退款）
+    let paymentPrice =0; //实际支付总额
+    let actTransPrice=0;//应付总售价
+    let earnestMoney =0;//应付总定金
+    let payment_type=0;
+    const getRealPaymentPrice =()=>{
+        return new Promise((resolve, reject) => {
+            productPaymentDAO.getRealPaymentPrice(params,(error,rows)=>{
+                if(error){
+                    logger.error('updateOrderMsgByPrice getPaymentByOrderId ' + error.message);
+                    reject({err:error});
+                }else{
+                    logger.info('updateOrderMsgByPrice getPaymentByOrderId ' + 'success');
+                    if(rows.length > 0){
+                        realPaymentPrice = rows[0].pay_price - Math.abs(rows[0].refund_price);//实际支付金额
+                        paymentPrice = rows[0].pay_price;//支付总金额
+                        resolve();
+                    }else{
+                        reject({msg:sysMsg.PRODUCT_PAYMENT_ID_ERROR});
+                    }
+
+                }
+            });
+        });
+    }
+    const getOrderInfo =()=>{
+        return new Promise((resolve, reject) => {
+            productOrderDAO.getProductOrder(params,(error,rows)=>{
+                if(error){
+                    logger.error('updateOrderMsgByPrice getOrderInfo ' + error.message);
+                    reject({err:error});
+                }else{
+                    logger.info('updateOrderMsgByPrice getOrderInfo ' + 'success');
+                    if(rows.length){
+                        actTransPrice = rows[0].act_trans_price;//售总价
+                        earnestMoney = rows[0].earnest_money;//应支付总定金
+                        payment_type = rows[0].type;
+                        resolve();
+                    }else{
+                        reject({msg:sysMsg.PRODUCT_ORDER_ID_ERROR});
+                    }
+
+                }
+            })
+        });
+    }
+    const updateProductOrder =()=>{
+        return new Promise((resolve, reject) => {
+            if(payment_type = sysConsts.PRODUCT_ORDER.type.whole){
+                //全款购车
+                if (actTransPrice <= paymentPrice){
+                    params.paymentStatus = sysConsts.PRODUCT_ORDER.payment_status.complete;
+                }
+            }
+            if(payment_type = sysConsts.PRODUCT_ORDER.type.earnestMoney){
+                //定金购车
+                if (earnestMoney <= paymentPrice){
+                    params.paymentStatus = sysConsts.PRODUCT_ORDER.payment_status.complete;
+                }
+            }
+            if(payment_type = sysConsts.PRODUCT_ORDER.type.arrivalOfGoods){
+                //货到付款
+                params.paymentStatus = sysConsts.PRODUCT_ORDER.payment_status.complete;
+            }
+            if (params.type = sysConsts.PRODUCT_PAYMENT.type.refund){
+                params.paymentStatus = sysConsts.PRODUCT_ORDER.payment_status.refund;
+            }
+            params.realPaymentPrice = realPaymentPrice;
+            productOrderDAO.updateStatusOrPrice(params,(error,result)=>{
+                if(error){
+                    logger.error('updateOrderMsgByPrice updateProductOrder ' + error.message);
+                    reject({err:error});
+                }else{
+                    logger.info('updateOrderMsgByPrice updateProductOrder ' + 'success');
+                    resolve();
+                }
+            });
+        });
+    }
+    getRealPaymentPrice()
+        .then(getOrderInfo)
+        .then(updateProductOrder)
+        .catch((reject)=>{
+            if(reject.err){
+                return callback(reject.err,null);
+            }else{
+                return callback(reject.msg,null);
+            }
+        })
+}
+const wechatPaymentCallback=(req,res,next) => {
+    let xmlParser = new xml2js.Parser({explicitArray : false, ignoreAttrs : true});
+    xmlParser.parseString(req.body,(err,result)=>{
+        let resString = JSON.stringify(result);
+        let evalJson = eval('(' + resString + ')');
+        logger.info("wechatPaymentCallback1.toString: "+resString);
+        logger.info("wechatPaymentCallback1.body: "+req.body);
+        let prepayIdJson = {
+            nonceStr: evalJson.xml.nonce_str,
+            openid: evalJson.xml.openid,
+            productOrderId: parseInt(evalJson.xml.out_trade_no.split("_")[0]),
+            transactionId: evalJson.xml.transaction_id,
+            timeEnd: evalJson.xml.time_end,
+            totalFee: evalJson.xml.total_fee / 100,
+            status: sysConsts.PRODUCT_PAYMENT.status.paid,
+            type:sysConsts.PRODUCT_PAYMENT.type.payment
+        };
+
+        const getPaymentInfo =()=>{
+            return new Promise((resolve, reject) => {
+                productPaymentDAO.getPaymentByOrderId({productOrderId:prepayIdJson.productOrderId},(error,rows)=>{
+                    if(error){
+                        logger.error('wechatPaymentCallback getPaymentInfo ' + error.message);
+                        reject({err:error});
+                    }else{
+                        if(rows && rows.length < 1){
+                            logger.warn('wechatPaymentCallback getPaymentInfo ' + 'This payment information is not available!');
+                            reject({msg:sysMsg.PRODUCT_PAYMENT_ID_ERROR});
+                        }else{
+                            prepayIdJson.productPaymentId = rows[0].id;
+                            prepayIdJson.type = rows[0].type;
+                            resolve();
+                        }
+                    }
+                })
+            });
+        }
+        const updatePaymentInfo =()=>{
+            return new Promise((resolve, reject) => {
+                if (prepayIdJson.type = sysConsts.PRODUCT_PAYMENT.type.refund){
+                    prepayIdJson.totalFee = -prepayIdJson.totalFee;
+                }else{
+                    prepayIdJson.paymentTime = moment().format("YYYY-MM-DD HH:MM:SS");
+                }
+                productPaymentDAO.updateWechatPayment(prepayIdJson,(error,result)=>{
+                    if(error){
+                        logger.error('wechatPaymentCallback updatePaymentInfo ' + error.message);
+                        reject({err:error});
+                    }else{
+                        logger.info('wechatPaymentCallback updatePaymentInfo ' + 'success');
+                        resolve();
+                    }
+                });
+            });
+        }
+        const updateProductOrder =()=>{
+            return new Promise(() => {
+                let params ={
+                    productOrderId: parseInt(evalJson.xml.out_trade_no.split("_")[0]),
+                    type:prepayIdJson.type
+                }
+                updateOrderMsgByPrice(params,(error,result)=>{
+                    if (error){
+                        logger.error('wechatPaymentCallback updateProductOrder ' + error.message);
+                        resUtil.resInternalError(error, res, next);
+                    } else {
+                        logger.info('wechatPaymentCallback updateProductOrder ' + 'success');
+                        resUtil.resetUpdateRes(res,result,null);
+                        return next();
+                    }
+                })
+            });
+        }
+        getPaymentInfo()
+            .then(updatePaymentInfo)
+            .then(updateProductOrder)
+            .catch((reject)=>{
+                if(reject.err){
+                    resUtil.resetFailedRes(res,reject.err);
+                }else{
+                    resUtil.resetFailedRes(res,reject.msg);
+                }
+            })
+    });
+}
 const getPayment = (req,res,next)=>{
     let params = req.params;
-    params.unWxUnpaid = 0;
+    params.status = 2;//已支付订单
     productPaymentDAO.getPayment(params,(error,result)=>{
         if(error){
             logger.error('getPayment ' + error.message);
@@ -177,7 +357,22 @@ const getPayment = (req,res,next)=>{
         }
     });
 }
+const updateRemark = (req,res,next)=>{
+    let params = req.params;
+    productPaymentDAO.updateRemark(params,(error,result)=>{
+        if(error){
+            logger.error('updateRemark ' + error.message);
+            resUtil.resInternalError(error, res, next);
+        }else{
+            logger.info('updateRemark ' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    });
+}
 module.exports = {
     wechatPayment,
-    getPayment
+    wechatPaymentCallback,
+    getPayment,
+    updateRemark
 }

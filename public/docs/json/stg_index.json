@@ -13221,37 +13221,16 @@
             "type": "integer"
           },
           {
-            "name": "paymentId",
+            "name": "productPaymentId",
             "in": "query",
-            "description": "paymentId",
+            "description": "productPaymentId",
             "required": false,
             "type": "integer"
-          },
-          {
-            "name": "phone",
-            "in": "query",
-            "description": "phone",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "userName",
-            "in": "query",
-            "description": "userName",
-            "required": false,
-            "type": "string"
           },
           {
             "name": "type",
             "in": "query",
             "description": "交易类型（1:支付 2:退款）",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "status",
-            "in": "query",
-            "description": "支付状态（1:未付款 2:已付款）)",
             "required": false,
             "type": "integer"
           },
@@ -13317,22 +13296,55 @@
             "description": "wechatPayment",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/wechatPayment"
+              "$ref": "#/definitions/productWechatPayment"
             }
           }
         ],
         "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/wechatPayment"
-              }
-            }
-          },
           "400": {
             "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/productPayment/{productPaymentId}/remark": {
+      "put": {
+        "tags": [
+          "productOrderPayment"
+        ],
+        "summary": "update",
+        "description": "admin update productOrderPayment version",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "user Id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "productPaymentId",
+            "in": "path",
+            "description": "productPaymentId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "remark",
+            "in": "body",
+            "description": "remark",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/remark"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid token value or invalid admin id"
           }
         }
       }
@@ -15501,6 +15513,23 @@
       },
       "xml": {
         "name": "remark"
+      }
+    },
+    "productWechatPayment": {
+      "type": "object",
+      "properties": {
+        "openid": {
+          "type": "string"
+        },
+        "totalFee": {
+          "type": "integer"
+        },
+        "remark": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "wechatPayment"
       }
     }
   }
