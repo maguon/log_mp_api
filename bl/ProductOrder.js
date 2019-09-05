@@ -121,7 +121,7 @@ const addUserProductOrder = (req,res,next) =>{
                     resUtil.resetFailedRes(error,res,next);
                 }else{
                     logger.info('addUserProductOrder updateProductOrder  ' + 'success');
-                    resUtil.resetUpdateRes(res,resultCallback,null);
+                    resUtil.resetCreateRes(res,resultCallback,null);
                     return next();
                 }
             })
