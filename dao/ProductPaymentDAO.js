@@ -31,14 +31,13 @@ const getPayment = (params,callback) => {
         query = query + " and ppi.type = ? ";
     }
     if(params.createdOnStart){
-        paramsArray[i++] = params.createdOnStart;
-        query = query + " and date_format(payment_info.created_on,'%Y-%m-%d') >= ? ";
+        paramsArray[i++] = params.createdOnStart + " 00:00:00 ";
+        query = query + " and ppi.created_on >= ? "
     }
     if(params.createdOnEnd){
-        paramsArray[i++] = params.createdOnEnd;
-        query = query + " and date_format(payment_info.created_on,'%Y-%m-%d') <= ? ";
+        paramsArray[i++] = params.createdOnEnd + " 23:59:59 ";
+        query = query + " and ppi.created_on <= ? "
     }
-
     if(params.statusArr){
         query = query + " and ppi.status in ("+ params.statusArr+")";
     }
