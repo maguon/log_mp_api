@@ -300,9 +300,8 @@ const updateOrderMsgByPrice = (params,callback)=>{
             }
         })
 }
-const wechatPaymentCallback=(req,res,next) => {
-    let xmlParser = new xml2js.Parser({explicitArray : false, ignoreAttrs : true});
-    xmlParser.parseString(req.body,(err,result)=>{
+const productWechatPaymentCallback=(req,res,next) => {
+        let result = req;
         let resString = JSON.stringify(result);
         let evalJson = eval('(' + resString + ')');
         logger.info("wechatPaymentCallback1.toString: "+resString);
@@ -376,14 +375,13 @@ const wechatPaymentCallback=(req,res,next) => {
         getPaymentInfo()
             .then(updatePaymentInfo)
             .then(updateProductOrder)
-            .catch((reject)=>{
-                if(reject.err){
-                    resUtil.resetFailedRes(res,reject.err);
-                }else{
-                    resUtil.resetFailedRes(res,reject.msg);
+            .catch((reject)=> {
+                if (reject.err) {
+                    resUtil.resetFailedRes(res, reject.err);
+                } else {
+                    resUtil.resetFailedRes(res, reject.msg);
                 }
-            })
-    });
+            });
 }
 const getPayment = (req,res,next)=>{
     let params = req.params;
@@ -413,7 +411,7 @@ const updateRemark = (req,res,next)=>{
 }
 module.exports = {
     wechatPayment,
-    wechatPaymentCallback,
+    productWechatPaymentCallback,
     getPayment,
     updateRemark
 }

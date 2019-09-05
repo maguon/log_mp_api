@@ -7,6 +7,7 @@ const sysError = require('../util/SystemError.js');
 const logger = serverLogger.createLogger('Payment.js');
 const paymentDAO = require('../dao/PaymentDAO.js');
 const orderDAO = require('../dao/InquiryOrderDAO.js');
+const productOrderPayment = require('../bl/ProductOrderPayment.js');
 const fs = require('fs');
 const xml2js = require('xml2js');
 const encrypt = require('../util/Encrypt.js');
@@ -812,6 +813,11 @@ const wechatPaymentCallback=(req,res,next) => {
         let evalJson = eval('(' + resString + ')');
         logger.info("wechatPaymentCallback166"+resString);
         logger.info("wechatPaymentCallback1666"+req.body);
+        let sysType =  parseInt(evalJson.xml.out_trade_no.split("_")[2]);
+        if(sysType == sysConsts.SYSTEM_ORDER_TYPE.type.product){
+            productOrderPayment.productWechatPaymentCallback(result);
+            return next();
+        }
         let prepayIdJson = {
             nonceStr: evalJson.xml.nonce_str,
             openid: evalJson.xml.openid,
