@@ -719,7 +719,7 @@ const updateBankInfo = (req,res,next)=>{
 const wechatPayment =(req,res,next)=>{
     let params = req.params;
     let ourString = encrypt.randomString();
-    let orderId = params.orderId+"_"+encrypt.randomString(6);
+    let orderId = params.orderId+"_"+encrypt.randomString(6)+"_" + sysConsts.SYSTEM_ORDER_TYPE.type.transport;
     params.nonceStr = ourString;
     let myDate = new Date();
     params.dateId = moment(myDate).format('YYYYMMDD');

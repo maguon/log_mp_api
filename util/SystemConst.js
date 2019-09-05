@@ -1,4 +1,10 @@
 'use strict';
+const SYSTEM_ORDER_TYPE={
+    type:{
+        transport :1,//运输订单
+        product:2,//商品订单
+    }
+}
 const CAR_MODEL ={
     NormalCar:{//标准轿车
        type:1,
@@ -199,6 +205,7 @@ const REMINDERS_INFO ={
     }
 }
 module.exports = {
+    SYSTEM_ORDER_TYPE,
     CAR_MODEL,
     PAYMENT,
     REFUND_STATUS,
