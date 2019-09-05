@@ -13403,6 +13403,13 @@
             "type": "integer"
           },
           {
+            "name": "statusArr",
+            "in": "query",
+            "description": "支付状态（1:未付款  2:已付款）",
+            "required": false,
+            "type": "string"
+          },
+          {
             "name": "start",
             "in": "query",
             "description": "start",
