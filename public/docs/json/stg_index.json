@@ -13314,48 +13314,6 @@
         }
       }
     },
-    "/user/{userId}/productPayment/{productPaymentId}/remark": {
-      "put": {
-        "tags": [
-          "productOrderPayment"
-        ],
-        "summary": "update",
-        "description": "admin update productOrderPayment version",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "user Id",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "productPaymentId",
-            "in": "path",
-            "description": "productPaymentId",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "remark",
-            "in": "body",
-            "description": "remark",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/remark"
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
     "/admin/{adminId}/productOrderPayment": {
       "get": {
         "tags": [
@@ -15663,9 +15621,6 @@
         },
         "totalFee": {
           "type": "integer"
-        },
-        "remark": {
-          "type": "string"
         }
       },
       "xml": {
@@ -15673,4 +15628,5 @@
       }
     }
   }
+}
 }

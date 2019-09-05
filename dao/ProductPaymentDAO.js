@@ -114,7 +114,7 @@ const getRealPaymentPrice =(params,callback) => {
     })
 }
 const addPayment = (params,callback) => {
-    let query = " insert into product_payment_info (user_id,product_order_id,wx_order_id,date_id,total_fee,nonce_str,status,type,remark) values(?,?,?,?,?,?,?,?,?)";
+    let query = " insert into product_payment_info (user_id,product_order_id,wx_order_id,date_id,total_fee,nonce_str,status,type) values(?,?,?,?,?,?,?,?)";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.userId;
     paramsArray[i++] = params.productOrderId;
@@ -124,7 +124,6 @@ const addPayment = (params,callback) => {
     paramsArray[i++] = params.nonceStr;
     paramsArray[i++] = params.status;
     paramsArray[i++] = params.type;
-    paramsArray[i] = params.remark;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('addPayment');
         callback(error,rows)
