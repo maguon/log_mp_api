@@ -155,9 +155,18 @@ const updateRemark = (req,res,next) => {
 const updateStatus = (req,res,next) => {
     let params = req.params;
     //订单状态（1:待发货 4:已发货 6:已取消  8:已送达 ）
+    if((Number(params.status) != sysConst.PRODUCT_ORDER.status.shipped) & (Number(params.status) != sysConst.PRODUCT_ORDER.status.cancelled) & (Number(params.status) != sysConst.PRODUCT_ORDER.status.served)){
+        logger.info(' updateStatus status error');
+        resUtil.resetFailedRes(res,sysMsg.PRODUCT_ORDER_STATUS_ERROR);
+        return next();
+    }
     if(params.status == sysConst.PRODUCT_ORDER.status.shipped){
         //4.已发货
         params.departureTime = moment().format("YYYY-MM-DD HH:MM:SS");
+    }
+    if(params.status == sysConst.PRODUCT_ORDER.status.cancelled){
+        //6.已取消
+        params.cancelTime = moment().format("YYYY-MM-DD HH:MM:SS");
     }
     if(params.status == sysConst.PRODUCT_ORDER.status.served){
         //8.已送达
