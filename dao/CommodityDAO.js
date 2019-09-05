@@ -122,6 +122,20 @@ const updateShowStatus = (params,callback) => {
         return callback(error,rows);
     });
 }
+const updateSaledQuantityOrStatus = (params,callback) => {
+    let query = " update commodity_info set saled_quantity = ?  where id = ?";
+    let paramsArray=[],i=0;
+    paramsArray[i++] = params.saledQuantity;
+    if(params.status){
+        query += ", status = ?";
+        paramsArray[i++] = params.status;
+    }
+    paramsArray[i] = params.commodityId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug(' updateSaledQuantityOrStatus ');
+        return callback(error,rows);
+    });
+}
 module.exports = {
     getCommodity,
     addCommodity,
@@ -129,5 +143,6 @@ module.exports = {
     updateInfo,
     updateCommodity,
     updateStatus,
-    updateShowStatus
+    updateShowStatus,
+    updateSaledQuantityOrStatus
 }

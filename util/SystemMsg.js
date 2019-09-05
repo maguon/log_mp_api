@@ -112,6 +112,7 @@ let CITY_ID_ERROR = "城市信息不存在！";
  * commodity
  */
 let COMMODITY_ID_ERROR = "商品信息不存在！";
+let COMMODITY_INSUFFICIENT_QUANTITY = "商品数量不足！";
 /**
  * reminders
  */
@@ -189,6 +190,7 @@ module.exports = {
     COUPON_NOT_DELETE,
     CITY_ID_ERROR,
     COMMODITY_ID_ERROR,
+    COMMODITY_INSUFFICIENT_QUANTITY,
     REMINDERS_ID_ERROR,
     REMINDERS_STATUS_NO_MODIFY,
     PRODUCT_ORDER_ID_ERROR,

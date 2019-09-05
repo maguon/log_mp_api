@@ -169,6 +169,18 @@ const ADMIN_INFO ={
         available:1//可用
     }
 }
+const COMMODITY ={
+    type:{
+        whole :1,//全款购车
+        earnestMoney :2,//定金购车
+        arrivalOfGoods :3//货到付款
+    },
+    status:{
+        sold:0,//已售
+        onSale:1,//在售
+        reserved:2//已预定
+    }
+}
 const PRODUCT_ORDER ={
     type:{
         whole :1,//全款购车
@@ -186,7 +198,7 @@ const PRODUCT_ORDER ={
         shipped:4,//已发货
         cancelled:6,//已取消
         served:8//已送达
-    },
+    }
 }
 const PRODUCT_PAYMENT ={
     type:{
@@ -224,6 +236,7 @@ module.exports = {
     CALCULATED_AMOUNT,
     ADMIN_INFO,
     REMINDERS_INFO,
+    COMMODITY,
     PRODUCT_PAYMENT,
     PRODUCT_ORDER
 }

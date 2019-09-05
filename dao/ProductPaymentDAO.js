@@ -8,9 +8,10 @@ const db = require('../db/connection/MysqlDb.js');
 const sysConsts = require("../util/SystemConst")
 
 const getPayment = (params,callback) => {
-    let query = " select ppi.* "
+    let query = " select ppi.*,ui.user_name "
                 +" from product_payment_info ppi"
                 +" left join product_order_info poi on ppi.product_order_id = poi.id"
+                +" left join user_info ui on ui.id = ppi.user_id "
                 +" where ppi.id is not null";
     let paramsArray = [],i=0;
     if(params.userId){
@@ -29,9 +30,17 @@ const getPayment = (params,callback) => {
         paramsArray[i++] = params.type;
         query = query + " and ppi.type = ? ";
     }
-    if(params.status){
-        paramsArray[i++] = params.status;
-        query = query + " and ppi.status = ? ";
+    if(params.createdOnStart){
+        paramsArray[i++] = params.createdOnStart;
+        query = query + " and date_format(payment_info.created_on,'%Y-%m-%d') >= ? ";
+    }
+    if(params.createdOnEnd){
+        paramsArray[i++] = params.createdOnEnd;
+        query = query + " and date_format(payment_info.created_on,'%Y-%m-%d') <= ? ";
+    }
+
+    if(params.statusArr){
+        query = query + " and ppi.status in ("+ params.statusArr+")";
     }
     query = query + " order by ppi.id desc";
     if(params.start && params.size){

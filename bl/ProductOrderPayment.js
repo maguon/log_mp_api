@@ -7,6 +7,7 @@ const sysError = require('../util/SystemError.js');
 const logger = serverLogger.createLogger('ProductOrderPayment.js');
 const productOrderDAO = require('../dao/ProductOrderDAO.js');
 const productPaymentDAO = require('../dao/ProductPaymentDAO.js');
+const commodityDAO = require('../dao/CommodityDAO');
 const fs = require('fs');
 const xml2js = require('xml2js');
 const encrypt = require('../util/Encrypt.js');
@@ -18,7 +19,7 @@ const sysConfig = require("../config/SystemConfig");
 const wechatPayment =(req,res,next)=>{
     let params = req.params;
     let ourString = encrypt.randomString();
-    let wx_productOrderId = params.productOrderId+"_"+encrypt.randomString(6);
+    let wx_productOrderId = params.productOrderId+"_"+encrypt.randomString(6)+"_" + sysConsts.SYSTEM_ORDER_TYPE.type.product;
     params.nonceStr = ourString;
     params.dateId = moment().format('YYYYMMDD');
     const getPayementStatus =()=>{
@@ -173,6 +174,7 @@ const updateOrderMsgByPrice = (params,callback)=>{
     let actTransPrice=0;//应付总售价
     let earnestMoney =0;//应付总定金
     let payment_type=0;
+    let commodityId=0;//商品订单编号
     const getRealPaymentPrice =()=>{
         return new Promise((resolve, reject) => {
             productPaymentDAO.getRealPaymentPrice(params,(error,rows)=>{
@@ -205,6 +207,7 @@ const updateOrderMsgByPrice = (params,callback)=>{
                         actTransPrice = rows[0].act_trans_price;//售总价
                         earnestMoney = rows[0].earnest_money;//应支付总定金
                         payment_type = rows[0].type;
+                        commodityId = rows[0].commodity_id;
                         resolve();
                     }else{
                         reject({msg:sysMsg.PRODUCT_ORDER_ID_ERROR});
@@ -247,9 +250,48 @@ const updateOrderMsgByPrice = (params,callback)=>{
             });
         });
     }
+    const getCommodity =()=>{
+        return new Promise((resolve, reject) => {
+            commodityDAO.getCommodity({commodityId:commodityId},(error,rows)=>{
+                if(error){
+                    logger.error(' getCommodity ' + error.message);
+                    reject({err:error});
+                }else{
+                    logger.info(' getCommodity ' + 'success');
+                    if(rows.length>0){
+                        resolve(rows[0]);
+                    }else{
+                        reject({msg:sysMsg.COMMODITY_ID_ERROR});
+                    }
+                }
+            })
+        });
+    }
+    const updateCommodity =(commodityInfo)=>{
+        return new Promise((resolve, reject)=>{
+            commodityInfo.saled_quantity = commodityInfo.saled_quantity + 1;
+            params.saledQuantity = commodityInfo.saled_quantity
+            if(commodityInfo.quantity){
+                if(commodityInfo.quantity == commodityInfo.saled_quantity){
+                    params.status = sysConsts.COMMODITY.status.reserved;//已预订
+                }
+            }
+            commodityDAO.updateSaledQuantityOrStatus(commodityInfo,(error,result)=>{
+                if(error){
+                    logger.error(' updateOrderMsgByPrice updateCommodity ' + error.message);
+                    reject({err:error});
+                }else{
+                    logger.info(' updateOrderMsgByPrice updateCommodity ' + 'success');
+                    return callback(null,result);
+                }
+            })
+        });
+    }
     getRealPaymentPrice()
         .then(getOrderInfo)
         .then(updateProductOrder)
+        .then(getCommodity)
+        .then(updateCommodity)
         .catch((reject)=>{
             if(reject.err){
                 return callback(reject.err,null);
@@ -345,7 +387,6 @@ const wechatPaymentCallback=(req,res,next) => {
 }
 const getPayment = (req,res,next)=>{
     let params = req.params;
-    params.status = 2;//已支付订单
     productPaymentDAO.getPayment(params,(error,result)=>{
         if(error){
             logger.error('getPayment ' + error.message);

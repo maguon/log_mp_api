@@ -13235,6 +13235,13 @@
             "type": "integer"
           },
           {
+            "name": "statusArr",
+            "in": "query",
+            "description": "支付状态（1:未付款  2:已付款）",
+            "required": false,
+            "type": "string"
+          },
+          {
             "name": "start",
             "in": "query",
             "description": "start",
@@ -13411,6 +13418,64 @@
           }
         ],
         "responses": {
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/productOrder/{productOrderId}/productPayment/{productPaymentId}/wechatRefund": {
+      "post": {
+        "tags": [
+          "payment"
+        ],
+        "summary": "refund",
+        "description": "refund",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "admin Id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "productOrderId",
+            "in": "path",
+            "description": "productOrderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "productPaymentId",
+            "in": "path",
+            "description": "productPaymentId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "refund",
+            "in": "body",
+            "description": "refund",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/refund"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/refund"
+              }
+            }
+          },
           "400": {
             "description": "Invalid token value or invalid admin id"
           }

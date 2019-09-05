@@ -166,6 +166,10 @@ const updateStatus = (params,callback) => {
         query += " ,arrive_time = ?";
         paramsArray[i++] = params.arriveTime;
     }
+    if(params.cancelTime){
+        query += " ,cancel_time = ?";
+        paramsArray[i++] = params.cancelTime;
+    }
     paramsArray[i] = params.productOrderId;
     query += "where id = ?";
     db.dbQuery(query,paramsArray,(error,rows)=>{
