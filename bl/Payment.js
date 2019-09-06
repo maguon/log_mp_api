@@ -154,6 +154,13 @@ const addWechatRefund=(req,res,next) => {
                 prepayIdJson.paymentId = evalJsons.root.out_refund_no;
                 prepayIdJson.settlement_refund_fee = evalJsons.root.settlement_refund_fee / 100;
                 prepayIdJson.wxOrderId = evalJsons.root.out_trade_no;
+
+                //如果sysType==2,则跳转到商品订单退款
+                let sysType =  parseInt(evalJsons.root.out_trade_no.split("_")[2]);
+                if(sysType == sysConsts.SYSTEM_ORDER_TYPE.type.product){
+                    productOrderPayment.productRefundPaymentCallback(result);
+                    return next();
+                }
             })
             //logger.info("addWechatRefund updateRefundSSS "+prepayIdJson);
             paymentDAO.updateRefund(prepayIdJson,(error,result)=>{

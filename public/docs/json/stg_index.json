@@ -13277,8 +13277,8 @@
         "tags": [
           "productOrderPayment"
         ],
-        "summary": "put address",
-        "description": "put address",
+        "summary": "put wechatPayment",
+        "description": "put wechatPayment",
         "produces": [
           "application/json"
         ],
@@ -13319,8 +13319,8 @@
         "tags": [
           "productOrderPayment"
         ],
-        "summary": "get payment",
-        "description": "get payment",
+        "summary": "get productOrderPayment",
+        "description": "get productOrderPayment",
         "produces": [
           "application/json"
         ],
@@ -13406,10 +13406,10 @@
     "/admin/{adminId}/productOrder/{productOrderId}/productPayment/{productPaymentId}/wechatRefund": {
       "post": {
         "tags": [
-          "payment"
+          "productOrderPayment"
         ],
-        "summary": "refund",
-        "description": "refund",
+        "summary": "put wechatRefund",
+        "description": "put wechatRefund",
         "produces": [
           "application/json"
         ],
@@ -13441,7 +13441,7 @@
             "description": "refund",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/refund"
+              "$ref": "#/definitions/productRefund"
             }
           }
         ],
@@ -13451,7 +13451,7 @@
             "schema": {
               "type": "object",
               "items": {
-                "$ref": "#/definitions/refund"
+                "$ref": "#/definitions/productRefund"
               }
             }
           },
@@ -15639,6 +15639,17 @@
       },
       "xml": {
         "name": "wechatPayment"
+      }
+    },
+    "productRefund": {
+      "type": "object",
+      "properties": {
+        "refundFee": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "productRefund"
       }
     }
   }

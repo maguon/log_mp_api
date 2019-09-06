@@ -383,6 +383,216 @@ const productWechatPaymentCallback=(req,res,next) => {
                 }
             });
 }
+const wechatRefund = (req,res,next)=>{
+    let params = req.params;
+    let ourString = encrypt.randomString();
+    params.nonceStr = ourString;
+    let xmlParser = new xml2js.Parser({explicitArray : false, ignoreAttrs : true});
+    let myDate = new Date();
+    params.dateId = moment(myDate).format('YYYYMMDD');
+
+    const getPaymentOrder =()=>{
+        return new Promise((resolve, reject) => {
+            productPaymentDAO.getPayment(params,(error,rows)=>{
+                if(error){
+                    logger.error('wechatRefund getPaymentOrder ' + error.message);
+                    reject({err:error});
+                }else{
+                    if(rows && rows.length < 1){
+                        logger.warn('wechatRefund getPaymentOrder ' + 'Please check the payment information!');
+                        reject({msg:sysMsg.PRODUCT_PAYMENT_ID_ERROR});
+                    }else{
+                        logger.info('wechatRefund getPaymentOrder ' + 'success');
+                        params.totalFee = rows[0].total_fee;
+                        params.paymentId = rows[0].id;
+                        params.wxOrderId = rows[0].wx_order_id;
+                        params.userId = rows[0].user_id;
+                        resolve();
+                    }
+                }
+            })
+        });
+    }
+    const addPaymentRefund =()=>{
+        return new Promise((resolve, reject) => {
+            params.type = sysConsts.PRODUCT_PAYMENT.type.refund;
+            productPaymentDAO.addWechatRefund(params,(error,result)=>{
+                if(error){
+                    logger.error('wechatRefund addPaymentRefund ' + error.message);
+                    reject({err:error});
+                }else{
+                    logger.info('wechatRefund addPaymentRefund ' + 'success');
+                    resolve(result);
+                }
+            });
+        });
+    }
+    const httpReques =(refundInfo)=>{
+        return new Promise((resolve, reject) => {
+            params.refundId = refundInfo.insertId;
+            let result = getRefundParams(req,res,params);
+            let httpsReq = https.request(result.options,(result)=>{
+                let data = "";
+                logger.info(result);
+                result.on('data',(d)=>{
+                    data += d;
+                }).on('end',()=>{
+                    xmlParser.parseString(data,(err,result)=>{
+                        let resString = JSON.stringify(result);
+                        let evalJson = eval('(' + resString + ')');
+                        if(evalJson.xml.return_code == 'FAIL'){
+                            //FAIL 提交业务失败
+                            productPaymentDAO.delRefundFail(params,(error,result)=>{
+                                if(error){
+                                    logger.error('wechatRefund httpReques delRefundFail ' + error.message);
+                                    reject({err:error});
+                                }else{
+                                    logger.info('wechatRefund httpReques delRefundFail ' + 'success');
+                                    resolve();
+                                }
+                            });
+                            logger.warn('wechatRefund httpReques delRefundFail Refund failure: '+evalJson.xml.err_code_des);
+                            resUtil.resetFailedRes(res,evalJson.xml.err_code_des,null);
+                        }else{
+                            //SUCCESS退款申请接收成功
+                            logger.info("wechatRefund httpReques delRefundFail evalJson.xml.result_code: "+evalJson.xml.result_code);
+                            logger.warn('wechatRefund httpReques delRefundFail Refund success!');
+                        }
+                    });
+                    res.send(200,data);
+                    return next();
+                }).on('error', (e)=>{
+                    logger.info('wechatRefund httpReques error:'+ e.message);
+                    res.send(500,e);
+                    return next();
+                });
+            });
+            httpsReq.write(result.reqBody,"utf-8");
+            httpsReq.end();
+            httpsReq.on('error',(e)=>{
+                logger.info('wechatRefund httpsReq '+ e.message);
+                res.send(500,e);
+                return next();
+            });
+        });
+    }
+
+    getPaymentOrder()
+        .then(addPaymentRefund)
+        .then(httpReques)
+        .catch((reject)=>{
+            if(reject.err){
+                resUtil.resetFailedRes(res,reject.err);
+            }else{
+                resUtil.resetFailedRes(res,reject.msg);
+            }
+        })
+};
+const getRefundParams = (req,res,params)=>{
+    let result = {};
+    let refundUrl = 'https://stg.myxxjs.com/api/wechatRefund';
+    let signStr =
+        "appid="+sysConfig.wechatConfig.mpAppId
+        + "&mch_id="+sysConfig.wechatConfig.mchId
+        + "&nonce_str="+params.nonceStr
+        + "&notify_url="+refundUrl
+        //+ "&openid="+params.openid
+        + "&out_refund_no="+params.refundId
+        + "&out_trade_no="+params.wxOrderId
+        + "&refund_fee="+ (-params.refundFee) * 100
+        + "&total_fee=" +params.totalFee * 100
+        + "&key="+sysConfig.wechatConfig.paymentKey;
+    let signByMd = encrypt.encryptByMd5NoKey(signStr);
+    let reqBody =
+        '<xml><appid>'+sysConfig.wechatConfig.mpAppId+'</appid>' +
+        '<mch_id>'+sysConfig.wechatConfig.mchId+'</mch_id>' +
+        '<nonce_str>'+params.nonceStr+'</nonce_str>' +
+        '<notify_url>'+refundUrl+'</notify_url>' +
+        //'<openid>'+params.openid+'</openid>' +
+        '<out_refund_no>'+params.refundId +'</out_refund_no>' +
+        '<out_trade_no>'+params.wxOrderId +'</out_trade_no>' +
+        '<refund_fee>'+(-params.refundFee) * 100+'</refund_fee>' +
+        '<total_fee>'+params.totalFee * 100+'</total_fee>' +
+        '<sign>'+signByMd+'</sign></xml>';
+    let url="/secapi/pay/refund";
+    let certFile = fs.readFileSync(sysConfig.wechatConfig.paymentCert);
+    let options = {
+        host: 'api.mch.weixin.qq.com',
+        port: 443,
+        path: url,
+        method: 'POST',
+        pfx: certFile ,
+        passphrase : sysConfig.wechatConfig.mchId,
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Content-Length' : Buffer.byteLength(reqBody, 'utf8')
+        }
+    }
+    result.reqBody = reqBody;
+    result.options = options;
+    return result;
+}
+const productRefundPaymentCallback=(req,res,next) => {
+    let resStrings = JSON.stringify(req);
+    let evalJsons = eval('(' + resStrings + ')');
+    let prepayIdJson = {
+        status: sysConsts.PRODUCT_PAYMENT.status.paid,
+        settlement_refund_fee : evalJsons.root.settlement_refund_fee / 100,
+        wxOrderId : evalJsons.root.out_trade_no,
+        orderId: evalJsons.root.out_trade_no.split("_")[0],
+    };
+    const updateRefundInfo =()=>{
+        return new Promise((resolve, reject) => {
+            productPaymentDAO.updateWechatRefundPayment(prepayIdJson,(error,result)=>{
+                if(error){
+                    logger.error('productRefundPaymentCallback updateRefundInfo ' + error.message);
+                    reject(error);
+                }else{
+                    logger.info('productRefundPaymentCallback updateRefundInfo ' + 'success');
+                    resolve();
+                }
+            });
+        });
+    }
+    const getPaymentInfo =()=>{
+        return new Promise((resolve, reject) => {
+            productPaymentDAO.getOrderRealPayment({productOrderId:prepayIdJson.orderId},(error,result)=>{
+                if(error){
+                    logger.error('productRefundPaymentCallback getPayment ' + error.message);
+                    reject({err:error});
+                }else{
+                    logger.info('productRefundPaymentCallback getPayment ' + 'success');
+                    resolve(result);
+                }
+            });
+        });
+    }
+    const updateProductOrder =(paymentInfo)=>{
+        return new Promise((resolve, reject) => {
+            productOrderDAO.updateRealPaymentPrice({realPaymentPrice:paymentInfo.real_payment,productOrderId:prepayIdJson.orderId}, (error, result) => {
+                if (error) {
+                    logger.error('productRefundPaymentCallback updateProductOrder ' + error.message);
+                    resUtil.resInternalError(error, res, next);
+                } else {
+                    logger.info('productRefundPaymentCallback updateProductOrder ' + 'success');
+                    resUtil.resetUpdateRes(res, result, null);
+                    // return next();
+                }
+            })
+        });
+    }
+
+    updateRefundInfo()
+        .then(getPaymentInfo)
+        .then(updateProductOrder)
+        .catch((reject)=>{
+            if(reject.err){
+                resUtil.resetFailedRes(res,reject.err);
+            }else{
+                resUtil.resetFailedRes(res,reject.msg);
+            }
+        })
+}
 const getPayment = (req,res,next)=>{
     let params = req.params;
     productPaymentDAO.getPayment(params,(error,result)=>{
@@ -412,6 +622,8 @@ const updateRemark = (req,res,next)=>{
 module.exports = {
     wechatPayment,
     productWechatPaymentCallback,
+    wechatRefund,
+    productRefundPaymentCallback,
     getPayment,
     updateRemark
 }

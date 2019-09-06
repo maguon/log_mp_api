@@ -185,7 +185,7 @@ const updateStatusOrPrice = (params,callback) => {
         paramsArray[i++] = params.paymentStatus;
     }
     if(params.realPaymentPrice){
-        query += " real_payment_price = ?";
+        query += ", real_payment_price = ?";
         paramsArray[i++] = params.realPaymentPrice;
     }
     paramsArray[i] = params.productOrderId;
@@ -195,6 +195,16 @@ const updateStatusOrPrice = (params,callback) => {
         return callback(error,rows);
     });
 }
+const updateRealPaymentPrice =(params,callback) => {
+    let query = " update product_order_info set real_payment_price = ? where id = ? ";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.realPaymentPrice;
+    paramsArray[i] = params.productOrderId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('updateRealPaymentPrice');
+        callback(error,rows);
+    })
+}
 module.exports = {
     getUserProductOrder,
     getProductOrder,
@@ -202,5 +212,6 @@ module.exports = {
     updateProductOrder,
     updateRemark,
     updateStatus,
-    updateStatusOrPrice
+    updateStatusOrPrice,
+    updateRealPaymentPrice
 }

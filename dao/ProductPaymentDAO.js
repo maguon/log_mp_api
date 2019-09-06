@@ -112,6 +112,15 @@ const getRealPaymentPrice =(params,callback) => {
         callback(error,rows)
     })
 }
+const getOrderRealPayment =(params,callback) => {
+    let query = " select sum(total_fee) real_payment from product_payment_info where product_order_id = ?";
+    let paramsArray = [],i=0;
+    paramsArray[i] = params.productOrderId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('getOrderRealPayment');
+        callback(error,rows)
+    })
+}
 const addPayment = (params,callback) => {
     let query = " insert into product_payment_info (user_id,product_order_id,wx_order_id,date_id,total_fee,nonce_str,status,type) values(?,?,?,?,?,?,?,?)";
     let paramsArray = [],i=0;
@@ -128,6 +137,22 @@ const addPayment = (params,callback) => {
         callback(error,rows)
     })
 }
+const addRefund = (params,callback) => {
+    let query = " insert into product_payment_info(admin_id,user_id,date_id,order_id,wx_order_id,type,p_id,total_fee) values(?,?,?,?,?,?,?,?)";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.adminId;
+    paramsArray[i++] = params.userId;
+    paramsArray[i++] = params.dateId;
+    paramsArray[i++] = params.productOrderId;
+    paramsArray[i++] = params.wxOrderId;
+    paramsArray[i++] = params.type;
+    paramsArray[i++] = params.productPaymentId;
+    paramsArray[i] = -params.refundFee;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('addRefund');
+        callback(error,rows);
+    })
+}
 const updateWechatPayment = (params,callback) => {
     let query = " update product_payment_info set status=?,transaction_id=?,payment_time=? where id = ? ";
     let paramsArray = [],i=0;
@@ -137,6 +162,20 @@ const updateWechatPayment = (params,callback) => {
     paramsArray[i] = params.productPaymentId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('updateWechatPayment');
+        callback(error,rows);
+    })
+}
+const updateWechatRefundPayment = (params,callback) => {
+    let query = " update product_payment_info set status=?";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.status;
+    if(params.status){
+        paramsArray[i++] = params.status;
+    }
+    query += " where id = ? ";
+    paramsArray[i] = params.productPaymentId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('updateWechatRefundPayment');
         callback(error,rows);
     })
 }
@@ -150,11 +189,26 @@ const updateRemark = (params,callback) => {
         callback(error,rows);
     })
 }
+const delRefundFail = (params,callback) => {
+    let query = " delete from product_payment_info where status=? and type = ? and id=? and p_id is not null ";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.status;
+    paramsArray[i++] = params.type;
+    paramsArray[i] = params.refundId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('delRefundFail');
+        callback(error,rows);
+    })
+}
 module.exports = {
     getPayment,
     getPaymentByOrderId,
     getRealPaymentPrice,
+    getOrderRealPayment,
     addPayment,
+    addRefund,
     updateWechatPayment,
-    updateRemark
+    updateWechatRefundPayment,
+    updateRemark,
+    delRefundFail
 }
