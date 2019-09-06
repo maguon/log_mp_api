@@ -13396,6 +13396,13 @@
             "type": "integer"
           },
           {
+            "name": "phone",
+            "in": "query",
+            "description": "电话",
+            "required": false,
+            "type": "integer"
+          },
+          {
             "name": "type",
             "in": "query",
             "description": "交易类型（1:支付 2:退款）",

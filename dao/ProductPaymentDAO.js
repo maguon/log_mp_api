@@ -8,7 +8,7 @@ const db = require('../db/connection/MysqlDb.js');
 const sysConsts = require("../util/SystemConst")
 
 const getPayment = (params,callback) => {
-    let query = " select ppi.*,ui.user_name "
+    let query = " select ppi.*,ui.user_name,ui.phone "
                 +" from product_payment_info ppi"
                 +" left join product_order_info poi on ppi.product_order_id = poi.id"
                 +" left join user_info ui on ui.id = ppi.user_id "
@@ -25,6 +25,10 @@ const getPayment = (params,callback) => {
     if(params.productPaymentId){
         paramsArray[i++] = params.productPaymentId;
         query = query + " and ppi.id = ? ";
+    }
+    if(params.phone){
+        paramsArray[i++] = params.phone;
+        query = query + " and ui.phone = ? ";
     }
     if(params.type){
         paramsArray[i++] = params.type;
