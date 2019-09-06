@@ -161,6 +161,10 @@
       "description":"product order version"
     },
     {
+      "name": "productOrderItem",
+      "description":"product orderItem version"
+    },
+    {
       "name": "productOrderPayment",
       "description": "productOrderPayment of log api"
     },
@@ -13232,6 +13236,54 @@
         "responses": {
           "400": {
             "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+
+    "/user/{userId}/productOrder/{productOrderId}/productOrderItem": {
+      "get": {
+        "tags": [
+          "productOrderItem"
+        ],
+        "summary": "select",
+        "description": " query by productOrderItem id look order",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "productOrderId",
+            "in": "path",
+            "description": "订单编号",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid token value or invalid user id"
           }
         }
       }

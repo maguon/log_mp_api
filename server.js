@@ -44,6 +44,7 @@ const coupon = require('./bl/Coupon');
 const userCoupon = require('./bl/UserCoupon');
 const commodity = require('./bl/Commodity');
 const productOrder = require('./bl/ProductOrder');
+const productOrderItem = require('./bl/ProductOrderItem');
 const productOrderPayment = require('./bl/ProductOrderPayment');
 const reminders = require('./bl/Reminders');
 const app = require('./bl/App');
@@ -473,6 +474,10 @@ const createServer=()=>{
     server.get('/api/admin/:adminId/productOrder',productOrder.getProductOrder);
     server.put({path:'/api/admin/:adminId/productOrder/:productOrderId/remark',contentType: 'application/json'},productOrder.updateRemark);
     server.put({path:'/api/admin/:adminId/productOrder/:productOrderId/status/:status',contentType: 'application/json'},productOrder.updateStatus);
+    /**
+     * product_order_item
+     */
+    server.get('/api/user/:userId/productOrder/:productOrderId/productOrderItem',productOrderItem.getUserProductOrderItem);
     /**
      * product_order_payment
      */

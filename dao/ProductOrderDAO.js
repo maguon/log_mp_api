@@ -5,28 +5,25 @@ const logger = serverLogger.createLogger('ProductOrderDAO.js');
 const db = require('../db/connection/MysqlDb.js');
 
 const getUserProductOrder = (params,callback) => {
-    let query = "select poi.*,poit.commodity_id,poit.commodity_name,poit.city_id,poit.city_name,poit.type " +
-        "from product_order_info poi " +
-        " left join product_order_item poit on poit.product_order_id = poi.id " +
-        "where poi.id is not null ";
+    let query = "select * from product_order_info where id is not null ";
     let paramsArray = [],i=0;
     if(params.userId){
         paramsArray[i++] = params.userId;
-        query = query + " and poi.user_id = ? ";
+        query = query + " and user_id = ? ";
     }
     if(params.orderId){
         paramsArray[i++] = params.orderId;
-        query = query + " and poi.id = ? ";
+        query = query + " and id = ? ";
     }
     if(params.status){
         paramsArray[i++] = params.status;
-        query = query + " and poi.status = ? "
+        query = query + " and status = ? "
     }
     if(params.paymentStatus){
         paramsArray[i++] = params.paymentStatus;
-        query = query + " and poi.payment_status = ? "
+        query = query + " and payment_status = ? "
     }
-    query = query + " order by poi.id asc";
+    query = query + " order by id desc";
     if(params.start && params.size){
         paramsArray[i++] = parseInt(params.start);
         paramsArray[i] = parseInt(params.size);
