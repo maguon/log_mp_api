@@ -13263,7 +13263,7 @@
             "name": "productOrderId",
             "in": "path",
             "description": "订单编号",
-            "required": false,
+            "required": true,
             "type": "integer"
           },
           {

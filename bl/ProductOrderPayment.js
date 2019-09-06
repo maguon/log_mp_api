@@ -543,6 +543,7 @@ const productRefundPaymentCallback=(req,res,next) => {
     };
     const updateRefundInfo =()=>{
         return new Promise((resolve, reject) => {
+            prepayIdJson.paymentRefundTime = moment().format("YYYY-MM-DD HH:MM:SS");
             productPaymentDAO.updateWechatRefundPayment(prepayIdJson,(error,result)=>{
                 if(error){
                     logger.error('productRefundPaymentCallback updateRefundInfo ' + error.message);

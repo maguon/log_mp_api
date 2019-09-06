@@ -173,8 +173,9 @@ const updateWechatRefundPayment = (params,callback) => {
     let query = " update product_payment_info set status=?";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.status;
-    if(params.status){
-        paramsArray[i++] = params.status;
+    if(params.paymentRefundTime){
+        paramsArray[i++] = params.paymentRefundTime;
+        query += ",payment_refund_time";
     }
     query += " where id = ? ";
     paramsArray[i] = params.productPaymentId;
