@@ -162,6 +162,19 @@ const updateImage = (req,res,next) => {
         }
     })
 }
+const updateProdImages = (req,res,next) => {
+    let params = req.params;
+    commodityDAO.updateProdImages(params,(error,result)=>{
+        if(error){
+            logger.error('updateProdImages ' + error.message);
+            resUtil.resetFailedRes(error,res,next);
+        }else{
+            logger.info('updateProdImages  ' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
+}
 const updateInfo = (req,res,next) => {
     let params = req.params;
     commodityDAO.updateInfo(params,(error,result)=>{
@@ -265,6 +278,7 @@ module.exports={
     getCommodityPage,
     addCommodity,
     updateImage,
+    updateProdImages,
     updateInfo,
     updateCommodity,
     updateStatus,

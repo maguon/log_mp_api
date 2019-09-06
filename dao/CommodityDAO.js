@@ -74,6 +74,16 @@ const updateImage = (params,callback) => {
         return callback(error,rows);
     });
 }
+const updateProdImages = (params,callback) => {
+    let query = " update commodity_info set pord_images = ?  where id = ?";
+    let paramsArray=[],i=0;
+    paramsArray[i++] = params.prodImages;
+    paramsArray[i] = params.commodityId;
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug(' updateProdImages ');
+        return callback(error,rows);
+    });
+}
 const updateInfo = (params,callback) => {
     let query = " update commodity_info set info = ?  where id = ?";
     let paramsArray=[],i=0;
@@ -140,6 +150,7 @@ module.exports = {
     getCommodity,
     addCommodity,
     updateImage,
+    updateProdImages,
     updateInfo,
     updateCommodity,
     updateStatus,

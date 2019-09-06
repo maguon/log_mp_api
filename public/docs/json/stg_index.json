@@ -12712,6 +12712,48 @@
         }
       }
     },
+    "/admin/{adminId}/commodity/{commodityId}/prodImages": {
+      "put": {
+        "tags": [
+          "commodity"
+        ],
+        "summary": "update",
+        "description": "admin update commodity prodImages version",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "admin Id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "commodityId",
+            "in": "path",
+            "description": "commodity Id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "prodImages",
+            "in": "body",
+            "description": "prodImages",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/prodImages"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
     "/admin/{adminId}/commodity/{commodityId}/info": {
       "put": {
         "tags": [
@@ -15552,6 +15594,17 @@
       },
       "xml": {
         "name": "image"
+      }
+    },
+    "prodImages": {
+      "type": "object",
+      "properties": {
+        "prodImages": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "prodImages"
       }
     },
     "info": {
