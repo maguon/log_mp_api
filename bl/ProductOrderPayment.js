@@ -278,7 +278,7 @@ const updateOrderMsgByPrice = (params,callback)=>{
             logger.info("params.status:"+ params.status);
             if(commodityInfo.quantity){
                 logger.info("commodityInfo.quantity:"+ commodityInfo.quantity);
-                if(commodityInfo.quantity == commodityInfo.saled_quantity){
+                if(commodityInfo.quantity <= commodityInfo.saled_quantity ){
                     params.status = sysConsts.COMMODITY.status.reserved;//已预订
                 }else{
                     params.status = sysConsts.COMMODITY.status.onSale;//在售
