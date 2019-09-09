@@ -56,7 +56,7 @@ const getUserProductOrderAndItem = (params,callback) => {
         paramsArray[i++] = params.paymentStatus;
         query = query + " and poi.payment_status = ? "
     }
-    query = query + " order by poi.id asc";
+    query = query + " order by poi.id desc";
     if(params.start && params.size){
         paramsArray[i++] = parseInt(params.start);
         paramsArray[i] = parseInt(params.size);
