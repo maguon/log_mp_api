@@ -419,13 +419,14 @@ const wechatRefund = (req,res,next)=>{
             let result = getRefundParams(req,res,params);
             let httpsReq = https.request(result.options,(result)=>{
                 let data = "";
-                logger.info(result);
+                //logger.info(result);
                 result.on('data',(d)=>{
                     data += d;
                 }).on('end',()=>{
                     xmlParser.parseString(data,(err,result)=>{
                         let resString = JSON.stringify(result);
                         let evalJson = eval('(' + resString + ')');
+                        logger.info(evalJson);
                         if(evalJson.xml.return_code == 'FAIL'){
                             //FAIL 提交业务失败
                             productPaymentDAO.delRefundFail(params,(error,result)=>{
