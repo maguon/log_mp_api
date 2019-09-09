@@ -271,7 +271,9 @@ const updateOrderMsgByPrice = (params,callback)=>{
     const updateCommodity =(commodityInfo)=>{
         return new Promise((resolve, reject)=>{
             commodityInfo.saled_quantity = commodityInfo.saled_quantity + 1;
-            params.saledQuantity = commodityInfo.saled_quantity
+            params.saledQuantity = commodityInfo.saled_quantity;
+            logger.info("params:"+ params);
+            logger.info("commodityInfo:"+ commodityInfo);
             if(commodityInfo.quantity){
                 if(commodityInfo.quantity == commodityInfo.saled_quantity){
                     params.status = sysConsts.COMMODITY.status.reserved;//已预订
@@ -322,11 +324,11 @@ const productWechatPaymentCallback=(req,res,next) => {
             return new Promise((resolve, reject) => {
                 productPaymentDAO.getPaymentByOrderId({productOrderId:prepayIdJson.productOrderId},(error,rows)=>{
                     if(error){
-                        logger.error('wechatPaymentCallback getPaymentInfo ' + error.message);
+                        logger.error('productWechatPaymentCallback getPaymentInfo ' + error.message);
                         reject({err:error});
                     }else{
                         if(rows && rows.length < 1){
-                            logger.warn('wechatPaymentCallback getPaymentInfo ' + 'This payment information is not available!');
+                            logger.warn('productWechatPaymentCallback getPaymentInfo ' + 'This payment information is not available!');
                             reject({msg:sysMsg.PRODUCT_PAYMENT_ID_ERROR});
                         }else{
                             prepayIdJson.productPaymentId = rows[0].id;
@@ -346,10 +348,10 @@ const productWechatPaymentCallback=(req,res,next) => {
                 }
                 productPaymentDAO.updateWechatPayment(prepayIdJson,(error,result)=>{
                     if(error){
-                        logger.error('wechatPaymentCallback updatePaymentInfo ' + error.message);
+                        logger.error('productWechatPaymentCallback updatePaymentInfo ' + error.message);
                         reject({err:error});
                     }else{
-                        logger.info('wechatPaymentCallback updatePaymentInfo ' + 'success');
+                        logger.info('productWechatPaymentCallback updatePaymentInfo ' + 'success');
                         resolve();
                     }
                 });
@@ -363,10 +365,10 @@ const productWechatPaymentCallback=(req,res,next) => {
                 }
                 updateOrderMsgByPrice(params,(error,result)=>{
                     if (error){
-                        logger.error('wechatPaymentCallback updateProductOrder ' + error.message);
+                        logger.error('productWechatPaymentCallback updateProductOrder ' + error.message);
                         resUtil.resInternalError(error, res, next);
                     } else {
-                        logger.info('wechatPaymentCallback updateProductOrder ' + 'success');
+                        logger.info('productWechatPaymentCallback updateProductOrder ' + 'success');
                         resUtil.resetUpdateRes(res,result,null);
                         return next();
                     }
