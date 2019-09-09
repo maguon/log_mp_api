@@ -166,7 +166,10 @@ const updateProductOrder = (params,callback) => {
         query += " ,earnest_money = ?";
         paramsArray[i++] = params.earnestMoney;
     }
-    paramsArray[i++] = params.paymentStatus;
+    if(params.paymentStatus){
+        query += " ,payment_status = ?";
+        paramsArray[i++] = params.paymentStatus;
+    }
     query += " where id = ?";
     paramsArray[i] = params.productOrderId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
