@@ -5,18 +5,19 @@ const logger = serverLogger.createLogger('ProductOrderItemDAO.js');
 const db = require('../db/connection/MysqlDb.js');
 
 const getUserProductOrderItem = (params,callback) => {
-    let query = "select * from product_order_item " +
-        "where id is not null ";
+    let query = "select poi.*,ci.* from product_order_item poi" +
+        " left join commodity_info ci on ci.id = poi.commodity_id " +
+        "where poi.id is not null ";
     let paramsArray = [],i=0;
     if(params.productOrderId){
         paramsArray[i++] = params.productOrderId;
-        query = query + " and product_order_id = ? ";
+        query = query + " and poi.product_order_id = ? ";
     }
     if(params.status){
         paramsArray[i++] = params.status;
         query = query + " and poi.status = ? "
     }
-    query = query + " order by id asc";
+    query = query + " order by poi.id asc";
     if(params.start && params.size){
         paramsArray[i++] = parseInt(params.start);
         paramsArray[i] = parseInt(params.size);
