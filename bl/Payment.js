@@ -822,7 +822,12 @@ const wechatPaymentCallback=(req,res,next) => {
         logger.info("wechatPaymentCallback1666"+req.body);
         let sysType =  parseInt(evalJson.xml.out_trade_no.split("_")[2]);
         if(sysType == sysConsts.SYSTEM_ORDER_TYPE.type.product){
-            productOrderPayment.productWechatPaymentCallback(result);
+            let resultInfo = {
+                body: req.body,
+                result:result
+            }
+
+            productOrderPayment.productWechatPaymentCallback(resultInfo);
             return next();
         }
         let prepayIdJson = {
