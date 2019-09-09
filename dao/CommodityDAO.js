@@ -5,7 +5,7 @@ const logger = serverLogger.createLogger('CommodityDAO.js');
 const db = require('../db/connection/MysqlDb.js');
 
 const getCommodity = (params,callback) => {
-    let query = "select *from commodity_info where id is not null ";
+    let query = "select * from commodity_info where id is not null ";
     let paramsArray = [],i=0;
     if(params.commodityId){
         paramsArray[i++] = params.commodityId;
@@ -133,13 +133,14 @@ const updateShowStatus = (params,callback) => {
     });
 }
 const updateSaledQuantityOrStatus = (params,callback) => {
-    let query = " update commodity_info set saled_quantity = ?  where id = ?";
+    let query = " update commodity_info set saled_quantity = ?";
     let paramsArray=[],i=0;
     paramsArray[i++] = params.saledQuantity;
     if(params.status){
         query += ", status = ?";
         paramsArray[i++] = params.status;
     }
+    query += " where id = ?";
     paramsArray[i] = params.commodityId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug(' updateSaledQuantityOrStatus ');
