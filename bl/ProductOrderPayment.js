@@ -255,10 +255,7 @@ const updateOrderMsgByPrice = (params,callback)=>{
             commodityInfo.saled_quantity = commodityInfo.saled_quantity + 1;
             params.saledQuantity = commodityInfo.saled_quantity;
             params.commodityId = commodityId;
-            logger.info("params.saledQuantity:"+ params.saledQuantity);
-            logger.info("params.status:"+ params.status);
             if(commodityInfo.quantity){
-                logger.info("commodityInfo.quantity:"+ commodityInfo.quantity);
                 if(commodityInfo.quantity <= commodityInfo.saled_quantity ){
                     params.status = sysConsts.COMMODITY.status.reserved;//已预订
                 }else{
@@ -405,7 +402,7 @@ const wechatRefund = (req,res,next)=>{
     const addPaymentRefund =()=>{
         return new Promise((resolve, reject) => {
             params.type = sysConsts.PRODUCT_PAYMENT.type.refund;
-            productPaymentDAO.addWechatRefund(params,(error,result)=>{
+            productPaymentDAO.addRefund(params,(error,result)=>{
                 if(error){
                     logger.error('wechatRefund addPaymentRefund ' + error.message);
                     reject({err:error});

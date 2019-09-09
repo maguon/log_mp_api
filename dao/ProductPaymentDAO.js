@@ -142,7 +142,7 @@ const addPayment = (params,callback) => {
     })
 }
 const addRefund = (params,callback) => {
-    let query = " insert into product_payment_info(admin_id,user_id,date_id,order_id,wx_order_id,type,p_id,total_fee) values(?,?,?,?,?,?,?,?)";
+    let query = " insert into product_payment_info(admin_id,user_id,date_id,product_order_id,wx_order_id,type,p_id,total_fee) values(?,?,?,?,?,?,?,?)";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.adminId;
     paramsArray[i++] = params.userId;
