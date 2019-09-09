@@ -426,7 +426,8 @@ const wechatRefund = (req,res,next)=>{
                     xmlParser.parseString(data,(err,result)=>{
                         let resString = JSON.stringify(result);
                         let evalJson = eval('(' + resString + ')');
-                        logger.info(evalJson);
+                        logger.info("evalJson:"+evalJson);
+                        logger.info("evalJson.xml.return_code:"+evalJson.xml.return_code);
                         if(evalJson.xml.return_code == 'FAIL'){
                             //FAIL 提交业务失败
                             productPaymentDAO.delRefundFail(params,(error,result)=>{
