@@ -272,14 +272,15 @@ const updateOrderMsgByPrice = (params,callback)=>{
         return new Promise((resolve, reject)=>{
             commodityInfo.saled_quantity = commodityInfo.saled_quantity + 1;
             params.saledQuantity = commodityInfo.saled_quantity;
-            logger.info("params:"+ params);
+            logger.info("params.saledQuantity:"+ params.saledQuantity);
+            logger.info("params.status:"+ params.status);
             logger.info("commodityInfo:"+ commodityInfo);
             if(commodityInfo.quantity){
                 if(commodityInfo.quantity == commodityInfo.saled_quantity){
                     params.status = sysConsts.COMMODITY.status.reserved;//已预订
                 }
             }
-            commodityDAO.updateSaledQuantityOrStatus(commodityInfo,(error,result)=>{
+            commodityDAO.updateSaledQuantityOrStatus(params,(error,result)=>{
                 if(error){
                     logger.error(' updateOrderMsgByPrice updateCommodity ' + error.message);
                     reject({err:error});
@@ -304,7 +305,7 @@ const updateOrderMsgByPrice = (params,callback)=>{
         })
 }
 const productWechatPaymentCallback=(req,res,next) => {
-        let result = req;
+        let result = req.result;
         let resString = JSON.stringify(result);
         let evalJson = eval('(' + resString + ')');
         logger.info("wechatPaymentCallback1.toString: "+resString);
