@@ -22,6 +22,19 @@ const getUserProductOrder = (req,res,next) => {
         }
     })
 }
+const getUserProductOrderAndItem = (req,res,next) => {
+    let params = req.params;
+    productOrderDAO.getUserProductOrderAndItem(params,(error,rows)=>{
+        if(error){
+            logger.error(' getUserProductOrderAndItem ' + error.message);
+            resUtil.resInternalError(error,res,next);
+        }else{
+            logger.info(' getUserProductOrderAndItem ' + 'success');
+            resUtil.resetQueryRes(res,rows,null);
+            return next();
+        }
+    })
+}
 const getProductOrder = (req,res,next) => {
     let params = req.params;
     productOrderDAO.getProductOrder(params,(error,rows)=>{
@@ -185,6 +198,7 @@ const updateStatus = (req,res,next) => {
 }
 module.exports={
     getUserProductOrder,
+    getUserProductOrderAndItem,
     getProductOrder,
     addUserProductOrder,
     updateStatus,

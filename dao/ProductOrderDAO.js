@@ -34,6 +34,39 @@ const getUserProductOrder = (params,callback) => {
         callback(error,rows);
     })
 }
+const getUserProductOrderAndItem = (params,callback) => {
+    let query = "select poi.*,poit.commodity_id,poit.commodity_name,poit.city_id,poit.city_name,poit.type " +
+        "from product_order_info poi " +
+        " left join product_order_item poit on poit.product_order_id = poi.id " +
+        "where poi.id is not null ";
+    let paramsArray = [],i=0;
+    if(params.userId){
+        paramsArray[i++] = params.userId;
+        query = query + " and poi.user_id = ? ";
+    }
+    if(params.orderId){
+        paramsArray[i++] = params.orderId;
+        query = query + " and poi.id = ? ";
+    }
+    if(params.status){
+        paramsArray[i++] = params.status;
+        query = query + " and poi.status = ? "
+    }
+    if(params.paymentStatus){
+        paramsArray[i++] = params.paymentStatus;
+        query = query + " and poi.payment_status = ? "
+    }
+    query = query + " order by poi.id asc";
+    if(params.start && params.size){
+        paramsArray[i++] = parseInt(params.start);
+        paramsArray[i] = parseInt(params.size);
+        query = query + " limit ?,? ";
+    }
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('getUserProductOrderAndItem');
+        callback(error,rows);
+    })
+}
 const getProductOrder = (params,callback) => {
     let query = "select poi.*,poit.commodity_id,poit.commodity_name,poit.city_id,poit.city_name,poit.type,ui.user_name,ui.phone " +
         "from product_order_info poi " +
@@ -204,6 +237,7 @@ const updateRealPaymentPrice =(params,callback) => {
 }
 module.exports = {
     getUserProductOrder,
+    getUserProductOrderAndItem,
     getProductOrder,
     addProductOrder,
     updateProductOrder,
