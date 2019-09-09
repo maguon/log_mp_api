@@ -158,11 +158,19 @@ const addRefund = (params,callback) => {
     })
 }
 const updateWechatPayment = (params,callback) => {
-    let query = " update product_payment_info set status=?,transaction_id=?,payment_time=? where id = ? ";
+    let query = " update product_payment_info set status=?";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.status;
     paramsArray[i++] = params.transactionId;
-    paramsArray[i++] = params.paymentTime;
+    if(params.transactionId){
+        paramsArray[i++] = params.transactionId;
+        query += ",transaction_id=?";
+    }
+    if(params.paymentTime){
+        paramsArray[i++] = params.paymentTime;
+        query += ",payment_time= FROM_UNIXTIME(?)";
+    }
+    query += " where id = ? ";
     paramsArray[i] = params.productPaymentId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('updateWechatPayment');
@@ -175,7 +183,7 @@ const updateWechatRefundPayment = (params,callback) => {
     paramsArray[i++] = params.status;
     if(params.paymentRefundTime){
         paramsArray[i++] = params.paymentRefundTime;
-        query += ",payment_refund_time";
+        query += ",payment_refund_time=?";
     }
     query += " where id = ? ";
     paramsArray[i] = params.productPaymentId;
