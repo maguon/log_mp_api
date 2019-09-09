@@ -219,11 +219,7 @@ const updateOrderMsgByPrice = (params,callback)=>{
     }
     const updateProductOrder =()=>{
         return new Promise((resolve, reject) => {
-            if (payment_type == sysConsts.PRODUCT_PAYMENT.type.refund){
-                params.paymentStatus = sysConsts.PRODUCT_ORDER.payment_status.refund;
-            }else{
-                params.paymentStatus = sysConsts.PRODUCT_ORDER.payment_status.complete;
-            }
+            params.paymentStatus = sysConsts.PRODUCT_ORDER.payment_status.complete;
             params.realPaymentPrice = realPaymentPrice;
             productOrderDAO.updateStatusOrPrice(params,(error,result)=>{
                 if(error){
