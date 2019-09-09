@@ -204,7 +204,7 @@ const updateStatus = (params,callback) => {
         paramsArray[i++] = params.cancelTime;
     }
     paramsArray[i] = params.productOrderId;
-    query += "where id = ?";
+    query += " where id = ?";
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug(' updateStatus ');
         return callback(error,rows);
@@ -222,7 +222,7 @@ const updateStatusOrPrice = (params,callback) => {
         paramsArray[i++] = params.realPaymentPrice;
     }
     paramsArray[i] = params.productOrderId;
-    query += "where id = ?";
+    query += " where id = ?";
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug(' updateStatusOrPrice ');
         return callback(error,rows);
