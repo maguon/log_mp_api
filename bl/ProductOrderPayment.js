@@ -327,7 +327,7 @@ const productWechatPaymentCallback=(req,res,next) => {
                 if (prepayIdJson.type == sysConsts.PRODUCT_PAYMENT.type.refund){
                     prepayIdJson.totalFee = -prepayIdJson.totalFee;
                 }else{
-                    prepayIdJson.paymentTime = moment().format("YYYY-MM-DD HH:MM:SS");
+                    prepayIdJson.paymentTime = new Date();
                 }
                 productPaymentDAO.updateWechatPayment(prepayIdJson,(error,result)=>{
                     if(error){
@@ -531,7 +531,7 @@ const productRefundPaymentCallback=(req,res,next) => {
     };
     const updateRefundInfo =()=>{
         return new Promise((resolve, reject) => {
-            prepayIdJson.paymentRefundTime = moment().format("YYYY-MM-DD HH:MM:SS");
+            prepayIdJson.paymentRefundTime = new Date();
             productPaymentDAO.updateWechatRefundPayment(prepayIdJson,(error,result)=>{
                 if(error){
                     logger.error('productRefundPaymentCallback updateRefundInfo ' + error.message);

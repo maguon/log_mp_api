@@ -29,7 +29,7 @@ const addUserCoupon = (req,res,next)=>{
 
         var time = new Date().getTime(); //得到毫秒数
         time = time + params.effectiveDays * 24 * 60 * 60 * 1000;
-        params.endDate = moment(time).format('YYYY-MM-DD HH:MM:SS');
+        params.endDate = new Date();
     }else{
         //日期
         params.effectiveDays = 0;

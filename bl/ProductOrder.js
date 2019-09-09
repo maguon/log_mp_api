@@ -175,15 +175,15 @@ const updateStatus = (req,res,next) => {
     }
     if(params.status == sysConst.PRODUCT_ORDER.status.shipped){
         //4.已发货
-        params.departureTime = moment().format("YYYY-MM-DD HH:MM:SS");
+        params.departureTime = new Date();
     }
     if(params.status == sysConst.PRODUCT_ORDER.status.cancelled){
         //6.已取消
-        params.cancelTime = moment().format("YYYY-MM-DD HH:MM:SS");
+        params.cancelTime = new Date();
     }
     if(params.status == sysConst.PRODUCT_ORDER.status.served){
         //8.已送达
-        params.arriveTime = moment().format("YYYY-MM-DD HH:MM:SS");
+        params.arriveTime = new Date();
     }
     productOrderDAO.updateStatus(params,(error,result)=>{
         if(error){
