@@ -261,6 +261,7 @@ const updateOrderMsgByPrice = (params,callback)=>{
                     logger.info(' getCommodity ' + 'success');
                     if(rows.length>0){
                         resolve(rows[0]);
+                        logger.info("commodityId:"+ commodityId);
                     }else{
                         reject({msg:sysMsg.COMMODITY_ID_ERROR});
                     }
@@ -272,12 +273,15 @@ const updateOrderMsgByPrice = (params,callback)=>{
         return new Promise((resolve, reject)=>{
             commodityInfo.saled_quantity = commodityInfo.saled_quantity + 1;
             params.saledQuantity = commodityInfo.saled_quantity;
+            params.commodityId = commodityId;
             logger.info("params.saledQuantity:"+ params.saledQuantity);
             logger.info("params.status:"+ params.status);
-            logger.info("commodityInfo:"+ commodityInfo);
             if(commodityInfo.quantity){
+                logger.info("commodityInfo.quantity:"+ commodityInfo.quantity);
                 if(commodityInfo.quantity == commodityInfo.saled_quantity){
                     params.status = sysConsts.COMMODITY.status.reserved;//已预订
+                }else{
+                    params.status = sysConsts.COMMODITY.status.onSale;//在售
                 }
             }
             commodityDAO.updateSaledQuantityOrStatus(params,(error,result)=>{
