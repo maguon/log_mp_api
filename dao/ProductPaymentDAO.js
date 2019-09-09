@@ -167,7 +167,7 @@ const updateWechatPayment = (params,callback) => {
     }
     if(params.paymentTime){
         paramsArray[i++] = params.paymentTime;
-        query += ",payment_time= FROM_UNIXTIME(?)";
+        query += ",payment_time= ?";
     }
     query += " where id = ? ";
     paramsArray[i] = params.productPaymentId;
