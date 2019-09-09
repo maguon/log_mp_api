@@ -161,7 +161,6 @@ const updateWechatPayment = (params,callback) => {
     let query = " update product_payment_info set status=?";
     let paramsArray = [],i=0;
     paramsArray[i++] = params.status;
-    paramsArray[i++] = params.transactionId;
     if(params.transactionId){
         paramsArray[i++] = params.transactionId;
         query += ",transaction_id=?";
