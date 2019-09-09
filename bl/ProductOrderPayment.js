@@ -219,25 +219,26 @@ const updateOrderMsgByPrice = (params,callback)=>{
     }
     const updateProductOrder =()=>{
         return new Promise((resolve, reject) => {
-            if(payment_type = sysConsts.PRODUCT_ORDER.type.whole){
+            if(payment_type == sysConsts.PRODUCT_ORDER.type.whole){
                 //全款购车
                 if (actTransPrice <= paymentPrice){
                     params.paymentStatus = sysConsts.PRODUCT_ORDER.payment_status.complete;
                 }
             }
-            if(payment_type = sysConsts.PRODUCT_ORDER.type.earnestMoney){
+            if(payment_type == sysConsts.PRODUCT_ORDER.type.earnestMoney){
                 //定金购车
                 if (earnestMoney <= paymentPrice){
                     params.paymentStatus = sysConsts.PRODUCT_ORDER.payment_status.complete;
                 }
             }
-            if(payment_type = sysConsts.PRODUCT_ORDER.type.arrivalOfGoods){
+            if(payment_type == sysConsts.PRODUCT_ORDER.type.arrivalOfGoods){
                 //货到付款
                 params.paymentStatus = sysConsts.PRODUCT_ORDER.payment_status.complete;
             }
-            if (params.type = sysConsts.PRODUCT_PAYMENT.type.refund){
+            if (params.type == sysConsts.PRODUCT_PAYMENT.type.refund){
                 params.paymentStatus = sysConsts.PRODUCT_ORDER.payment_status.refund;
             }
+
             params.realPaymentPrice = realPaymentPrice;
             productOrderDAO.updateStatusOrPrice(params,(error,result)=>{
                 if(error){
