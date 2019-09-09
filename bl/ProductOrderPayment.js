@@ -339,7 +339,7 @@ const productWechatPaymentCallback=(req,res,next) => {
         }
         const updatePaymentInfo =()=>{
             return new Promise((resolve, reject) => {
-                if (prepayIdJson.type = sysConsts.PRODUCT_PAYMENT.type.refund){
+                if (prepayIdJson.type == sysConsts.PRODUCT_PAYMENT.type.refund){
                     prepayIdJson.totalFee = -prepayIdJson.totalFee;
                 }else{
                     prepayIdJson.paymentTime = moment().format("YYYY-MM-DD HH:MM:SS");
