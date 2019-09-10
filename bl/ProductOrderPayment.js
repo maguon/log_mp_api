@@ -420,7 +420,8 @@ const wechatRefund = (req,res,next)=>{
             let result = getRefundParams(req,res,params);
             let httpsReq = https.request(result.options,(result)=>{
                 let data = "";
-                //logger.info(result);
+                //返回结果
+                logger.info(result);
                 result.on('data',(d)=>{
                     data += d;
                 }).on('end',()=>{
@@ -524,7 +525,7 @@ const getRefundParams = (req,res,params)=>{
         //+ "&openid="+params.openid
         + "&out_refund_no="+params.refundId
         + "&out_trade_no="+params.wxOrderId
-        + "&refund_fee="+ (-params.refundFee) * 100
+        + "&refund_fee="+ params.refundFee * 100
         + "&total_fee=" +params.totalFee * 100
         + "&key="+sysConfig.wechatConfig.paymentKey;
     let signByMd = encrypt.encryptByMd5NoKey(signStr);
