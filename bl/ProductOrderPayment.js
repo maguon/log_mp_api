@@ -393,7 +393,7 @@ const wechatRefund = (req,res,next)=>{
                         logger.info('rows[0].wx_order_id :' + rows[0].wx_order_id);
                         logger.info('rows[0].total_fee :' + rows[0].total_fee);
                         logger.info('rows[0].total_fee :' + rows[0].id);
-                        logger.info('rows[0].total_fee :' + rows[0].user_id);
+                        logger.info('rows[0].user_id :' + rows[0].user_id);
                         params.totalFee = rows[0].total_fee;
                         params.paymentId = rows[0].id;
                         params.wxOrderId = rows[0].wx_order_id;
@@ -423,6 +423,7 @@ const wechatRefund = (req,res,next)=>{
             params.refundId = refundInfo.insertId;
             logger.info('params.refundId:' + params.refundId);
             let result = getRefundParams(req,res,params);
+            logger.info('result.options:' + result.options);
             let httpsReq = https.request(result.options,(result)=>{
                 let data = "";
                 //返回结果
