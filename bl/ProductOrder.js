@@ -14,7 +14,7 @@ const getPaymentStatus =(req,res,next)=>{
     let resMsg ={
         paymentFlag:true
     }
-    productOrderDAO.getPaymentStatus(params,(error,rows)=>{
+    productOrderDAO.getOrderPaymentStatus(params,(error,rows)=>{
         if(error){
             logger.error('getPaymentStatus ' + error.message);
             resUtil.resInternalError(error, res, next);

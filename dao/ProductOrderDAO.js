@@ -4,7 +4,7 @@ const serverLogger = require('../util/ServerLogger.js');
 const logger = serverLogger.createLogger('ProductOrderDAO.js');
 const db = require('../db/connection/MysqlDb.js');
 
-const getPaymentStatus = (params,callback) => {
+const getOrderPaymentStatus = (params,callback) => {
     let query = " select ci.type "
         +" from product_order_item poi"
         +" left join  product_order_info poin on poin.id = poi.product_order_id"
@@ -260,7 +260,7 @@ const updateRealPaymentPrice =(params,callback) => {
     })
 }
 module.exports = {
-    getPaymentStatus,
+    getOrderPaymentStatus,
     getUserProductOrder,
     getUserProductOrderAndItem,
     getProductOrder,
