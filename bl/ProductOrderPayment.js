@@ -423,7 +423,6 @@ const wechatRefund = (req,res,next)=>{
             params.refundId = refundInfo.insertId;
             logger.info('params.refundId:' + params.refundId);
             let result = getRefundParams(req,res,params);
-            logger.info('result.options:' + result.options);
             let httpsReq = https.request(result.options,(result)=>{
                 let data = "";
                 //返回结果
@@ -563,6 +562,8 @@ const getRefundParams = (req,res,params)=>{
     }
     result.reqBody = reqBody;
     result.options = options;
+    logger.info('reqBody:' + reqBody);
+    logger.info('options:' + options);
     return result;
 }
 const productRefundPaymentCallback=(req,res,next) => {
