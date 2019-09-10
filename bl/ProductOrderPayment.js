@@ -290,8 +290,8 @@ const productWechatPaymentCallback=(req,res,next) => {
         let result = req.result;
         let resString = JSON.stringify(result);
         let evalJson = eval('(' + resString + ')');
-        logger.info("wechatPaymentCallback1.toString: "+resString);
-        logger.info("wechatPaymentCallback1.body: "+req.body);
+        logger.info("wechatPaymentCallback177.toString: "+resString);
+        logger.info("wechatPaymentCallback17777.body: "+req.body);
         let prepayIdJson = {
             nonceStr: evalJson.xml.nonce_str,
             openid: evalJson.xml.openid,
