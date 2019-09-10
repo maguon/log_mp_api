@@ -374,6 +374,7 @@ const wechatRefund = (req,res,next)=>{
     let ourString = encrypt.randomString();
     params.nonceStr = ourString;
     let xmlParser = new xml2js.Parser({explicitArray : false, ignoreAttrs : true});
+    let refundUrl = sysConfig.wechatConfig.notifyUrl;
     let myDate = new Date();
     params.dateId = moment(myDate).format('YYYYMMDD');
 
@@ -426,29 +427,64 @@ const wechatRefund = (req,res,next)=>{
                     xmlParser.parseString(data,(err,result)=>{
                         let resString = JSON.stringify(result);
                         let evalJson = eval('(' + resString + ')');
-                        logger.info("evalJson:"+evalJson);
-                        logger.info("evalJson.xml.return_code:"+evalJson.xml.return_code);
+
                         if(evalJson.xml.return_code == 'FAIL'){
-                            //FAIL 提交业务失败
-                            productPaymentDAO.delRefundFail(params,(error,result)=>{
-                                if(error){
-                                    logger.error('wechatRefund httpReques delRefundFail ' + error.message);
-                                    reject({err:error});
-                                }else{
-                                    logger.info('wechatRefund httpReques delRefundFail ' + 'success');
-                                    resolve();
-                                }
-                            });
-                            logger.warn('wechatRefund httpReques delRefundFail Refund failure: '+evalJson.xml.err_code_des);
-                            resUtil.resetFailedRes(res,evalJson.xml.err_code_des,null);
-                        }else{
-                            //SUCCESS退款申请接收成功
-                            logger.info("wechatRefund httpReques delRefundFail evalJson.xml.result_code: "+evalJson.xml.result_code);
-                            logger.warn('wechatRefund httpReques delRefundFail Refund success!');
+                            productPaymentDAO.delRefundFail(params,(error,result)=>{});
+                            logger.warn('Refund failure!');
+                            logger.warn(evalJson.xml);
+                            resUtil.resetFailedRes(res,evalJson.xml,null);
+                        }else {
+                            //退款成功
+                            params.paymentRefundId = result.insertId;
+                            new Promise((resolve,reject)=>{
+                                params.status = sysConst.REFUND_STATUS.refunded;
+                                //更新退款申请信息
+                                params.paymentRefundTime = new Date();
+                                productPaymentDAO.updateWechatRefundPayment(params,(error,result)=>{
+                                    if(error){
+                                        logger.error('wechatRefund updateRefund ' + error.message);
+                                        reject(error);
+                                    }else{
+                                        logger.info('wechatRefund updateRefund ' + 'success');
+                                        resolve();
+                                    }
+                                });
+                            }).then(()=>{
+                                new Promise((resolve,reject)=> {
+                                    //获取付款信息
+                                    productPaymentDAO.getOrderRealPayment({productOrderId:params.productOrderId}, (error, rows) => {
+                                        if (error) {
+                                            logger.error('getRealPaymentPrice ' + error.message);
+                                            ///resUtil.resInternalError(error, res, next);
+                                            reject(error);
+                                        } else {
+                                            logger.info('getRealPaymentPrice ' + 'success');
+                                            params.realPaymentPrice = rows[0].real_payment ;
+                                            resolve();
+                                        }
+                                    })
+                                }).then(()=>{
+                                    //更新订单支付金额
+                                    productOrderDAO.updateRealPaymentPrice({realPaymentPrice:params.realPaymentPrice,productOrderId:params.productOrderId}, (error, result) => {
+                                        if (error) {
+                                            logger.error('updateRealPaymentPrice ' + error.message);
+                                            //resUtil.resInternalError(error, res, next);
+                                        } else {
+                                            logger.info('updateRealPaymentPrice ' + 'success');
+                                            //resUtil.resetUpdateRes(res, result, null);
+                                            return next();
+                                        }
+                                    })
+                                })
+
+
+                            })
+                            resUtil.resetQueryRes(res,evalJson.xml,null);
                         }
+                        return next();
                     });
-                    res.send(200,data);
-                    return next();
+
+
                 }).on('error', (e)=>{
                     logger.info('wechatRefund httpReques error:'+ e.message);
                     res.send(500,e);
@@ -478,7 +514,8 @@ const wechatRefund = (req,res,next)=>{
 };
 const getRefundParams = (req,res,params)=>{
     let result = {};
-    let refundUrl = 'https://stg.myxxjs.com/api/wechatRefund';
+    // let refundUrl = 'https://stg.myxxjs.com/api/wechatRefund';
+    let refundUrl = sysConfig.wechatConfig.notifyUrl;
     let signStr =
         "appid="+sysConfig.wechatConfig.mpAppId
         + "&mch_id="+sysConfig.wechatConfig.mchId
@@ -499,7 +536,7 @@ const getRefundParams = (req,res,params)=>{
         //'<openid>'+params.openid+'</openid>' +
         '<out_refund_no>'+params.refundId +'</out_refund_no>' +
         '<out_trade_no>'+params.wxOrderId +'</out_trade_no>' +
-        '<refund_fee>'+(-params.refundFee) * 100+'</refund_fee>' +
+        '<refund_fee>'+params.refundFee * 100+'</refund_fee>' +
         '<total_fee>'+params.totalFee * 100+'</total_fee>' +
         '<sign>'+signByMd+'</sign></xml>';
     let url="/secapi/pay/refund";
