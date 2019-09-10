@@ -57,100 +57,98 @@ const addUserProductOrder = (req,res,next) =>{
     params.paymentStatus = sysConst.PRODUCT_ORDER.payment_status.unPaid;//支付状态（1:未支付 3.支付完成 4.已退款）
     params.status = sysConst.PRODUCT_ORDER.status.tpShipped;//订单状态（1:待发货 4:已发货 6:已取消  8:已送达 ）
     params.dateId = moment().format("YYYYMMDD");
-
+    let commodityList = {};
     let resultCallback;
-    const addProductOrder =()=>{
-        return new Promise((resolve, reject)=>{
-            productOrderDAO.addProductOrder(params,(error,result)=>{
-                if(error){
-                    logger.error('addUserProductOrder addProductOrder ' + error.message);
-                    reject({err:error});
-                }else{
-                    logger.info('addUserProductOrder addProductOrder ' + 'success');
-                    resultCallback = result;
-                    resolve(result.insertId);
-                }
-            });
+    let ProductOrderId;
+    new Promise((resolve, reject) => {
+        productOrderDAO.addProductOrder(params, (error, result) => {
+            if (error) {
+                logger.error('addUserProductOrder addProductOrder ' + error.message);
+                reject(error);
+            } else {
+                logger.info('addUserProductOrder addProductOrder ' + 'success');
+                resultCallback = result;
+                ProductOrderId = result.insertId;
+                resolve();
+            }
         });
-    }
-    const getCommeodiy =(ProductOrderId)=>{
-        return new Promise((resolve, reject) => {
-            let orderItemList = params.productOrderItemArray;
-                commodityDAO.getCommodity({commodityId:orderItemList[0].commodityId},(error,rows)=>{
-                    if(error){
-                        logger.error(' addUserProductOrder getCommeodiy ' + error.message);
-                        reject({err:error});
-                    }else{
-                        logger.info(' addUserProductOrder getCommeodiy ' + 'success');
-                        if(rows.length){
-                            let commodityList = rows[0];
-                            orderItemList[0].commodityName = commodityList.commodity_name;//商品名称
-                            orderItemList[0].cityId = commodityList.city_id;//城市编号
-                            orderItemList[0].cityName = commodityList.city_name;//城市名称
-                            orderItemList[0].type = commodityList.type;//购付类型
-                            orderItemList[0].originalPrice = commodityList.original_price;
-                            orderItemList[0].actualPrice = commodityList.actual_price;
-                            orderItemList[0].earnestMoney = commodityList.earnest_money;
+    }).then(() => {
+        let orderItemList = params.productOrderItemArray;
 
-                            oraTransPrice += commodityList.original_price;//原价
-                            actTransPrice += commodityList.actual_price;//售价
-                            earnestMoney += commodityList.earnest_money;//应付定金
-                            resolve(ProductOrderId);
-                        }else{
-                            reject({msg:sysMsg.COMMODITY_ID_ERROR});
+        for (let i in orderItemList) {
+            new Promise((resolve, reject) => {
+                commodityDAO.getCommodity({commodityId: orderItemList[i].commodityId}, (error, rows) => {
+                    if (error) {
+                        logger.error(' addUserProductOrder getCommodity ' + error.message);
+                        reject(error);
+                    } else {
+                        logger.info(' addUserProductOrder getCommodity ' + 'success');
+                        if (rows.length) {
+                            commodityList = rows[0];
+                            resolve();
+                        } else {
+                            reject({msg: sysMsg.COMMODITY_ID_ERROR});
                         }
                     }
+                });
+            }).then(() => {
+                 new Promise((resolve) => {
+                    orderItemList[i].commodityName = commodityList.commodity_name;//商品名称
+                    orderItemList[i].cityId = commodityList.city_id;//城市编号
+                    orderItemList[i].cityName = commodityList.city_name;//城市名称
+                    orderItemList[i].type = commodityList.type;//购付类型
+                    orderItemList[i].originalPrice = commodityList.original_price;
+                    orderItemList[i].actualPrice = commodityList.actual_price;
+                    orderItemList[i].earnestMoney = commodityList.earnest_money;
+
+                    oraTransPrice += commodityList.original_price;//原价
+                    actTransPrice += commodityList.actual_price;//售价
+                    earnestMoney += commodityList.earnest_money;//应付定金
+                    resolve();
+                }).then(() => {
+                    new Promise((resolve,reject)=>{
+                        orderItemList[i].productOrderId = ProductOrderId;//订单编号
+                        productOrderItemDAO.addProductOrderItem(orderItemList[i], (error, result) => {
+                            if (error) {
+                                logger.error('addUserProductOrder addProductOrderItem commodityId:' + orderItemList[i].commodityId + error.message);
+                                reject(error);
+                            } else {
+                                logger.info('addUserProductOrder addProductOrderItem commodityId:' + orderItemList[i].commodityId + ' success');
+                                resolve();
+                            }
+                        });
+                    }).then(()=>{
+                        params.oraTransPrice = oraTransPrice;
+                        params.actTransPrice = actTransPrice;
+                        params.earnestMoney = earnestMoney;
+                        params.productOrderId =  ProductOrderId;
+
+                        productOrderDAO.updateProductOrder(params,(error,result)=>{
+                            if(error){
+                                logger.error('addUserProductOrder updateProductOrder ' + error.message);
+                                resUtil.resetFailedRes(error,res,next);
+                            }else{
+                                logger.info('addUserProductOrder updateProductOrder  ' + 'success');
+                                // resUtil.resetCreateRes(res,resultCallback,null);
+                                // return next();
+                            }
+                        })
+                    })
+
                 })
-
-        });
-    }
-    const addProductOrderItem =(ProductOrderId)=>{
-        return new Promise((resolve, reject) => {
-            let orderItemList = params.productOrderItemArray;
-            orderItemList[0].productOrderId = ProductOrderId;//订单编号
-            productOrderItemDAO.addProductOrderItem(orderItemList[0],(error,result)=>{
-                if(error){
-                    logger.error('addUserProductOrder addProductOrderItem commodityId:' + orderItemList[0].commodityId +error.message);
-                    reject({err:error})
-                }else{
-                    logger.info('addUserProductOrder addProductOrderItem commodityId:' + orderItemList[0].commodityId +' success');
-                    resolve(ProductOrderId);
-                }
-            });
-        });
-    }
-
-    const updateProductOrder =(ProductOrderId)=>{
-        return new Promise((resolve, reject) => {
-            params.oraTransPrice = oraTransPrice;
-            params.actTransPrice = actTransPrice;
-            params.earnestMoney = earnestMoney;
-            params.productOrderId =  ProductOrderId;
-
-            productOrderDAO.updateProductOrder(params,(error,result)=>{
-                if(error){
-                    logger.error('addUserProductOrder updateProductOrder ' + error.message);
-                    reject({err:error});
-                    resUtil.resetFailedRes(error,res,next);
-                }else{
-                    logger.info('addUserProductOrder updateProductOrder  ' + 'success');
-                    resUtil.resetCreateRes(res,resultCallback,null);
-                    return next();
-                }
             })
-        });
-    }
-    addProductOrder()
-        .then(getCommeodiy)
-        .then(addProductOrderItem)
-        .then(updateProductOrder)
-        .catch((reject)=>{
-            if(reject.err){
-                resUtil.resetFailedRes(res,reject.err);
-            }else{
-                resUtil.resetFailedRes(res,reject.msg);
+            if (i == orderItemList.length - 1) {
+                resUtil.resetCreateRes(res,resultCallback,null);
+                return next();
             }
-        })
+        }
+    }).catch((reject)=>{
+        if(reject.err){
+            resUtil.resetFailedRes(res,reject.err);
+        }else{
+            resUtil.resetFailedRes(res,reject.msg);
+        }
+     })
 }
 const updateRemark = (req,res,next) => {
     let params = req.params;
