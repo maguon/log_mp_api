@@ -13,7 +13,7 @@ const xml2js = require('xml2js');
 const encrypt = require('../util/Encrypt.js');
 const moment = require('moment/moment.js');
 const https = require('https');
-const sysConsts = require("../util/SystemConst");
+const sysConst = require("../util/SystemConst");
 const sysConfig = require("../config/SystemConfig");
 
 const wechatPayment =(req,res,next)=>{
