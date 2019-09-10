@@ -19,7 +19,7 @@ const sysConfig = require("../config/SystemConfig");
 const wechatPayment =(req,res,next)=>{
     let params = req.params;
     let ourString = encrypt.randomString();
-    let wx_productOrderId = params.productOrderId+"_"+encrypt.randomString(6)+"_" + sysConsts.SYSTEM_ORDER_TYPE.type.product;
+    let wx_productOrderId = params.productOrderId+"_"+encrypt.randomString(6)+"_" + sysConst.SYSTEM_ORDER_TYPE.type.product;
     params.nonceStr = ourString;
     params.dateId = moment().format('YYYYMMDD');
     const getPayementStatus =()=>{
@@ -32,7 +32,7 @@ const wechatPayment =(req,res,next)=>{
                 }else{
                     logger.info('wechatPayment getPayementStatus ' + 'success');
                     if(rows.length >0){
-                        if (rows[0].payment_status == sysConsts.PRODUCT_ORDER.payment_status.complete) {
+                        if (rows[0].payment_status == sysConst.PRODUCT_ORDER.payment_status.complete) {
                             reject({msg:sysMsg.ORDER_PAYMENT_STATUS_COMPLETE});
                         }else {
                             resolve();
@@ -46,8 +46,8 @@ const wechatPayment =(req,res,next)=>{
     }
     const addPamentInfo =()=>{
         return new Promise((resolve, reject) => {
-            params.status = sysConsts.PRODUCT_PAYMENT.status.unPaid;//未付款
-            params.type = sysConsts.PRODUCT_PAYMENT.type.payment;//支付
+            params.status = sysConst.PRODUCT_PAYMENT.status.unPaid;//未付款
+            params.type = sysConst.PRODUCT_PAYMENT.type.payment;//支付
             params.dateId = moment().format("YYYYMMDD");
             params.wxOrderId = wx_productOrderId;
             productPaymentDAO.addPayment(params,(error,result)=>{
@@ -219,7 +219,7 @@ const updateOrderMsgByPrice = (params,callback)=>{
     }
     const updateProductOrder =()=>{
         return new Promise((resolve, reject) => {
-            params.paymentStatus = sysConsts.PRODUCT_ORDER.payment_status.complete;
+            params.paymentStatus = sysConst.PRODUCT_ORDER.payment_status.complete;
             params.realPaymentPrice = realPaymentPrice;
             productOrderDAO.updateStatusOrPrice(params,(error,result)=>{
                 if(error){
@@ -257,9 +257,9 @@ const updateOrderMsgByPrice = (params,callback)=>{
             params.commodityId = commodityId;
             if(commodityInfo.quantity){
                 if(commodityInfo.quantity <= commodityInfo.saled_quantity ){
-                    params.status = sysConsts.COMMODITY.status.reserved;//已预订
+                    params.status = sysConst.COMMODITY.status.reserved;//已预订
                 }else{
-                    params.status = sysConsts.COMMODITY.status.onSale;//在售
+                    params.status = sysConst.COMMODITY.status.onSale;//在售
                 }
             }
             commodityDAO.updateSaledQuantityOrStatus(params,(error,result)=>{
@@ -299,8 +299,8 @@ const productWechatPaymentCallback=(req,res,next) => {
             transactionId: evalJson.xml.transaction_id,
             timeEnd: evalJson.xml.time_end,
             totalFee: evalJson.xml.total_fee / 100,
-            status: sysConsts.PRODUCT_PAYMENT.status.paid,
-            type:sysConsts.PRODUCT_PAYMENT.type.payment
+            status: sysConst.PRODUCT_PAYMENT.status.paid,
+            type:sysConst.PRODUCT_PAYMENT.type.payment
         };
 
         const getPaymentInfo =()=>{
@@ -324,7 +324,7 @@ const productWechatPaymentCallback=(req,res,next) => {
         }
         const updatePaymentInfo =()=>{
             return new Promise((resolve, reject) => {
-                if (prepayIdJson.type == sysConsts.PRODUCT_PAYMENT.type.refund){
+                if (prepayIdJson.type == sysConst.PRODUCT_PAYMENT.type.refund){
                     prepayIdJson.totalFee = -prepayIdJson.totalFee;
                 }else{
                     prepayIdJson.paymentTime = new Date();
@@ -402,7 +402,7 @@ const wechatRefund = (req,res,next)=>{
     }
     const addPaymentRefund =()=>{
         return new Promise((resolve, reject) => {
-            params.type = sysConsts.PRODUCT_PAYMENT.type.refund;
+            params.type = sysConst.PRODUCT_PAYMENT.type.refund;
             productPaymentDAO.addRefund(params,(error,result)=>{
                 if(error){
                     logger.error('wechatRefund addPaymentRefund ' + error.message);
@@ -562,7 +562,7 @@ const productRefundPaymentCallback=(req,res,next) => {
     let resStrings = JSON.stringify(req);
     let evalJsons = eval('(' + resStrings + ')');
     let prepayIdJson = {
-        status: sysConsts.PRODUCT_PAYMENT.status.paid,
+        status: sysConst.PRODUCT_PAYMENT.status.paid,
         settlement_refund_fee : evalJsons.root.settlement_refund_fee / 100,
         wxOrderId : evalJsons.root.out_trade_no,
         orderId: evalJsons.root.out_trade_no.split("_")[0],
