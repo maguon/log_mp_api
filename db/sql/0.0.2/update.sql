@@ -92,26 +92,109 @@ CREATE TABLE `order_coupon_rel`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;
+
 -- ----------------------------
 -- Table structure for commodity_info
 -- ----------------------------
 DROP TABLE IF EXISTS `commodity_info`;
 CREATE TABLE `commodity_info`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `city_id` int(11) NULL DEFAULT NULL COMMENT '城市编号',
+  `city_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '城市名称',
   `commodity_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '商品名称',
-  `picture` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '图片',
-  `introduce` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '介绍',
-  `original_price` decimal(10, 2) NULL DEFAULT NULL COMMENT '原价',
-  `price` decimal(10, 2) NULL DEFAULT NULL COMMENT '售价',
+  `image` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '图片',
+  `info` varchar(2000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '介绍',
+  `pord_images` varchar(400) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '商品详细介绍照片',
+  `production_date` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '车辆生产日期',
+  `original_price` decimal(10, 2) NULL DEFAULT 0.00 COMMENT '原价',
+  `actual_price` decimal(10, 2) NULL DEFAULT 0.00 COMMENT '售价',
   `type` tinyint(1) NULL DEFAULT NULL COMMENT '购付方式（1:全款购车 2:定金购车 3:货到付款）',
-  `earnest_money` decimal(10, 2) NULL DEFAULT NULL COMMENT '定金',
+  `earnest_money` decimal(10, 2) NULL DEFAULT 0.00 COMMENT '定金',
   `quantity` int(10) NULL DEFAULT NULL COMMENT '数量',
   `saled_quantity` int(10) NULL DEFAULT NULL COMMENT '已售数量',
-  `status` tinyint(1) NOT NULL DEFAULT 1 COMMENT '状态（2-下架 1-在售 0-已售）',
-  `show_status` tinyint(1) NULL DEFAULT 0 COMMENT '删除（0:未删除1:已删除）',
+  `status` tinyint(1) NOT NULL DEFAULT 1 COMMENT '状态（2-已预订 1-在售 0-已售）',
+  `show_status` tinyint(1) NULL DEFAULT 0 COMMENT '下架(1-已下架，0-未下架)',
   `created_on` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
   `updated_on` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 26 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+SET FOREIGN_KEY_CHECKS = 1;
+
+-- ----------------------------
+-- Table structure for product_order_info
+-- ----------------------------
+DROP TABLE IF EXISTS `product_order_info`;
+CREATE TABLE `product_order_info`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NULL DEFAULT 0 COMMENT '用户编号',
+  `date_id` int(4) NULL DEFAULT NULL COMMENT '（统计使用）',
+  `ora_trans_price` decimal(10, 2) NULL DEFAULT 0.00 COMMENT '原总价',
+  `act_trans_price` decimal(10, 2) NULL DEFAULT 0.00 COMMENT '售总价',
+  `earnest_money` decimal(10, 2) NULL DEFAULT 0.00 COMMENT '应支付总定金',
+  `real_payment_price` decimal(12, 2) NULL DEFAULT 0.00 COMMENT '实际支付总金额',
+  `payment_status` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '支付状态（1:未支付 3.支付完成 4.已退款）',
+  `status` tinyint(1) NOT NULL DEFAULT 0 COMMENT '订单状态（1:待发货 4:已发货 6:已取消  8:已送达 ）',
+  `send_name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '收货人',
+  `send_phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '收货人电话',
+  `send_address` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '收货人地址',
+  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '备注',
+  `payment_remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '订单支付备注',
+  `departure_time` datetime(0) NULL DEFAULT NULL COMMENT '发运时间',
+  `arrive_time` datetime(0) NULL DEFAULT NULL COMMENT '送达时间',
+  `cancel_time` datetime(0) NULL DEFAULT NULL COMMENT '取消时间',
+  `created_on` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
+  `updated_on` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 102 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+SET FOREIGN_KEY_CHECKS = 1;
+
+-- ----------------------------
+-- Table structure for product_order_item
+-- ----------------------------
+DROP TABLE IF EXISTS `product_order_item`;
+CREATE TABLE `product_order_item`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `product_order_id` int(11) NULL DEFAULT NULL COMMENT '销售订单编号',
+  `commodity_id` int(11) NULL DEFAULT NULL COMMENT '商品编号',
+  `commodity_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '商品名称',
+  `city_id` int(11) NULL DEFAULT NULL COMMENT '城市编号',
+  `city_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '城市名称',
+  `type` tinyint(1) NULL DEFAULT NULL COMMENT '购付方式（1:全款购车 2:定金购车 3:货到付款）',
+  `original_price` decimal(10, 2) NULL DEFAULT 0.00 COMMENT '原价',
+  `actual_price` decimal(10, 2) NULL DEFAULT 0.00 COMMENT '售价',
+  `earnest_money` decimal(10, 2) NULL DEFAULT 0.00 COMMENT '定金',
+  `created_on` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
+  `updated_on` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 72 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+SET FOREIGN_KEY_CHECKS = 1;
+
+
+-- ----------------------------
+-- Table structure for product_payment_info
+-- ----------------------------
+DROP TABLE IF EXISTS `product_payment_info`;
+CREATE TABLE `product_payment_info`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `date_id` int(4) NULL DEFAULT NULL COMMENT '（统计使用）',
+  `admin_id` int(11) NOT NULL DEFAULT 0,
+  `user_id` int(11) NOT NULL DEFAULT 0 COMMENT '用户id',
+  `product_order_id` int(11) NOT NULL COMMENT '商品订单编号',
+  `wx_order_id` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '微信支付码',
+  `total_fee` decimal(12, 2) NULL DEFAULT 0.00 COMMENT '支付金额',
+  `type` tinyint(1) NOT NULL DEFAULT 0 COMMENT '交易类型（1:支付 2:退款）',
+  `status` tinyint(1) NOT NULL DEFAULT 0 COMMENT '支付状态（1:未付款  2:已付款）',
+  `payment_time` datetime(0) NULL DEFAULT NULL COMMENT '支付时间',
+  `payment_refund_time` datetime(0) NULL DEFAULT NULL COMMENT '退款时间',
+  `p_id` int(11) NULL DEFAULT NULL COMMENT '退款相应支付编号',
+  `transaction_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
+  `nonce_str` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
+  `created_on` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
+  `updated_on` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 36 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;
