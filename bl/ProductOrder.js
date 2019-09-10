@@ -20,7 +20,7 @@ const getPaymentStatus =(req,res,next)=>{
             resUtil.resInternalError(error, res, next);
         }else{
             logger.info('getPaymentStatus ' + 'success');
-            if(rows.length < 0){
+            if(rows.length <= 0){
                 resMsg.paymentFlag = false;
                 resUtil.resetQueryRes(res,resMsg,null);
                 return next();
