@@ -4,6 +4,27 @@ const serverLogger = require('../util/ServerLogger.js');
 const logger = serverLogger.createLogger('ProductOrderDAO.js');
 const db = require('../db/connection/MysqlDb.js');
 
+const getPaymentStatus = (params,callback) => {
+    let query = " select ci.type "
+        +" from product_order_item poi"
+        +" left join  product_order_info poin on poin.id = poi.product_order_id"
+        +" left join commodity_info ci on ci.id = poi.commodity_id "
+        +" where poi.id is not null";
+    let paramsArray = [],i=0;
+    if(params.userId){
+        paramsArray[i++] = params.userId;
+        query = query + " and poin.user_id = ? ";
+    }
+    if(params.productOrderId){
+        paramsArray[i++] = params.productOrderId;
+        query = query + " and poi.product_order_id = ? ";
+    }
+    query = query + " order by poi.id desc";
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('getPaymentStatus');
+        callback(error,rows)
+    })
+}
 const getUserProductOrder = (params,callback) => {
     let query = "select * from product_order_info where id is not null ";
     let paramsArray = [],i=0;
@@ -239,6 +260,7 @@ const updateRealPaymentPrice =(params,callback) => {
     })
 }
 module.exports = {
+    getPaymentStatus,
     getUserProductOrder,
     getUserProductOrderAndItem,
     getProductOrder,

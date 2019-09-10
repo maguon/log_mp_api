@@ -469,6 +469,7 @@ const createServer=()=>{
     /**
      * product_order_info
      */
+    server.get('/api/user/:userId/productOrder/:productOrderId/paymentStatus' ,productOrder.getPaymentStatus);
     server.get('/api/user/:userId/productOrder',productOrder.getUserProductOrder);
     server.get('/api/user/:userId/productOrderAndItem',productOrder.getUserProductOrderAndItem);
     server.post({path:'/api/user/:userId/productOrder',contentType: 'application/json'},productOrder.addUserProductOrder);

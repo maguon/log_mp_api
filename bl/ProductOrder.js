@@ -9,6 +9,38 @@ const productOrderDAO = require('../dao/ProductOrderDAO.js');
 const productOrderItemDAO = require('../dao/ProductOrderItemDAO');
 const commodityDAO = require('../dao/CommodityDAO');
 
+const getPaymentStatus =(req,res,next)=>{
+    let params = req.params;
+    let resMsg ={
+        paymentFlag:true
+    }
+    productOrderDAO.getPaymentStatus(params,(error,rows)=>{
+        if(error){
+            logger.error('getPaymentStatus ' + error.message);
+            resUtil.resInternalError(error, res, next);
+        }else{
+            logger.info('getPaymentStatus ' + 'success');
+            if(rows.length < 0){
+                resMsg.paymentFlag = false;
+                resUtil.resetQueryRes(res,resMsg,null);
+                return next();
+            }else{
+                for(let i in rows){
+                    if(rows[i].type == sysConst.COMMODITY.status.reserved ){
+                        resMsg.paymentFlag = false;
+                        resUtil.resetQueryRes(res,resMsg,null);
+                        return next();
+                    }
+                    if (i == rows.length - 1) {
+                        resMsg.paymentFlag = true;
+                        resUtil.resetQueryRes(res,resMsg,null);
+                        return next();
+                    }
+                }
+            }
+        }
+    });
+}
 const getUserProductOrder = (req,res,next) => {
     let params = req.params;
     productOrderDAO.getUserProductOrder(params,(error,rows)=>{
@@ -195,6 +227,7 @@ const updateStatus = (req,res,next) => {
     })
 }
 module.exports={
+    getPaymentStatus,
     getUserProductOrder,
     getUserProductOrderAndItem,
     getProductOrder,
