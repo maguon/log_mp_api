@@ -543,8 +543,8 @@ const getRefundParams = (req,res,params)=>{
         //'<openid>'+params.openid+'</openid>' +
         '<out_refund_no>'+params.refundId +'</out_refund_no>' +
         '<out_trade_no>'+params.wxOrderId +'</out_trade_no>' +
-        '<refund_fee>'+params.refundFee * 100+'</refund_fee>' +
-        '<total_fee>'+params.totalFee * 100+'</total_fee>' +
+        '<refund_fee>'+params.refundFee +'</refund_fee>' +
+        '<total_fee>'+params.totalFee +'</total_fee>' +
         '<sign>'+signByMd+'</sign></xml>';
     let url="/secapi/pay/refund";
     let certFile = fs.readFileSync(sysConfig.wechatConfig.paymentCert);
