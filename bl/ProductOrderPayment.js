@@ -258,7 +258,7 @@ const updateOrderMsgByPrice = (params,callback)=>{
                     reject({err:error});
                 }else{
                     logger.info('updateOrderMsgByPrice getSaledQuantity ' + 'success');
-                    logger("rows.length:"+rows.length);
+                    logger.info("rows.length:"+rows.length);
                     commodityInfo.saled_quantity = rows.length;
                     resolve();
                 }
