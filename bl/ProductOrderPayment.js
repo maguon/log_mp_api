@@ -258,13 +258,9 @@ const updateOrderMsgByPrice = (params,callback)=>{
                     reject({err:error});
                 }else{
                     logger.info('updateOrderMsgByPrice getSaledQuantity ' + 'success');
-                    if(rows.length > 0){
-                        commodityInfo.saled_quantity = rows.length;
-                        resolve();
-                    }else{
-                        reject({msg:sysMsg.PRODUCT_PAYMENT_ID_ERROR});
-                    }
-
+                    logger("rows.length:"+rows.length);
+                    commodityInfo.saled_quantity = rows.length;
+                    resolve();
                 }
             });
         });
