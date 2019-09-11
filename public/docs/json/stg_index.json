@@ -13156,6 +13156,48 @@
         }
       }
     },
+    "/user/{userId}/productOrder/{productOrderId}/sendInfo": {
+      "put": {
+        "tags": [
+          "productOrder"
+        ],
+        "summary": "update",
+        "description": "update productOrder sendInfo version",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "productOrderId",
+            "in": "path",
+            "description": "productOrderId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "sendInfo",
+            "in": "body",
+            "description": "sendInfo",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/sendInfo"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
     "/admin/{adminId}/productOrder": {
       "get": {
         "tags": [
@@ -15820,6 +15862,23 @@
       },
       "xml": {
         "name": "productOrderItemArray"
+      }
+    },
+    "sendInfo": {
+      "type": "object",
+      "properties": {
+        "sendName": {
+          "type": "string"
+        },
+        "sendPhone": {
+          "type": "string"
+        },
+        "sendAddress": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "sendInfo"
       }
     },
     "remark": {

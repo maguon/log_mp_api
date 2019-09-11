@@ -182,6 +182,19 @@ const addUserProductOrder = (req,res,next) =>{
         }
      })
 }
+const updateSendInfo = (req,res,next) => {
+    let params = req.params;
+    productOrderDAO.updateSendInfo(params,(error,result)=>{
+        if(error){
+            logger.error(' updateSendInfo ' + error.message);
+            resUtil.resInternalError(error,res,next);
+        }else{
+            logger.info(' updateSendInfo ' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
+}
 const updateRemark = (req,res,next) => {
     let params = req.params;
     productOrderDAO.updateRemark(params,(error,result)=>{
@@ -232,6 +245,7 @@ module.exports={
     getUserProductOrderAndItem,
     getProductOrder,
     addUserProductOrder,
+    updateSendInfo,
     updateStatus,
     updateRemark
 }

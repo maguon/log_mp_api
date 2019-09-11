@@ -208,6 +208,25 @@ const updateRemark = (params,callback) => {
         return callback(error,rows);
     });
 }
+const updateSendInfo = (params,callback) => {
+    let query = " update product_order_info set send_name = ? ";
+    let paramsArray=[],i=0;
+    paramsArray[i++] = params.sendName;
+    if(params.sendPhone){
+        query += " ,send_phone = ?";
+        paramsArray[i++] = params.sendPhone;
+    }
+    if(params.sendAddress){
+        query += " ,send_address = ?";
+        paramsArray[i++] = params.sendAddress;
+    }
+    paramsArray[i] = params.productOrderId;
+    query += " where id = ?";
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug(' updateSendInfo ');
+        return callback(error,rows);
+    });
+}
 const updateStatus = (params,callback) => {
     let query = " update product_order_info set status = ? ";
     let paramsArray=[],i=0;
@@ -266,6 +285,7 @@ module.exports = {
     getProductOrder,
     addProductOrder,
     updateProductOrder,
+    updateSendInfo,
     updateRemark,
     updateStatus,
     updateStatusOrPrice,

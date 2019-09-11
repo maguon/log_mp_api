@@ -473,6 +473,7 @@ const createServer=()=>{
     server.get('/api/user/:userId/productOrder',productOrder.getUserProductOrder);
     server.get('/api/user/:userId/productOrderAndItem',productOrder.getUserProductOrderAndItem);
     server.post({path:'/api/user/:userId/productOrder',contentType: 'application/json'},productOrder.addUserProductOrder);
+    server.put({path:'/api/user/:userId/productOrder/:productOrderId/sendInfo',contentType: 'application/json'},productOrder.updateSendInfo);
     server.get('/api/admin/:adminId/productOrder',productOrder.getProductOrder);
     server.put({path:'/api/admin/:adminId/productOrder/:productOrderId/remark',contentType: 'application/json'},productOrder.updateRemark);
     server.put({path:'/api/admin/:adminId/productOrder/:productOrderId/status/:status',contentType: 'application/json'},productOrder.updateStatus);
