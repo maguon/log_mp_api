@@ -5,7 +5,7 @@ const logger = serverLogger.createLogger('ProductOrderDAO.js');
 const db = require('../db/connection/MysqlDb.js');
 
 const getOrderPaymentStatus = (params,callback) => {
-    let query = " select ci.type "
+    let query = " select ci.status "
         +" from product_order_item poi"
         +" left join  product_order_info poin on poin.id = poi.product_order_id"
         +" left join commodity_info ci on ci.id = poi.commodity_id "

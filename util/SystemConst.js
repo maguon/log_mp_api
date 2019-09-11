@@ -176,9 +176,9 @@ const COMMODITY ={
         arrivalOfGoods :3//货到付款
     },
     status:{
-        sold:0,//已售
         onSale:1,//在售
-        reserved:2//已预定
+        reserved:2,//已预定
+        sold:4//已售
     }
 }
 const PRODUCT_ORDER ={
