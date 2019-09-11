@@ -22,6 +22,10 @@ const getReminders = (params,callback) => {
         paramsArray[i++] = params.userName;
         query = query + " and ui.user_name = ? ";
     }
+    if(params.userId){
+        paramsArray[i++] = params.userId;
+        query = query + " and re.user_id = ? ";
+    }
     if(params.status){
         paramsArray[i++] = params.status;
         query = query + " and ci.status = ? "
