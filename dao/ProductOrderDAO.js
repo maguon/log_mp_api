@@ -168,29 +168,23 @@ const addProductOrder = (params,callback)=>{
 const updateProductOrder = (params,callback) => {
     let query = " update product_order_info set user_id = ?";
     let paramsArray=[],i=0;
-    if(params.userId){
-        paramsArray[i++] = params.userId;
-    }
-    if(params.dateId){
-        query += " ,date_id = ?";
-        paramsArray[i++] = params.dateId;
-    }
-    if(params.oraTransPrice){
-        query += " ,ora_trans_price = ?";
-        paramsArray[i++] = params.oraTransPrice;
-    }
-    if(params.actTransPrice){
-        query += " ,act_trans_price = ?";
-        paramsArray[i++] = params.actTransPrice;
-    }
-    if(params.earnestMoney){
-        query += " ,earnest_money = ?";
-        paramsArray[i++] = params.earnestMoney;
-    }
-    if(params.paymentStatus){
-        query += " ,payment_status = ?";
-        paramsArray[i++] = params.paymentStatus;
-    }
+    paramsArray[i++] = params.userId;
+
+    query += " ,date_id = ?";
+    paramsArray[i++] = params.dateId;
+
+    query += " ,ora_trans_price = ?";
+    paramsArray[i++] = params.oraTransPrice;
+
+    query += " ,act_trans_price = ?";
+    paramsArray[i++] = params.actTransPrice;
+
+    query += " ,earnest_money = ?";
+    paramsArray[i++] = params.earnestMoney;
+
+    query += " ,payment_status = ?";
+    paramsArray[i++] = params.paymentStatus;
+
     query += " where id = ?";
     paramsArray[i] = params.productOrderId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
