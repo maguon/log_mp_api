@@ -260,7 +260,7 @@ const updateOrderMsgByPrice = (params,callback)=>{
                     logger.info('updateOrderMsgByPrice getSaledQuantity ' + 'success');
                     logger.info("rows.length:"+rows.length);
                     commodityInfo.saled_quantity = rows.length;
-                    resolve();
+                    resolve(commodityInfo);
                 }
             });
         });
