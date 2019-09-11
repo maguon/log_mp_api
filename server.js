@@ -458,7 +458,7 @@ const createServer=()=>{
      */
     server.get('/api/commodity/:commodityId/view',commodity.getCommodityPage);
     server.get('/api/user/:userId/commodity',commodity.getCommodity);
-    server.get('/api/admin/:adminId/commodity',commodity.getCommodity);
+    server.get('/api/admin/:adminId/commodity',commodity.getAdminCommodity);
     server.post({path:'/api/admin/:adminId/commodity',contentType: 'application/json'},commodity.addCommodity);
     server.put({path:'/api/admin/:adminId/commodity/:commodityId/image',contentType: 'application/json'},commodity.updateImage);
     server.put({path:'/api/admin/:adminId/commodity/:commodityId/prodImages',contentType: 'application/json'},commodity.updateProdImages);

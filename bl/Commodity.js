@@ -22,7 +22,19 @@ const getCommodity = (req,res,next) => {
         }
     })
 }
-
+const getAdminCommodity = (req,res,next) => {
+    let params = req.params;
+    commodityDAO.getAdminCommodity(params,(error,rows)=>{
+        if(error){
+            logger.error(' getAdminCommodity ' + error.message);
+            resUtil.resInternalError(error,res,next);
+        }else{
+            logger.info(' getAdminCommodity ' + 'success');
+            resUtil.resetQueryRes(res,rows,null);
+            return next();
+        }
+    })
+}
 const getCommodityPage = (req,res,next) =>{
     let params = req.params;
     const getCommodity = ()=>{
@@ -46,29 +58,29 @@ const getCommodityPage = (req,res,next) =>{
     const getView =(record)=>{
         return new Promise(()=>{
             res.writeHead(200,{'Content-Type':'text/html'})
+           //res.writeHead(200, { 'Content-Type': 'text/css' });
             fs.readFile('./bl/view/car.tpl','utf-8',function(err,data){
                 if(err){
                     logger.error('getCommodityPage getView ' + err);
                     throw err ;
                 }else{
+                    logger.info(' getCommodityPage getView ' + 'success');
+                    //console.log("读取的数据：",data);
                     var prod = {
-                        name: record.commodity_name,
-                        original_price: record.original_price,
-                        actual_price: record.actual_price,
-                       // img_url: require('./bl/assets/slopa-pic-01.jpg'),
-                        type: record.type,
-                        info: record.info,
-                        code_url:record.image
+                        commodity_name: record.commodity_name,
+                        original_price: record.original_price/10000,
+                        actual_price: record.actual_price/10000,
+                        favorable_Price:(record.original_price - record.actual_price)/10000,
+                        info: record.info
                     };
                     var pattern = /{{([\s\S]+?)}}/gi;
                     var result = data.replace(pattern, (match, datas)=>{
                         return prod[datas];
                     });
-                    res.end(result);
-                    logger.info(' getCommodityPage getView ' + 'success');
+                    res.write(result);
+                    res.end();
                     return next();
                 }
-
             });
         });
     }
@@ -77,11 +89,11 @@ const getCommodityPage = (req,res,next) =>{
         .then(getView)
         .catch((reject)=>{
             if(reject.err){
-                // resUtil.resetFailedRes(res,reject.err);
+                console.log("error!");
                 res.end(reject.err);
                 return next();
             }else{
-                // resUtil.resetFailedRes(res,reject.msg);
+                console.log("msg!");
                 res.end(reject.msg);
                 return next();
             }
@@ -275,6 +287,7 @@ const updateShowStatus = (req,res,next) => {
 }
 module.exports={
     getCommodity,
+    getAdminCommodity,
     getCommodityPage,
     addCommodity,
     updateImage,

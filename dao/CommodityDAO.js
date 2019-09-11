@@ -42,6 +42,44 @@ const getCommodity = (params,callback) => {
         callback(error,rows);
     })
 }
+const getAdminCommodity = (params,callback) => {
+    let query = "select * from commodity_info where id is not null ";
+    let paramsArray = [],i=0;
+    if(params.commodityId){
+        paramsArray[i++] = params.commodityId;
+        query = query + " and id = ? ";
+    }
+    if(params.cityId){
+        paramsArray[i++] = params.cityId;
+        query = query + " and city_id = ? ";
+    }
+    if(params.commodityName){
+        paramsArray[i++] = params.commodityName;
+        query = query + " and commodity_name = ? ";
+    }
+    if(params.type){
+        paramsArray[i++] = params.type;
+        query = query + " and type = ? ";
+    }
+    if(params.status){
+        paramsArray[i++] = params.status;
+        query = query + " and status = ? "
+    }
+    if(params.showStatus){
+        paramsArray[i++] = params.showStatus;
+        query = query + " and show_status = ? "
+    }
+    query = query + " order by id desc";
+    if(params.start && params.size){
+        paramsArray[i++] = parseInt(params.start);
+        paramsArray[i] = parseInt(params.size);
+        query = query + " limit ?,? ";
+    }
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('getAdminCommodity');
+        callback(error,rows);
+    })
+}
 const addCommodity = (params,callback)=>{
     let query = "insert into commodity_info (city_id,city_name,commodity_name,image,info,production_date,original_price,actual_price,type,earnest_money,quantity,saled_quantity,status,show_status) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
     let paramsArray = [],i=0;
@@ -149,6 +187,7 @@ const updateSaledQuantityOrStatus = (params,callback) => {
 }
 module.exports = {
     getCommodity,
+    getAdminCommodity,
     addCommodity,
     updateImage,
     updateProdImages,
