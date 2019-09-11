@@ -130,7 +130,7 @@ const getCommodityPaymentStatus =(params,callback) => {
         "from product_payment_info ppi " +
         " left join product_order_item poi on poi.product_order_id = ppi.product_order_id " +
         " left join commodity_info ci on ci.id = ppi.commodity_id " +
-        " where pi.id is not null  ";
+        " where ppi.id is not null  ";
     let paramsArray = [],i=0;
     if(params.productOrderId){
         paramsArray[i++] = params.productOrderId;
