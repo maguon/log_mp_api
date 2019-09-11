@@ -252,7 +252,7 @@ const updateOrderMsgByPrice = (params,callback)=>{
     }
     const getSaledQuantity = (commodityInfo)=>{
         return new Promise((resolve, reject) => {
-            productPaymentDAO.getCommodityPaymentStatus({productOrderId:params.productOrderId,type:sysConst.PRODUCT_PAYMENT.type.payment,status:sysConst.PRODUCT_PAYMENT.status.paid,commodityId:commodityId},(error,rows)=>{
+            productPaymentDAO.getCommodityPaymentStatus({type:sysConst.PRODUCT_PAYMENT.type.payment,status:sysConst.PRODUCT_PAYMENT.status.paid,commodityId:commodityId},(error,rows)=>{
                 if(error){
                     logger.error('updateOrderMsgByPrice getSaledQuantity ' + error.message);
                     reject({err:error});

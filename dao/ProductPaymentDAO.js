@@ -129,16 +129,12 @@ const getCommodityPaymentStatus =(params,callback) => {
     let query = " select ppi.* " +
         "from product_payment_info ppi " +
         " left join product_order_item poi on poi.product_order_id = ppi.product_order_id " +
-        " left join commodity_info ci on ci.id = ppi.commodity_id " +
+        " left join commodity_info ci on ci.id = poi.commodity_id " +
         " where ppi.id is not null  ";
     let paramsArray = [],i=0;
-    if(params.productOrderId){
-        paramsArray[i++] = params.productOrderId;
-        query = query + " and ppi.product_order_id =? ";
-    }
     if(params.commodityId){
         paramsArray[i++] = params.commodityId;
-        query = query + " and ppi.commodity_id =? ";
+        query = query + " and poi.commodity_id =? ";
     }
     if(params.type){
         paramsArray[i++] = params.type;
