@@ -206,7 +206,7 @@ const updateOrderMsgByPrice = (params,callback)=>{
                     if(rows.length){
                         actTransPrice = rows[0].act_trans_price;//售总价
                         earnestMoney = rows[0].earnest_money;//应支付总定金
-                        payment_type = rows[0].type;
+                        payment_type = rows[0].type;//购付方式（1:全款购车 2:定金购车 3:货到付款）
                         commodityId = rows[0].commodity_id;
                         resolve();
                     }else{
@@ -252,9 +252,8 @@ const updateOrderMsgByPrice = (params,callback)=>{
     }
     const updateCommodity =(commodityInfo)=>{
         return new Promise((resolve, reject)=>{
-            commodityInfo.saled_quantity = commodityInfo.saled_quantity + 1;
-            params.saledQuantity = commodityInfo.saled_quantity;
-            params.commodityId = commodityId;
+            logger.info("commodityInfo.saled_quantity:"+commodityInfo.saled_quantity);
+            let saledQuantity = commodityInfo.saled_quantity + 1;
             if(commodityInfo.quantity){
                 if(commodityInfo.quantity <= commodityInfo.saled_quantity ){
                     params.status = sysConst.COMMODITY.status.reserved;//已预订
@@ -262,7 +261,7 @@ const updateOrderMsgByPrice = (params,callback)=>{
                     params.status = sysConst.COMMODITY.status.onSale;//在售
                 }
             }
-            commodityDAO.updateSaledQuantityOrStatus(params,(error,result)=>{
+            commodityDAO.updateSaledQuantityOrStatus({saledQuantity:saledQuantity,status:params.status,commodityId:commodityId},(error,result)=>{
                 if(error){
                     logger.error(' updateOrderMsgByPrice updateCommodity ' + error.message);
                     reject({err:error});
