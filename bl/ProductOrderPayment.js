@@ -250,10 +250,28 @@ const updateOrderMsgByPrice = (params,callback)=>{
             })
         });
     }
+    const getSaledQuantity = (commodityInfo)=>{
+        return new Promise((resolve, reject) => {
+            productPaymentDAO.getPaymentByOrderId({productOrderId:params.productOrderId,type:sysConst.PRODUCT_PAYMENT.type.payment,status:sysConst.PRODUCT_PAYMENT.status.paid},(error,rows)=>{
+                if(error){
+                    logger.error('updateOrderMsgByPrice getSaledQuantity ' + error.message);
+                    reject({err:error});
+                }else{
+                    logger.info('updateOrderMsgByPrice getSaledQuantity ' + 'success');
+                    if(rows.length > 0){
+                        commodityInfo.saled_quantity = rows.length;
+                        resolve();
+                    }else{
+                        reject({msg:sysMsg.PRODUCT_PAYMENT_ID_ERROR});
+                    }
+
+                }
+            });
+        });
+    }
     const updateCommodity =(commodityInfo)=>{
         return new Promise((resolve, reject)=>{
             logger.info("commodityInfo.saled_quantity:"+commodityInfo.saled_quantity);
-            let saledQuantity = commodityInfo.saled_quantity + 1;
             if(commodityInfo.quantity){
                 if(commodityInfo.quantity <= commodityInfo.saled_quantity ){
                     params.status = sysConst.COMMODITY.status.reserved;//已预订
@@ -261,7 +279,7 @@ const updateOrderMsgByPrice = (params,callback)=>{
                     params.status = sysConst.COMMODITY.status.onSale;//在售
                 }
             }
-            commodityDAO.updateSaledQuantityOrStatus({saledQuantity:saledQuantity,status:params.status,commodityId:commodityId},(error,result)=>{
+            commodityDAO.updateSaledQuantityOrStatus({saledQuantity:commodityInfo.saled_quantity,status:params.status,commodityId:commodityId},(error,result)=>{
                 if(error){
                     logger.error(' updateOrderMsgByPrice updateCommodity ' + error.message);
                     reject({err:error});
@@ -276,6 +294,7 @@ const updateOrderMsgByPrice = (params,callback)=>{
         .then(getOrderInfo)
         .then(updateProductOrder)
         .then(getCommodity)
+        .then(getSaledQuantity)
         .then(updateCommodity)
         .catch((reject)=>{
             if(reject.err){
@@ -289,8 +308,8 @@ const productWechatPaymentCallback=(req,res,next) => {
         let result = req.result;
         let resString = JSON.stringify(result);
         let evalJson = eval('(' + resString + ')');
-        logger.info("wechatPaymentCallback177.toString: "+resString);
-        logger.info("wechatPaymentCallback17777.body: "+req.body);
+        //logger.info("wechatPaymentCallback177.toString: "+resString);
+        //logger.info("wechatPaymentCallback17777.body: "+req.body);
         let prepayIdJson = {
             nonceStr: evalJson.xml.nonce_str,
             openid: evalJson.xml.openid,
