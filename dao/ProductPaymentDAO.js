@@ -125,6 +125,35 @@ const getOrderRealPayment =(params,callback) => {
         callback(error,rows)
     })
 }
+const getCommodityPaymentStatus =(params,callback) => {
+    let query = " select ppi.* " +
+        "from product_payment_info ppi " +
+        " left join product_order_item poi on poi.product_order_id = pi.product_order_id " +
+        " where pi.id is not null  ";
+    let paramsArray = [],i=0;
+    if(params.productOrderId){
+        paramsArray[i++] = params.productOrderId;
+        query = query + " and pi.product_order_id =? ";
+    }
+    if(params.type){
+        paramsArray[i++] = params.type;
+        query = query + " and pi.type =? ";
+    }
+    if(params.status){
+        paramsArray[i++] = params.status;
+        query = query + " and pi.status =? ";
+    }
+    query = query + " order by pi.created_on desc";
+    if(params.start && params.size){
+        paramsArray[i++] = parseInt(params.start);
+        paramsArray[i] = parseInt(params.size);
+        query = query + " limit ?,? ";
+    }
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('getCommodityPaymentStatus');
+        callback(error,rows);
+    })
+}
 const addPayment = (params,callback) => {
     let query = " insert into product_payment_info (user_id,product_order_id,wx_order_id,date_id,total_fee,nonce_str,status,type) values(?,?,?,?,?,?,?,?)";
     let paramsArray = [],i=0;
@@ -217,6 +246,7 @@ module.exports = {
     getPaymentByOrderId,
     getRealPaymentPrice,
     getOrderRealPayment,
+    getCommodityPaymentStatus,
     addPayment,
     addRefund,
     updateWechatPayment,
