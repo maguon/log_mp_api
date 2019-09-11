@@ -12490,7 +12490,7 @@
           {
             "name": "status",
             "in": "query",
-            "description": "状态（0:已售 1:在售 2:已预定）",
+            "description": "状态（1:在售 2:已预定 4:已售）",
             "required": false,
             "type": "integer"
           },
@@ -12581,7 +12581,7 @@
           {
             "name": "status",
             "in": "query",
-            "description": "状态（0:已售 1:在售 2:已预定）",
+            "description": "状态（1:在售 2:已预定 4:已售）",
             "required": false,
             "type": "integer"
           },
@@ -12888,7 +12888,7 @@
           {
             "name": "status",
             "in": "path",
-            "description": "状态（0:已售 1:在售 2:已预定）",
+            "description": "状态（1:在售 2:已预定 4:已售）",
             "required": true,
             "type": "integer"
           }
@@ -13725,7 +13725,7 @@
           {
             "name": "status",
             "in": "query",
-            "description": "状态（0:已售 1:在售 2:已预定）",
+            "description": "状态（1:在售 2:已预定 4:已售）",
             "required": false,
             "type": "integer"
           },
