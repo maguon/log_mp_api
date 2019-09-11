@@ -31,7 +31,7 @@ const getCommodity = (params,callback) => {
         paramsArray[i++] = params.showStatus;
         query = query + " and show_status = ? "
     }
-    query = query + " order by id asc";
+    query = query + " order by id desc";
     if(params.start && params.size){
         paramsArray[i++] = parseInt(params.start);
         paramsArray[i] = parseInt(params.size);
