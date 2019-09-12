@@ -825,6 +825,7 @@ const wechatPaymentCallback=(req,res,next) => {
         let sysOrderId =  parseInt(evalJson.xml.out_trade_no.split("_")[0]);
         logger.info("sysType:"+sysType);
         logger.info("sysOrderId:"+sysOrderId);
+        logger.info(" evalJson.xml.total_fee / 100:"+ evalJson.xml.total_fee / 100);
         if(sysType == sysConsts.SYSTEM_ORDER_TYPE.type.product){
             let resultInfo = {
                 body: req.body,
