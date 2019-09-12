@@ -822,9 +822,14 @@ const wechatPaymentCallback=(req,res,next) => {
         let evalJson = eval('(' + resString + ')');
         //logger.info("wechatPaymentCallback166"+resString);
         logger.info("wechatPaymentCallback1666 "+req.body);
-        logger.info("wechatPaymentCallback1666 "+evalJson.xml.req_info);
+        logger.info("wechatPaymentCallback1666 evalJson :"+evalJson);
+        let trade_state_desc = getXMLNodeValue('return_code',req.body.toString('utf-8'));
+        let return_msg = getXMLNodeValue('return_msg', req.body.toString('utf-8'));
+        logger.info("wechatPaymentCallback1666 trade_state_desc:"+trade_state_desc);
+        logger.info("wechatPaymentCallback1666 evalJson return_msg :"+return_msg);
+
         let return_code = evalJson.xml.return_code;
-        logger.info("wechatPaymentCallback1666 "+evalJson.xml.return_code);
+        logger.info("wechatPaymentCallback1666 "+return_code);
         // if(return_code != NULL){
         //     let md5Key = encrypt.encryptByMd5NoKey(sysConfig.wechatConfig.paymentKey).toLowerCase();
         //     logger.info("wechatPaymentCallback177 reqInfo !null");
@@ -975,6 +980,18 @@ const paymentInMonth =(req,res,next)=>{
             return next();
         }
     });
+}
+
+const getXMLNodeValue = (node_name,xml)=>{
+        logger.info("xml:"+xml);
+        let tmp = xml.split("<"+node_name+">");
+        if(tmp[1]!=undefined){
+            let _tmp = tmp[1].split("</"+node_name+">");
+            let tmp1 = _tmp[0].split('[');
+
+            let _tmp1 = tmp1[2].split(']');
+            return _tmp1[0];
+        }
 }
 module.exports = {
     wechatPaymentCallback,

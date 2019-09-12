@@ -485,7 +485,7 @@ const wechatRefund = (req,res,next)=>{
         })
     }).then(()=>{
         new Promise((resolve,reject)=>{
-            params.adminId = 0;
+            //params.adminId = 0;
             params.type = sysConst.PRODUCT_PAYMENT.type.refund;
             //添加退款的panmen_inf
             productPaymentDAO.addRefund(params,(error,result)=>{
