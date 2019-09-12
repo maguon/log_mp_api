@@ -821,9 +821,10 @@ const wechatPaymentCallback=(req,res,next) => {
         let evalJson = eval('(' + resString + ')');
         logger.info("wechatPaymentCallback166"+resString);
         logger.info("wechatPaymentCallback1666"+req.body);
-        logger.info("wechatPaymentCallback166666 evalJson:"+evalJson);
         let sysType =  parseInt(evalJson.xml.out_trade_no.split("_")[2]);
+        let sysOrderId =  parseInt(evalJson.xml.out_trade_no.split("_")[0]);
         logger.info("sysType:"+sysType);
+        logger.info("sysOrderId:"+sysOrderId);
         if(sysType == sysConsts.SYSTEM_ORDER_TYPE.type.product){
             let resultInfo = {
                 body: req.body,
