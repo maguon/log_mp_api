@@ -823,6 +823,26 @@ const wechatPaymentCallback=(req,res,next) => {
         logger.info("req:" + req);
         logger.info("wechatPaymentCallback166"+resString);
         logger.info("wechatPaymentCallback1666"+req.body);
+        if(parseInt(evalJson.xml.req_info)){
+            let md5Key = encrypt.encryptByMd5NoKey(sysConfig.wechatConfig.paymentKey).toLowerCase();
+            let reqInfo = evalJson.xml.req_info;
+            let reqResult = encrypt.decryption(reqInfo,md5Key);
+
+            xmlParser.parseString(reqResult,(err,result)=> {
+                let resStrings = JSON.stringify(result);
+                logger.info("wechatPaymentCallback1888"+ resStrings);
+                let evalJsons = eval('(' + resStrings + ')');
+                prepayIdJson.paymentId = evalJsons.root.out_refund_no;
+                prepayIdJson.settlement_refund_fee = evalJsons.root.settlement_refund_fee / 100;
+                prepayIdJson.wxOrderId = evalJsons.root.out_trade_no;
+                //如果sysType==2,则跳转到商品订单退款
+                let sysType =  parseInt(evalJsons.root.out_trade_no.split("_")[2]);
+                if(sysType == sysConsts.SYSTEM_ORDER_TYPE.type.product){
+                    productOrderPayment.productRefundPaymentCallback(result);
+                    return next();
+                }
+            });
+        }
         let sysType =  parseInt(evalJson.xml.out_trade_no.split("_")[2]);
         let sysOrderId =  parseInt(evalJson.xml.out_trade_no.split("_")[0]);
         logger.info("sysType:"+sysType);
