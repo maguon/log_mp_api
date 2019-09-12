@@ -822,9 +822,10 @@ const wechatPaymentCallback=(req,res,next) => {
         let evalJson = eval('(' + resString + ')');
         //logger.info("wechatPaymentCallback166"+resString);
         logger.info("wechatPaymentCallback1666 "+req.body);
-        logger.info("wechatPaymentCallback1666 evalJson :"+evalJson);
+
+        //截取
         let trade_state_desc = getXMLNodeValue('return_code',req.body.toString('utf-8'));
-        let return_msg = getXMLNodeValue('return_msg', req.body.toString('utf-8'));
+        let return_msg = getXMLNodeValue('req_info', req.body.toString('utf-8'));
         logger.info("wechatPaymentCallback1666 trade_state_desc:"+trade_state_desc);
         logger.info("wechatPaymentCallback1666 evalJson return_msg :"+return_msg);
 

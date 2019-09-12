@@ -553,8 +553,6 @@ const wechatRefund = (req,res,next)=>{
                                     resUtil.resetFailedRes(res,evalJson.xml,null);
                                 }else {
                                     //退款成功
-                                    logger.info("result:"+result);
-                                    params.paymentRefundId = result.insertId;
                                     new Promise((resolve,reject)=>{
                                         params.status = sysConst.REFUND_STATUS.refunded;
                                         logger.info("Refund SUCCESS!");
