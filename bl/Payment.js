@@ -821,10 +821,13 @@ const wechatPaymentCallback=(req,res,next) => {
         let resString = JSON.stringify(result);
         let evalJson = eval('(' + resString + ')');
         logger.info("wechatPaymentCallback166"+resString);
-        //logger.info("wechatPaymentCallback1666"+req.body);
+        logger.info("wechatPaymentCallback1666"+req.body);
+
+
         let md5Key = encrypt.encryptByMd5NoKey(sysConfig.wechatConfig.paymentKey).toLowerCase();
         let reqInfo = evalJson.xml.req_info;
         if(reqInfo != NULL){
+            logger.info("wechatPaymentCallback177 reqInfo !null");
             let reqResult = encrypt.decryption(reqInfo,md5Key);
             xmlParser.parseString(reqResult,(err,result)=>{
                 let resStrings = JSON.stringify(result);
