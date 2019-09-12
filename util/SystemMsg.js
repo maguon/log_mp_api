@@ -123,6 +123,7 @@ let REMINDERS_STATUS_NO_MODIFY = "已提醒，不允许重复提醒！";
  */
 let PRODUCT_ORDER_ID_ERROR = "没有此订单信息！";
 let PRODUCT_ORDER_STATUS_ERROR = "此订单状态不存在！";
+let PRODUCT_ORDER_TYPE_ERROR = "商品购付方式不同，请分开下单！";
 /**
  * productOrderPayment
  */
@@ -196,5 +197,7 @@ module.exports = {
     REMINDERS_STATUS_NO_MODIFY,
     PRODUCT_ORDER_ID_ERROR,
     PRODUCT_ORDER_STATUS_ERROR,
+    PRODUCT_ORDER_TYPE_ERROR,
+
     PRODUCT_PAYMENT_ID_ERROR
 }

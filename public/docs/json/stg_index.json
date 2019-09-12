@@ -15858,6 +15858,9 @@
       "properties": {
         "commodityId": {
           "type": "integer"
+        },
+        "type": {
+          "type": "integer"
         }
       },
       "xml": {

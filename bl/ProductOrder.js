@@ -92,6 +92,21 @@ const addUserProductOrder = (req,res,next) =>{
     let commodityList = {};
     let resultCallback;
     let ProductOrderId;
+    let type;
+    let orderItemList = params.productOrderItemArray;
+    for (let i in orderItemList) {
+        if(orderItemList[0].type){
+            type = orderItemList[0].type;
+        }
+        if(orderItemList[i].type != type){
+            logger.error('addUserProductOrder addProductOrder ' + sysMsg.PRODUCT_ORDER_TYPE_ERROR);
+            resUtil.resetFailedRes(res,sysMsg.PRODUCT_ORDER_TYPE_ERROR);
+            return next();
+        }
+    }
+    if(type == sysConst.PRODUCT_ORDER.type.arrivalOfGoods){
+        params.status = sysConst.PRODUCT_ORDER.status.shipped;//已发货
+    }
     new Promise((resolve, reject) => {
         productOrderDAO.addProductOrder(params, (error, result) => {
             if (error) {
@@ -105,7 +120,7 @@ const addUserProductOrder = (req,res,next) =>{
             }
         });
     }).then(() => {
-        let orderItemList = params.productOrderItemArray;
+
 
         for (let i in orderItemList) {
             new Promise((resolve, reject) => {
