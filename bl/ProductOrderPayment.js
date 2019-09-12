@@ -537,7 +537,7 @@ const wechatRefund = (req,res,next)=>{
                     //向微信请求
                     let httpsReq = https.request(options,(result)=>{
                         let data = "";
-                        //logger.info(result);
+                        logger.info(result);
                         //返回结果
                         result.on('data',(d)=>{
                             data += d;
@@ -555,6 +555,7 @@ const wechatRefund = (req,res,next)=>{
                                     resUtil.resetFailedRes(res,evalJson.xml,null);
                                 }else {
                                     //退款成功
+                                    logger.info("result.insertId:"+result.insertId);
                                     params.paymentRefundId = result.insertId;
                                     new Promise((resolve,reject)=>{
                                         params.status = sysConst.REFUND_STATUS.refunded;

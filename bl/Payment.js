@@ -142,6 +142,7 @@ const addWechatRefund=(req,res,next) => {
         status: 1
     };
     new Promise((resolve,reject)=>{
+        logger.info("12345678910");
         let xmlParser = new xml2js.Parser({explicitArray : false, ignoreAttrs : true});
         xmlParser.parseString(req.body,(err,result)=>{
             let resString = JSON.stringify(result);
@@ -819,6 +820,7 @@ const wechatPaymentCallback=(req,res,next) => {
     xmlParser.parseString(req.body,(err,result)=>{
         let resString = JSON.stringify(result);
         let evalJson = eval('(' + resString + ')');
+        logger.info("req:" + req);
         logger.info("wechatPaymentCallback166"+resString);
         logger.info("wechatPaymentCallback1666"+req.body);
         let sysType =  parseInt(evalJson.xml.out_trade_no.split("_")[2]);
