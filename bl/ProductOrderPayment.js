@@ -537,7 +537,7 @@ const wechatRefund = (req,res,next)=>{
                     //向微信请求
                     let httpsReq = https.request(options,(result)=>{
                         let data = "";
-                        logger.info(result);
+                        //logger.info(result);
                         //返回结果
                         result.on('data',(d)=>{
                             data += d;
