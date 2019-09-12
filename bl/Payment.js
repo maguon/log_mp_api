@@ -823,26 +823,27 @@ const wechatPaymentCallback=(req,res,next) => {
         //logger.info("wechatPaymentCallback166"+resString);
         logger.info("wechatPaymentCallback1666 "+req.body);
         logger.info("wechatPaymentCallback1666 "+evalJson.xml.req_info);
-        let reqInfo = evalJson.xml.req_info;
-        if(reqInfo != NULL){
-            let md5Key = encrypt.encryptByMd5NoKey(sysConfig.wechatConfig.paymentKey).toLowerCase();
-            logger.info("wechatPaymentCallback177 reqInfo !null");
-            let reqResult = encrypt.decryption(reqInfo,md5Key);
-            xmlParser.parseString(reqResult,(err,result)=>{
-                let resStrings = JSON.stringify(result);
-                let evalJsons = eval('(' + resStrings + ')');
-                logger.info("wechatPaymentCallback177"+resStrings);
-                prepayIdJson.paymentId = evalJsons.root.out_refund_no;
-                prepayIdJson.settlement_refund_fee = evalJsons.root.settlement_refund_fee / 100;
-                prepayIdJson.wxOrderId = evalJsons.root.out_trade_no;
-                //如果sysType==2,则跳转到商品订单退款
-                let sysType =  parseInt(evalJsons.root.out_trade_no.split("_")[2]);
-                if(sysType == sysConsts.SYSTEM_ORDER_TYPE.type.product){
-                    productOrderPayment.productRefundPaymentCallback(result);
-                    return next();
-                }
-            });
-        }
+        let return_code = evalJson.xml.return_code;
+        logger.info("wechatPaymentCallback1666 "+evalJson.xml.return_code);
+        // if(return_code != NULL){
+        //     let md5Key = encrypt.encryptByMd5NoKey(sysConfig.wechatConfig.paymentKey).toLowerCase();
+        //     logger.info("wechatPaymentCallback177 reqInfo !null");
+        //     let reqResult = encrypt.decryption(reqInfo,md5Key);
+        //     xmlParser.parseString(reqResult,(err,result)=>{
+        //         let resStrings = JSON.stringify(result);
+        //         let evalJsons = eval('(' + resStrings + ')');
+        //         logger.info("wechatPaymentCallback177"+resStrings);
+        //         prepayIdJson.paymentId = evalJsons.root.out_refund_no;
+        //         prepayIdJson.settlement_refund_fee = evalJsons.root.settlement_refund_fee / 100;
+        //         prepayIdJson.wxOrderId = evalJsons.root.out_trade_no;
+        //         //如果sysType==2,则跳转到商品订单退款
+        //         let sysType =  parseInt(evalJsons.root.out_trade_no.split("_")[2]);
+        //         if(sysType == sysConsts.SYSTEM_ORDER_TYPE.type.product){
+        //             productOrderPayment.productRefundPaymentCallback(result);
+        //             return next();
+        //         }
+        //     });
+        // }
         let sysType =  parseInt(evalJson.xml.out_trade_no.split("_")[2]);
         let sysOrderId =  parseInt(evalJson.xml.out_trade_no.split("_")[0]);
         logger.info("sysType:"+sysType);
