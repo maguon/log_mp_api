@@ -487,7 +487,7 @@ const createServer=()=>{
     server.get('/api/user/:userId/productOrderPayment' ,productOrderPayment.getPayment);
     server.post({path:'/api/user/:userId/productOrder/:productOrderId/wechatPayment',contentType: 'application/json'},productOrderPayment.wechatPayment);
     server.get('/api/admin/:adminId/productOrderPayment' ,productOrderPayment.getPayment);
-    server.post({path:'/api/admin/:adminId/productOrder/:productOrderId/productPayment/:productPaymentId/wechatRefund',contentType: 'application/json'},productOrderPayment.wechatRefund);
+    server.post({path:'/api/admin/:adminId/productOrder/:productOrderId/productPayment/:productPaymentId/wechatRefund',contentType: 'application/json'},productOrderPayment.updateRefundStatus);
 
     /**
      * reminders
