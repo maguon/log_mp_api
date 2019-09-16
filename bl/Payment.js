@@ -957,17 +957,6 @@ const paymentInMonth =(req,res,next)=>{
     });
 }
 
-const getXMLNodeValue = (node_name,xml)=>{
-        logger.info("xml:"+xml);
-        let tmp = xml.split("<"+node_name+">");
-        if(tmp[1]!=undefined){
-            let _tmp = tmp[1].split("</"+node_name+">");
-            let tmp1 = _tmp[0].split('[');
-
-            let _tmp1 = tmp1[2].split(']');
-            return _tmp1[0];
-        }
-}
 module.exports = {
     wechatPaymentCallback,
     wechatRefund,
