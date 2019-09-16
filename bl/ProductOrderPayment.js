@@ -463,7 +463,7 @@ const wechatRefund = (req,res,next)=>{
     params.dateId = moment(myDate).format('YYYYMMDD');
     new Promise((resolve,reject)=>{
         //获取已支付成功信息
-        productPaymentDAO.getPayment({productOrderId:params.productOrderId,type:1,status:1},(error,rows)=>{
+        productPaymentDAO.getPayment({productOrderId:params.productOrderId,type:sysConst.PRODUCT_PAYMENT.type.payment,status:sysConst.PRODUCT_PAYMENT.status.paid},(error,rows)=>{
             if(error){
                 logger.error('wechatRefund getPaymentByOrderId ' + error.message);
                 resUtil.resInternalError(error, res, next);
@@ -485,7 +485,6 @@ const wechatRefund = (req,res,next)=>{
         })
     }).then(()=>{
         new Promise((resolve,reject)=>{
-            //params.adminId = 0;
             params.type = sysConst.PRODUCT_PAYMENT.type.refund;
             //添加退款的panmen_inf
             productPaymentDAO.addRefund(params,(error,result)=>{
@@ -533,6 +532,7 @@ const wechatRefund = (req,res,next)=>{
                             'Content-Length' : Buffer.byteLength(reqBody, 'utf8')
                         }
                     }
+                    logger.info("reqBody:" + reqBody);
                     //向微信请求
                     let httpsReq = https.request(options,(result)=>{
                         let data = "";
@@ -545,14 +545,14 @@ const wechatRefund = (req,res,next)=>{
                                 let resString = JSON.stringify(result);
                                 let evalJson = eval('(' + resString + ')');
                                 if(evalJson.xml.return_code == 'FAIL'){
-                                    params.status = sysConst.PRODUCT_PAYMENT.status.unPaid;
-                                    params.type = sysConst.PRODUCT_PAYMENT.type.refund
                                     productPaymentDAO.delRefundFail(params,(error,result)=>{});
                                     logger.warn('Refund failure!');
                                     logger.warn(evalJson.xml);
                                     resUtil.resetFailedRes(res,evalJson.xml,null);
                                 }else {
                                     //退款成功
+                                    params.paymentRefundId = result.insertId;
+                                    logger.info("params.paymentRefundId:" + params.paymentRefundId);
                                     new Promise((resolve,reject)=>{
                                         params.status = sysConst.REFUND_STATUS.refunded;
                                         logger.info("Refund SUCCESS!");
@@ -773,7 +773,6 @@ const wechatRefund = (req,res,next)=>{
 //             }
 //         })
 // };
-
 // const getRefundParams = (req,res,params)=>{
 //     let result = {};
 //     // let refundUrl = 'https://stg.myxxjs.com/api/wechatRefund';

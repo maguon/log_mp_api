@@ -822,34 +822,8 @@ const wechatPaymentCallback=(req,res,next) => {
         let evalJson = eval('(' + resString + ')');
         //logger.info("wechatPaymentCallback166"+resString);
         logger.info("wechatPaymentCallback1666 "+req.body);
-
-        //截取
-        let trade_state_desc = getXMLNodeValue('return_code',req.body.toString('utf-8'));
-        let return_msg = getXMLNodeValue('req_info', req.body.toString('utf-8'));
-        logger.info("wechatPaymentCallback1666 trade_state_desc:"+trade_state_desc);
-        logger.info("wechatPaymentCallback1666 evalJson return_msg :"+return_msg);
-
         let return_code = evalJson.xml.return_code;
         logger.info("wechatPaymentCallback1666 "+return_code);
-        // if(return_code != NULL){
-        //     let md5Key = encrypt.encryptByMd5NoKey(sysConfig.wechatConfig.paymentKey).toLowerCase();
-        //     logger.info("wechatPaymentCallback177 reqInfo !null");
-        //     let reqResult = encrypt.decryption(reqInfo,md5Key);
-        //     xmlParser.parseString(reqResult,(err,result)=>{
-        //         let resStrings = JSON.stringify(result);
-        //         let evalJsons = eval('(' + resStrings + ')');
-        //         logger.info("wechatPaymentCallback177"+resStrings);
-        //         prepayIdJson.paymentId = evalJsons.root.out_refund_no;
-        //         prepayIdJson.settlement_refund_fee = evalJsons.root.settlement_refund_fee / 100;
-        //         prepayIdJson.wxOrderId = evalJsons.root.out_trade_no;
-        //         //如果sysType==2,则跳转到商品订单退款
-        //         let sysType =  parseInt(evalJsons.root.out_trade_no.split("_")[2]);
-        //         if(sysType == sysConsts.SYSTEM_ORDER_TYPE.type.product){
-        //             productOrderPayment.productRefundPaymentCallback(result);
-        //             return next();
-        //         }
-        //     });
-        // }
         let sysType =  parseInt(evalJson.xml.out_trade_no.split("_")[2]);
         let sysOrderId =  parseInt(evalJson.xml.out_trade_no.split("_")[0]);
         logger.info("sysType:"+sysType);
