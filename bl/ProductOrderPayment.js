@@ -291,6 +291,7 @@ const updateOrderMsgByPrice = (params,callback)=>{
     const updateCommodity =(commodityInfo)=>{
         return new Promise((resolve, reject)=>{
             logger.info("commodityInfo.saled_quantity:"+commodityInfo.saled_quantity);
+            logger.info("commodityInfo.quantity:"+commodityInfo.quantity);
             if(commodityInfo.quantity){
                 if(commodityInfo.quantity <= commodityInfo.saled_quantity ){
                     params.status = sysConst.COMMODITY.status.reserved;//已预订
