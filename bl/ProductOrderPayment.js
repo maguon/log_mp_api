@@ -262,30 +262,36 @@ const updateOrderMsgByPrice = (params,callback)=>{
             let paymentNumber = 0;
             let refundNumber = 0;
             //查询支付成功条数
-            productPaymentDAO.getCommodityPaymentStatus({type:sysConst.PRODUCT_PAYMENT.type.payment,status:sysConst.PRODUCT_PAYMENT.status.paid,commodityId:commodityId},(error,rows)=>{
-                if(error){
-                    logger.error('updateOrderMsgByPrice getSaledQuantity payment ' + error.message);
-                    reject({err:error});
-                }else{
-                    logger.info('updateOrderMsgByPrice getSaledQuantity payment ' + 'success');
-                    logger.info("rows.length:"+rows.length);
-                    paymentNumber = rows.length;
-                    resolve(commodityInfo);
-                }
-            });
-            //退款成功条数
-            productPaymentDAO.getCommodityPaymentStatus({type:sysConst.PRODUCT_PAYMENT.type.refund,status:sysConst.PRODUCT_PAYMENT.status.paid,commodityId:commodityId},(error,rows)=>{
-                if(error){
-                    logger.error('updateOrderMsgByPrice getSaledQuantity refund  ' + error.message);
-                    reject({err:error});
-                }else{
-                    logger.info('updateOrderMsgByPrice getSaledQuantity refund ' + 'success');
-                    logger.info("rows.length:"+rows.length);
-                    refundNumber = rows.length;
-                    commodityInfo.saled_quantity = paymentNumber - refundNumber;
-                    resolve(commodityInfo);
-                }
-            });
+            new Promise((resolve1, reject1) => {
+                productPaymentDAO
+                    .getCommodityPaymentStatus({type:sysConst.PRODUCT_PAYMENT.type.payment,status:sysConst.PRODUCT_PAYMENT.status.paid,commodityId:commodityId},(error,rows)=>{
+                        if(error){
+                            logger.error('updateOrderMsgByPrice getSaledQuantity payment ' + error.message);
+                            reject1({err:error});
+                        }else{
+                            logger.info('updateOrderMsgByPrice getSaledQuantity payment ' + 'success');
+                            logger.info("rows.length:"+rows.length);
+                            paymentNumber = rows.length;
+                            resolve1(commodityInfo);
+                        }
+                    });
+            }).then(()=>{
+                //退款成功条数
+                productPaymentDAO.getCommodityPaymentStatus({type:sysConst.PRODUCT_PAYMENT.type.refund,status:sysConst.PRODUCT_PAYMENT.status.paid,commodityId:commodityId},(error,rows)=>{
+                    if(error){
+                        logger.error('updateOrderMsgByPrice getSaledQuantity refund  ' + error.message);
+                        reject({err:error});
+                    }else{
+                        logger.info('updateOrderMsgByPrice getSaledQuantity refund ' + 'success');
+                        logger.info("rows.length:"+rows.length);
+                        refundNumber = rows.length;
+                        commodityInfo.saled_quantity = paymentNumber - refundNumber;
+                        resolve(commodityInfo);
+                    }
+                });
+            })
+
+
         });
     }
     const updateCommodity =(commodityInfo)=>{

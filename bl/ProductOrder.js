@@ -178,7 +178,9 @@ const addUserProductOrder = (req,res,next) =>{
                                     resUtil.resetFailedRes(error,res,next);
                                 }else{
                                     logger.info('addUserProductOrder updateProductOrder  ' + 'success');
-                                    resolve();
+                                    if(type == sysConst.PRODUCT_ORDER.type.arrivalOfGoods){
+                                        resolve();
+                                    }
                                 }
                             })
                         }).then(()=>{
