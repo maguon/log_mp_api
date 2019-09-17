@@ -15544,6 +15544,9 @@
         },
         "introduction": {
           "type": "string"
+        },
+        "pageUrl": {
+          "type": "string"
         }
       },
       "xml": {
