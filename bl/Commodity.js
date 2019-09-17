@@ -161,6 +161,17 @@ const addCommodity = (req,res,next)=>{
             }
         })
 };
+const getAndUpdateSaledQuantityNum = (params,callback) => {
+    commodityDAO.updateSaledQuantityOrStatus(params,(error,result)=>{
+        if(error){
+            logger.error(' getAndUpdateSaledQuantityNum updateSaledQuantityNum ' + error.message);
+            reject({err:error});
+        }else{
+            logger.info(' getAndUpdateSaledQuantityNum updateSaledQuantityNum ' + 'success')
+            return callback(null,result);
+        }
+    })
+}
 const updateImage = (req,res,next) => {
     let params = req.params;
     commodityDAO.updateImage(params,(error,result)=>{
@@ -290,6 +301,7 @@ module.exports={
     getAdminCommodity,
     getCommodityPage,
     addCommodity,
+    getAndUpdateSaledQuantityNum,
     updateImage,
     updateProdImages,
     updateInfo,

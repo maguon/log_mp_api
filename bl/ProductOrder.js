@@ -5,6 +5,7 @@ const sysMsg = require("../util/SystemMsg");
 const sysConst = require("../util/SystemConst");
 const moment = require('moment/moment.js');
 const logger = serverLogger.createLogger('ProductOrder.js');
+const commodity = require('../bl/Commodity');
 const productOrderDAO = require('../dao/ProductOrderDAO.js');
 const productOrderItemDAO = require('../dao/ProductOrderItemDAO');
 const commodityDAO = require('../dao/CommodityDAO');
@@ -120,8 +121,6 @@ const addUserProductOrder = (req,res,next) =>{
             }
         });
     }).then(() => {
-
-
         for (let i in orderItemList) {
             new Promise((resolve, reject) => {
                 commodityDAO.getCommodity({commodityId: orderItemList[i].commodityId}, (error, rows) => {
@@ -147,6 +146,8 @@ const addUserProductOrder = (req,res,next) =>{
                     orderItemList[i].originalPrice = commodityList.original_price;
                     orderItemList[i].actualPrice = commodityList.actual_price;
                     orderItemList[i].earnestMoney = commodityList.earnest_money;
+                    orderItemList[i].quantity = commodityList.quantity;
+                    orderItemList[i].saledQuantity = commodityList.saled_quantity;
 
                     oraTransPrice += commodityList.original_price;//原价
                     actTransPrice += commodityList.actual_price;//售价
@@ -165,21 +166,42 @@ const addUserProductOrder = (req,res,next) =>{
                             }
                         });
                     }).then(()=>{
-                        params.oraTransPrice = oraTransPrice;
-                        params.actTransPrice = actTransPrice;
-                        params.earnestMoney = earnestMoney;
-                        params.productOrderId =  ProductOrderId;
+                        new Promise((resolve, reject) => {
+                            params.oraTransPrice = oraTransPrice;
+                            params.actTransPrice = actTransPrice;
+                            params.earnestMoney = earnestMoney;
+                            params.productOrderId =  ProductOrderId;
 
-                        productOrderDAO.updateProductOrder(params,(error,result)=>{
-                            if(error){
-                                logger.error('addUserProductOrder updateProductOrder ' + error.message);
-                                resUtil.resetFailedRes(error,res,next);
-                            }else{
-                                logger.info('addUserProductOrder updateProductOrder  ' + 'success');
-                                // resUtil.resetCreateRes(res,resultCallback,null);
-                                // return next();
+                            productOrderDAO.updateProductOrder(params,(error,result)=>{
+                                if(error){
+                                    logger.error('addUserProductOrder updateProductOrder ' + error.message);
+                                    resUtil.resetFailedRes(error,res,next);
+                                }else{
+                                    logger.info('addUserProductOrder updateProductOrder  ' + 'success');
+                                    resolve();
+                                }
+                            })
+                        }).then(()=>{
+                            let reqInfo={
+                                saledQuantity:orderItemList[i].saledQuantity+1,
+                                commodityId:orderItemList[i].commodityId,
+                                status:sysConst.COMMODITY.status.onSale
                             }
+                            if(orderItemList[i].quantity){
+                                if(orderItemList[i].quantity <= reqInfo.saledQuantity ){
+                                    reqInfo.status = sysConst.COMMODITY.status.reserved;//已预订
+                                }
+                            }
+                            commodity.getAndUpdateSaledQuantityNum(reqInfo,(error,result)=>{
+                                if(error){
+                                    logger.error('addUserProductOrder getAndUpdateSaledQuantityNum ' + error.message);
+                                    resUtil.resetFailedRes(error,res,next);
+                                }else{
+                                    logger.info('addUserProductOrder getAndUpdateSaledQuantityNum  ' + 'success');
+                                }
+                            });
                         })
+
                     })
                 })
             })
@@ -253,6 +275,7 @@ const updateStatus = (req,res,next) => {
         }
     })
 }
+
 module.exports={
     getPaymentStatus,
     getUserProductOrder,
