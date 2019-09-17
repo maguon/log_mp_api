@@ -105,7 +105,7 @@ const addUserProductOrder = (req,res,next) =>{
         }
     }
     if(type == sysConst.PRODUCT_ORDER.type.arrivalOfGoods){
-        params.status = sysConst.PRODUCT_ORDER.status.shipped;//已发货
+        params.paymentStatus = sysConst.PRODUCT_ORDER.payment_status.complete;//支付完成
     }
     new Promise((resolve, reject) => {
         productOrderDAO.addProductOrder(params, (error, result) => {
