@@ -12,7 +12,6 @@ const sysConfig = require("../config/SystemConfig");
 const recommendInfoDAO = require("../dao/RecommendInfoDAO");
 const adminUser = require('../dao/AdminUserDAO');
 const encrypt = require("../util/Encrypt");
-const commodityDao = require("../dao/CommodityDAO");
 
 const addRecommend = (req,res,next)=>{
     let params = req.params;
@@ -136,17 +135,17 @@ const postWxCodeImage= (req,res,next)=>{
         });
     }).then(()=>{
         new Promise((resolve, reject) => {
-            commodityDao.getCommodity(params,(error,result)=>{
+            recommendInfoDAO.select(params,(error,result)=>{
                 if (error){
-                    logger.error('postWxCodeImage getCommodity ' + error.message);
+                    logger.error('postWxCodeImage getRecommendInfo ' + error.message);
                     resUtil.resInternalError(error, res, next);
                 } else {
                     if(result.length > 0){
-                        logger.info('postWxCodeImage getCommodity ' + 'success');
+                        logger.info('postWxCodeImage getRecommendInfo ' + 'success');
                         params.pageUrl = result[0].page_url;
                         resolve();
-                    }else{logger.info('postWxCodeImage getCommodity ' + sysMsg.COMMODITY_ID_ERROR);
-                        resUtil.resetFailedRes(res,sysMsg.COMMODITY_ID_ERROR);
+                    }else{logger.info('postWxCodeImage getRecommendInfo ' + sysMsg.RECOMMEND_TASK_NO_EXISTS);
+                        resUtil.resetFailedRes(res,sysMsg.RECOMMEND_TASK_NO_EXISTS);
                     }
                 }
             })
