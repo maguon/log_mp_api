@@ -216,6 +216,7 @@ const getWXACodeUnlimit=(params,callback)=>{
     let url = "/wxa/getwxacodeunlimit?access_token="+params.accessToken;
     let post_data = JSON.stringify({
         "scene":params.recommendId,
+        "page":"pages/special/special",
         "is_hyaline":true
     });
     let options ={
