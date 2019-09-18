@@ -216,7 +216,7 @@ const getWXACodeUnlimit=(params,callback)=>{
     let url = "/wxa/getwxacodeunlimit?access_token="+params.accessToken;
     let post_data = JSON.stringify({
         "scene":params.recommendId,
-        "page":"pages/special/special",
+        "page":"pages/about/about",
         "is_hyaline":true
     });
     let options ={
@@ -230,6 +230,7 @@ const getWXACodeUnlimit=(params,callback)=>{
         }
     }
     const httpsReq = https.request(options, (wxRes) => {
+        logger.info("wxRes:"+wxRes);
         if (wxRes.headers['content-type'] == "application/json") {
             wxCodeResult.success = false;
             wxCodeResult.body = JSON.parse(wxRes);
