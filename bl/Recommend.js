@@ -12,6 +12,7 @@ const sysConfig = require("../config/SystemConfig");
 const recommendInfoDAO = require("../dao/RecommendInfoDAO");
 const adminUser = require('../dao/AdminUserDAO');
 const encrypt = require("../util/Encrypt");
+const commodityDao = require("../dao/CommodityDAO");
 
 const addRecommend = (req,res,next)=>{
     let params = req.params;
@@ -123,7 +124,6 @@ const postWxCodeImage= (req,res,next)=>{
             if (error){
                 logger.error('postWxCodeImage getAccessToken ' + error.message);
                 resUtil.resInternalError(error, res, next);
-                reject(error);
             } else {
                 logger.info('postWxCodeImage getAccessToken ' + 'success');
                 if (data.errcode){
@@ -135,43 +135,61 @@ const postWxCodeImage= (req,res,next)=>{
             }
         });
     }).then(()=>{
-        new Promise((resolve,reject)=>{
-            let randomString = encrypt.randomString(6);
-            params.fileName = "wx_code_"+params.recommendId+"_"+randomString;
-            params.photoSrc = './public/docs/wx_img/'+params.fileName+'.png';
-            let wxParams ={
-                recommendId:params.recommendId,
-                accessToken:params.accessToken,
-                photoSrc : params.photoSrc
-            }
-            getWXACodeUnlimit(wxParams,(error,result)=>{
+        new Promise((resolve, reject) => {
+            commodityDao.getCommodity(params,(error,result)=>{
                 if (error){
-                    logger.error('postWxCodeImage getWXACodeUnlimit ' + error.message);
+                    logger.error('postWxCodeImage getCommodity ' + error.message);
                     resUtil.resInternalError(error, res, next);
-                    reject(error);
                 } else {
-                    logger.info('postWxCodeImage getWXACodeUnlimit ' + 'success');
-                    logger.info(result);
-                    if (result.success){
+                    if(result.length > 0){
+                        logger.info('postWxCodeImage getCommodity ' + 'success');
+                        params.pageUrl = result[0].page_url;
                         resolve();
-                    } else {
-                        resUtil.resetFailedRes(res, result.body);
+                    }else{logger.info('postWxCodeImage getCommodity ' + sysMsg.COMMODITY_ID_ERROR);
+                        resUtil.resetFailedRes(res,sysMsg.COMMODITY_ID_ERROR);
                     }
                 }
-            });
+            })
         }).then(()=>{
-            let mpUrl = "http://"+sysConfig.hosts.wx.host+":"+sysConfig.hosts.wx.port+"/wx_img/"+params.fileName+".png";
-            logger.info('create wxImage Url '+mpUrl);
-            recommendInfoDAO.update({recommendId: params.recommendId,mpUrl:mpUrl},(error,result)=>{
-                if(error){
-                    logger.error('postWxCodeImage update ' + error.message);
-                    resUtil.resInternalError(error, res, next);
-                }else{
-                    logger.info('postWxCodeImage update ' + 'success');
-                    resUtil.resetUpdateRes(res,result,null);
-                    return next();
+            new Promise((resolve,reject)=>{
+                let randomString = encrypt.randomString(6);
+                params.fileName = "wx_code_"+params.recommendId+"_"+randomString;
+                params.photoSrc = './public/docs/wx_img/'+params.fileName+'.png';
+                let wxParams ={
+                    recommendId:params.recommendId,
+                    accessToken:params.accessToken,
+                    photoSrc : params.photoSrc,
+                    pageUrl:params.pageUrl
                 }
-            });
+                getWXACodeUnlimit(wxParams,(error,result)=>{
+                    if (error){
+                        logger.error('postWxCodeImage getWXACodeUnlimit ' + error.message);
+                        resUtil.resInternalError(error, res, next);
+                        reject(error);
+                    } else {
+                        logger.info('postWxCodeImage getWXACodeUnlimit ' + 'success');
+                        logger.info(result);
+                        if (result.success){
+                            resolve();
+                        } else {
+                            resUtil.resetFailedRes(res, result.body);
+                        }
+                    }
+                });
+            }).then(()=>{
+                let mpUrl = "http://"+sysConfig.hosts.wx.host+":"+sysConfig.hosts.wx.port+"/wx_img/"+params.fileName+".png";
+                logger.info('create wxImage Url '+mpUrl);
+                recommendInfoDAO.update({recommendId: params.recommendId,mpUrl:mpUrl},(error,result)=>{
+                    if(error){
+                        logger.error('postWxCodeImage update ' + error.message);
+                        resUtil.resInternalError(error, res, next);
+                    }else{
+                        logger.info('postWxCodeImage update ' + 'success');
+                        resUtil.resetUpdateRes(res,result,null);
+                        return next();
+                    }
+                });
+            })
         })
     })
 }
@@ -214,11 +232,19 @@ const getAccessToken=(params,callback)=>{
 const getWXACodeUnlimit=(params,callback)=>{
     let wxCodeResult={};
     let url = "/wxa/getwxacodeunlimit?access_token="+params.accessToken;
-    let post_data = JSON.stringify({
-        "scene":params.recommendId,
-        "page":"pages/about/about",
-        "is_hyaline":true
-    });
+    let post_data;
+    if(params.pageUrl){
+        post_data = JSON.stringify({
+            "scene":params.recommendId,
+            "page":params.pageUrl,
+            "is_hyaline":true
+        });
+    }else{
+        post_data = JSON.stringify({
+            "scene":params.recommendId,
+            "is_hyaline":true
+        });
+    }
     let options ={
         hostname: 'api.weixin.qq.com',
         port: 443,
