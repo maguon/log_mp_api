@@ -159,5 +159,5 @@
     </div>
 
 </body>
-<img src={{image}} width="0" height="0" />
+<img src="http://stg.myxxjs.com:9002/api/image/5d81de24f231ec340097db44" width="0" height="0" />
 </html>
