@@ -5,9 +5,9 @@
     <meta name ="viewport" content ="initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no">
     <title>{{title}}</title>
     <link rel="stylesheet" href="/css/api.css">
+    <meta property="og:image" content="http://mmbiz.qpic.cn/mmbiz_jpg/GqljMM3iabjAb5Hbju7QJxR1mlWDuLmoUFZ39PQfawa1jicaic616GAXD0V6He9oFnktTquZaBSOySDic3MWjOowwA/0?wx_fmt=jpeg">
 </head>
 <body style="margin: 30px 10%">
-<img src="http://stg.myxxjs.com:9002/api/image/5d81de24f231ec340097db44" width="0" height="0" />
     <!--标题-->
     <div>
         <p class="fz15 bold mb_3">{{commodity_name}}</p>
