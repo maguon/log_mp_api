@@ -18,8 +18,8 @@ const add = (params,callback) => {
 }
 const select = (params,callback) => {
     let query = " select pi.*,ri.name from poster_info pi "+
-    " left join recommend_info ri on ri.id = pi.recommend_id " +
-    " where pi.id is not null ";
+        " left join recommend_info ri on ri.id = pi.recommend_id " +
+        " where pi.id is not null ";
     let paramsArray = [],i=0;
     if (params.posterId){
         paramsArray[i++] = params.posterId;
@@ -44,6 +44,24 @@ const select = (params,callback) => {
     }
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('selectPoster');
+        callback(error,rows);
+    })
+}
+const selectPosterInfo = (params,callback) => {
+    let query = " select * from poster_info "+
+        " where id is not null ";
+    let paramsArray = [],i=0;
+    if (params.posterId){
+        paramsArray[i++] = params.posterId;
+        query += " and id = ?";
+    }
+    if(params.start && params.size){
+        paramsArray[i++] = parseInt(params.start);
+        paramsArray[i] = parseInt(params.size);
+        query = query + " limit ?,? ";
+    }
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('selectPosterInfo');
         callback(error,rows);
     })
 }
@@ -73,5 +91,6 @@ const update = (params,callback) => {
 module.exports={
     add,
     select,
+    selectPosterInfo,
     update
 }

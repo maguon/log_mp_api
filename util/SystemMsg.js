@@ -128,6 +128,10 @@ let PRODUCT_ORDER_TYPE_ERROR = "商品购付方式不同，请分开下单！";
  * productOrderPayment
  */
 let PRODUCT_PAYMENT_ID_ERROR = "没有此支付信息！";
+/**
+ * poster
+ */
+let POSTER_ID_ERROR = "没有此推广信息！";
 module.exports = {
     SYS_AUTH_TOKEN_ERROR,
     SYS_VALIDATE_EMAIL_ERROR,
@@ -199,5 +203,7 @@ module.exports = {
     PRODUCT_ORDER_STATUS_ERROR,
     PRODUCT_ORDER_TYPE_ERROR,
 
-    PRODUCT_PAYMENT_ID_ERROR
+    PRODUCT_PAYMENT_ID_ERROR,
+
+    POSTER_ID_ERROR
 }

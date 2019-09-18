@@ -8,6 +8,7 @@ const logger = serverLogger.createLogger('Commodity.js');
 const commodityDAO = require('../dao/CommodityDAO.js');
 const cityInfoDAO = require('../dao/CityInfoDAO.js');
 const recommendInfoDAO = require("../dao/RecommendInfoDAO");
+const posterDAO = require("../dao/PosterDAO");
 const moment = require('moment/moment.js');
 const fs = require('fs');
 
@@ -56,24 +57,42 @@ const getCommodityPage = (req,res,next) =>{
             })
         });
     }
+    const getPoster = (commodityInfo)=>{
+        return new Promise((resolve, reject)=>{
+            posterDAO.selectPosterInfo(params,(error,result)=>{
+                if(error){
+                    logger.error('getPoster ' + error.message);
+                    reject({err:error});
+                }else{
+                    if(result.length > 0) {
+                        logger.info('getCommodityPage getPoster ' + 'success');
+                        commodityInfo.title = result[0].title;
+                        commodityInfo.recommendId = result[0].recommend_id;
+                        resolve(commodityInfo);
+                    }else{
+                        logger.info('getCommodityPage getPoster ' + sysMsg.POSTER_ID_ERROR);
+                        reject({msg:sysMsg.POSTER_ID_ERROR});
+                    }
+
+                }
+            });
+        });
+    }
     const getRecommend = (commodityInfo)=>{
         return new Promise((resolve, reject)=>{
-            recommendInfoDAO.select(params,(error,result)=>{
+            recommendInfoDAO.select({recommendId:commodityInfo.recommendId},(error,result)=>{
                 if (error){
                     logger.error('getCommodityPage getRecommend ' + error.message);
                     resUtil.resInternalError(error, res, next);
                 } else {
                     if(result.length > 0){
                         logger.info('getCommodityPage getRecommend ' + 'success');
-                        var re = /([0-9]+\.[0-9]{2})[0-9]*/;
-
                         commodityInfo.pageUrl = result[0].page_url;
                         commodityInfo.favorable_Price = Number((commodityInfo.original_price - commodityInfo.actual_price)/10000).toFixed(2);
                         commodityInfo.original_price = Number(Number(commodityInfo.original_price)/10000).toFixed(2);
                         commodityInfo.actual_price = Number(Number(commodityInfo.actual_price)/10000).toFixed(2);
                         commodityInfo.image = 'http://' + sysConfig.hosts.image.host + ':'+ sysConfig.hosts.image.port + '/api/image/' + commodityInfo.image;
                         commodityInfo.mp_url = result[0].mp_url;
-                        commodityInfo.title = result[0].title;
                         let arr = commodityInfo.pord_images.split(",") ;
                         let arrHtml;
                         for(let i of arr){
@@ -132,6 +151,7 @@ const getCommodityPage = (req,res,next) =>{
     }
 
     getCommodity()
+        .then(getPoster)
         .then(getRecommend)
         .then(getView)
         .catch((reject)=>{
