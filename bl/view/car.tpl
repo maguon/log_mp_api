@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name ="viewport" content ="initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no">
+    <div id="shareImage" style="display: none;">
+       	<img src="http://stg.myxxjs.com:9002/api/image/5d81de24f231ec340097db44" />
+    </div>
     <title>{{title}}</title>
     <link rel="stylesheet" href="/css/api.css">
-    <div style="margin:0 auto;width:0px;height:0px;overflow:hidden;">
-      &lt;img src="http://stg.myxxjs.com:9002/api/image/5d81de24f231ec340097db44" width='700'&gt;
-    </div>
 </head>
 <body style="margin: 30px 10%">
     <!--标题-->
