@@ -56,6 +56,10 @@ const update = (params,callback) => {
         paramsArray[i++] = params.mpUrl;
         query += " , mp_url = ?";
     }
+    if (params.pageUrl){
+        paramsArray[i++] = params.pageUrl;
+        query += " , page_url = ?";
+    }
     paramsArray[i] = params.recommendId;
     query += " where id = ?";
     db.dbQuery(query,paramsArray,(error,rows)=>{
