@@ -3,9 +3,11 @@ const serverLogger = require('../util/ServerLogger.js');
 const resUtil = require('../util/ResponseUtil.js');
 const sysMsg = require("../util/SystemMsg");
 const sysConst = require("../util/SystemConst");
+const sysConfig = require("../config/SystemConfig");
 const logger = serverLogger.createLogger('Commodity.js');
 const commodityDAO = require('../dao/CommodityDAO.js');
 const cityInfoDAO = require('../dao/CityInfoDAO.js');
+const recommendInfoDAO = require("../dao/RecommendInfoDAO");
 const moment = require('moment/moment.js');
 const fs = require('fs');
 
@@ -54,6 +56,42 @@ const getCommodityPage = (req,res,next) =>{
             })
         });
     }
+    const getRecommend = (commodityInfo)=>{
+        return new Promise((resolve, reject)=>{
+            recommendInfoDAO.select(params,(error,result)=>{
+                if (error){
+                    logger.error('getCommodityPage getRecommend ' + error.message);
+                    resUtil.resInternalError(error, res, next);
+                } else {
+                    if(result.length > 0){
+                        logger.info('getCommodityPage getRecommend ' + 'success');
+                        var re = /([0-9]+\.[0-9]{2})[0-9]*/;
+
+                        commodityInfo.pageUrl = result[0].page_url;
+                        commodityInfo.favorable_Price = Number((commodityInfo.original_price - commodityInfo.actual_price)/10000).toFixed(2);
+                        commodityInfo.original_price = Number(Number(commodityInfo.original_price)/10000).toFixed(2);
+                        commodityInfo.actual_price = Number(Number(commodityInfo.actual_price)/10000).toFixed(2);
+                        commodityInfo.image = 'http://' + sysConfig.hosts.image.host + ':'+ sysConfig.hosts.image.port + '/api/image/' + commodityInfo.image;
+                        commodityInfo.mp_url = result[0].mp_url;
+                        let arr = commodityInfo.pord_images.split(",") ;
+                        let arrHtml;
+                        for(let i of arr){
+                            let imageAddress = 'http://' + sysConfig.hosts.image.host + ':'+ sysConfig.hosts.image.port + '/api/image/' + i;
+                            if(arrHtml == null){
+                                arrHtml ='<img style="width: 100%;" src=' + imageAddress +'  class="mb2" />';
+                            }
+                            arrHtml = arrHtml + '<img style="width: 100%;" src=' + imageAddress +'  class="mb2" />';
+                        }
+                        commodityInfo.arrHtml = arrHtml;
+                        resolve(commodityInfo);
+                    }else{
+                        logger.info('getCommodityPage getRecommend ' + sysMsg.RECOMMEND_TASK_NO_EXISTS);
+                        resUtil.resetFailedRes(res,sysMsg.RECOMMEND_TASK_NO_EXISTS);
+                    }
+                }
+            })
+        });
+    }
 
     const getView =(record)=>{
         return new Promise(()=>{
@@ -68,15 +106,21 @@ const getCommodityPage = (req,res,next) =>{
                     //console.log("读取的数据：",data);
                     var prod = {
                         commodity_name: record.commodity_name,
-                        original_price: record.original_price/10000,
-                        actual_price: record.actual_price/10000,
-                        favorable_Price:(record.original_price - record.actual_price)/10000,
-                        info: record.info
+                        original_price: record.original_price,
+                        actual_price: record.actual_price,
+                        favorable_Price: record.favorable_Price,
+                        city_name:record.city_name,
+                        image: record.image,
+                        info: record.info,
+                        saleTime:moment(record.sale_time).format('MM月DD日 HH:mm:ss'),
+                        mp_url:record.mp_url,
+                        pord_images:record.arrHtml
                     };
                     var pattern = /{{([\s\S]+?)}}/gi;
                     var result = data.replace(pattern, (match, datas)=>{
                         return prod[datas];
                     });
+                    console.log("读取的数据：",result);
                     res.write(result);
                     res.end();
                     return next();
@@ -86,6 +130,7 @@ const getCommodityPage = (req,res,next) =>{
     }
 
     getCommodity()
+        .then(getRecommend)
         .then(getView)
         .catch((reject)=>{
             if(reject.err){

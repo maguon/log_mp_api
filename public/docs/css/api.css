@@ -1,0 +1,169 @@
+/*公共样式--开始*/
+html, body, div, ul, li, h1, h2, h3, h4, h5, h6,p,input, textarea, th, td, select {
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    min-height: 100%;
+}
+
+body {
+    font-family: "Microsoft YaHei";
+    font-size:14px;
+    color:#333;
+}
+h1, h2, h3, h4, h5, h6{font-weight:normal;}
+ul,ol {
+    list-style: none;
+}
+
+img {
+    border: none;
+    vertical-align: middle;
+}
+
+
+.bold{
+    font-weight: bold;
+}
+table tbody tr td{
+    padding:7px 5px !important;
+    border: 1px solid #f3f3f3 !important;
+}
+.bgGrey{
+    background:#f6f6f6;
+}
+
+.greyColor{
+    color:#aeaeae ;
+}
+
+.bgRed{
+    background: #bb3329;
+}
+.redColor{
+    color: #bb3329;
+ }
+.card .card-content {
+    padding: 10px 17px !important;
+}
+
+/*字体大小*/
+.fz_5{
+    font-size: 0.5em;
+}
+.fz_7{
+    font-size: 0.7em;
+}
+.fz_8{
+    font-size: 0.8em;
+}
+.fz_9{
+    font-size: 0.9em;
+}
+.fz10{
+    font-size: 1em;
+}
+.fz11{
+    font-size: 1.1em;
+}
+.fz115{
+    font-size: 1.15em;
+}
+.fz12{
+    font-size: 1.2em;
+}
+.fz14{
+    font-size: 1.4em;
+}
+.fz15{
+    font-size: 1.5em;
+}
+.fz16{
+    font-size: 1.6em;
+}
+.fz17{
+    font-size: 1.7em;
+}
+.fz20{
+    font-size: 2em;
+}
+.fz21{
+    font-size: 2.1em;
+}
+.fz22{
+    font-size: 2.2em;
+}
+.fz23{
+    font-size: 2.3em;
+}
+.fz24{
+    font-size: 2.4em;
+}
+.fz25{
+    font-size: 2.5em;
+}
+.fz30{
+    font-size: 3em;
+}
+.fz40{
+    font-size: 4em;
+}
+.fz50{
+    font-size: 5em;
+}
+/*padding*/
+.padding_4{
+    padding:0.4em
+}
+.padding_7{
+    padding:0.7em
+}
+
+.white-text{
+    color: white;
+}
+.pt{
+    padding-top: 0.3em;
+}
+.grey-text{
+    color: #9e9e9e ;
+}
+.right{
+    text-align: right;
+}
+.center{
+    text-align: center;
+}
+/*margin_bottom*/
+.mb_3{
+    margin-bottom: 0.3em
+}
+.mb_6{
+    margin-bottom: 0.6em
+}
+.mb1{
+    margin-bottom: 1em
+}
+.mb2{
+    margin-bottom: 2em
+}
+.mb3{
+    margin-bottom: 3em
+}
+
+
+.pb1{
+    padding-bottom: 1em
+}
+
+.border2{
+    border: 2px solid #bb3329;
+}
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 100%;
+    border-radius: 5px;
+}

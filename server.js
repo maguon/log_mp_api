@@ -457,7 +457,7 @@ const createServer=()=>{
     /**
      * commodity
      */
-    server.get('/api/commodity/:commodityId/view',commodity.getCommodityPage);
+    server.get('/api/commodity/:commodityId/recommend/:recommendId/view',commodity.getCommodityPage);
     server.get('/api/user/:userId/commodity',commodity.getCommodity);
     server.get('/api/admin/:adminId/commodity',commodity.getAdminCommodity);
     server.post({path:'/api/admin/:adminId/commodity',contentType: 'application/json'},commodity.addCommodity);
