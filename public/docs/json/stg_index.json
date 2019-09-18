@@ -13003,6 +13003,13 @@
             "type": "string"
           },
           {
+            "name": "recommendName",
+            "in": "query",
+            "description": "推荐人名称",
+            "required": false,
+            "type": "string"
+          },
+          {
             "name": "start",
             "in": "query",
             "description": "start",

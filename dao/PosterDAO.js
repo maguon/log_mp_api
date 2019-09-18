@@ -17,20 +17,25 @@ const add = (params,callback) => {
     })
 }
 const select = (params,callback) => {
-    let query = " select * from poster_info";
-    query += " where  id is not null ";
+    let query = " select pi.*,ri.name from poster_info pi "+
+    " left join recommend_info ri on ri.id = pi.recommend_id " +
+    " where pi.id is not null ";
     let paramsArray = [],i=0;
     if (params.posterId){
         paramsArray[i++] = params.posterId;
-        query += " and id = ?";
+        query += " and pi.id = ?";
     }
     if (params.commodityId){
         paramsArray[i++] = params.commodityId;
-        query += " and commodity_id = ?";
+        query += " and pi.commodity_id = ?";
     }
     if (params.recommendId){
         paramsArray[i++] = params.recommendId;
-        query += " and recommend_id = ?";
+        query += " and pi.recommend_id = ?";
+    }
+    if (params.recommendName){
+        paramsArray[i++] = params.recommendName;
+        query += " and ri.name = ?";
     }
     if(params.start && params.size){
         paramsArray[i++] = parseInt(params.start);
