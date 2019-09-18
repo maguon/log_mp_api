@@ -167,7 +167,7 @@
 <script type="text/javascript">
     wx.ready(function () {
       wx.updateAppMessageShareData({
-        title: {{title}}, // 分享标题
+        title: '广运车特价', // 分享标题
         desc: '啦啦啦啦', // 分享描述
         link: 'http://stg.myxxjs.com:9101/api/commodity/41/poster/6/view', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
         imgUrl: 'http://stg.myxxjs.com:9002/api/image/5d81de24f231ec340097db44', // 分享图标
