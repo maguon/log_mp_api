@@ -5,13 +5,9 @@
     <meta name ="viewport" content ="initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no">
     <title>{{title}}</title>
     <link rel="stylesheet" href="/css/api.css">
-    <script type="text/javascript">
-    	wx.onMenuShareTimeline({
-    		imgUrl: 'http://stg.myxxjs.com:9002/api/image/5d81de24f231ec340097db44'
-    	});
-    </script>
-    <meta property="og:image" content="http://mmbiz.qpic.cn/mmbiz_jpg/GqljMM3iabjAb5Hbju7QJxR1mlWDuLmoUFZ39PQfawa1jicaic616GAXD0V6He9oFnktTquZaBSOySDic3MWjOowwA/0?wx_fmt=jpeg">
-    <meta name="description" content="铭记历史，振兴中华！">
+    <div style="margin:0 auto;width:0px;height:0px;overflow:hidden;">
+      &lt;img src="http://stg.myxxjs.com:9002/api/image/5d81de24f231ec340097db44" width='700'&gt;
+    </div>
 </head>
 <body style="margin: 30px 10%">
     <!--标题-->
