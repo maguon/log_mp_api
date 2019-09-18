@@ -5,6 +5,7 @@
     <meta name ="viewport" content ="initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no">
     <title>{{title}}</title>
     <link rel="stylesheet" href="/css/api.css">
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.1.0.js"></script>
 </head>
 <body style="margin: 30px 10%">
     <!--标题-->
