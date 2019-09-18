@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name ="viewport" content ="initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no">
     <div id="shareImage" style="display: none;">
-       	<img src="http://stg.myxxjs.com:9002/api/image/5d81de24f231ec340097db44" />
+       	<img src="http://mmbiz.qpic.cn/mmbiz_jpg/GqljMM3iabjAb5Hbju7QJxR1mlWDuLmoUFZ39PQfawa1jicaic616GAXD0V6He9oFnktTquZaBSOySDic3MWjOowwA/0?wx_fmt=jpeg" />
     </div>
     <title>{{title}}</title>
     <link rel="stylesheet" href="/css/api.css">
