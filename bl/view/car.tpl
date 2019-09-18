@@ -177,3 +177,39 @@
       })
     });
 </script>
+
+<script type="text/javascript">
+    var tit = '标题啊啊啊'; //标题
+    var img = http://stg.myxxjs.com:9002/api/image/5d81de24f231ec340097db44; //图片
+    var con = '简介啊啊啊''; //简介
+    var link = http://stg.myxxjs.com:9101/api/commodity/41/poster/6/view; //链接
+    document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+        // 发送给好友
+        WeixinJSBridge.on('menu:share:appmessage', function (argv) {
+            WeixinJSBridge.invoke('sendAppMessage', {
+                "appid": "123",
+                "img_url": img,
+                "img_width": "160",
+                "img_height": "160",
+                "link": link,
+                "desc": con,
+                "title": tit
+            }, function (res) {
+                _report('send_msg', res.err_msg);
+            });
+        });
+    // 分享到朋友圈
+    WeixinJSBridge.on('menu:share:timeline', function (argv) {
+        WeixinJSBridge.invoke('shareTimeline', {
+                "img_url": img,
+                "img_width": "160",
+                "img_height": "160",
+                "link": link,
+                "desc": con,
+                "title": tit
+            }, function (res) {
+                _report('timeline', res.err_msg);
+            });
+        });
+    }, false)
+</script>
