@@ -5,7 +5,7 @@
     <meta name ="viewport" content ="initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no">
     <title>{{title}}</title>
     <link rel="stylesheet" href="/css/api.css">
-    <script src="http://res.wx.qq.com/open/js/jweixin-1.1.0.js"></script>
+    <script src="http://res2.wx.qq.com/open/js/jweixin-1.4.0.js "></script>
 </head>
 <body style="margin: 30px 10%">
     <!--标题-->
@@ -174,42 +174,14 @@
         success: function () {
           // 设置成功
         }
-      })
+      });
+    wx.updateTimelineShareData({
+     title: 'aaa', // 分享标题
+     link: http://stg.myxxjs.com:9101/api/commodity/41/poster/6/view, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+     imgUrl: http://stg.myxxjs.com:9002/api/image/5d81de24f231ec340097db44, // 分享图标
+     success: function () {
+       // 设置成功
+     }
+   });
     });
-</script>
-
-<script type="text/javascript">
-    var tit = '标题啊啊啊'; //标题
-    var img = http://stg.myxxjs.com:9002/api/image/5d81de24f231ec340097db44; //图片
-    var con = '简介啊啊啊''; //简介
-    var link = http://stg.myxxjs.com:9101/api/commodity/41/poster/6/view; //链接
-    document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
-        // 发送给好友
-        WeixinJSBridge.on('menu:share:appmessage', function (argv) {
-            WeixinJSBridge.invoke('sendAppMessage', {
-                "appid": "123",
-                "img_url": img,
-                "img_width": "160",
-                "img_height": "160",
-                "link": link,
-                "desc": con,
-                "title": tit
-            }, function (res) {
-                _report('send_msg', res.err_msg);
-            });
-        });
-    // 分享到朋友圈
-    WeixinJSBridge.on('menu:share:timeline', function (argv) {
-        WeixinJSBridge.invoke('shareTimeline', {
-                "img_url": img,
-                "img_width": "160",
-                "img_height": "160",
-                "link": link,
-                "desc": con,
-                "title": tit
-            }, function (res) {
-                _report('timeline', res.err_msg);
-            });
-        });
-    }, false)
 </script>
