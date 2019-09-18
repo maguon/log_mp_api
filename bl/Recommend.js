@@ -232,16 +232,13 @@ const getWXACodeUnlimit=(params,callback)=>{
     let wxCodeResult={};
     let url = "/wxa/getwxacodeunlimit?access_token="+params.accessToken;
     let post_data;
-    logger.info('page_url:',params.pageUrl);
     if(params.pageUrl){
-        logger.info('add page_url');
         post_data = JSON.stringify({
             "scene":params.recommendId,
             "page":params.pageUrl,
             "is_hyaline":true
         });
     }else{
-        logger.info('page_url null');
         post_data = JSON.stringify({
             "scene":params.recommendId,
             "is_hyaline":true
