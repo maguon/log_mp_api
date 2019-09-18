@@ -15945,6 +15945,9 @@
         },
         "quantity": {
           "type": "integer"
+        },
+        "saleTime": {
+          "type": "string"
         }
       },
       "xml": {
