@@ -285,6 +285,11 @@ const updateStatus = (req,res,next) => {
 }
 const updateShowStatus = (req,res,next) => {
     let params = req.params;
+    if(params.showStatus == sysConst.COMMODITY.showStatus.sellOut){
+        params.sellOutTime = new Date();
+    }else{
+        params.sellOutTime = null;
+    }
     commodityDAO.updateShowStatus(params,(error,result)=>{
         if(error){
             logger.error(' updateShowStatus ' + error.message);

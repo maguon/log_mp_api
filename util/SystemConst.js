@@ -179,6 +179,10 @@ const COMMODITY ={
         onSale:1,//在售
         reserved:2,//已预定
         sold:4//已售
+    },
+    showStatus:{
+        upperShelf:0,//上架
+        sellOut:1 //售罄
     }
 }
 const PRODUCT_ORDER ={

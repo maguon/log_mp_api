@@ -81,7 +81,7 @@ const getAdminCommodity = (params,callback) => {
     })
 }
 const addCommodity = (params,callback)=>{
-    let query = "insert into commodity_info (city_id,city_name,commodity_name,image,info,production_date,original_price,actual_price,type,earnest_money,quantity,saled_quantity,status,show_status) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    let query = "insert into commodity_info (city_id,city_name,commodity_name,image,info,production_date,original_price,actual_price,type,earnest_money,quantity,saled_quantity,status,show_status,sale_time) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
     let paramsArray = [],i=0;
     paramsArray[i++]=params.cityId;
     paramsArray[i++]=params.cityName;
@@ -96,7 +96,8 @@ const addCommodity = (params,callback)=>{
     paramsArray[i++]=params.quantity;
     paramsArray[i++]=params.saledQuantity;
     paramsArray[i++]=params.status;
-    paramsArray[i]=params.showStatus;
+    paramsArray[i++]=params.showStatus;
+    paramsArray[i]=params.saleTime;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('addCommodity');
         callback(error,rows);
@@ -133,7 +134,7 @@ const updateInfo = (params,callback) => {
     });
 }
 const updateCommodity = (params,callback)=>{
-    let query = " update commodity_info set city_id=?, city_name=?,commodity_name=? ,production_date=?, original_price=?, actual_price=?, type=?, earnest_money=?, quantity=? where id = ?";
+    let query = " update commodity_info set city_id=?, city_name=?,commodity_name=? ,production_date=?, original_price=?, actual_price=?, type=?, earnest_money=?, quantity=?, sale_time=?  where id = ?";
     let paramsArray=[],i=0;
     paramsArray[i++]=params.cityId;
     paramsArray[i++]=params.cityName;
@@ -144,6 +145,7 @@ const updateCommodity = (params,callback)=>{
     paramsArray[i++]=params.type;
     paramsArray[i++]=params.earnestMoney;
     paramsArray[i++]=params.quantity;
+    paramsArray[i++]=params.saleTime;
     paramsArray[i] = params.commodityId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug(' updateCommodity ');
@@ -161,9 +163,10 @@ const updateStatus = (params,callback) => {
     });
 }
 const updateShowStatus = (params,callback) => {
-    let query = " update commodity_info set show_status = ?  where id = ?";
+    let query = " update commodity_info set show_status = ?   , sell_out_time = ? where id = ?";
     let paramsArray=[],i=0;
     paramsArray[i++] = params.showStatus;
+    paramsArray[i++] = params.sellOutTime;
     paramsArray[i] = params.commodityId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug(' updateShowStatus ');
