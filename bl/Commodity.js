@@ -317,6 +317,11 @@ const updateCommodity = (req,res,next) => {
 }
 const updateStatus = (req,res,next) => {
     let params = req.params;
+    if(params.status == sysConst.COMMODITY.status.sold){
+        params.sellOutTime = new Date();
+    }else{
+        params.sellOutTime = null;
+    }
     commodityDAO.updateStatus(params,(error,result)=>{
         if(error){
             logger.error(' updateStatus ' + error.message);
@@ -330,11 +335,6 @@ const updateStatus = (req,res,next) => {
 }
 const updateShowStatus = (req,res,next) => {
     let params = req.params;
-    if(params.showStatus == sysConst.COMMODITY.showStatus.sellOut){
-        params.sellOutTime = new Date();
-    }else{
-        params.sellOutTime = null;
-    }
     commodityDAO.updateShowStatus(params,(error,result)=>{
         if(error){
             logger.error(' updateShowStatus ' + error.message);

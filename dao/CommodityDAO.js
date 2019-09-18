@@ -153,9 +153,10 @@ const updateCommodity = (params,callback)=>{
     });
 }
 const updateStatus = (params,callback) => {
-    let query = " update commodity_info set status = ?  where id = ?";
+    let query = " update commodity_info set status = ?, sell_out_time = ? where id = ?";
     let paramsArray=[],i=0;
     paramsArray[i++] = params.status;
+    paramsArray[i++] = params.sellOutTime;
     paramsArray[i] = params.commodityId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug(' updateStatus ');
@@ -163,10 +164,9 @@ const updateStatus = (params,callback) => {
     });
 }
 const updateShowStatus = (params,callback) => {
-    let query = " update commodity_info set show_status = ?   , sell_out_time = ? where id = ?";
+    let query = " update commodity_info set show_status = ? where id = ?";
     let paramsArray=[],i=0;
     paramsArray[i++] = params.showStatus;
-    paramsArray[i++] = params.sellOutTime;
     paramsArray[i] = params.commodityId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug(' updateShowStatus ');
