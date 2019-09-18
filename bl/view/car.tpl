@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/css/api.css">
 </head>
 <body style="margin: 30px 10%">
-
+<img src="http://stg.myxxjs.com:9002/api/image/5d81de24f231ec340097db44" width="0" height="0" />
     <!--标题-->
     <div>
         <p class="fz15 bold mb_3">{{commodity_name}}</p>
@@ -159,5 +159,5 @@
     </div>
 
 </body>
-<img src="http://stg.myxxjs.com:9002/api/image/5d81de24f231ec340097db44" width="0" height="0" />
+
 </html>
