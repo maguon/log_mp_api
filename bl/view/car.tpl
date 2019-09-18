@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name ="viewport" content ="initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no">
+    <meta name="sharecontent" data-msg-img="http://stg.myxxjs.com:9002/api/image/5d81de24f231ec340097db44" data-msg-title="你的标题" data-msg-content="你的简介" data-msg-callBack="" data-line-img="http://stg.myxxjs.com:9002/api/image/5d81de24f231ec340097db44" data-line-title="你的标题" data-line-callBack=""/>
     <title>{{title}}</title>
     <link rel="stylesheet" href="/css/api.css">
     <script src="http://res2.wx.qq.com/open/js/jweixin-1.4.0.js "></script>
@@ -175,13 +176,13 @@
           // 设置成功
         }
       });
-    wx.updateTimelineShareData({
-     title: 'aaa', // 分享标题
-     link: http://stg.myxxjs.com:9101/api/commodity/41/poster/6/view, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-     imgUrl: http://stg.myxxjs.com:9002/api/image/5d81de24f231ec340097db44, // 分享图标
-     success: function () {
-       // 设置成功
-     }
-   });
+      wx.updateTimelineShareData({
+         title: 'aaa', // 分享标题
+         link: 'http://stg.myxxjs.com:9101/api/commodity/41/poster/6/view', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+         imgUrl: 'http://stg.myxxjs.com:9002/api/image/5d81de24f231ec340097db44', // 分享图标
+         success: function () {
+          // 设置成功
+         }
+       });
     });
 </script>
