@@ -73,6 +73,7 @@ const getCommodityPage = (req,res,next) =>{
                         commodityInfo.actual_price = Number(Number(commodityInfo.actual_price)/10000).toFixed(2);
                         commodityInfo.image = 'http://' + sysConfig.hosts.image.host + ':'+ sysConfig.hosts.image.port + '/api/image/' + commodityInfo.image;
                         commodityInfo.mp_url = result[0].mp_url;
+                        commodityInfo.title = result[0].title;
                         let arr = commodityInfo.pord_images.split(",") ;
                         let arrHtml;
                         for(let i of arr){
@@ -105,6 +106,7 @@ const getCommodityPage = (req,res,next) =>{
                     logger.info(' getCommodityPage getView ' + 'success');
                     //console.log("读取的数据：",data);
                     var prod = {
+                        title: record.title,
                         commodity_name: record.commodity_name,
                         original_price: record.original_price,
                         actual_price: record.actual_price,

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name ="viewport" content ="initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no">
-    <title></title>
+    <title>{{title}}</title>
     <link rel="stylesheet" href="/css/api.css">
 </head>
 <body style="margin: 30px 10%">
@@ -159,4 +159,5 @@
     </div>
 
 </body>
+<img src={{image}} width="0" height="0" />
 </html>
