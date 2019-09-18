@@ -177,10 +177,7 @@
                     "img_height":"40",
                     "desc":"i am description",
                     "title":"just test from WeixinJsBridge"
-                }),
-                function(e){
-                    alert(e.err_msg);
-                }
+                })
           });
 
         document.getElementById("tt").innerHTML="abc";
