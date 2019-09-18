@@ -170,20 +170,20 @@
 <script type="text/javascript">
     document.addEventListener("WeixinJSBridgeReady",function(){
         WeixinJSBridge.on('menu:share:timeline', function(argv){
-          WeixinJSBridge.invoke("shareTimeline",{
-            "link":"http://m.exmail.qq.com",
-            "img_url":"http://rescdn.qqmail.com/bizmail/zh_CN/htmledition/images/bizmail/v3/logo1ca3fe.png",
-            "img_width":"172",
-            "img_height":"40",
-            "desc":"i am description",
-            "title":"just test from WeixinJsBridge"
-            },
-            function(e){
-            alert(e.err_msg);
-            })
+              WeixinJSBridge.invoke("shareTimeline",{
+                    "link":"http://m.exmail.qq.com",
+                    "img_url":"http://rescdn.qqmail.com/bizmail/zh_CN/htmledition/images/bizmail/v3/logo1ca3fe.png",
+                    "img_width":"172",
+                    "img_height":"40",
+                    "desc":"i am description",
+                    "title":"just test from WeixinJsBridge"
+                }),
+                function(e){
+                    alert(e.err_msg);
+                }
           });
-        }
+
         document.getElementById("tt").innerHTML="abc";
-    }) ;
+    });
 
 </script>
