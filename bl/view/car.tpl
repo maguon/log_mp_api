@@ -12,7 +12,9 @@
     <!--标题-->
     <div>
         <p class="fz15 bold mb_3">{{commodity_name}}</p>
+        <span id="tt">test<span/>
     </div>
+
 
     <!--文章来源-->
     <div>
@@ -166,6 +168,10 @@
 
 </html>
 <script type="text/javascript">
+    document.addEventListener("WeixinJSBridgeReady",function(){
+        document.getElementById("tt").innerHTML="abc";
+    }) ;
+
     wx.ready(function () {
       wx.updateAppMessageShareData({
         title: '广运车特价', // 分享标题
