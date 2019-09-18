@@ -3,9 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name ="viewport" content ="initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no">
-    <div id="shareImage" style="display: none;">
-       	<img src="http://mmbiz.qpic.cn/mmbiz_jpg/GqljMM3iabjAb5Hbju7QJxR1mlWDuLmoUFZ39PQfawa1jicaic616GAXD0V6He9oFnktTquZaBSOySDic3MWjOowwA/0?wx_fmt=jpeg" />
-    </div>
     <title>{{title}}</title>
     <link rel="stylesheet" href="/css/api.css">
 </head>
@@ -165,3 +162,16 @@
 </body>
 
 </html>
+<script type="text/javascript">
+    wx.ready(function () {
+      wx.updateAppMessageShareData({
+        title: {{title}}, // 分享标题
+        desc: '啦啦啦啦', // 分享描述
+        link: 'http://stg.myxxjs.com:9101/api/commodity/41/poster/6/view', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+        imgUrl: 'http://stg.myxxjs.com:9002/api/image/5d81de24f231ec340097db44', // 分享图标
+        success: function () {
+          // 设置成功
+        }
+      })
+    });
+</script>
