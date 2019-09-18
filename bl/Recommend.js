@@ -255,7 +255,6 @@ const getWXACodeUnlimit=(params,callback)=>{
         }
     }
     const httpsReq = https.request(options, (wxRes) => {
-        logger.info("wxRes:"+wxRes);
         if (wxRes.headers['content-type'] == "application/json") {
             wxCodeResult.success = false;
             wxCodeResult.body = JSON.parse(wxRes);
