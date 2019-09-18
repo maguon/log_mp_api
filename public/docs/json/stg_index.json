@@ -157,6 +157,10 @@
       "description":"commodity version"
     },
     {
+      "name": "poster",
+      "description":"poster order version"
+    },
+    {
       "name": "productOrder",
       "description":"product order version"
     },
@@ -12959,6 +12963,170 @@
       }
     },
 
+    "/admin/{adminId}/poster": {
+      "get": {
+        "tags": [
+          "poster"
+        ],
+        "summary": "select",
+        "description": "admin get poster version",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "当前登录管理员ID",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "posterId",
+            "in": "query",
+            "description": "推广页编号",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "commodityId",
+            "in": "query",
+            "description": "商品编号",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "recommendId",
+            "in": "query",
+            "description": "推荐人编号",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/commodity/{commodityId}": {
+      "post": {
+        "tags": [
+          "poster"
+        ],
+        "summary": "insert",
+        "description": "admin create poster version",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "commodityId",
+            "in": "path",
+            "description": "商品编号",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "posterInfo",
+            "in": "body",
+            "description": "posterInfo",
+            "required": true,
+            "schema":{
+              "$ref": "#/definitions/poster"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/poster"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/poster/{posterId}": {
+      "put": {
+        "tags": [
+          "poster"
+        ],
+        "summary": "update",
+        "description": "admin update poster version",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "admin Id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "posterId",
+            "in": "path",
+            "description": "posterId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "posterInfo",
+            "in": "body",
+            "description": "posterInfo",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/poster"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/poster"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+
     "/user/{userId}/productOrder/{productOrderId}/paymentStatus": {
       "get": {
         "tags": [
@@ -15781,6 +15949,23 @@
       },
       "xml": {
         "name": "commodity"
+      }
+    },
+    "poster": {
+      "type": "object",
+      "properties": {
+        "recommendId": {
+          "type": "integer"
+        },
+        "title": {
+          "type": "string"
+        },
+        "remark": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "poster"
       }
     },
     "image": {
