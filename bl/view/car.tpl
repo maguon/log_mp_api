@@ -169,26 +169,21 @@
 </html>
 <script type="text/javascript">
     document.addEventListener("WeixinJSBridgeReady",function(){
+        WeixinJSBridge.on('menu:share:timeline', function(argv){
+          WeixinJSBridge.invoke("shareTimeline",{
+            "link":"http://m.exmail.qq.com",
+            "img_url":"http://rescdn.qqmail.com/bizmail/zh_CN/htmledition/images/bizmail/v3/logo1ca3fe.png",
+            "img_width":"172",
+            "img_height":"40",
+            "desc":"i am description",
+            "title":"just test from WeixinJsBridge"
+            },
+            function(e){
+            alert(e.err_msg);
+            })
+          });
+        }
         document.getElementById("tt").innerHTML="abc";
     }) ;
 
-    wx.ready(function () {
-      wx.updateAppMessageShareData({
-        title: '广运车特价', // 分享标题
-        desc: '啦啦啦啦', // 分享描述
-        link: 'http://stg.myxxjs.com:9101/api/commodity/41/poster/6/view', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-        imgUrl: 'http://stg.myxxjs.com:9002/api/image/5d81de24f231ec340097db44', // 分享图标
-        success: function () {
-          // 设置成功
-        }
-      });
-      wx.updateTimelineShareData({
-         title: 'aaa', // 分享标题
-         link: 'http://stg.myxxjs.com:9101/api/commodity/41/poster/6/view', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-         imgUrl: 'http://stg.myxxjs.com:9002/api/image/5d81de24f231ec340097db44', // 分享图标
-         success: function () {
-          // 设置成功
-         }
-       });
-    });
 </script>
