@@ -128,7 +128,7 @@ const getCommodityPage = (req,res,next) =>{
     const updateViewCount =(commodityInfo)=>{
         return new Promise((resolve, reject) => {
             commodityInfo.viewCount = commodityInfo.viewCount + 1;
-            posterDAO.updateCount(commodityInfo,(error,result)=>{
+            posterDAO.updateCount({viewCount:commodityInfo.viewCount,posterId:params.posterId},(error,result)=>{
                 if(error){
                     logger.error('updateCoupon ' + error.message);
                     reject({err:error});
