@@ -109,7 +109,7 @@ const getCommodityPage = (req,res,next) =>{
                         if(commodityInfo.sale_time){
                             commodityInfo.saleTime = '敬请期待时间！';
                         }else{
-                            commodityInfo.saleTime = moment(record.sale_time).format('MM月DD日 HH:mm:ss');
+                            commodityInfo.saleTime = moment(commodityInfo.sale_time).format('MM月DD日 HH:mm:ss');
                         }
                         let arr = commodityInfo.pord_images.split(",") ;
                         let arrHtml;
