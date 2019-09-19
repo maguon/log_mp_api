@@ -15,7 +15,7 @@
 
     <!--文章来源-->
     <div>
-        <p class="grey-text bold fz_6 padding_2">消息来源:广运车</p>
+        <p class="grey-text bold fz_6 padding_7">消息来源:广运车</p>
         <div class="grey-text bold fz_7 bgGrey padding_7">
             "广运车"是由鸿溧科技（大连）有限公司开发的关于车辆托运业务服务平台，该平台致力于整合企业和社会物流资源以及零散客户的车辆运输需求，打造国内首家整车物流综合信息，实现车辆运输服务与托运需求的信息化、网络化和可视化
         </div>
