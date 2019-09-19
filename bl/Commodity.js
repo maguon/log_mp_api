@@ -106,10 +106,13 @@ const getCommodityPage = (req,res,next) =>{
                         commodityInfo.actual_price = Number(Number(commodityInfo.actual_price)/10000).toFixed(2);
                         commodityInfo.image = 'http://' + sysConfig.hosts.image.host + ':'+ sysConfig.hosts.image.port + '/api/image/' + commodityInfo.image;
                         commodityInfo.mp_url = result[0].mp_url;
-                        if(commodityInfo.sale_time){
-                            commodityInfo.saleTime = '敬请期待时间！';
+                        console.log('commodityInfo.sale_time:' + commodityInfo.sale_time);
+                        if(commodityInfo.sale_time == null){
+                            commodityInfo.saleTime = '敬请期待开售时间！';
+                            commodityInfo.onSale = ' ';
                         }else{
                             commodityInfo.saleTime = moment(commodityInfo.sale_time).format('MM月DD日 HH:mm:ss');
+                            commodityInfo.onSale = '开售';
                         }
                         let arr = commodityInfo.pord_images.split(",") ;
                         let arrHtml;
@@ -166,6 +169,7 @@ const getCommodityPage = (req,res,next) =>{
                         image: record.image,
                         info: record.info,
                         saleTime:record.saleTime,
+                        onSale:record.onSale,
                         mp_url:record.mp_url,
                         pord_images:record.arrHtml
                     };
