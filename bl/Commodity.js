@@ -40,12 +40,11 @@ const getAdminCommodity = (req,res,next) => {
 }
 const getCommodityPage = (req,res,next) =>{
     logger.info("req:"+req);
-    var arr = req.toString().split("view?");
+    var arr = req.toString().split("view?from=groupmessage");
     logger.info("arr[1]:" + arr[1]);
-    let a = arr[1].startsWith("from=groupmessage");
-    if(!a){
+    if(arr[1] == null) {
         logger.info('getCommodityPage Not Wechat Access!');
-        res.writeHead(200,{'Content-Type':'text/html'});
+        res.writeHead(200, {'Content-Type': 'text/html'});
         res.write('404');
         res.end();
         return next();
