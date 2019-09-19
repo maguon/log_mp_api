@@ -45,9 +45,17 @@ const getCommodityPage = (req,res,next) =>{
     if((arrGourp[1] == null) && (arrTimeline[1] == null) && (arrSinglemessage[1] == null)) {
         logger.info('getCommodityPage Not Wechat Access!');
         res.writeHead(200, {'Content-Type': 'text/html'});
-        res.write('404');
-        res.end();
-        return next();
+        fs.readFile('./bl/view/carError.tpl','utf-8',function(err,data){
+            if(err){
+                logger.error('getCommodityPage getErrorView ' + err);
+                throw err ;
+            }else {
+                logger.info(' getCommodityPage getErrorView ' + 'success');
+                res.write(data);
+                res.end();
+                return next();
+            }
+        });
     }
     let params = req.params;
     const getCommodity = ()=>{
