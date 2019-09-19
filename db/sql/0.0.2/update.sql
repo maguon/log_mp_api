@@ -198,3 +198,36 @@ CREATE TABLE `product_payment_info`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 36 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;
+
+-- ----------------------------
+-- 2019-09-19 更新
+-- ----------------------------
+ALTER TABLE commodity_info add sale_time datetime COMMENT '开售时间';
+ALTER TABLE commodity_info add sell_out_time datetime COMMENT '售罄时间';
+ALTER TABLE recommend_info add page_url varchar(100) COMMENT '小程序商品地址';
+
+DROP TABLE IF EXISTS `reminders`;
+CREATE TABLE `reminders`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL COMMENT '用户编号',
+  `commodity_id` int(11) NOT NULL COMMENT '商品编号',
+  `remarks` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `reminders_status` tinyint(1) NULL DEFAULT 1 COMMENT '状态（1:未联系,2:已联系）',
+  `created_on` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
+  `updated_on` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 33 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+DROP TABLE IF EXISTS `poster_info`;
+CREATE TABLE `poster_info`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `commodity_id` int(11) NULL DEFAULT NULL COMMENT '商品编号',
+  `recommend_id` int(11) NULL DEFAULT NULL COMMENT '推荐人编号',
+  `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '分享标题',
+  `view_count` int(10) NULL DEFAULT 0 COMMENT '阅读量',
+  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '备注',
+  `created_on` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
+  `updated_on` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
