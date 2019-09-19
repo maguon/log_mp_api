@@ -32,7 +32,7 @@
     <div  class="mb2">
         <div class="card">
             <div class="card-content bold">
-                <p style="text-indent:2em;">  想了解车辆信息，包括了它的价格、配置，都能清晰透明的看到！只需要直接扫描二维码就可以进入广运车APP中查询汽车有关信息！</p>
+                <p style="text-indent:2em;">  想了解车辆信息，包括了它的价格、配置，都能清晰透明的看到！只需要直接扫描二维码就可以进入广运车小程序中查询汽车有关信息！</p>
             </div>
         </div>
     </div>
