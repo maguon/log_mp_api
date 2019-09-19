@@ -120,10 +120,12 @@ const getCommodityPage = (req,res,next) =>{
                             let imageAddress = 'http://' + sysConfig.hosts.image.host + ':'+ sysConfig.hosts.image.port + '/api/image/' + i;
                             if(arrHtml == null){
                                 arrHtml ='<img style="width: 100%;" src=' + imageAddress +'  class="mb2" />';
+                            }else{
+                                arrHtml = arrHtml + '<img style="width: 100%;" src=' + imageAddress +'  class="mb2" />';
                             }
-                            arrHtml = arrHtml + '<img style="width: 100%;" src=' + imageAddress +'  class="mb2" />';
                         }
                         commodityInfo.arrHtml = arrHtml;
+                        console.log(arrHtml);
                         resolve(commodityInfo);
                     }else{
                         logger.info('getCommodityPage getRecommend ' + sysMsg.RECOMMEND_TASK_NO_EXISTS);
