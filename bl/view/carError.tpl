@@ -23,7 +23,7 @@
 
     <!--道歉-->
     <div class="center padding_1">
-        <div class="white-text bgRed mb_6" style="width:90%;margin: 0 auto;">
+        <div class="white-text bgRed mb_6" style="width:93%;margin: 0 auto;">
             <p class="fz12 padding_4 ">对不起！您要找的界面找不到了</p>
         </div>
     </div>
