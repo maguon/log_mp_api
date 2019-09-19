@@ -43,7 +43,7 @@ const getCommodityPage = (req,res,next) =>{
     var arrGourp = req.toString().split("view?from=groupmessage");//微信群
     var arrTimeline = req.toString().split("view?from=timeline");//朋友圈
     var arrSinglemessage = req.toString().split("view?from=singlemessage");//好友分享
-    if((arrGourp[1] == null) || (arrTimeline[1] == null) || (arrSinglemessage[1] == null)) {
+    if((arrGourp[1] == null) && (arrTimeline[1] == null) && (arrSinglemessage[1] == null)) {
         logger.info('getCommodityPage Not Wechat Access!');
         res.writeHead(200, {'Content-Type': 'text/html'});
         res.write('404');
