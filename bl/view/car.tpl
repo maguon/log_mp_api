@@ -2,8 +2,7 @@
 <html lang="zh-cn">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=no"/>
-    <meta name="sharecontent" data-msg-img="http://stg.myxxjs.com:9002/api/image/5d81de24f231ec340097db44" data-msg-title="你的标题" data-msg-content="你的简介" data-msg-callBack="" data-line-img="http://stg.myxxjs.com:9002/api/image/5d81de24f231ec340097db44" data-line-title="你的标题" data-line-callBack=""/>
+    <meta name ="viewport" content ="initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no">
     <title>{{title}}</title>
     <link rel="stylesheet" href="/css/api.css">
     <script src="http://res2.wx.qq.com/open/js/jweixin-1.4.0.js "></script>
@@ -84,11 +83,11 @@
 
     <!--进入小程序-->
     <div  class="center" >
-        <h6  class="bold mb1 fz10">长按识别进入小程序购买</h6>
-        <p  class="bold mb1">更多售车信息请进入小程序查看</p>
         <div>
             <img style="width: 160px;height: 160px;margin: 0 auto;" src={{mp_url}}>
         </div>
+        <h6  class="bold mb1 fz10">长按识别进入小程序购买</h6>
+        <p  class="bold mb1">更多售车信息请进入小程序查看</p>
     </div>
 
 </body>
