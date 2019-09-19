@@ -40,9 +40,8 @@ const getAdminCommodity = (req,res,next) => {
 }
 const getCommodityPage = (req,res,next) =>{
     logger.info("req:"+req);
-    logger.info("indexOf:" + req.indexOf("from=groupmessage") != -1);
-    var reg = RegExp(/from=groupmessage/);
-    logger.info("reg.test:"+reg.test(req)); // true
+    var arr = req.toString().split("view");
+    logger.info("arr:" + arr);
 
     let params = req.params;
     const getCommodity = ()=>{
