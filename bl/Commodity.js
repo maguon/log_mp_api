@@ -42,7 +42,7 @@ const getCommodityPage = (req,res,next) =>{
     logger.info("req:"+req);
     var arr = req.toString().split("view?");
     logger.info("arr[1]:" + arr[1]);
-    let a = s.startsWith("from=groupmessage");
+    let a = arr[1].startsWith("from=groupmessage");
     if(!a){
         logger.info('getCommodityPage Not Wechat Access!');
         res.writeHead(200,{'Content-Type':'text/html'});
