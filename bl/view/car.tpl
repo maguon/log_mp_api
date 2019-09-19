@@ -23,8 +23,8 @@
         </div>
         <div>
         </div>
-        <div class="mb2">
-            <h4 class="bold redColor fz17 mb_3 center">仅此一辆,机不可失</h4>
+        <div class="mb1">
+            <h4 class="bold redColor fz17 center">仅此一辆,机不可失</h4>
         </div>
     </div>
 
@@ -35,19 +35,19 @@
 
     <!--特价-->
     <div class="center">
-        <h4 class="bold mb_3 fz17">现特价仅售</h4>
-        <h4 class="redColor bold fz25"><span class="fz20">{{actual_price}}</span>万元</h4>
+        <h4 class="bold padding_2 fz17">现特价仅售</h4>
+        <h4 class="redColor bold fz17"><span class="fz20">{{actual_price}}</span>万元</h4>
         <div class="white-text bgRed mb_6 panding" style="width:85%;margin: 0 auto;">
             <p class="fz12 padding_4 ">无需再缴纳购置税、车船使用税、交强险和金融服务费</p>
         </div>
-        <h5 class="redColor bold fz30 padding_2">新车开回家</h5>
+        <h5 class="redColor bold fz17 padding_2">新车开回家</h5>
         <p class="bold greyColor mb1">所在城市{{city_name}}(同城可当面看车)</p>
 
         <div class="center white-text bgRed" style="width:85%;margin: 0 auto;">
             <p class="padding_4 fz12 mb1">支持多省送货，可代办牌照</p>
         </div>
         <div>
-            <p class="fz14 mb1 bold center">二手车价格尊享一手车保障与品质</p>
+            <p class="fz12 mb1 bold center">二手车价格尊享一手车保障与品质</p>
         </div>
     </div>
 
