@@ -21,26 +21,27 @@
         <div class="grey-text bold fz_7 bgGrey padding_7 mb1">
             "广运车"是由鸿溧科技（大连）有限公司开发的关于车辆托运业务服务平台，该平台致力于整合企业和社会物流资源以及零散客户的车辆运输需求，打造国内首家整车物流综合信息，实现车辆运输服务与托运需求的信息化、网络化和可视化
         </div>
-
         <div>
-            <h4 class="bold redColor fz15 mb_3 center">仅此一辆,机不可失</h4>
+        </div>
+        <div class="mb2">
+            <h4 class="bold redColor fz17 mb_3 center">仅此一辆,机不可失</h4>
         </div>
     </div>
 
     <!--相片-->
-    <div class="mb2">
+    <div>
         <img style="width: 100%" src={{image}} />
     </div>
 
     <!--特价-->
     <div class="center">
-        <h4 class="bold mb_3 fz15">现特价仅售</h4>
+        <h4 class="bold mb_3 fz17">现特价仅售</h4>
         <h4 class="redColor bold fz25"><span class="fz20">{{actual_price}}</span>万元</h4>
         <div class="white-text bgRed mb_3">
             <p class="fz12 padding_4">无需再缴纳购置税、车船使用税、交强险和金融服务费</p>
         </div>
         <h5 class="redColor bold fz30 mb_3">新车开回家</h5>
-        <p class="bold greyColor mb2">所在城市{{city_name}}(同城可当面看车)</p>
+        <p class="bold greyColor mb1">所在城市{{city_name}}(同城可当面看车)</p>
 
         <div class="center white-text bgRed" style="width:80%;margin: 0 auto;">
             <p class="padding_4 fz12 mb1">支持多省送货，可代办牌照</p>
