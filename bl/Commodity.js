@@ -39,6 +39,7 @@ const getAdminCommodity = (req,res,next) => {
     })
 }
 const getCommodityPage = (req,res,next) =>{
+    logger.info("req:"+req);
     let params = req.params;
     const getCommodity = ()=>{
         return new Promise((resolve, reject)=>{
