@@ -106,6 +106,11 @@ const getCommodityPage = (req,res,next) =>{
                         commodityInfo.actual_price = Number(Number(commodityInfo.actual_price)/10000).toFixed(2);
                         commodityInfo.image = 'http://' + sysConfig.hosts.image.host + ':'+ sysConfig.hosts.image.port + '/api/image/' + commodityInfo.image;
                         commodityInfo.mp_url = result[0].mp_url;
+                        if(commodityInfo.sale_time){
+                            commodityInfo.saleTime = '敬请期待时间！';
+                        }else{
+                            commodityInfo.saleTime = moment(record.sale_time).format('MM月DD日 HH:mm:ss');
+                        }
                         let arr = commodityInfo.pord_images.split(",") ;
                         let arrHtml;
                         for(let i of arr){
@@ -160,7 +165,7 @@ const getCommodityPage = (req,res,next) =>{
                         city_name:record.city_name,
                         image: record.image,
                         info: record.info,
-                        saleTime:moment(record.sale_time).format('MM月DD日 HH:mm:ss'),
+                        saleTime:record.saleTime,
                         mp_url:record.mp_url,
                         pord_images:record.arrHtml
                     };
