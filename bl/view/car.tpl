@@ -85,7 +85,7 @@
     <!--进入小程序-->
     <div  class="center" >
         <div class="mb2">
-            <img style="width: 60%;" src={{mp_url}} />
+            <img style="width: 60%;background:url(/images/timg1.jpg)" src={{mp_url}} />
         </div>
         <h6  class="bold mb1 fz10">长按识别进入小程序购买</h6>
         <p  class="bold mb1">更多售车信息请进入小程序查看</p>

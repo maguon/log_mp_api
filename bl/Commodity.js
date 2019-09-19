@@ -179,7 +179,7 @@ const getCommodityPage = (req,res,next) =>{
                     var result = data.replace(pattern, (match, datas)=>{
                         return prod[datas];
                     });
-                    console.log("读取的数据：",result);
+                    //console.log("读取的数据：",result);
                     res.write(result);
                     res.end();
                     return next();
