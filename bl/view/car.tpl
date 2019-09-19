@@ -78,7 +78,7 @@
 
     <!--开抢-->
     <div class="center border2 mb2">
-        <h5 class="bold fz24 pt">{{saleTime}}</h5>
+        <h5 class="bold fz23 pt">{{saleTime}}</h5>
         <h5 class="redColor bold fz40 mb_3">{{onSale}}</h5>
     </div>
 
