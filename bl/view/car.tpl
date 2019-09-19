@@ -35,7 +35,7 @@
 
     <!--特价-->
     <div class="center">
-        <h4 class="bold padding_2 fz17">现特价仅售</h4>
+        <h4 class="bold pt4 fz17">现特价仅售</h4>
         <h4 class="redColor bold fz17"><span class="fz20">{{actual_price}}</span>万元</h4>
         <div class="white-text bgRed mb_6 panding" style="width:85%;margin: 0 auto;">
             <p class="fz12 padding_4 ">无需再缴纳购置税、车船使用税、交强险和金融服务费</p>

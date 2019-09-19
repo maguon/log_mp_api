@@ -135,6 +135,9 @@ table tbody tr td{
 .white-text{
     color: white;
 }
+.pt4{
+    padding-top: 0.4em;
+}
 .pt{
     padding-top: 0.3em;
 }
