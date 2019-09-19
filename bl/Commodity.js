@@ -39,7 +39,6 @@ const getAdminCommodity = (req,res,next) => {
     })
 }
 const getCommodityPage = (req,res,next) =>{
-    logger.info("req:"+req);
     var arrGourp = req.toString().split("view?from=groupmessage");//微信群
     var arrTimeline = req.toString().split("view?from=timeline");//朋友圈
     var arrSinglemessage = req.toString().split("view?from=singlemessage");//好友分享
@@ -50,7 +49,6 @@ const getCommodityPage = (req,res,next) =>{
         res.end();
         return next();
     }
-
     let params = req.params;
     const getCommodity = ()=>{
         return new Promise((resolve, reject)=>{
