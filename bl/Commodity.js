@@ -40,6 +40,10 @@ const getAdminCommodity = (req,res,next) => {
 }
 const getCommodityPage = (req,res,next) =>{
     logger.info("req:"+req);
+    logger.info("indexOf:" + req.indexOf("from=groupmessage") != -1);
+    var reg = RegExp(/from=groupmessage/);
+    logger.info("reg.test:"+reg.test(req)); // true
+
     let params = req.params;
     const getCommodity = ()=>{
         return new Promise((resolve, reject)=>{
