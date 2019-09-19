@@ -23,7 +23,7 @@
         </div>
 
         <div>
-            <h4 class="bold redColor fz25 mb_3">仅此一辆,机不可失</h4>
+            <h4 class="bold redColor fz15 mb_3 center">仅此一辆,机不可失</h4>
         </div>
     </div>
 
@@ -34,8 +34,8 @@
 
     <!--特价-->
     <div class="center">
-        <h4 class="bold mb_3 fz25">现特价仅售</h4>
-        <h4 class="redColor bold fz25"><span class="fz25">{{actual_price}}</span>万元</h4>
+        <h4 class="bold mb_3 fz15">现特价仅售</h4>
+        <h4 class="redColor bold fz25"><span class="fz20">{{actual_price}}</span>万元</h4>
         <div class="white-text bgRed mb_3">
             <p class="fz12 padding_4">无需再缴纳购置税、车船使用税、交强险和金融服务费</p>
         </div>
