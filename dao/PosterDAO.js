@@ -88,9 +88,21 @@ const update = (params,callback) => {
         callback(error,rows);
     })
 }
+const updateCount = (params,callback) => {
+    let query = " update poster_info set view_count = ?";
+    let paramsArray = [],i=0;
+    paramsArray[i++] = params.viewCount;
+    paramsArray[i] = params.posterId;
+    query += " where id = ?";
+    db.dbQuery(query,paramsArray,(error,rows)=>{
+        logger.debug('updateCount');
+        callback(error,rows);
+    })
+}
 module.exports={
     add,
     select,
     selectPosterInfo,
-    update
+    update,
+    updateCount
 }

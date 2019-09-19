@@ -80,6 +80,7 @@ const getCommodityPage = (req,res,next) =>{
                         logger.info('getCommodityPage getPoster ' + 'success');
                         commodityInfo.title = result[0].title;
                         commodityInfo.recommendId = result[0].recommend_id;
+                        commodityInfo.viewCount = result[0].view_count;
                         resolve(commodityInfo);
                     }else{
                         logger.info('getCommodityPage getPoster ' + sysMsg.POSTER_ID_ERROR);
@@ -124,7 +125,21 @@ const getCommodityPage = (req,res,next) =>{
             })
         });
     }
+    const updateViewCount =(commodityInfo)=>{
+        return new Promise((resolve, reject) => {
+            commodityInfo.viewCount = commodityInfo.viewCount + 1;
+            posterDAO.updateCount(commodityInfo,(error,result)=>{
+                if(error){
+                    logger.error('updateCoupon ' + error.message);
+                    reject({err:error});
+                }else{
+                    logger.info('updateCoupon  ' + 'success');
+                    resolve(commodityInfo);
+                }
+            })
 
+        });
+    }
     const getView =(record)=>{
         return new Promise(()=>{
             res.writeHead(200,{'Content-Type':'text/html'})
@@ -161,10 +176,10 @@ const getCommodityPage = (req,res,next) =>{
             });
         });
     }
-
     getCommodity()
         .then(getPoster)
         .then(getRecommend)
+        .then(updateViewCount)
         .then(getView)
         .catch((reject)=>{
             if(reject.err){
