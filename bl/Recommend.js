@@ -240,7 +240,7 @@ const getWXACodeUnlimit=(params,callback)=>{
         });
     }else{
         post_data = JSON.stringify({
-            "scene":params.recommendId,
+            "scene":"123",
             "is_hyaline":true
         });
     }
