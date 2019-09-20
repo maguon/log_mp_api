@@ -40,7 +40,6 @@ const wechatRequest = (params,callback) => {
         return callback(e,null);
     });
 }
-
 const getRefundParams = (params)=>{
     let result = {};
     let refundUrl = sysConfig.wechatConfig.notifyUrl;
