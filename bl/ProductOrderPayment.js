@@ -472,6 +472,7 @@ const updateRefundStatus = (req,res,next)=>{
 
     const wechatReq = (val)=>{
         return new Promise((resolve, reject) => {
+            params.totalFee = 0 - params.refundFee;//要退款的金额
             //微信请求
             wechatUtil.wechatRequest(val,(error,result)=>{
                 if (error){
