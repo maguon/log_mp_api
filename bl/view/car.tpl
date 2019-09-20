@@ -8,6 +8,9 @@
     <script src="http://res2.wx.qq.com/open/js/jweixin-1.4.0.js "></script>
 </head>
 <body style="margin: 30px 10%">
+    <div style='margin:0 auto;display:none;'>
+       <img src='http://stg.myxxjs.com:9002/api/image/5d8425adf231ec340097df11' />
+    </div>
     <!--标题-->
     <div>
         <p class="fz15 bold mb_3">{{commodity_name}}</p>
@@ -94,17 +97,38 @@
 </html>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
 <script type="text/javascript">
+    var dataForWeixin={
+        appId:"",
+        MsgImg:"http://stg.myxxjs.com:9002/api/image/5d8425adf231ec340097df11",
+        TLImg:"http://stg.myxxjs.com:9002/api/image/5d8425adf231ec340097df11",
+        url:"http://stg.myxxjs.com:9101/api/commodity/41/poster/6/view",
+        title:"input title here",
+        desc:"input description here",
+        fakeid:"",
+        callback:function(){}
+    };
     document.addEventListener("WeixinJSBridgeReady",function(){
-        WeixinJSBridge.on('menu:share:timeline', function(argv){
-              WeixinJSBridge.invoke("shareTimeline",{
-                    "link":"http://m.exmail.qq.com",
-                    "img_url":"http://rescdn.qqmail.com/bizmail/zh_CN/htmledition/images/bizmail/v3/logo1ca3fe.png",
-                    "img_width":"172",
-                    "img_height":"40",
-                    "desc":"i am description",
-                    "title":"just test from WeixinJsBridge"
-                })
-          });
+            WeixinJSBridge.on('menu:share:appmessage', function(argv){
+              WeixinJSBridge.invoke('sendAppMessage',{
+                 "appid":dataForWeixin.appId,
+                 "img_url":dataForWeixin.MsgImg,
+                 "img_width":"120",
+                 "img_height":"120"
+                 "link":dataForWeixin.url,
+                 "desc":dataForWeixin.desc,
+                 "title":dataForWeixin.title
+              }, function(res){(dataForWeixin.callback)();});
+            });
+            WeixinJSBridge.on('menu:share:timeline', function(argv){(dataForWeixin.callback)();
+              WeixinJSBridge.invoke('shareTimeline',{
+                 "img_url":dataForWeixin.TLImg,
+                 "img_width":"120",
+                 "img_height":"120",
+                 "link":dataForWeixin.url,
+                 "desc":dataForWeixin.desc,
+                 "title":dataForWeixin.title
+              }, function(res){});
+            });
 
         document.getElementById("tt").innerHTML="abc";
     });
