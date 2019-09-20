@@ -483,7 +483,7 @@ const updateRefundStatus = (req,res,next)=>{
                         //请求失败
                         productPaymentDAO.delRefundFail(params, (error, result) => {});
                         logger.warn('updateRefundStatus wechatRequest Refund failure!');
-                        resUtil.resetFailedRes(res, evalJson.xml, null);
+                        resUtil.resetFailedRes(res, result, null);
                     }else{
                         //请求退款成功
                         logger.info("updateRefundStatus wechatRequest Refund SUCCESS!");
