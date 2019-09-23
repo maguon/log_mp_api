@@ -108,8 +108,12 @@ const getPaymentByOrderId = (params,callback) => {
 const getRealPaymentPrice =(params,callback) => {
     let query = " select sum(if(type=2 ,total_fee,0)) refund_price,sum(if(type=1 ,total_fee,0)) pay_price " +
         "from product_payment_info " +
-        "where product_order_id = ?";
+        "where product_order_id = ? ";
     let paramsArray = [],i=0;
+    if(params.sratus){
+        paramsArray[i++] = params.sratus;
+        query += " and sratus=?";
+    }
     paramsArray[i] = params.productOrderId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('getRealPaymentPrice');
@@ -228,6 +232,10 @@ const updateWechatPayment = (params,callback) => {
     if(params.paymentTime){
         paramsArray[i++] = params.paymentTime;
         query += ",payment_time= ?";
+    }
+    if(params.paymentRefundTime){
+        paramsArray[i++] = params.paymentRefundTime;
+        query += ",payment_refund_time = ?";
     }
     query += " where id = ? ";
     paramsArray[i] = params.productPaymentId;

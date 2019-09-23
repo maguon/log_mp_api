@@ -177,6 +177,7 @@ const updateOrderMsgByPrice = (params,callback)=>{
     let earnestMoney =0;//应付总定金
     let payment_type=0;
     let commodityId=0;//商品订单编号
+    params.sratus = sysConst.PRODUCT_PAYMENT.status.paid;
     const getRealPaymentPrice =()=>{
         return new Promise((resolve, reject) => {
             productPaymentDAO.getRealPaymentPrice(params,(error,rows)=>{
@@ -221,7 +222,6 @@ const updateOrderMsgByPrice = (params,callback)=>{
     }
     const updateProductOrder =()=>{
         return new Promise((resolve, reject) => {
-            logger.info("1777" + params.type);
             if(params.type ==  sysConst.PRODUCT_PAYMENT.type.refund){
                 params.paymentStatus = sysConst.PRODUCT_ORDER.payment_status.refund;
             }else{
@@ -360,6 +360,7 @@ const productWechatPaymentCallback=(req,res,next) => {
                         }else{
                             prepayIdJson.productPaymentId = rows[0].id;
                             prepayIdJson.type = rows[0].type;
+                            prepayIdJson.pId = rows[0].p_id;
                             resolve();
                         }
                     }
@@ -371,6 +372,11 @@ const productWechatPaymentCallback=(req,res,next) => {
                 if (prepayIdJson.type == sysConst.PRODUCT_PAYMENT.type.refund){
                     prepayIdJson.totalFee = -prepayIdJson.totalFee;
                     prepayIdJson.payment_refund_time = new Date();
+                    let resMessage = updatePIdRefundTime();
+                    logger.inf("resMessage:"+resMessage);
+                    if(resMessage.err){
+                        reject({err:error});
+                    }
                 }else{
                     prepayIdJson.paymentTime = new Date();
                 }
@@ -383,6 +389,17 @@ const productWechatPaymentCallback=(req,res,next) => {
                         resolve();
                     }
                 });
+            });
+        }
+        const updatePIdRefundTime =(prepayIdJson)=>{
+            productPaymentDAO.updateWechatPayment({productPaymentId:prepayIdJson.pId,status:prepayIdJson.status,paymentRefundTime:prepayIdJson.paymentRefundTime},(error,result)=>{
+                if(error){
+                    logger.error('productWechatPaymentCallback updatePIdRefundTime ' + error.message);
+                    return {err:error};
+                }else{
+                    logger.info('productWechatPaymentCallback updatePIdRefundTime ' + 'success');
+                    return success;
+                }
             });
         }
         const updateProductOrder =()=>{
