@@ -136,8 +136,7 @@ const updateRefundStatus = (req,res,next)=>{
             paymentDAO.getById(params,(error,rows)=>{
                 if(error){
                     logger.error('updateRefundStatus getPayment ' + error.message);
-                    resUtil.resInternalError(error, res, next);
-                    reject(error);
+                    reject({err:error});
                 }else{
                     if (rows && rows.length>0) {
                         logger.info(' updateRefundStatus getPayment ' + 'success ');
