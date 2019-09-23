@@ -110,11 +110,11 @@ const getRealPaymentPrice =(params,callback) => {
         "from product_payment_info " +
         "where product_order_id = ? ";
     let paramsArray = [],i=0;
+    paramsArray[i++] = params.productOrderId;
     if(params.sratus){
-        paramsArray[i++] = params.sratus;
+        paramsArray[i] = params.sratus;
         query += " and sratus=?";
     }
-    paramsArray[i] = params.productOrderId;
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('getRealPaymentPrice');
         callback(error,rows)
