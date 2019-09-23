@@ -372,14 +372,19 @@ const productWechatPaymentCallback=(req,res,next) => {
                 if (prepayIdJson.type == sysConst.PRODUCT_PAYMENT.type.refund){
                     prepayIdJson.totalFee = -prepayIdJson.totalFee;
                     prepayIdJson.payment_refund_time = new Date();
-                    let resMessage = updatePIdRefundTime(prepayIdJson);
-                    logger.inf("resMessage:"+resMessage);
-                    if(resMessage.err){
-                        reject({err:error});
-                    }
+                    //更新源支付信息的退款时间
+                    productPaymentDAO.updateWechatPayment({productPaymentId:prepayIdJson.pId,status:prepayIdJson.status,paymentRefundTime:prepayIdJson.payment_refund_time},(error,result)=>{
+                        if(error){
+                            logger.error('productWechatPaymentCallback updatePIdRefundTime ' + error.message);
+                            reject({err:error});
+                        }else{
+                            logger.info('productWechatPaymentCallback updatePIdRefundTime ' + 'success');
+                        }
+                    });
                 }else{
                     prepayIdJson.paymentTime = new Date();
                 }
+                //更新退款信息的退款时间
                 productPaymentDAO.updateWechatPayment(prepayIdJson,(error,result)=>{
                     if(error){
                         logger.error('productWechatPaymentCallback updatePaymentInfo ' + error.message);
@@ -389,17 +394,6 @@ const productWechatPaymentCallback=(req,res,next) => {
                         resolve();
                     }
                 });
-            });
-        }
-        const updatePIdRefundTime =(prepayIdJson)=>{
-            productPaymentDAO.updateWechatPayment({productPaymentId:prepayIdJson.pId,status:prepayIdJson.status,paymentRefundTime:prepayIdJson.paymentRefundTime},(error,result)=>{
-                if(error){
-                    logger.error('productWechatPaymentCallback updatePIdRefundTime ' + error.message);
-                    return {err:error};
-                }else{
-                    logger.info('productWechatPaymentCallback updatePIdRefundTime ' + 'success');
-                    return success;
-                }
             });
         }
         const updateProductOrder =()=>{
