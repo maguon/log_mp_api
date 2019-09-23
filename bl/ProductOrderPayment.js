@@ -177,7 +177,7 @@ const updateOrderMsgByPrice = (params,callback)=>{
     let earnestMoney =0;//应付总定金
     let payment_type=0;
     let commodityId=0;//商品订单编号
-    params.sratus = sysConst.PRODUCT_PAYMENT.status.paid;
+    params.status = sysConst.PRODUCT_PAYMENT.status.paid;
     const getRealPaymentPrice =()=>{
         return new Promise((resolve, reject) => {
             productPaymentDAO.getRealPaymentPrice(params,(error,rows)=>{
@@ -372,7 +372,7 @@ const productWechatPaymentCallback=(req,res,next) => {
                 if (prepayIdJson.type == sysConst.PRODUCT_PAYMENT.type.refund){
                     prepayIdJson.totalFee = -prepayIdJson.totalFee;
                     prepayIdJson.payment_refund_time = new Date();
-                    let resMessage = updatePIdRefundTime();
+                    let resMessage = updatePIdRefundTime(prepayIdJson);
                     logger.inf("resMessage:"+resMessage);
                     if(resMessage.err){
                         reject({err:error});

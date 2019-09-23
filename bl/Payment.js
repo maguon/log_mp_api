@@ -822,7 +822,6 @@ const wechatPaymentCallback=(req,res,next) => {
     // xml -> json
     xmlParser.parseString(req.body,(err,result)=>{
         //json --> xml
-        logger.info("wechatPaymentCallback1666 result:" + result);
         let resString = JSON.stringify(result);
 
         //string -->Json
