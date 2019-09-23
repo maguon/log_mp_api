@@ -131,105 +131,232 @@ const updateRefundStatus = (req,res,next)=>{
     let params = req.params;
     let paymentType = "";
     let totalFee = 0;
-    new Promise((resolve,reject)=>{
-        paymentDAO.getById(params,(error,rows)=>{
-            if(error){
-                logger.error('updateRefundStatus getById ' + error.message);
-                resUtil.resInternalError(error, res, next);
-                reject(error);
-            }else{
-                if (rows && rows.length>0) {
-                    if (rows[0].total_fee < params.refundFee) {
-                        resUtil.resetFailedRes(res, sysMsg.ADMIN_PAYMENT_REFUND_PRICE);
-                        reject(error);
-                    } else {
-                        params.bank = rows[0].bank;
-                        params.bankCode = rows[0].bank_code;
-                        params.accountName = rows[0].account_name;
-                        totalFee = rows[0].total_fee;
-                        paymentType = rows[0].payment_type;
-                        params.paymentRefundId = rows[0].id;
-                        params.userId = rows[0].user_id;
-                        params.wxOrderId = rows[0].wx_order_id;
-                        resolve();
-                    }
+    const getPayment =()=>{
+        return new Promise((resolve, reject) => {
+            paymentDAO.getById(params,(error,rows)=>{
+                if(error){
+                    logger.error('updateRefundStatus getPayment ' + error.message);
+                    resUtil.resInternalError(error, res, next);
+                    reject(error);
                 }else{
-                    logger.error('updateRefundStatus getById ' + sysMsg.ADMIN_PAYMENT_REFUND_PRICE);
-                    resUtil.resetFailedRes(res, sysMsg.ADMIN_PAYMENT_REFUND_PRICE);
-                    reject({msg:sysMsg.ADMIN_PAYMENT_REFUND_PRICE})
+                    if (rows && rows.length>0) {
+                        logger.info(' updateRefundStatus getPayment ' + 'success ');
+                        if (rows[0].total_fee < params.refundFee) {
+                            resUtil.resetFailedRes(res, sysMsg.ADMIN_PAYMENT_REFUND_PRICE);
+                            reject(error);
+                        } else {
+                            params.bank = rows[0].bank;
+                            params.bankCode = rows[0].bank_code;
+                            params.accountName = rows[0].account_name;
+                            totalFee = rows[0].total_fee;
+                            paymentType = rows[0].payment_type;
+                            params.paymentRefundId = rows[0].id;
+                            params.userId = rows[0].user_id;
+                            params.wxOrderId = rows[0].wx_order_id;
+                            resolve();
+                        }
+                    }else{
+                        logger.error('updateRefundStatus getPayment ' + sysMsg.ADMIN_PAYMENT_REFUND_PRICE);
+                        resUtil.resetFailedRes(res, sysMsg.ADMIN_PAYMENT_REFUND_PRICE);
+                        reject({msg:sysMsg.ADMIN_PAYMENT_REFUND_PRICE})
+                    }
                 }
-            }
-        })
-    }).then(()=> {
-        new Promise((resolve,reject)=>{
+            })
+        });
+    }
+    const getPaymentType =()=>{
+        return new Promise((resolve, reject) => {
             params.totalFee = 0 - params.refundFee;
             params.dateId = moment(new Date()).format('YYYYMMDD');
             params.status = sysConst.PAYMENT.status.paid;
             params.type = sysConst.PAYMENT.type.refund;
             params.dateId = moment().format("YYYYMMDD");
+            logger.info(' updateRefundStatus getPaymentType paymentType:' + paymentType);
             if (paymentType == sysConst.PAYMENT.paymentType.wechat){
-                params.paymentType = sysConst.PAYMENT.paymentType.wechat;
-                wechatRefund(req,res,next);
-            } else {
-                params.paymentType = sysConst.PAYMENT.paymentType.bankTransfer;
-                //添加退款信息
-                paymentDAO.addRefundPayment(params,(error,rows)=>{
-                    if(error){
-                        logger.error('updateRefundStatus addRefundPayment ' + error.message);
-                        resUtil.resInternalError(error, res, next);
-                        reject(error);
+                wechatRefundApply();
+            }else{
+                bankRefundApply();
+            }
+        });
+    }
+    const wechatRefundApply =()=>{
+        return new Promise(() => {
+            params.paymentType = sysConst.PAYMENT.paymentType.wechat;
+            const getPayment =()=>{
+                return new Promise((resolve, reject) => {
+                    paymentDAO.getPaymentByOrderId({orderId:params.orderId,type:1,status:1},(error,rows)=>{
+                        if(error){
+                            logger.error('updateRefundStatus wechatRefundApply getPayment ' + error.message);
+                            reject({err:error});
+                            // resUtil.resInternalError(error, res, next);
+                            // reject(error);
+                        }else{
+                            if(rows && rows.length < 1){
+                                logger.warn('updateRefundStatus wechatRefundApply getPayment ' + 'Please check the payment information! ');
+                                reject({msg:sysMsg.ADMIN_PAYMENT_NO_MSG});
+                                // resUtil.resetFailedRes(res,' 请查看支付信息 ',null);
+                                // reject(error);
+                            }else{
+                                logger.info(' updateRefundStatus wechatRefundApply getPayment ' + 'success ');
+                                params.totalFee = rows[0].total_fee;
+                                params.paymentId = rows[0].id;
+                                params.wxOrderId = rows[0].wx_order_id;
+                                params.userId = rows[0].user_id;
+                                resolve();
+                            }
+                        }
+                    })
+                });
+            }
+            const addRefundInfo =()=>{
+                return new Promise((resolve, reject) => {
+                    params.type = sysConst.PAYMENT.type.refund;
+                    params.paymentType = sysConst.PAYMENT.paymentType.wechat;
+                    //添加退款的panmen_inf
+                    paymentDAO.addWechatRefund(params,(error,result)=>{
+                        if(error){
+                            logger.error('updateRefundStatus wechatRefundApply addRefundInfo ' + error.message);
+                            resUtil.resInternalError(error, res, next);
+                        }else{
+                            logger.info('updateRefundStatus wechatRefundApply addRefundInfo '+' success');
+                            params.refundId = result.insertId;
+                            resolve();
+                        }
+                     });
+                });
+            }
+            const wechatReq =()=>{
+                return new Promise((resolve, reject) => {
+                    wechatUtil.wechatRequest(params,(error,result)=>{
+                        if (error){
+                            logger.error('updateRefundStatus wechatRefundApply wechatReq ' + error.message);
+                            reject({err:error});
+                        }else {
+                            logger.info('updateRefundStatus wechatRefundApply wechatReq ' + 'success');
+                            if (result.return_code == 'FAIL') {
+                                paymentDAO.delRefundFail(params, (error, result) => {
+                                });
+                                logger.warn('Refund failure!');
+                                logger.warn(result);
+                                resUtil.resetFailedRes(res, result, null);
+                            } else {
+                                //退款成功
+                                params.status = sysConst.REFUND_STATUS.refunded;
+                                //更新退款申请信息
+                                refundApplyDAO.updateRefund(params, (error, result) => {
+                                    if (error) {
+                                        logger.error('updateRefundStatus wechatRefundApply wechatReq updateRefund ' + error.message);
+                                        //resUtil.resInternalError(error, res, next);
+                                        reject({err:error});
+                                    } else {
+                                        logger.info('updateRefundStatus wechatRefundApply wechatReq updateRefund ' + 'success');
+                                        // resolve();
+                                    }
+                                });
+                                resUtil.resetQueryRes(res, result, null);
+                            }//result success
+                        }//error else
+                    });
+                });
+            }
+
+            getPayment()
+                .then(addRefundInfo)
+                .then(wechatReq)
+                .catch((reject)=>{
+                    if(reject.err){
+                        resUtil.resetFailedRes(res,reject.err);
                     }else{
-                        //添加成功之
-                        logger.info('updateRefundStatus addRefundPayment ' + 'success');
-                        params.paymentRefundId = rows.insertId;
-                        new Promise((resolve,reject)=>{
-                            params.status = sysConst.REFUND_STATUS.refunded;
-                            //更新退款申请信息
-                            refundApplyDAO.updateRefund(params,(error,result)=>{
-                                if(error){
-                                    logger.error('updateRefundStatus updateRefund ' + error.message);
-                                    resUtil.resInternalError(error, res, next);
-                                    reject(error);
-                                }else{
-                                    logger.info('updateRefundStatus updateRefund ' + 'success');
-                                    resolve();
-                                }
-                            });
-                        }).then(()=>{
-                            new Promise((resolve,reject)=> {
-                                //获取付款信息
-                                paymentDAO.getRealPaymentPrice(params, (error, rows) => {
-                                    if (error) {
-                                        logger.error('updateRefundStatus getRealPaymentPrice' + error.message);
-                                        resUtil.resInternalError(error, res, next);
-                                        reject(error);
-                                    } else {
-                                        logger.info('updateRefundStatus getRealPaymentPrice ' + 'success');
-                                        params.realPaymentPrice = rows[0].pay_price - Math.abs(rows[0].refund_price) ;
-                                        resolve();
-                                    }
-                                })
-                            }).then(()=>{
-                                //更新订单支付金额
-                                orderInfoDAO.updateRealPaymentPrice(params, (error, result) => {
-                                    if (error) {
-                                        logger.error('updateRefundStatus updateRealPaymentPrice ' + error.message);
-                                        resUtil.resInternalError(error, res, next);
-                                    } else {
-                                        logger.info('updateRefundStatus updateRealPaymentPrice ' + 'success');
-                                        resUtil.resetUpdateRes(res, result, null);
-                                        return next();
-                                    }
-                                })
-                            })
-                        })
+                        resUtil.resetFailedRes(res,reject.msg);
                     }
                 })
+        })
+    }
+    const bankRefundApply =()=>{
+        return new Promise(() => {
+            params.paymentType = sysConst.PAYMENT.paymentType.bankTransfer;
+            const addRefund =()=>{
+                return new Promise((resolve, reject) => {
+                    paymentDAO.addRefundPayment(params,(error,rows)=> {
+                        if (error) {
+                            logger.error('updateRefundStatus bankRefundApply addRefund ' + error.message);
+                            resUtil.resInternalError(error, res, next);
+                            reject(error);
+                        } else {
+                            logger.info('updateRefundStatus bankRefundApply addRefund ' + 'success');
+                            params.paymentRefundId = rows.insertId;
+                            resolve();
+                        }
+                    });
+                });
+            }
+            const updateRefund =()=>{
+                return new Promise((resolve, reject) => {
+                    params.status = sysConst.REFUND_STATUS.refunded;
+                    //更新退款申请信息
+                    refundApplyDAO.updateRefund(params,(error,result)=>{
+                        if(error){
+                            logger.error('updateRefundStatus bankRefundApply updateRefund ' + error.message);
+                            reject({err:error});
+                        }else{
+                            logger.info('updateRefundStatus bankRefundApply updateRefund ' + 'success');
+                            resolve();
+                        }
+                    });
+                });
+            }
+            const getOrderPaymentInfo =()=>{
+                return new Promise((resolve, reject) => {
+                    //获取支付信息
+                    paymentDAO.getRealPaymentPrice(params, (error, rows) => {
+                        if (error) {
+                            logger.error('updateRefundStatus bankRefundApply getOrderPaymentInfo ' + error.message);
+                            reject({err:error});
+                        } else {
+                            logger.info('updateRefundStatus bankRefundApply getOrderPaymentInfo ' + 'success');
+                            params.realPaymentPrice = rows[0].pay_price - Math.abs(rows[0].refund_price) ;
+                            resolve();
+                        }
+                    })
+                });
+            }
+            const updateOrderInfo =()=>{
+                return new Promise((resolve, reject) => {
+                    //更新订单支付金额
+                    orderInfoDAO.updateRealPaymentPrice(params, (error, result) => {
+                        if (error) {
+                            logger.error('updateRefundStatus bankRefundApply updateOrderInfo ' + error.message);
+                            reject({err:error});
+                        } else {
+                            logger.info('updateRefundStatus bankRefundApply updateOrderInfo ' + 'success');
+                            resUtil.resetUpdateRes(res, result, null);
+                            return next();
+                        }
+                    })
+                })
+            }
+            addRefund()
+                .then(updateRefund)
+                .then(getOrderPaymentInfo)
+                .then(updateOrderInfo)
+                .catch((reject)=>{
+                    if(reject.err){
+                        resUtil.resetFailedRes(res,reject.err);
+                    }else{
+                        resUtil.resetFailedRes(res,reject.msg);
+                    }
+                })
+        });
+    }
+    getPayment()
+        .then(getPaymentType)
+        .catch((reject)=>{
+            if(reject.err){
+                resUtil.resetFailedRes(res,reject.err);
+            }else{
+                resUtil.resetFailedRes(res,reject.msg);
             }
         })
-    }).catch((error)=>{
-        resUtil.resInternalError(error,res,next);
-    })
 }
 const refundInMonth = (req,res,next)=>{
     let params = req.params;
@@ -246,207 +373,6 @@ const refundInMonth = (req,res,next)=>{
         }
     });
 }
-const wechatRefund = (req,res,next)=>{
-    let params = req.params;
-    let ourString = encrypt.randomString();
-    params.nonceStr = ourString;
-    let xmlParser = new xml2js.Parser({explicitArray : false, ignoreAttrs : true});
-    //let refundUrl = 'https://stg.myxxjs.com/api/wechatRefund';
-    let refundUrl = sysConfig.wechatConfig.notifyUrl;
-    let myDate = new Date();
-    params.dateId = moment(myDate).format('YYYYMMDD');
-    new Promise((resolve,reject)=>{
-        //获取支付信息
-        paymentDAO.getPaymentByOrderId({orderId:params.orderId,type:1,status:1},(error,rows)=>{
-            if(error){
-                logger.error('wechatRefund getPaymentByOrderId ' + error.message);
-                resUtil.resInternalError(error, res, next);
-                reject(error);
-            }else if(rows && rows.length < 1){
-                logger.warn('wechatRefund getPaymentByOrderId ' + 'Please check the payment information! ');
-                resUtil.resetFailedRes(res,' 请查看支付信息 ',null);
-                reject(error);
-            }else{
-                logger.info(' wechatRefund getPaymentByOrderId ' + 'success ');
-                params.totalFee = rows[0].total_fee;
-                params.paymentId = rows[0].id;
-                params.wxOrderId = rows[0].wx_order_id;
-                params.userId = rows[0].user_id;
-                resolve();
-            }
-        })
-    }).then(()=>{
-        new Promise((resolve,reject)=>{
-            params.type = sysConst.PAYMENT.type.refund;
-            params.paymentType = sysConst.PAYMENT.paymentType.wechat;
-            //添加退款的panmen_inf
-            paymentDAO.addWechatRefund(params,(error,result)=>{
-                if(error){
-                    logger.error('wechatRefund addWechatRefund ' + error.message);
-                    resUtil.resInternalError(error, res, next);
-                }else{
-                    //成功添加退款信息
-                    logger.info('wechatRefund addWechatRefund '+' success');
-                    params.refundId = result.insertId;
-                    wechatUtil.wechatRequest(params,(error,result)=>{
-                        if (error){
-                            logger.error('updateRefundStatus wechatRequest ' + error.message);
-                            reject({err:error});
-                        }else {
-                            logger.info('updateRefundStatus wechatRequest ' + 'success');
-
-                            if (result.return_code == 'FAIL') {
-                                paymentDAO.delRefundFail(params, (error, result) => {
-                                });
-                                logger.warn('Refund failure!');
-                                logger.warn(result);
-                                resUtil.resetFailedRes(res, result, null);
-                            } else {
-                                //退款成功
-                                params.status = sysConst.REFUND_STATUS.refunded;
-                                //更新退款申请信息
-                                refundApplyDAO.updateRefund(params, (error, result) => {
-                                    if (error) {
-                                        logger.error('wechatRefund updateRefund ' + error.message);
-                                        //resUtil.resInternalError(error, res, next);
-                                        reject(error);
-                                    } else {
-                                        logger.info('wechatRefund updateRefund ' + 'success');
-                                        resolve();
-                                    }
-                                });
-                                resUtil.resetQueryRes(res, result, null);
-                            }//result success
-                        }//error else
-                    });
-
-                    // let signStr =
-                    //     "appid="+sysConfig.wechatConfig.mpAppId
-                    //     + "&mch_id="+sysConfig.wechatConfig.mchId
-                    //     + "&nonce_str="+params.nonceStr
-                    //     + "&notify_url="+refundUrl
-                    //     //+ "&openid="+params.openid
-                    //     + "&out_refund_no="+params.refundId
-                    //     + "&out_trade_no="+params.wxOrderId
-                    //     + "&refund_fee="+ params.refundFee * 100
-                    //     + "&total_fee=" +params.totalFee * 100
-                    //     + "&key="+sysConfig.wechatConfig.paymentKey;
-                    // let signByMd = encrypt.encryptByMd5NoKey(signStr);
-                    // let reqBody =
-                    //     '<xml><appid>'+sysConfig.wechatConfig.mpAppId+'</appid>' +
-                    //     '<mch_id>'+sysConfig.wechatConfig.mchId+'</mch_id>' +
-                    //     '<nonce_str>'+params.nonceStr+'</nonce_str>' +
-                    //     '<notify_url>'+refundUrl+'</notify_url>' +
-                    //     //'<openid>'+params.openid+'</openid>' +
-                    //     '<out_refund_no>'+params.refundId +'</out_refund_no>' +
-                    //     '<out_trade_no>'+params.wxOrderId +'</out_trade_no>' +
-                    //     '<refund_fee>'+params.refundFee * 100+'</refund_fee>' +
-                    //     '<total_fee>'+params.totalFee * 100+'</total_fee>' +
-                    //     '<sign>'+signByMd+'</sign></xml>';
-                    // let url="/secapi/pay/refund";
-                    // let certFile = fs.readFileSync(sysConfig.wechatConfig.paymentCert);
-                    // let options = {
-                    //     host: 'api.mch.weixin.qq.com',
-                    //     port: 443,
-                    //     path: url,
-                    //     method: 'POST',
-                    //     pfx: certFile ,
-                    //     passphrase : sysConfig.wechatConfig.mchId,
-                    //     headers: {
-                    //         'Content-Type': 'application/x-www-form-urlencoded',
-                    //         'Content-Length' : Buffer.byteLength(reqBody, 'utf8')
-                    //     }
-                    // }
-                    // logger.info("reqBody:" + reqBody);
-                    // //向微信请求
-                    // let httpsReq = https.request(options,(result)=>{
-                    //     let data = "";
-                    //     //logger.info(result);
-                    //     //返回结果
-                    //     result.on('data',(d)=>{
-                    //         data += d;
-                    //         logger.info("data:" + data);
-                    //     }).on('end',()=>{
-                    //         xmlParser.parseString(data,(err,result)=>{
-                    //             let resString = JSON.stringify(result);
-                    //             let evalJson = eval('(' + resString + ')');
-                    //             if(evalJson.xml.return_code == 'FAIL'){
-                    //                 paymentDAO.delRefundFail(params,(error,result)=>{});
-                    //                 logger.warn('Refund failure!');
-                    //                 logger.warn(evalJson.xml);
-                    //                 resUtil.resetFailedRes(res,evalJson.xml,null);
-                    //             }else {
-                    //                 //退款成功
-                    //                 params.paymentRefundId = result.insertId;
-                    //                 new Promise((resolve,reject)=>{
-                    //                     params.status = sysConst.REFUND_STATUS.refunded;
-                    //                     //更新退款申请信息
-                    //                     refundApplyDAO.updateRefund(params,(error,result)=>{
-                    //                         if(error){
-                    //                             logger.error('wechatRefund updateRefund ' + error.message);
-                    //                             //resUtil.resInternalError(error, res, next);
-                    //                             reject(error);
-                    //                         }else{
-                    //                             logger.info('wechatRefund updateRefund ' + 'success');
-                    //                             resolve();
-                    //                         }
-                    //                     });
-                    //                 }).then(()=>{
-                    //                     /*
-                    //                     new Promise((resolve,reject)=> {
-                    //                         //获取付款信息
-                    //                         paymentDAO.getRealPaymentPrice(params, (error, rows) => {
-                    //                             if (error) {
-                    //                                 logger.error('getRealPaymentPrice ' + error.message);
-                    //                                 ///resUtil.resInternalError(error, res, next);
-                    //                                 reject(error);
-                    //                             } else {
-                    //                                 logger.info('getRealPaymentPrice ' + 'success');
-                    //                                 params.realPaymentPrice = rows[0].pay_price - Math.abs(rows[0].refund_price) ;
-                    //                                 resolve();
-                    //                             }
-                    //                         })
-                    //                     }).then(()=>{
-                    //                         //更新订单支付金额
-                    //                         orderInfoDAO.updateRealPaymentPrice(params, (error, result) => {
-                    //                             if (error) {
-                    //                                 logger.error('updateRealPaymentPrice ' + error.message);
-                    //                                 //resUtil.resInternalError(error, res, next);
-                    //                             } else {
-                    //                                 logger.info('updateRealPaymentPrice ' + 'success');
-                    //                                 //resUtil.resetUpdateRes(res, result, null);
-                    //                                 return next();
-                    //                             }
-                    //                         })
-                    //                     })
-                    //
-                    //                      */
-                    //                 })
-                    //                 resUtil.resetQueryRes(res,evalJson.xml,null);
-                    //             }
-                    //             return next();
-                    //         });
-                    //
-                    //     }).on('error', (e)=>{
-                    //         logger.info('wechatRefund result '+ e.message);
-                    //         resUtil.resInternalError(e, res, next);
-                    //         return next();
-                    //     });
-                    // });
-                    // httpsReq.write(reqBody,"utf-8");
-                    // httpsReq.end();
-                    // httpsReq.on('error',(e)=>{
-                    //     logger.info('wechatRefund httpsReq '+ e.message);
-                    //     res.send(500,e);
-                    //     return next();
-                    // });
-                }//add else
-            })
-        })
-    }).catch((error)=>{
-        resUtil.resInternalError(error, res, next);
-    })
-};
 module.exports = {
     addRefundApply,
     getRefundApply,
