@@ -200,7 +200,7 @@ const updateOrderMsgByPrice = (params,callback)=>{
     }
     const getOrderInfo =()=>{
         return new Promise((resolve, reject) => {
-            productOrderDAO.getProductOrder(params,(error,rows)=>{
+            productOrderDAO.getProductOrder({productOrderId:params.productOrderId},(error,rows)=>{
                 if(error){
                     logger.error('updateOrderMsgByPrice getOrderInfo ' + error.message);
                     reject({err:error});
@@ -346,7 +346,6 @@ const productWechatPaymentCallback=(req,res,next) => {
             status: sysConst.PRODUCT_PAYMENT.status.paid,
             type:sysConst.PRODUCT_PAYMENT.type.payment
         };
-
         const getPaymentInfo =()=>{
             return new Promise((resolve, reject) => {
                 productPaymentDAO.getPaymentByOrderId({productOrderId:prepayIdJson.productOrderId},(error,rows)=>{
@@ -358,6 +357,7 @@ const productWechatPaymentCallback=(req,res,next) => {
                             logger.warn('productWechatPaymentCallback getPaymentInfo ' + 'This payment information is not available!');
                             reject({msg:sysMsg.PRODUCT_PAYMENT_ID_ERROR});
                         }else{
+                            logger.info('productWechatPaymentCallback getPaymentInfo ' + 'success');
                             prepayIdJson.productPaymentId = rows[0].id;
                             prepayIdJson.type = rows[0].type;
                             prepayIdJson.pId = rows[0].p_id;
