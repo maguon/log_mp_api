@@ -45,23 +45,19 @@ const getCommodityPage = (req,res,next) =>{
     res.writeHead(200, {'Content-Type': 'text/html'});
     if((arrGourp[1] == null) && (arrTimeline[1] == null) && (arrSinglemessage[1] == null)) {
         logger.info('getCommodityPage Not Wechat Access!');
-        const getRecommend =()=>{
-            return new Promise((resolve, reject) => {
-                recommendInfoDAO.select({},(error,rows)=>{
-                    if(error){
-                        logger.error(' getAdminCommodity ' + error.message);
-                        reject({err:error});
-                    }else{
-                        logger.info(' getAdminCommodity ' + 'success');
-                        if(rows.length > 0){
-                            resolve(rows[0]);
-                        }else{
-                            reject({msg:sysMsg.RECOMMEND_TASK_NO_EXISTS});
-                        }
-                    }
-                })
-            });
-        }
+        recommendInfoDAO.select({},(error,rows)=>{
+            if(error){
+                logger.error(' getAdminCommodity ' + error.message);
+                getErrorView();
+            }else{
+                logger.info(' getAdminCommodity ' + 'success');
+                if(rows.length > 0){
+                    getErrorView(rows[0]);
+                }else{
+                    getErrorView();
+                }
+            }
+        })
         const getErrorView =(recommendInfo)=>{
             return new Promise(()=>{
                 fs.readFile('./bl/view/carError.tpl','utf-8',function(err,data){
@@ -70,14 +66,23 @@ const getCommodityPage = (req,res,next) =>{
                         throw err ;
                     }else {
                         logger.info(' getCommodityPage getErrorView ' + 'success');
-                        var prod = {
-                            mp_url:recommendInfo.mp_url
-                        };
+                        if(recommendInfo){
+                            var prod = {
+                                mp_url:'src='+recommendInfo.mp_url,
+                                long_press:'长按识别进入小程序购买',
+                                more_information:'更多售车信息请进入小程序查看'
+                            };
+                        }else{
+                            var prod = {
+                                mp_url:'',
+                                long_press:'',
+                                more_information:''
+                            };
+                        }
                         var pattern = /{{([\s\S]+?)}}/gi;
                         var result = data.replace(pattern, (match, datas)=>{
                             return prod[datas];
                         });
-                        //console.log("读取的数据：",result);
                         res.write(result);
                         res.end();
                         return next();
@@ -85,19 +90,6 @@ const getCommodityPage = (req,res,next) =>{
                 });
             });
         }
-        getRecommend()
-            .then(getErrorView)
-            .catch((reject)=>{
-                if(reject.err){
-                    console.log("error!");
-                    res.end(reject.err);
-                    return next();
-                }else{
-                    console.log("msg!");
-                    res.end(reject.msg);
-                    return next();
-                }
-            })
     }else{
         let params = req.params;
         const getCommodity = ()=>{
