@@ -62,6 +62,7 @@ const queryUser = (params,callback) => {
         paramsArray[i] = parseInt(params.size);
         query = query + " limit ? , ? ";
     }
+    query = query + " order by id desc";
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('queryUser');
         callback(error,rows);
