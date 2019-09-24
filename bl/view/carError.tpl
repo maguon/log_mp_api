@@ -40,7 +40,7 @@
     <!--进入小程序-->
     <div  class="center" >
         <div class="mb2">
-            <img style="width: 60%;background: url(images/timg.jpg)" src="http://stg.myxxjs.com:9101/wx_img/wx_code_10000_4JAWnP.png" />
+            <img style="width: 60%;background: url(images/timg.jpg)" src={{mp_url}} />
         </div>
         <h6  class="bold mb1 fz10">长按识别进入小程序购买</h6>
         <p  class="bold mb1">更多售车信息请进入小程序查看</p>
