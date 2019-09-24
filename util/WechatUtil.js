@@ -14,7 +14,7 @@ const wechatRequest = (params,callback) => {
     let myDate = new Date();
     params.dateId = moment(myDate).format('YYYYMMDD');
     let refundResult = getRefundParams(params);
-    console.log('refundResult:'+refundResult);
+    logger.info('refundResult:'+refundResult);
     //向微信请求
     let httpsReq = https.request(refundResult.options,(result)=>{
         let data = "";

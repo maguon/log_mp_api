@@ -816,7 +816,7 @@ const wechatPayment =(req,res,next)=>{
     })
 }
 const wechatPaymentCallback=(req,res,next) => {
-    logger.info("wechatPaymentCallback1666 req:" + req.body);
+    // logger.info("wechatPaymentCallback1666 req:" + req.body);
     let xmlParser = new xml2js.Parser({explicitArray : false, ignoreAttrs : true});
 
     // xml -> json
