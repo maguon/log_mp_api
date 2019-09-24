@@ -40,7 +40,7 @@
         <h4 class="bold pt4 fz17">现特价仅售</h4>
         <h4 class="redColor bold fz17"><span class="fz20">{{actual_price}}</span>万元</h4>
         <div class="white-text bgRed mb_6 panding" style="width:85%;margin: 0 auto;">
-            <p class="fz12 padding_4 ">无需再缴纳购置税、车船使用税、交强险和金融服务费</p>
+            <p class="fz12 padding_4 ">无需再缴纳金融服务费和强制装潢费</p>
         </div>
         <h5 class="redColor bold fz17 padding_2">新车开回家</h5>
         <p class="bold greyColor mb1">所在城市{{city_name}}(同城可当面看车)</p>
