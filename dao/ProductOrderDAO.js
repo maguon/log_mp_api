@@ -247,14 +247,12 @@ const updateStatus = (params,callback) => {
 const updateStatusOrPrice = (params,callback) => {
     let query = " update product_order_info set ";
     let paramsArray=[],i=0
-    if(params.paymentStatus){
-        query += " payment_status = ?";
-        paramsArray[i++] = params.paymentStatus;
-    }
-    if(params.realPaymentPrice){
-        query += ", real_payment_price = ?";
-        paramsArray[i++] = params.realPaymentPrice;
-    }
+    query += " payment_status = ?";
+    paramsArray[i++] = params.paymentStatus;
+
+    query += ", real_payment_price = ?";
+    paramsArray[i++] = params.realPaymentPrice;
+
     paramsArray[i] = params.productOrderId;
     query += " where id = ?";
     db.dbQuery(query,paramsArray,(error,rows)=>{
