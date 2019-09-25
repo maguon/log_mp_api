@@ -57,12 +57,12 @@ const queryUser = (params,callback) => {
         paramsArray[i++] = params.authStatus;
         query = query + " and auth_status = ? "
     }
+    query = query + " order by id desc";
     if(params.start && params.size){
         paramsArray[i++] = parseInt(params.start);
         paramsArray[i] = parseInt(params.size);
         query = query + " limit ? , ? ";
     }
-    query = query + " order by id desc";
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('queryUser');
         callback(error,rows);
