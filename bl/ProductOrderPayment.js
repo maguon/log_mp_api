@@ -371,9 +371,9 @@ const productWechatPaymentCallback=(req,res,next) => {
             return new Promise((resolve, reject) => {
                 if (prepayIdJson.type == sysConst.PRODUCT_PAYMENT.type.refund){
                     prepayIdJson.totalFee = -prepayIdJson.totalFee;
-                    prepayIdJson.payment_refund_time = new Date();
+                    prepayIdJson.paymentRefundTime = new Date();
                     //更新源支付信息的退款时间
-                    productPaymentDAO.updateWechatPayment({productPaymentId:prepayIdJson.pId,status:prepayIdJson.status,paymentRefundTime:prepayIdJson.payment_refund_time},(error,result)=>{
+                    productPaymentDAO.updateWechatPayment({productPaymentId:prepayIdJson.pId,status:prepayIdJson.status,paymentRefundTime:prepayIdJson.paymentRefundTime},(error,result)=>{
                         if(error){
                             logger.error('productWechatPaymentCallback updatePIdRefundTime ' + error.message);
                             reject({err:error});
