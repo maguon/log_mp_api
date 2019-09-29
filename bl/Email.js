@@ -34,7 +34,6 @@ const sendAccountConfirmEmail = (req,res,next) => {
     const sendMail = ()=>{
         return new Promise((resolve,reject)=>{
             mailConnection.accountTransport.sendMail(mailOptions,(error,info)=>{
-                //console.log(info.messageId);
                 if (error) {
                     //添加邮件发送失败记录
                     params.status = 0;
@@ -74,39 +73,6 @@ const sendAccountConfirmEmail = (req,res,next) => {
                 resUtil.resInternalError(reject,res,next);
             }
         })
-
-    /*
-    //=====================================================
-    mailConnection.accountTransport.sendMail(mailOptions,(error,info)=>{
-        console.log(info.messageId);
-        if (error) {
-            logger.error('sendAccountConfirmEmail ' + error.message);
-            //添加邮件发送失败记录
-            params.status = 0;
-            emailHistoryDao.addMailRecord(params,(error,result)=>{
-                if(error){
-                    logger.error('sendAccountConfirmEmail addMailRecord ' + error.message);
-                }else{
-                    logger.info('sendAccountConfirmEmail addMailRecord '  + params.email);
-                }
-            });
-            throw sysError.InternalError(error.message,sysError.InternalError);
-        }else{
-            logger.info('sendAccountConfirmEmail '  + params.email);
-            //添加邮件发送成功记录
-            params.status = 1;
-            emailHistoryDao.addMailRecord(params,(error,result)=>{
-                if(error){
-                    logger.error('sendAccountConfirmEmail addMailRecord ' + error.message);
-                }else{
-                    logger.info('sendAccountConfirmEmail addMailRecord '  + params.email);
-                    resUtil.resetCreateRes(res,result,null);
-                }
-            });
-        }
-        return next();
-    });
-*/
 }
 module.exports = {
     sendAccountConfirmEmail,
