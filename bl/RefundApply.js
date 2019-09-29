@@ -1,19 +1,13 @@
 'use strict';
-const xml2js = require('xml2js');
-const encrypt = require('../util/Encrypt.js');
-const fs = require('fs');
-const https = require('https');
 const serverLogger = require('../util/ServerLogger.js');
 const resUtil = require('../util/ResponseUtil.js');
 const sysMsg = require('../util/SystemMsg.js');
-const sysError = require('../util/SystemError.js');
 const logger = serverLogger.createLogger('RefundApply.js');
 const refundApplyDAO = require('../dao/RefundApplyDAO.js');
 const sysConst = require("../util/SystemConst");
 const paymentDAO = require("../dao/PaymentDAO");
 const moment = require('moment/moment.js');
 const orderInfoDAO = require("../dao/InquiryOrderDAO");
-const sysConfig = require("../config/SystemConfig");
 const wechatUtil = require('../util/WechatUtil.js');
 
 const addRefundApply = (req,res,next)=>{
@@ -164,7 +158,7 @@ const updateRefundStatus = (req,res,next)=>{
         });
     }
     const getPaymentType =()=>{
-        return new Promise((resolve, reject) => {
+        return new Promise(() => {
             params.totalFee = 0 - params.refundFee;
             params.dateId = moment(new Date()).format('YYYYMMDD');
             params.status = sysConst.PAYMENT.status.paid;
@@ -254,7 +248,6 @@ const updateRefundStatus = (req,res,next)=>{
                     });
                 });
             }
-
             getPayment()
                 .then(addRefundInfo)
                 .then(wechatReq)
