@@ -2,8 +2,6 @@
 
 const serverLogger = require('../util/ServerLogger.js');
 const resUtil = require('../util/ResponseUtil.js');
-const sysMsg = require('../util/SystemMsg.js');
-const sysError = require('../util/SystemError.js');
 const logger = serverLogger.createLogger('UserAddress.js');
 const userAddressDAO = require('../dao/UserAddressDAO.js');
 const sysConsts = require("../util/SystemConst");
