@@ -1,11 +1,8 @@
 'user strict'
 const serverLogger = require('../util/ServerLogger.js');
 const resUtil = require('../util/ResponseUtil.js');
-const sysMsg = require('../util/SystemMsg.js');
-const sysError = require('../util/SystemError.js');
 const logger = serverLogger.createLogger('UserDeviceInfo.js');
 const userDeviceInfoDAO = require('../dao/UserDeviceInfoDAO.js');
-const sysConsts = require("../util/SystemConst");
 
 const addUserDeviceInfo = (req,res,next)=>{
     let params = req.params;
@@ -20,7 +17,6 @@ const addUserDeviceInfo = (req,res,next)=>{
         }
     });
 };
-
 module.exports={
     addUserDeviceInfo
 }
