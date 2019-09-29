@@ -2,7 +2,6 @@
 const serverLogger = require('../util/ServerLogger.js');
 const resUtil = require('../util/ResponseUtil.js');
 const sysMsg = require('../util/SystemMsg.js');
-const sysError = require('../util/SystemError.js');
 const logger = serverLogger.createLogger('OrderInvoice.js');
 const orderInvoiceDAO = require('../dao/OrderInvoiceApplyDAO');
 const sysConsts = require("../util/SystemConst");
