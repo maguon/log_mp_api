@@ -2,12 +2,9 @@
 
 const serverLogger = require('../util/ServerLogger.js');
 const resUtil = require('../util/ResponseUtil.js');
-const sysMsg = require('../util/SystemMsg.js');
-const sysError = require('../util/SystemError.js');
 const logger = serverLogger.createLogger('OrderItem.js');
 const orderItemDAO = require('../dao/OrderItemDAO.js');
 const orderDAO = require('../dao/InquiryOrderDAO.js');
-const systemConst = require('../util/SystemConst.js');
 const commonUtil = require("../util/CommonUtil");
 
 const addOrderCar = (req,res,next) => {
@@ -80,16 +77,6 @@ const getOrderCar = (req,res,next) => {
 }
 const delOrderCar = (req,res,next) => {
     let params = req.params;
-    // orderItemDAO.delOrderCar(params,(error,result)=>{
-    //     if(error){
-    //         logger.error('delOrderCar' + error.message);
-    //         resUtil.resInternalError(error,res,next);
-    //     }else{
-    //         logger.info('delOrderCar' + 'success');
-    //         resUtil.resetUpdateRes(res,result,null);
-    //         return next();
-    //     }
-    // })
     new Promise((resolve,reject)=>{
         //查询订单下的车辆信息
         orderItemDAO.getOrderCar({orderItemId:params.orderItemId},(error,rows)=>{
@@ -115,7 +102,6 @@ const delOrderCar = (req,res,next) => {
                     logger.info('delOrderCar ' + 'success');
                     resolve();
                     resUtil.resetUpdateRes(res,result,null);
-                    //return next();
                 }
             })
         }).then(()=>{
