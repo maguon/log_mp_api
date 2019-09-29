@@ -12,7 +12,6 @@ const systemConst = require('../util/SystemConst.js');
 const commonUtil = require("../util/CommonUtil");
 
 const addRouteInquiry = (req,res,next) => {
-
     let params = req.params;
     params.dateId = moment().format("YYYYMMDD");
     const insetRouInq = () =>{
@@ -102,7 +101,6 @@ const addRouteInquiry = (req,res,next) => {
             })
         });
     }
-
     insetRouInq()
         .then(addCar)
         .then(getSum)
