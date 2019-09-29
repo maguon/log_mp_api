@@ -3,7 +3,6 @@
 const serverLogger = require('../util/ServerLogger.js');
 const resUtil = require('../util/ResponseUtil.js');
 const sysMsg = require('../util/SystemMsg.js');
-const sysError = require('../util/SystemError.js');
 const logger = serverLogger.createLogger('InquiryCar.js');
 const inquiryCarDAO = require('../dao/InquiryCarDAO.js');
 const inquiryDAO = require('../dao/InquiryDAO.js');
@@ -80,7 +79,7 @@ const addCar = (req,res,next) => {
                         logger.info('addCar getSum '+'success');
                         inqInfo.fee = rows[0].trans_price;
                         inqInfo.safePrice = rows[0].insure_price;
-                        inqInfo.carNum = rows[0].sum_car_num;;
+                        inqInfo.carNum = rows[0].sum_car_num;
                         resolve(inqInfo);
                     }
                 }
