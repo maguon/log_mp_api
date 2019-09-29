@@ -108,6 +108,7 @@ let COUPON_NOT_DELETE = "该优惠卷不允许删除！";
  * city
  */
 let CITY_ID_ERROR = "城市信息不存在！";
+let CITY_HAS_BEEN_ADDED = "该城市已添加！";
 /**
  * commodity
  */
@@ -195,6 +196,7 @@ module.exports = {
     COUPON_NOT_MODIFIED,
     COUPON_NOT_DELETE,
     CITY_ID_ERROR,
+    CITY_HAS_BEEN_ADDED,
     COMMODITY_ID_ERROR,
     COMMODITY_INSUFFICIENT_QUANTITY,
     REMINDERS_ID_ERROR,

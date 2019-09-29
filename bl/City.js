@@ -3,7 +3,6 @@
 const serverLogger = require('../util/ServerLogger.js');
 const resUtil = require('../util/ResponseUtil.js');
 const sysMsg = require('../util/SystemMsg.js');
-const sysError = require('../util/SystemError.js');
 const logger = serverLogger.createLogger('City.js');
 const trans = require("transliteration");
 const cityInfoDAO = require('../dao/CityInfoDAO.js');
@@ -22,7 +21,7 @@ const addCity = (req,res,next) =>{
                         resolve(params);
                     }else{
                         logger.warn('addCity getCity ' + 'The city has been added!');
-                        reject({msg:'已经添加该城市'});
+                        reject({msg:sysMsg.CITY_HAS_BEEN_ADDED});
                     }
 
                 }
@@ -104,7 +103,7 @@ const updateCitySpell = (req,res,next) =>{
                         resolve(rows);
                     }else{
                         logger.warn('updateCitySpell getCityList ' + ' no city info! ');
-                        reject({msg:'无城市信息'});
+                        reject({msg:sysMsg.CITY_ID_ERROR});
                     }
                 }
             })
