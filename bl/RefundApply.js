@@ -187,14 +187,10 @@ const updateRefundStatus = (req,res,next)=>{
                         if(error){
                             logger.error('updateRefundStatus wechatRefundApply getPayment ' + error.message);
                             reject({err:error});
-                            // resUtil.resInternalError(error, res, next);
-                            // reject(error);
                         }else{
                             if(rows && rows.length < 1){
                                 logger.warn('updateRefundStatus wechatRefundApply getPayment ' + 'Please check the payment information! ');
                                 reject({msg:sysMsg.ADMIN_PAYMENT_NO_MSG});
-                                // resUtil.resetFailedRes(res,' 请查看支付信息 ',null);
-                                // reject(error);
                             }else{
                                 logger.info(' updateRefundStatus wechatRefundApply getPayment ' + 'success ');
                                 params.totalFee = rows[0].total_fee;
