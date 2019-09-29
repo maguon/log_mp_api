@@ -1,11 +1,8 @@
 'use strict';
-
 const serverLogger = require('../util/ServerLogger.js');
 const resUtil = require('../util/ResponseUtil.js');
 const sysMsg = require('../util/SystemMsg.js');
-const sysError = require('../util/SystemError.js');
 const logger = serverLogger.createLogger('Recommend.js');
-const sysConsts = require("../util/SystemConst");
 const https = require('https');
 const fs = require('fs');
 const sysConfig = require("../config/SystemConfig");
@@ -271,12 +268,10 @@ const getWXACodeUnlimit=(params,callback)=>{
     httpsReq.write(post_data,'utf-8');
     httpsReq.end();
     httpsReq.on('error', (e) => {
-        // logger.info('getWXACodeUnlimit '+ e.message);
         callback(e,null);
     });
     httpsReq.end();
 }
-
 module.exports={
     addRecommend,
     getRecommend,
