@@ -248,8 +248,6 @@ const createServer=()=>{
     server.put({path:'/api/admin/:adminId/password',contentType: 'application/json'} ,adminUser.changeAdminPassword);
     server.put({path:'/api/admin/:adminId/status/:status',contentType: 'application/json'} ,adminUser.updateAdminStatus);
     server.put({path:'/api/admin/:adminId/device/:deviceId/appType/:appType/adminDeviceToken',contentType: 'application/json'} ,adminUser.updateUserDeviceToken);
-
-
     /**
      user_info
      */
@@ -308,8 +306,8 @@ const createServer=()=>{
     server.get('/api/admin/:adminId/paymentRefund' ,payment.getRefundByPaymentId);
     server.post({path:'/api/user/:userId/order/:orderId/wechatPayment',contentType: 'application/json'},payment.wechatPayment);
     server.post({path:'/api/wechatPayment',contentType: 'text/xml'},payment.wechatPaymentCallback);
-    server.post({path:'/api/admin/:adminId/user/:userId/order/:orderId/wechatRefund',contentType: 'application/json'},payment.wechatRefund);
-    server.post({path:'/api/wechatRefund',contentType: 'text/xml'},payment.addWechatRefund);
+    // server.post({path:'/api/admin/:adminId/user/:userId/order/:orderId/wechatRefund',contentType: 'application/json'},payment.wechatRefund);
+    // server.post({path:'/api/wechatRefund',contentType: 'text/xml'},payment.addWechatRefund);
     server.put({path:'/api/admin/:adminId/payment/:paymentId/paymentRemark',contentType: 'application/json'},payment.updateRemark);
     server.post({path:'/api/user/:userId/order/:orderId/bankPayment',contentType: 'application/json'},payment.addBankPayment);
     server.post({path:'/api/admin/:adminId/order/:orderId/bankPayment',contentType: 'application/json'},payment.addBankPaymentByadmin);
@@ -376,7 +374,6 @@ const createServer=()=>{
     server.get('/api/admin/:adminId/department',departmentInfo.getDepartmentInfo);
     server.put({path:'/api/admin/:adminId/department/:departmentId',contentType: 'application/json'},departmentInfo.updateDepartmentInfo);
     // server.put({path:'/api/admin/:adminId/department/:departmentId/status/:status',contentType: 'application/json'},departmentInfo.updateDepartmentInfo);
-
     /**
      * company_bank
      */
@@ -384,7 +381,6 @@ const createServer=()=>{
     server.get('/api/companyBank',companyBank.getCompanyBank);
     server.put({path:'/api/admin/:adminId/companyBank/:companyBankId',contentType: 'application/json'},companyBank.updateCompanyBank);
     server.put({path:'/api/admin/:adminId/companyBank/:companyBankId/status/:status',contentType: 'application/json'},companyBank.updateCompanyBank);
-
     /**
      * noRoute_inquiry_info
      */
