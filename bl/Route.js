@@ -20,10 +20,8 @@ const addRoute = (req,res,next) =>{
         }
     })
 }
-
 const queryRoute = (req,res,next) =>{
     let params = req.params;
-    let paramsNull = [];
     routeDAO.getRoute(params,(error,result)=>{
         if(error){
             logger.error('queryRoute ' + error.message);
