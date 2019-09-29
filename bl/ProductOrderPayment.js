@@ -4,8 +4,6 @@ const serverLogger = require('../util/ServerLogger.js');
 const resUtil = require('../util/ResponseUtil.js');
 const wechatUtil = require('../util/WechatUtil.js');
 const sysMsg = require('../util/SystemMsg.js');
-const sysError = require('../util/SystemError.js');
-const fs = require('fs');
 const xml2js = require('xml2js');
 const encrypt = require('../util/Encrypt.js');
 const moment = require('moment/moment.js');
@@ -193,7 +191,6 @@ const updateOrderMsgByPrice = (params,callback)=>{
                     }else{
                         reject({msg:sysMsg.PRODUCT_PAYMENT_ID_ERROR});
                     }
-
                 }
             });
         });
@@ -215,7 +212,6 @@ const updateOrderMsgByPrice = (params,callback)=>{
                     }else{
                         reject({msg:sysMsg.PRODUCT_ORDER_ID_ERROR});
                     }
-
                 }
             })
         });
@@ -290,8 +286,6 @@ const updateOrderMsgByPrice = (params,callback)=>{
                     }
                 });
             })
-
-
         });
     }
     const updateCommodity =(commodityInfo)=>{
@@ -428,7 +422,6 @@ const productWechatPaymentCallback=(req,res,next) => {
 const updateRefundStatus = (req,res,next)=>{
     let params = req.params;
     let totalFee = 0;
-
     const getPaymentInfo =()=>{
         return new Promise((resolve, reject) => {
             //查询成功支付信息
@@ -465,7 +458,6 @@ const updateRefundStatus = (req,res,next)=>{
             params.status = sysConst.PRODUCT_PAYMENT.status.paid;
             params.type = sysConst.PRODUCT_PAYMENT.type.refund;
             params.dateId = moment().format("YYYYMMDD");
-
             productPaymentDAO.addRefund(params,(error,result)=> {
                 if (error) {
                     logger.error('updateRefundStatus addRefund ' + error.message);
@@ -515,68 +507,6 @@ const updateRefundStatus = (req,res,next)=>{
             }
         })
 }
-const productRefundPaymentCallback=(req,res,next) => {
-    let resStrings = JSON.stringify(req);
-    let evalJsons = eval('(' + resStrings + ')');
-    let prepayIdJson = {
-        status: sysConst.PRODUCT_PAYMENT.status.paid,
-        settlement_refund_fee : evalJsons.root.settlement_refund_fee / 100,
-        wxOrderId : evalJsons.root.out_trade_no,
-        orderId: evalJsons.root.out_trade_no.split("_")[0],
-    };
-    const updateRefundInfo =()=>{
-        return new Promise((resolve, reject) => {
-            prepayIdJson.paymentRefundTime = new Date();
-            productPaymentDAO.updateWechatRefundPayment(prepayIdJson,(error,result)=>{
-                if(error){
-                    logger.error('productRefundPaymentCallback updateRefundInfo ' + error.message);
-                    reject(error);
-                }else{
-                    logger.info('productRefundPaymentCallback updateRefundInfo ' + 'success');
-                    resolve();
-                }
-            });
-        });
-    }
-    const getPaymentInfo =()=>{
-        return new Promise((resolve, reject) => {
-            productPaymentDAO.getOrderRealPayment({productOrderId:prepayIdJson.orderId},(error,result)=>{
-                if(error){
-                    logger.error('productRefundPaymentCallback getPayment ' + error.message);
-                    reject({err:error});
-                }else{
-                    logger.info('productRefundPaymentCallback getPayment ' + 'success');
-                    resolve(result);
-                }
-            });
-        });
-    }
-    const updateProductOrder =(paymentInfo)=>{
-        return new Promise((resolve, reject) => {
-            productOrderDAO.updateRealPaymentPrice({realPaymentPrice:paymentInfo.real_payment,productOrderId:prepayIdJson.orderId}, (error, result) => {
-                if (error) {
-                    logger.error('productRefundPaymentCallback updateProductOrder ' + error.message);
-                    resUtil.resInternalError(error, res, next);
-                } else {
-                    logger.info('productRefundPaymentCallback updateProductOrder ' + 'success');
-                    resUtil.resetUpdateRes(res, result, null);
-                    // return next();
-                }
-            })
-        });
-    }
-
-    updateRefundInfo()
-        .then(getPaymentInfo)
-        .then(updateProductOrder)
-        .catch((reject)=>{
-            if(reject.err){
-                resUtil.resetFailedRes(res,reject.err);
-            }else{
-                resUtil.resetFailedRes(res,reject.msg);
-            }
-        })
-}
 const getPayment = (req,res,next)=>{
     let params = req.params;
     productPaymentDAO.getPayment(params,(error,result)=>{
@@ -607,7 +537,6 @@ module.exports = {
     wechatPayment,
     productWechatPaymentCallback,
     updateRefundStatus,
-    productRefundPaymentCallback,
     getPayment,
     updateRemark
 }
