@@ -1,14 +1,10 @@
 'use strict';
-let sysMsg = require('../util/SystemMsg.js');
-let sysError = require('../util/SystemError.js');
 let oauthUtil = require('../util/OAuthUtil.js');
 let encrypt = require('../util/Encrypt.js');
 let resUtil = require('../util/ResponseUtil.js');
-let listOfValue = require('../util/ListOfValue.js');
 let serverLogger = require('../util/ServerLogger.js');
 let logger = serverLogger.createLogger('Sms.js');
 let userDAO = require('../dao/UserDAO.js');
-
 
 const sendUserSms=(req,res,next)=>{
     let params = req.params;
