@@ -2,11 +2,8 @@
 
 const serverLogger = require('../util/ServerLogger.js');
 const resUtil = require('../util/ResponseUtil.js');
-const sysMsg = require('../util/SystemMsg.js');
-const sysError = require('../util/SystemError.js');
 const logger = serverLogger.createLogger('NoRouteInquiryInfo.js');
 const moment = require('moment/moment.js');
-const sysConsts = require("../util/SystemConst");
 const noRouteInquiry = require("../dao/NoRouteInquiryInfoDAO");
 
 const addNoRouteInquiry =(req,res,next) => {
