@@ -2,7 +2,6 @@
 const serverLogger = require('../util/ServerLogger.js');
 const resUtil = require('../util/ResponseUtil.js');
 const sysMsg = require('../util/SystemMsg.js');
-const sysError = require('../util/SystemError.js');
 const logger = serverLogger.createLogger('RequireTask.js');
 const sysConsts = require("../util/SystemConst");
 const moment = require('moment/moment.js');
@@ -72,105 +71,8 @@ const getRequireOrder = (req,res,next) => {
         }
     })
 }
-const updateStatus2 = (req,res,next) => {
-    let params = req.params;
-    let loadTaskCount = 0;
-    let serLoadTaskCount =0;
-    new Promise((resolve,reject)=>{
-        requireTask.updateById(params,(error,rows)=>{
-            if(error){
-                logger.error('updateStatus updateById ' + error.message);
-                resUtil.resInternalError(error,res,next);
-                reject(error);
-            }else{
-                logger.info('updateStatus updateById ' + 'success');
-                resolve();
-            }
-        })
-    }).then(()=>{
-        new Promise((resolve,reject)=>{
-            requireTask.getById(params,(error,rows)=>{
-                if(error){
-                    logger.error('updateStatus getById ' + error.message);
-                    resUtil.resInternalError(error,res,next);
-                    reject(error);
-                }else{
-                    logger.info('updateStatus getById ' + 'success');
-                    if (rows.length > 0){
-                        params.orderId = rows[0].order_id;
-                        resolve();
-                    } else {
-                        resUtil.resetFailedRes(res,sysMsg.REQUIRE_NO_EXISTE);
-                    }
-
-                }
-            })
-        }).then(()=>{
-            let options = {
-                orderId:params.orderId
-            }
-            new Promise((resolve,reject)=>{
-                if (params.status == sysConsts.REQUIRE_TASK.status.arranged){
-                    options.status = sysConsts.ORDER.status.inExecution;
-                    options.logStatus = sysConsts.ORDER.logStatus.tpShipped;
-                    resolve();
-                }else if (params.status == sysConsts.REQUIRE_TASK.status.complete) {
-                    let loadParams = {
-                        orderId:params.orderId
-                    }
-                    loadTaskDAO.getById(loadParams,(error,allRows)=>{
-                        if(error){
-                            logger.error('updateStatus getById ' + error.message);
-                            resUtil.resInternalError(error,res,next);
-                            reject(error);
-                        }else{
-                            logger.info('updateStatus getById ' + 'success');
-                            if (allRows.length > 0){
-                                loadTaskCount = allRows.length;
-                                loadParams.loadTaskStatus = sysConsts.LOAD_TASK_STATUS.served;
-                                loadTaskDAO.getById(loadParams,(error,serRows)=>{
-                                    if(error){
-                                        logger.error('updateStatus getById2 ' + error.message);
-                                        resUtil.resInternalError(error,res,next);
-                                        reject(error);
-                                    }else{
-                                        logger.info('updateStatus getById2 ' + 'success');
-                                        if (serRows.length > 0){
-                                            serLoadTaskCount = serRows.length;
-                                        }
-                                        if (loadTaskCount = serLoadTaskCount) {
-                                            options.status = sysConsts.ORDER.status.completed;
-                                        }
-                                        resolve();
-                                    }
-                                })
-                            } else {
-                                logger.info('updateStatus getById ' + sysMsg.LOAD_TASK_NO_EXISTS);
-                                resUtil.resetFailedRes(res,sysMsg.LOAD_TASK_NO_EXISTS);
-                            }
-                        }
-                    })
-                }
-
-            }).then(()=>{
-                orderInfoDAO.updateById(options,(error,rows)=>{
-                    if(error){
-                        logger.error('updateStatus updateById ' + error.message);
-                        resUtil.resInternalError(error,res,next);
-                    }else{
-                        logger.info('updateStatus updateById ' + 'success');
-                        resUtil.resetUpdateRes(res,rows,null);
-                        return next;
-                    }
-                })
-            })
-        })
-    })
-}
-
 const updateStatus = (req,res,next) => {
     let params = req.params;
-
     const getRequireTask =()=>{
         return new Promise((resolve, reject) => {
             requireTask.getById(params,(error,rows)=>{
@@ -188,7 +90,6 @@ const updateStatus = (req,res,next) => {
             })
         });
     }
-
     const getParamsStatus = (orderId) =>{
         return new Promise((resolve, reject) => {
             let options = {
@@ -249,7 +150,6 @@ const updateStatus = (req,res,next) => {
             })
         }));
     }
-
     const updateRequire =()=>{
         return new Promise(((resolve, reject) => {
             requireTask.updateById(params,(error,rows)=>{
@@ -265,7 +165,6 @@ const updateStatus = (req,res,next) => {
             })
         }));
     }
-
     getRequireTask()
         .then(getParamsStatus)
         .then(updateOrder)
@@ -277,10 +176,7 @@ const updateStatus = (req,res,next) => {
                 resUtil.resetFailedRes(res, reject.msg);
             }
         })
-
-
 }
-
 module.exports={
     addRequireTask,
     getRequireOrder,
