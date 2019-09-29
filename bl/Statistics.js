@@ -1,10 +1,7 @@
 'use strict'
 const serverLogger = require('../util/ServerLogger.js');
 const resUtil = require('../util/ResponseUtil.js');
-const sysMsg = require('../util/SystemMsg.js');
-const sysError = require('../util/SystemError.js');
 const logger = serverLogger.createLogger('Statistics.js');
-const commonUtil = require("../util/CommonUtil");
 const sysConsts = require("../util/SystemConst");
 const moment = require('moment/moment.js');
 const orderInfoDAO = require("../dao/InquiryOrderDAO");
@@ -535,7 +532,6 @@ const paymentPriceByMonth =(req,res,next) => {
                     }
                 });
             })
-
         })
     })
 }
