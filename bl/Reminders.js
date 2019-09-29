@@ -1,11 +1,8 @@
 'user strict'
 const serverLogger = require('../util/ServerLogger.js');
 const resUtil = require('../util/ResponseUtil.js');
-const sysMsg = require("../util/SystemMsg");
-const sysConst = require("../util/SystemConst");
 const logger = serverLogger.createLogger('Reminders.js');
 const remindersDAO = require('../dao/RemindersDAO.js');
-
 const getReminders = (req,res,next) => {
     let params = req.params;
     remindersDAO.getReminders(params,(error,rows)=>{
@@ -55,7 +52,6 @@ const addReminders = (req,res,next) =>{
             });
         });
     }
-
     getReminder()
         .then(addRem)
         .catch((reject)=>{
