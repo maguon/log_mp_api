@@ -1,9 +1,6 @@
 'user strict'
 const serverLogger = require('../util/ServerLogger.js');
 const resUtil = require('../util/ResponseUtil.js');
-const sysMsg = require("../util/SystemMsg");
-const sysConst = require("../util/SystemConst");
-const moment = require('moment/moment.js');
 const logger = serverLogger.createLogger('ProductOrderItem.js');
 const productOrderItemDAO = require('../dao/ProductOrderItemDAO');
 
