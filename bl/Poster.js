@@ -45,7 +45,6 @@ const updatePoster = (req,res,next)=>{
             return next();
         }
     });
-
 }
 module.exports={
     addPoster,
