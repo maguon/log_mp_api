@@ -2,12 +2,9 @@
 const serverLogger = require('../util/ServerLogger.js');
 const resUtil = require('../util/ResponseUtil.js');
 const sysMsg = require('../util/SystemMsg.js');
-const sysError = require('../util/SystemError.js');
-const sysConfig = require("../config/SystemConfig");
 const logger = serverLogger.createLogger('LoadTask.js');
 const sysConsts = require("../util/SystemConst");
 const moment = require('moment/moment.js');
-// const oAuthUtil = require("../util/OAuthUtil");
 const exRouteRequireDAO = require("../dao/ExRouteRequireDAO");
 const orderInfoDAO = require("../dao/InquiryOrderDAO");
 const requireTaskDAO = require("../dao/RequireTaskDAO");
@@ -117,11 +114,7 @@ const submitToSupplier = (req,res,next) => {
                             preCount:rows[0].car_count,
                             dateId:rows[0].plan_date_id
                         }
-                        // if (rows[0].service_type == sysConsts.ORDER.serviceType.selfMention){
                         taskOrder.options.remark = "发货地址:"+rows[0].route_start_detail + ";收货地址:"+rows[0].route_end_detail;
-                        // }else if (rows[0].service_type == sysConsts.ORDER.serviceType.doorToDoor){
-                        //     taskOrder.options.remark = "发货地址:"+rows[0].send_address + ";收货地址:"+rows[0].recv_address;
-                        // }
                         resolve(taskOrder);
                     }else {
                         reject({msg:sysMsg.ORDER_NO_EXISTE});
@@ -216,7 +209,6 @@ const submitToSupplier = (req,res,next) => {
                     routeStart: info[i].route_start,
                     baseAddrId: params.baseAddrId,
                     entrustId: params.appId
-                    // orderDate:moment(info[i].plan_date_id.toString()).format("YYYY-MM-DD")
                 }
                 saveDetailToSupplier(params,info[i].dltd_id);
             }
