@@ -1,6 +1,5 @@
 'use strict';
 let serverLogger = require('../util/ServerLogger.js');
-let logger = serverLogger.createLogger('ExRouteRequireDAO.js');
 let httpUtil = require('../util/HttpUtil.js');
 
 const saveLoadTaskToSupplier = (params,callback)=>{

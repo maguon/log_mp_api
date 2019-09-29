@@ -1,7 +1,6 @@
 'use strict';
 const serverLogger = require('../util/ServerLogger.js');
 const logger = serverLogger.createLogger('DepartmentInfoDAO.js');
-const sysConfig = require("../config/SystemConfig");
 const db = require('../db/connection/MysqlDb.js');
 
 const insert =(params,callback)=>{

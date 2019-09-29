@@ -2,10 +2,7 @@
 
 const serverLogger = require('../util/ServerLogger.js');
 const logger = serverLogger.createLogger('AppDAO.js');
-const sysConfig = require("../config/SystemConfig");
-const httpUtil = require('../util/HttpUtil');
 const db = require('../db/connection/MysqlDb.js');
-const encrypt = require('../util/Encrypt.js');
 
 const getApp = (params,callback) => {
     let query = "select * from app where id is not null ";

@@ -2,8 +2,6 @@
 
 const serverLogger = require('../util/ServerLogger.js');
 const logger = serverLogger.createLogger('CompanyBankDAO.js');
-const sysConfig = require("../config/SystemConfig");
-const httpUtil = require('../util/HttpUtil');
 const db = require('../db/connection/MysqlDb.js');
 
 const add = (params,callback) =>{

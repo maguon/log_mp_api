@@ -1,12 +1,8 @@
 'use strict';
 
-const wechatDAO = require('../dao/WechatDAO.js');
 const serverLogger = require('../util/ServerLogger.js');
 const logger = serverLogger.createLogger('AdminDeviceInfoDao.js');
-const sysConfig = require("../config/SystemConfig");
-const httpUtil = require('../util/HttpUtil');
 const db = require('../db/connection/MysqlDb.js');
-const encrypt = require('../util/Encrypt.js');
 
 const getDeviceInfo = (params,callback) => {
     let query = "select * from admin_device_info where id is not null ";
