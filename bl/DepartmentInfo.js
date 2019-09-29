@@ -2,10 +2,7 @@
 
 const serverLogger = require('../util/ServerLogger.js');
 const resUtil = require('../util/ResponseUtil.js');
-const sysMsg = require('../util/SystemMsg.js');
-const sysError = require('../util/SystemError.js');
 const logger = serverLogger.createLogger('DepartmentInfo.js');
-const sysConsts = require("../util/SystemConst");
 const departmentInfoDAO = require("../dao/DepartmentInfoDAO");
 
 const addDepartmentInfo =(req,res,next)=>{
