@@ -3,7 +3,6 @@
 const serverLogger = require('../util/ServerLogger.js');
 const resUtil = require('../util/ResponseUtil.js');
 const sysMsg = require('../util/SystemMsg.js');
-const sysError = require('../util/SystemError.js');
 const logger = serverLogger.createLogger('InquiryOrder.js');
 const inquiryOrderDAO = require('../dao/InquiryOrderDAO.js');
 const inquiryDAO = require('../dao/InquiryDAO.js');
@@ -119,43 +118,6 @@ const putInquiryOrder = (req,res,next) => {
             return next();
         }
     })
-    /*new Promise((resolve,reject)=>{
-        inquiryDAO.getInquiryByUserId(params,(error,rows)=>{
-            if(error){
-                logger.error('getInquiryByUserId' + error.message);
-                reject(error);
-            }else if(rows && rows.length < 1){
-                logger.warn('getInquiryByUserId'+'查无此询价信息');
-                resUtil.resetFailedRes(res,'查无此询价信息',null);
-            }else{
-                logger.info('getInquiryByUserId'+'success');
-                let feePrice = 0;
-                let count = 0;
-                for(let i = 0 ; i < rows.length ; i++){
-                    feePrice = feePrice + rows[i].fee * rows[i].car_num;
-                    count = count +rows[i].car_num
-                }
-                params.feePrice = feePrice;
-                params.count = count;
-                resolve();
-            }
-        })
-    }).then(()=>{
-        new Promise((resolve,reject)=>{
-            inquiryOrderDAO.putInquiryOrder(params,(error,result)=>{
-                if(error){
-                    logger.error('putInquiryOrder' + error.message);
-                    reject(error);
-                }else{
-                    logger.info('putInquiryOrder' + 'success');
-                    resUtil.resetUpdateRes(res,result,null);
-                    return next();
-                }
-            })
-        })
-    }).catch((error)=>{
-        resUtil.resInternalError(error,res,next);
-    })*/
 }
 const putReceiveInfo = (req,res,next) => {
     let params = req.params;
@@ -448,7 +410,6 @@ const selfMentionAddress = (req,res,next) => {
             }
         });
     }
-
     getById()
         .then(updateById)
         .catch((reject)=>{
