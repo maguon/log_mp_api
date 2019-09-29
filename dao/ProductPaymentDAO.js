@@ -2,10 +2,7 @@
 
 const serverLogger = require('../util/ServerLogger.js');
 const logger = serverLogger.createLogger('ProductPaymentDAO.js');
-const sysConfig = require("../config/SystemConfig");
-const httpUtil = require('../util/HttpUtil');
 const db = require('../db/connection/MysqlDb.js');
-const sysConsts = require("../util/SystemConst");
 
 const getPayment = (params,callback) => {
     let query = " select ppi.*,ui.user_name,ui.phone "
@@ -127,36 +124,6 @@ const getOrderRealPayment =(params,callback) => {
     db.dbQuery(query,paramsArray,(error,rows)=>{
         logger.debug('getOrderRealPayment');
         callback(error,rows)
-    })
-}
-const getCommodityCount  =(params,callback) => {
-    let query = " select ppi.* " +
-        "from product_payment_info ppi " +
-        " left join product_order_item poi on poi.product_order_id = ppi.product_order_id " +
-        " left join commodity_info ci on ci.id = poi.commodity_id " +
-        " where ppi.id is not null  ";
-    let paramsArray = [],i=0;
-    if(params.commodityId){
-        paramsArray[i++] = params.commodityId;
-        query = query + " and poi.commodity_id =? ";
-    }
-    if(params.type){
-        paramsArray[i++] = params.type;
-        query = query + " and ppi.type =? ";
-    }
-    if(params.status){
-        paramsArray[i++] = params.status;
-        query = query + " and ppi.status =? ";
-    }
-    query = query + " order by ppi.created_on desc";
-    if(params.start && params.size){
-        paramsArray[i++] = parseInt(params.start);
-        paramsArray[i] = parseInt(params.size);
-        query = query + " limit ?,? ";
-    }
-    db.dbQuery(query,paramsArray,(error,rows)=>{
-        logger.debug('getCommodityPaymentStatus');
-        callback(error,rows);
     })
 }
 const getCommodityPaymentStatus =(params,callback) => {
@@ -285,7 +252,6 @@ module.exports = {
     getPaymentByOrderId,
     getRealPaymentPrice,
     getOrderRealPayment,
-    getCommodityCount,
     getCommodityPaymentStatus,
     addPayment,
     addRefund,

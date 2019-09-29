@@ -3,7 +3,6 @@
 const serverLogger = require('../util/ServerLogger.js');
 const logger = serverLogger.createLogger('InquiryOrderDAO.js');
 const sysConst = require("../util/SystemConst");
-const httpUtil = require('../util/HttpUtil');
 const db = require('../db/connection/MysqlDb.js');
 
 const getInquiryOrder = (params,callback) => {
