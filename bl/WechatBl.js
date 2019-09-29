@@ -3,7 +3,6 @@ const wechatDAO = require('../dao/WechatDAO.js');
 const serverLogger = require('../util/ServerLogger.js');
 const resUtil = require('../util/ResponseUtil.js');
 const sysMsg = require('../util/SystemMsg.js');
-const sysError = require('../util/SystemError.js');
 const logger = serverLogger.createLogger('WechatBl.js');
 
 const getUserIdByCode = (req,res,next) =>{
@@ -12,7 +11,6 @@ const getUserIdByCode = (req,res,next) =>{
             logger.error(' getUserIdByCode ' + error.message);
             resUtil.resInternalError(error, res, next);
         }else{
-
             logger.info(' getUserIdByCode ' + 'success');
             resUtil.resetQueryRes(res, result);
 
@@ -108,15 +106,11 @@ const refundQuery = (req,res,next) => {
             logger.error(' refundQuery ' + error.message);
             throw resUtil.resInternalError(error.message,sysMsg.SYS_INTERNAL_ERROR_MSG);
         }else{
-
             logger.info(' refundQuery ' + 'success');
             resUtil.resetQueryRes(res, result);
             return next();
         }
     })
-}
-const getUserById = (req,res,next) => {
-
 }
 module.exports ={
     getUserIdByCode,
