@@ -1,8 +1,6 @@
 'use strict';
 const serverLogger = require('../util/ServerLogger.js');
 const resUtil = require('../util/ResponseUtil.js');
-const sysMsg = require('../util/SystemMsg.js');
-const sysError = require('../util/SystemError.js');
 const logger = serverLogger.createLogger('CustomerServicePhone.js');
 const customerPhoneDAO = require('../dao/CustomerPhoneDAO.js');
 
@@ -45,7 +43,6 @@ const getCustomerPhone = (req,res,next) => {
         }
     })
 }
-
 const deleteCustomerPhone = (req,res,next) => {
     let params = req.params;
     customerPhoneDAO.deletePhone(params,(error,rows)=>{
