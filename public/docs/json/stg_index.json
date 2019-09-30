@@ -30,7 +30,7 @@
     },
     {
       "name": "user",
-      "description": "User of log api"
+      "description": "user of log api"
     },
     {
       "name": "userAddress",
@@ -47,6 +47,14 @@
     {
       "name": "invoiceApply",
       "description": "invoiceApply of log api"
+    },
+    {
+      "name": "userCoupon",
+      "description":"userCoupon of log api"
+    },
+    {
+      "name": "coupon",
+      "description":"coupon of log api"
     },
     {
       "name": "inquiry",
@@ -77,12 +85,12 @@
       "description": "refundApply of log api"
     },
     {
-      "name": "city",
-      "description": "city of log api"
-    },
-    {
       "name": "route",
       "description":"route of log api"
+    },
+    {
+      "name": "NoRouteInquiryManage",
+      "description":"NoRouteInquiryManage of log api"
     },
     {
       "name": "address",
@@ -105,22 +113,6 @@
       "description":"supplierContact of log api"
     },
     {
-      "name": "accountConfirmEmail",
-      "description":"accountConfirmEmail of log api"
-    },
-    {
-      "name": "statisticsMsg",
-      "description":"statisticsMsg of log api"
-    },
-    {
-      "name": "departmentManage",
-      "description":"departmentManage of log api"
-    },
-    {
-      "name": "NoRouteInquiryManage",
-      "description":"NoRouteInquiryManage of log api"
-    },
-    {
       "name": "requireTask",
       "description":"requireTask of log api"
     },
@@ -133,32 +125,20 @@
       "description":"loadTaskDetail of log api"
     },
     {
-      "name": "recommend",
-      "description":"recommend of log api"
-    },
-    {
-      "name": "coupon",
-      "description":"coupon version"
-    },
-    {
-      "name": "userCoupon",
-      "description":"userCoupon version"
-    },
-    {
       "name": "commodity",
-      "description":"commodity version"
+      "description":"commodity of log api"
     },
     {
       "name": "poster",
-      "description":"poster order version"
+      "description":"poster order of log api"
     },
     {
       "name": "productOrder",
-      "description":"product order version"
+      "description":"product order of log api"
     },
     {
       "name": "productOrderItem",
-      "description":"product orderItem version"
+      "description":"product orderItem of log api"
     },
     {
       "name": "productOrderPayment",
@@ -166,11 +146,31 @@
     },
     {
       "name": "reminders",
-      "description":"reminders order version"
+      "description":"reminders order of log api"
+    },
+    {
+      "name": "recommend",
+      "description":"recommend of log api"
+    },
+    {
+      "name": "city",
+      "description": "city of log api"
     },
     {
       "name": "transAndInsurePrice",
       "description":"transAndInsurePrice of log api"
+    },
+    {
+      "name": "accountConfirmEmail",
+      "description":"accountConfirmEmail of log api"
+    },
+    {
+      "name": "statisticsMsg",
+      "description":"statisticsMsg of log api"
+    },
+    {
+      "name": "departmentManage",
+      "description":"departmentManage of log api"
     },
     {
       "name": "companyBank",
@@ -182,7 +182,7 @@
     },
     {
       "name": "app",
-      "description":"app version"
+      "description":"app of log api"
     }
   ],
   "schemes": [
@@ -2725,6 +2725,465 @@
               "type": "object",
               "items": {
                 "$ref": "#/definitions/inquiryInvoice"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+
+    "/admin/{adminId}/userCoupon": {
+      "get": {
+        "tags": [
+          "userCoupon"
+        ],
+        "summary": "select",
+        "description": "Get coupon version",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "当前登录管理员ID",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "orderId",
+            "in": "query",
+            "description": "订单编号",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "paymentId",
+            "in": "query",
+            "description": "支付编号",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "userCouponId",
+            "in": "query",
+            "description": "领取编号",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "founderId",
+            "in": "query",
+            "description": "发放人ID",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "founderName",
+            "in": "path",
+            "description": "发放人",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "领取用户账号",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "userName",
+            "in": "query",
+            "description": "领取用户名称",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "couponId",
+            "in": "query",
+            "description": "优惠券编号",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "ReceiveDateStart",
+            "in": "query",
+            "description": "领取日期（始）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "ReceiveDateEnd",
+            "in": "query",
+            "description": "领取日期（终）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "状态（0:未使用,1:已使用,2:已过期）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/userCoupon"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/user/{userId}/userCoupon": {
+      "post": {
+        "tags": [
+          "userCoupon"
+        ],
+        "summary": "insert",
+        "description": "admin create userCoupon version",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "userCouponInfo",
+            "in": "body",
+            "description": "userCouponInfo",
+            "required": true,
+            "schema":{
+              "$ref": "#/definitions/userCoupon"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/coupon"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+
+    "/admin/{adminId}/coupon/{couponId}/count": {
+      "get": {
+        "tags": [
+          "coupon"
+        ],
+        "summary": "select",
+        "description": "Get coupon count version",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "当前登录管理员ID",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "couponId",
+            "in": "path",
+            "description": "优惠券ID",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/coupon": {
+      "get": {
+        "tags": [
+          "coupon"
+        ],
+        "summary": "select",
+        "description": "Get coupon version",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "当前登录管理员ID",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "couponId",
+            "in": "query",
+            "description": "优惠券ID",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "状态（0:停用,1:启用）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/coupon"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "coupon"
+        ],
+        "summary": "insert",
+        "description": "admin create coupon version",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "couponInfo",
+            "in": "body",
+            "description": "couponInfo",
+            "required": true,
+            "schema":{
+              "$ref": "#/definitions/coupon"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/coupon"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/coupon/{couponId}": {
+      "put": {
+        "tags": [
+          "coupon"
+        ],
+        "summary": "update",
+        "description": "update coupon version",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "admin Id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "couponId",
+            "in": "path",
+            "description": "coupon Id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "appVersion",
+            "in": "body",
+            "description": "appVersion",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/coupon"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/coupon"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/coupon/{couponId}/status/{status}": {
+      "put": {
+        "tags": [
+          "coupon"
+        ],
+        "summary": "update",
+        "description": "update coupon user status",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "couponId",
+            "in": "path",
+            "description": "coupon Id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "path",
+            "description": "状态(0-停用,1-可用)",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/coupon"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/coupon/{couponId}/showStatus": {
+      "delete": {
+        "tags": [
+          "coupon"
+        ],
+        "summary": "update",
+        "description": "update coupon user status",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "couponId",
+            "in": "path",
+            "description": "coupon Id",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/coupon"
               }
             }
           },
@@ -5582,303 +6041,6 @@
       }
     },
 
-    "/user/{userId}/city": {
-      "post": {
-        "tags": [
-          "city"
-        ],
-        "summary": "city add",
-        "description": "city add",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "userId",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "city",
-            "in": "body",
-            "description": "city info",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/city"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/city"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      },
-      "get": {
-        "tags": [
-          "city"
-        ],
-        "summary": "city query",
-        "description": "city query",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "userId",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "cityId",
-            "in": "query",
-            "description": "cityId",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "cityName",
-            "in": "query",
-            "description": "city info",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "start",
-            "in": "query",
-            "description": "city info",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "size",
-            "in": "query",
-            "description": "city info",
-            "required": false,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/city"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid user id"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/city": {
-      "get": {
-        "tags": [
-          "city"
-        ],
-        "summary": "city query",
-        "description": "city query",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "cityId",
-            "in": "query",
-            "description": "cityId",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "cityName",
-            "in": "query",
-            "description": "city info",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "start",
-            "in": "query",
-            "description": "city info",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "size",
-            "in": "query",
-            "description": "city info",
-            "required": false,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/city"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "city"
-        ],
-        "summary": "city add",
-        "description": "city add",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "city",
-            "in": "body",
-            "description": "city info",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/city"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/city"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/user/{userId}/city/{cityId}": {
-      "put": {
-        "tags": [
-          "city"
-        ],
-        "summary": "city update",
-        "description": "city update",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "userId",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "cityId",
-            "in": "path",
-            "description": "cityId",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "city",
-            "in": "body",
-            "description": "city info",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/city"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/city"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/citySpell": {
-      "put": {
-        "tags": [
-          "city"
-        ],
-        "summary": "city update",
-        "description": "一键更新表内全部城市全拼和城市首拼字段",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/city"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-
     "/route": {
       "get": {
         "tags": [
@@ -6037,6 +6199,52 @@
         }
       }
     },
+
+    "/user/{userId}/noRouteInquiryInfo": {
+      "post": {
+        "tags": [
+          "NoRouteInquiryManage"
+        ],
+        "summary": "insert",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "noRouteInquiryInfo",
+            "in": "body",
+            "description": "noRouteInquiryInfo",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/noRouteInquiryInfo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/statisticsMsg"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+
 
     "/admin/{adminId}/supplierBusiness": {
       "get": {
@@ -9068,1062 +9276,6 @@
       }
     },
 
-    "/accountConfirmEmail": {
-      "post": {
-        "tags": [
-          "accountConfirmEmail"
-        ],
-        "summary": "accountConfirmEmail",
-        "description": "accountConfirmEmail",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "accountConfirmEmail",
-            "in": "body",
-            "description": "accountConfirmEmail",
-            "required": false,
-            "schema": {
-              "$ref": "#/definitions/accountConfirmEmail"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/email"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/queryMailRecord": {
-      "get": {
-        "tags": [
-          "accountConfirmEmail"
-        ],
-        "summary": "accountConfirmEmail queryMailRecord",
-        "description": "accountConfirmEmail queryMailRecord",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "query",
-            "description": "id",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "type",
-            "in": "query",
-            "description": "type",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "status",
-            "in": "query",
-            "description": "type",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "start",
-            "in": "query",
-            "description": "start",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "size",
-            "in": "query",
-            "description": "size",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "accountConfirmEmailStart",
-            "in": "query",
-            "description": "accountConfirmEmailStart",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "accountConfirmEmailEnd",
-            "in": "query",
-            "description": "accountConfirmEmailEnd",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/queryMailRecord"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/statisticsOrderMsgByMonth": {
-      "get": {
-        "tags": [
-          "statisticsMsg"
-        ],
-        "summary": "",
-        "description": "通过月份统计订单笔数和金额（日期默认当前月份-12个月前）",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "startMonth",
-            "in": "query",
-            "description": "格式：201612",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "endMonth",
-            "in": "query",
-            "description": "格式：201612",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/statisticsMsg"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/statisticsOrderMsgByDay": {
-      "get": {
-        "tags": [
-          "statisticsMsg"
-        ],
-        "summary": "",
-        "description": "统计每天的订单笔数和金额(近30天或10天内)",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "selectDays",
-            "in": "query",
-            "description": "近30天:30 ;近10天:10",
-            "required": true,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/statisticsMsg"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/statisticsInvoiceMsgByMonth": {
-      "get": {
-        "tags": [
-          "statisticsMsg"
-        ],
-        "summary": "",
-        "description": "通过月份统计发票笔数和金额（日期默认当前月份-12个月前）",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "startMonth",
-            "in": "query",
-            "description": "格式：201612",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "endMonth",
-            "in": "query",
-            "description": "格式：201612",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/statisticsMsg"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/statisticsInvoiceMsgByDay": {
-      "get": {
-        "tags": [
-          "statisticsMsg"
-        ],
-        "summary": "",
-        "description": "统计每天的发票笔数和金额(近30天或10天内)",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "selectDays",
-            "in": "query",
-            "description": "近30天:30 ;近10天:10",
-            "required": true,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/statisticsMsg"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/statisticsRefundPriceByMonth": {
-      "get": {
-        "tags": [
-          "statisticsMsg"
-        ],
-        "summary": "",
-        "description": "通过月份统计退款金额（日期默认当前月份-12个月前）",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "startMonth",
-            "in": "query",
-            "description": "格式：201612",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "endMonth",
-            "in": "query",
-            "description": "格式：201612",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/statisticsMsg"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/statisticsRefundPriceByDay": {
-      "get": {
-        "tags": [
-          "statisticsMsg"
-        ],
-        "summary": "",
-        "description": "统计每天的退款金额(近30天或10天内)",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "selectDays",
-            "in": "query",
-            "description": "近30天:30 ;近10天:10",
-            "required": true,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/statisticsMsg"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/statisticsInquiryCountByMonth": {
-      "get": {
-        "tags": [
-          "statisticsMsg"
-        ],
-        "summary": "",
-        "description": "按月统计询价订单数（日期默认当前月份-12个月前）",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "startMonth",
-            "in": "query",
-            "description": "格式：201612",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "endMonth",
-            "in": "query",
-            "description": "格式：201612",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/statisticsMsg"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/statisticsInquiryCountByDay": {
-      "get": {
-        "tags": [
-          "statisticsMsg"
-        ],
-        "summary": "",
-        "description": "按天统计询价订单数(近30天或10天内)",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "selectDays",
-            "in": "query",
-            "description": "近30天:30 ;近10天:10",
-            "required": true,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/statisticsMsg"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/statisticsNewUserByMonth": {
-      "get": {
-        "tags": [
-          "statisticsMsg"
-        ],
-        "summary": "",
-        "description": "按月统计新增用户数（日期默认当前月份-12个月前）",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "startMonth",
-            "in": "query",
-            "description": "格式：201612",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "endMonth",
-            "in": "query",
-            "description": "格式：201612",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/statisticsMsg"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/statisticsNewUserByDay": {
-      "get": {
-        "tags": [
-          "statisticsMsg"
-        ],
-        "summary": "",
-        "description": "按天统计新增用户数(近30天或10天内)",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "selectDays",
-            "in": "query",
-            "description": "近30天:30 ;近10天:10",
-            "required": true,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/statisticsMsg"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/statisticsPaymentPriceByMonth": {
-      "get": {
-        "tags": [
-          "statisticsMsg"
-        ],
-        "summary": "",
-        "description": "按月统计支付金额（日期默认当前月份-12个月前）",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "startMonth",
-            "in": "query",
-            "description": "格式：201612",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "endMonth",
-            "in": "query",
-            "description": "格式：201612",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/statisticsMsg"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/statisticsPaymentPriceByDay": {
-      "get": {
-        "tags": [
-          "statisticsMsg"
-        ],
-        "summary": "",
-        "description": "按天统计支付金额(近30天或10天内)",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "selectDays",
-            "in": "query",
-            "description": "近30天:30 ;近10天:10",
-            "required": true,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/statisticsMsg"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/paymentInMonth": {
-      "get": {
-        "tags": [
-          "statisticsMsg"
-        ],
-        "summary": "",
-        "description": "本月收入/支付待审核(笔数,金额)",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": false,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/statisticsMsg"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/refundInMonth": {
-      "get": {
-        "tags": [
-          "statisticsMsg"
-        ],
-        "summary": "",
-        "description": "待退款(笔数,金额)",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": false,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/statisticsMsg"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/price": {
-      "get": {
-        "tags": [
-          "statisticsMsg"
-        ],
-        "summary": "",
-        "description": "本月利润/本月支付供应商/待支付线路/待支付供应商金额",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": false,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/statisticsMsg"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/unInvoice": {
-      "get": {
-        "tags": [
-          "statisticsMsg"
-        ],
-        "summary": "",
-        "description": "待开票(笔数,金额)",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": false,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/statisticsMsg"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/statisticsOrder": {
-      "get": {
-        "tags": [
-          "statisticsMsg"
-        ],
-        "summary": "",
-        "description": "待完善信息订单/待完善价格订单/带生成需求订单/待执行订单/执行中订单/待安排需求/安排中需求/待发运车辆/运输中车辆",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": false,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/statisticsMsg"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/unConsultOrderCount": {
-      "get": {
-        "tags": [
-          "statisticsMsg"
-        ],
-        "summary": "",
-        "description": "待协助订单",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": false,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/statisticsMsg"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/department": {
-      "post": {
-        "tags": [
-          "departmentManage"
-        ],
-        "summary": "add",
-        "description": "",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "departmentMsg",
-            "in": "body",
-            "description": "departmentMsg",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/departmentMsg"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/statisticsMsg"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      },
-      "get": {
-        "tags": [
-          "departmentManage"
-        ],
-        "summary": "get",
-        "description": "",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "departmentId",
-            "in": "query",
-            "description": "departmentId",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "status",
-            "in": "query",
-            "description": "status",
-            "required": false,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/statisticsMsg"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/department/{departmentId}": {
-      "put": {
-        "tags": [
-          "departmentManage"
-        ],
-        "summary": "update",
-        "description": "",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "departmentId",
-            "in": "path",
-            "description": "departmentId",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "departmentMsg",
-            "in": "body",
-            "description": "departmentName",
-            "required": true,
-            "schema":{
-              "$ref":"#/definitions/departmentMsg"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/statisticsMsg"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/user/{userId}/noRouteInquiryInfo": {
-      "post": {
-        "tags": [
-          "NoRouteInquiryManage"
-        ],
-        "summary": "insert",
-        "description": "",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "userId",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "noRouteInquiryInfo",
-            "in": "body",
-            "description": "noRouteInquiryInfo",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/noRouteInquiryInfo"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/statisticsMsg"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
     "/admin/{adminId}/order/{orderId}/requireTask": {
       "post": {
         "tags": [
@@ -10314,6 +9466,7 @@
         }
       }
     },
+
     "/admin/{adminId}/order/{orderId}/require/{requireId}/loadTask": {
       "post": {
         "tags": [
@@ -11011,6 +10164,7 @@
         }
       }
     },
+
     "/admin/{adminId}/loadTask/{loadTaskId}/loadTaskDetail": {
       "post": {
         "tags": [
@@ -11251,759 +10405,6 @@
               "type": "object",
               "items": {
                 "$ref": "#/definitions/loadTaskDetail"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-
-    "/admin/{adminId}/recommend": {
-      "post": {
-        "tags": [
-          "recommend"
-        ],
-        "summary": "insert",
-        "description": "",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "integer"
-          },{
-            "name": "recommendMsg",
-            "in": "body",
-            "description": "recommendMsg",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/recommendMsg"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/recommend"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      },
-      "get": {
-        "tags": [
-          "recommend"
-        ],
-        "summary": "select",
-        "description": "",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "integer"
-          },{
-            "name": "recommendId",
-            "in": "query",
-            "description": "recommendId",
-            "required": false,
-            "type":"integer"
-          },{
-            "name": "name",
-            "in": "query",
-            "description": "name",
-            "required": false,
-            "type":"string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/recommend"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/recommend/{recommendId}/wxCodeImage": {
-      "post": {
-        "tags": [
-          "recommend"
-        ],
-        "summary": "insert",
-        "description": "",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "recommendId",
-            "in": "path",
-            "description": "recommendId",
-            "required": true,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/recommend"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/recommend/{recommendId}": {
-      "put": {
-        "tags": [
-          "recommend"
-        ],
-        "summary": "update",
-        "description": "",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "integer"
-          },{
-            "name": "recommendId",
-            "in": "path",
-            "description": "recommendId",
-            "required": true,
-            "type": "integer"
-          },{
-            "name": "recommendMsg",
-            "in": "body",
-            "description": "recommendMsg",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/recommendMsg"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/recommend"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/recommend/{recommendId}/advertisement": {
-      "put": {
-        "tags": [
-          "recommend"
-        ],
-        "summary": "update",
-        "description": "",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "integer"
-          },{
-            "name": "recommendId",
-            "in": "path",
-            "description": "recommendId",
-            "required": true,
-            "type": "integer"
-          },{
-            "name": "advertisement",
-            "in": "body",
-            "description": "advertisement",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/advertisement"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/recommend"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/achievement": {
-      "get": {
-        "tags": [
-          "recommend"
-        ],
-        "summary": "select",
-        "description": "",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "integer"
-          },{
-            "name": "recommendId",
-            "in": "query",
-            "description": "recommendId",
-            "required": false,
-            "type": "integer"
-          },{
-            "name": "recommendName",
-            "in": "query",
-            "description": "recommendName",
-            "required": false,
-            "type": "string"
-          },{
-            "name": "recommendOnStart",
-            "in": "query",
-            "description": "recommendOnStart",
-            "required": false,
-            "type": "string"
-          },{
-            "name": "recommendOnEnd",
-            "in": "query",
-            "description": "recommendOnEnd",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "start",
-            "in": "query",
-            "description": "start",
-            "required": false,
-            "type": "integer"
-          },{
-            "name": "size",
-            "in": "query",
-            "description": "size",
-            "required": false,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/recommend"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-
-    "/admin/{adminId}/coupon/{couponId}/count": {
-      "get": {
-        "tags": [
-          "coupon"
-        ],
-        "summary": "select",
-        "description": "Get coupon count version",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "当前登录管理员ID",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "couponId",
-            "in": "path",
-            "description": "优惠券ID",
-            "required": true,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/coupon": {
-      "get": {
-        "tags": [
-          "coupon"
-        ],
-        "summary": "select",
-        "description": "Get coupon version",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "当前登录管理员ID",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "couponId",
-            "in": "query",
-            "description": "优惠券ID",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "status",
-            "in": "query",
-            "description": "状态（0:停用,1:启用）",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "start",
-            "in": "query",
-            "description": "start",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "size",
-            "in": "query",
-            "description": "size",
-            "required": false,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/coupon"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "coupon"
-        ],
-        "summary": "insert",
-        "description": "admin create coupon version",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "couponInfo",
-            "in": "body",
-            "description": "couponInfo",
-            "required": true,
-            "schema":{
-              "$ref": "#/definitions/coupon"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/coupon"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/coupon/{couponId}": {
-      "put": {
-        "tags": [
-          "coupon"
-        ],
-        "summary": "update",
-        "description": "update coupon version",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "admin Id",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "couponId",
-            "in": "path",
-            "description": "coupon Id",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "appVersion",
-            "in": "body",
-            "description": "appVersion",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/coupon"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/coupon"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/coupon/{couponId}/status/{status}": {
-      "put": {
-        "tags": [
-          "coupon"
-        ],
-        "summary": "update",
-        "description": "update coupon user status",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "couponId",
-            "in": "path",
-            "description": "coupon Id",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "status",
-            "in": "path",
-            "description": "状态(0-停用,1-可用)",
-            "required": true,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/coupon"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/coupon/{couponId}/showStatus": {
-      "delete": {
-        "tags": [
-          "coupon"
-        ],
-        "summary": "update",
-        "description": "update coupon user status",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "couponId",
-            "in": "path",
-            "description": "coupon Id",
-            "required": true,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/coupon"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-
-    "/admin/{adminId}/userCoupon": {
-      "get": {
-        "tags": [
-          "userCoupon"
-        ],
-        "summary": "select",
-        "description": "Get coupon version",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "当前登录管理员ID",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "orderId",
-            "in": "query",
-            "description": "订单编号",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "paymentId",
-            "in": "query",
-            "description": "支付编号",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "userCouponId",
-            "in": "query",
-            "description": "领取编号",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "founderId",
-            "in": "query",
-            "description": "发放人ID",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "founderName",
-            "in": "path",
-            "description": "发放人",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "userId",
-            "in": "query",
-            "description": "领取用户账号",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "userName",
-            "in": "query",
-            "description": "领取用户名称",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "couponId",
-            "in": "query",
-            "description": "优惠券编号",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "ReceiveDateStart",
-            "in": "query",
-            "description": "领取日期（始）",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "ReceiveDateEnd",
-            "in": "query",
-            "description": "领取日期（终）",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "status",
-            "in": "query",
-            "description": "状态（0:未使用,1:已使用,2:已过期）",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "start",
-            "in": "query",
-            "description": "start",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "size",
-            "in": "query",
-            "description": "size",
-            "required": false,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/userCoupon"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid token value or invalid admin id"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/user/{userId}/userCoupon": {
-      "post": {
-        "tags": [
-          "userCoupon"
-        ],
-        "summary": "insert",
-        "description": "admin create userCoupon version",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "userId",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "userCouponInfo",
-            "in": "body",
-            "description": "userCouponInfo",
-            "required": true,
-            "schema":{
-              "$ref": "#/definitions/userCoupon"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/coupon"
               }
             }
           },
@@ -13573,6 +11974,596 @@
       }
     },
 
+    "/admin/{adminId}/achievement": {
+      "get": {
+        "tags": [
+          "recommend"
+        ],
+        "summary": "select",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },{
+            "name": "recommendId",
+            "in": "query",
+            "description": "recommendId",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "recommendName",
+            "in": "query",
+            "description": "recommendName",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "recommendOnStart",
+            "in": "query",
+            "description": "recommendOnStart",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "recommendOnEnd",
+            "in": "query",
+            "description": "recommendOnEnd",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "start",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "size",
+            "in": "query",
+            "description": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/recommend"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/recommend": {
+      "post": {
+        "tags": [
+          "recommend"
+        ],
+        "summary": "insert",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },{
+            "name": "recommendMsg",
+            "in": "body",
+            "description": "recommendMsg",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/recommendMsg"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/recommend"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "recommend"
+        ],
+        "summary": "select",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },{
+            "name": "recommendId",
+            "in": "query",
+            "description": "recommendId",
+            "required": false,
+            "type":"integer"
+          },{
+            "name": "name",
+            "in": "query",
+            "description": "name",
+            "required": false,
+            "type":"string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/recommend"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/recommend/{recommendId}/wxCodeImage": {
+      "post": {
+        "tags": [
+          "recommend"
+        ],
+        "summary": "insert",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "recommendId",
+            "in": "path",
+            "description": "recommendId",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/recommend"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/recommend/{recommendId}": {
+      "put": {
+        "tags": [
+          "recommend"
+        ],
+        "summary": "update",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },{
+            "name": "recommendId",
+            "in": "path",
+            "description": "recommendId",
+            "required": true,
+            "type": "integer"
+          },{
+            "name": "recommendMsg",
+            "in": "body",
+            "description": "recommendMsg",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/recommendMsg"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/recommend"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/recommend/{recommendId}/advertisement": {
+      "put": {
+        "tags": [
+          "recommend"
+        ],
+        "summary": "update",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },{
+            "name": "recommendId",
+            "in": "path",
+            "description": "recommendId",
+            "required": true,
+            "type": "integer"
+          },{
+            "name": "advertisement",
+            "in": "body",
+            "description": "advertisement",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/advertisement"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/recommend"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+
+    "/user/{userId}/city": {
+      "post": {
+        "tags": [
+          "city"
+        ],
+        "summary": "city add",
+        "description": "city add",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "city",
+            "in": "body",
+            "description": "city info",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/city"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/city"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "city"
+        ],
+        "summary": "city query",
+        "description": "city query",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "cityId",
+            "in": "query",
+            "description": "cityId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "cityName",
+            "in": "query",
+            "description": "city info",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "city info",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "city info",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/city"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/city": {
+      "get": {
+        "tags": [
+          "city"
+        ],
+        "summary": "city query",
+        "description": "city query",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "cityId",
+            "in": "query",
+            "description": "cityId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "cityName",
+            "in": "query",
+            "description": "city info",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "city info",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "city info",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/city"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "city"
+        ],
+        "summary": "city add",
+        "description": "city add",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "city",
+            "in": "body",
+            "description": "city info",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/city"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/city"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/city/{cityId}": {
+      "put": {
+        "tags": [
+          "city"
+        ],
+        "summary": "city update",
+        "description": "city update",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "cityId",
+            "in": "path",
+            "description": "cityId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "city",
+            "in": "body",
+            "description": "city info",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/city"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/city"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/citySpell": {
+      "put": {
+        "tags": [
+          "city"
+        ],
+        "summary": "city update",
+        "description": "一键更新表内全部城市全拼和城市首拼字段",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/city"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
 
     "/transAndInsurePrice": {
       "post": {
@@ -13607,6 +12598,1021 @@
           },
           "400": {
             "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+
+    "/accountConfirmEmail": {
+      "post": {
+        "tags": [
+          "accountConfirmEmail"
+        ],
+        "summary": "accountConfirmEmail",
+        "description": "accountConfirmEmail",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "accountConfirmEmail",
+            "in": "body",
+            "description": "accountConfirmEmail",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/accountConfirmEmail"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/email"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/queryMailRecord": {
+      "get": {
+        "tags": [
+          "accountConfirmEmail"
+        ],
+        "summary": "accountConfirmEmail queryMailRecord",
+        "description": "accountConfirmEmail queryMailRecord",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "id",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "type",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "type",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "size",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "accountConfirmEmailStart",
+            "in": "query",
+            "description": "accountConfirmEmailStart",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "accountConfirmEmailEnd",
+            "in": "query",
+            "description": "accountConfirmEmailEnd",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/queryMailRecord"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+
+    "/admin/{adminId}/statisticsOrderMsgByMonth": {
+      "get": {
+        "tags": [
+          "statisticsMsg"
+        ],
+        "summary": "",
+        "description": "通过月份统计订单笔数和金额（日期默认当前月份-12个月前）",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "startMonth",
+            "in": "query",
+            "description": "格式：201612",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "endMonth",
+            "in": "query",
+            "description": "格式：201612",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/statisticsMsg"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/statisticsOrderMsgByDay": {
+      "get": {
+        "tags": [
+          "statisticsMsg"
+        ],
+        "summary": "",
+        "description": "统计每天的订单笔数和金额(近30天或10天内)",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "selectDays",
+            "in": "query",
+            "description": "近30天:30 ;近10天:10",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/statisticsMsg"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/statisticsInvoiceMsgByMonth": {
+      "get": {
+        "tags": [
+          "statisticsMsg"
+        ],
+        "summary": "",
+        "description": "通过月份统计发票笔数和金额（日期默认当前月份-12个月前）",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "startMonth",
+            "in": "query",
+            "description": "格式：201612",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "endMonth",
+            "in": "query",
+            "description": "格式：201612",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/statisticsMsg"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/statisticsInvoiceMsgByDay": {
+      "get": {
+        "tags": [
+          "statisticsMsg"
+        ],
+        "summary": "",
+        "description": "统计每天的发票笔数和金额(近30天或10天内)",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "selectDays",
+            "in": "query",
+            "description": "近30天:30 ;近10天:10",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/statisticsMsg"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/statisticsRefundPriceByMonth": {
+      "get": {
+        "tags": [
+          "statisticsMsg"
+        ],
+        "summary": "",
+        "description": "通过月份统计退款金额（日期默认当前月份-12个月前）",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "startMonth",
+            "in": "query",
+            "description": "格式：201612",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "endMonth",
+            "in": "query",
+            "description": "格式：201612",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/statisticsMsg"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/statisticsRefundPriceByDay": {
+      "get": {
+        "tags": [
+          "statisticsMsg"
+        ],
+        "summary": "",
+        "description": "统计每天的退款金额(近30天或10天内)",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "selectDays",
+            "in": "query",
+            "description": "近30天:30 ;近10天:10",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/statisticsMsg"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/statisticsInquiryCountByMonth": {
+      "get": {
+        "tags": [
+          "statisticsMsg"
+        ],
+        "summary": "",
+        "description": "按月统计询价订单数（日期默认当前月份-12个月前）",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "startMonth",
+            "in": "query",
+            "description": "格式：201612",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "endMonth",
+            "in": "query",
+            "description": "格式：201612",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/statisticsMsg"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/statisticsInquiryCountByDay": {
+      "get": {
+        "tags": [
+          "statisticsMsg"
+        ],
+        "summary": "",
+        "description": "按天统计询价订单数(近30天或10天内)",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "selectDays",
+            "in": "query",
+            "description": "近30天:30 ;近10天:10",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/statisticsMsg"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/statisticsNewUserByMonth": {
+      "get": {
+        "tags": [
+          "statisticsMsg"
+        ],
+        "summary": "",
+        "description": "按月统计新增用户数（日期默认当前月份-12个月前）",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "startMonth",
+            "in": "query",
+            "description": "格式：201612",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "endMonth",
+            "in": "query",
+            "description": "格式：201612",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/statisticsMsg"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/statisticsNewUserByDay": {
+      "get": {
+        "tags": [
+          "statisticsMsg"
+        ],
+        "summary": "",
+        "description": "按天统计新增用户数(近30天或10天内)",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "selectDays",
+            "in": "query",
+            "description": "近30天:30 ;近10天:10",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/statisticsMsg"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/statisticsPaymentPriceByMonth": {
+      "get": {
+        "tags": [
+          "statisticsMsg"
+        ],
+        "summary": "",
+        "description": "按月统计支付金额（日期默认当前月份-12个月前）",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "startMonth",
+            "in": "query",
+            "description": "格式：201612",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "endMonth",
+            "in": "query",
+            "description": "格式：201612",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/statisticsMsg"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/statisticsPaymentPriceByDay": {
+      "get": {
+        "tags": [
+          "statisticsMsg"
+        ],
+        "summary": "",
+        "description": "按天统计支付金额(近30天或10天内)",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "selectDays",
+            "in": "query",
+            "description": "近30天:30 ;近10天:10",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/statisticsMsg"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/paymentInMonth": {
+      "get": {
+        "tags": [
+          "statisticsMsg"
+        ],
+        "summary": "",
+        "description": "本月收入/支付待审核(笔数,金额)",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/statisticsMsg"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/refundInMonth": {
+      "get": {
+        "tags": [
+          "statisticsMsg"
+        ],
+        "summary": "",
+        "description": "待退款(笔数,金额)",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/statisticsMsg"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/price": {
+      "get": {
+        "tags": [
+          "statisticsMsg"
+        ],
+        "summary": "",
+        "description": "本月利润/本月支付供应商/待支付线路/待支付供应商金额",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/statisticsMsg"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/unInvoice": {
+      "get": {
+        "tags": [
+          "statisticsMsg"
+        ],
+        "summary": "",
+        "description": "待开票(笔数,金额)",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/statisticsMsg"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/statisticsOrder": {
+      "get": {
+        "tags": [
+          "statisticsMsg"
+        ],
+        "summary": "",
+        "description": "待完善信息订单/待完善价格订单/带生成需求订单/待执行订单/执行中订单/待安排需求/安排中需求/待发运车辆/运输中车辆",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/statisticsMsg"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/unConsultOrderCount": {
+      "get": {
+        "tags": [
+          "statisticsMsg"
+        ],
+        "summary": "",
+        "description": "待协助订单",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/statisticsMsg"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+
+    "/admin/{adminId}/department": {
+      "post": {
+        "tags": [
+          "departmentManage"
+        ],
+        "summary": "add",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "departmentMsg",
+            "in": "body",
+            "description": "departmentMsg",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/departmentMsg"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/statisticsMsg"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "departmentManage"
+        ],
+        "summary": "get",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "departmentId",
+            "in": "query",
+            "description": "departmentId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "status",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/statisticsMsg"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/department/{departmentId}": {
+      "put": {
+        "tags": [
+          "departmentManage"
+        ],
+        "summary": "update",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "departmentId",
+            "in": "path",
+            "description": "departmentId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "departmentMsg",
+            "in": "body",
+            "description": "departmentName",
+            "required": true,
+            "schema":{
+              "$ref":"#/definitions/departmentMsg"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/statisticsMsg"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
           }
         }
       }
