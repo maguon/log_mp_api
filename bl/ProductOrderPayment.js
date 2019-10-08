@@ -282,6 +282,9 @@ const updateOrderMsgByPrice = (params,callback)=>{
                         logger.info("rows.length:"+rows.length);
                         refundNumber = rows.length;
                         commodityInfo.saled_quantity = paymentNumber - refundNumber;
+                        if(commodityInfo.saled_quantity < 0 ){
+                            commodityInfo.saled_quantity = 0;
+                        }
                         resolve(commodityInfo);
                     }
                 });
