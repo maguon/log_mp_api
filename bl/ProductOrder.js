@@ -184,8 +184,11 @@ const addUserProductOrder = (req,res,next) =>{
                                 }
                             })
                         }).then(()=>{
+                            if(type == sysConst.PRODUCT_ORDER.type.arrivalOfGoods){
+                                orderItemList[i].saledQuantity = orderItemList[i].saledQuantity + 1;//货到付款商品，已售数量加一
+                            }
                             let reqInfo={
-                                saledQuantity:orderItemList[i].saledQuantity+1,
+                                saledQuantity:orderItemList[i].saledQuantity,
                                 commodityId:orderItemList[i].commodityId,
                                 status:sysConst.COMMODITY.status.onSale
                             }
