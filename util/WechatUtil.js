@@ -7,8 +7,6 @@ const encrypt = require('../util/Encrypt.js');
 const moment = require('moment/moment.js');
 const sysConfig = require("../config/SystemConfig");
 const serverLogger = require('../util/ServerLogger.js');
-const productOrderPayment = require('../bl/ProductOrderPayment.js');
-const payment = require('../bl/Payment.js');
 const logger = serverLogger.createLogger('WechatUti.js');
 
 
@@ -163,28 +161,4 @@ const getRefundParams = (params)=>{
     logger.info('reqBody:' + reqBody);
     return result;
 }
-const wechatPaymentCallback=(req,res,next) => {
-    let xmlParser = new xml2js.Parser({explicitArray : false, ignoreAttrs : true});
-    // xml -> json
-    xmlParser.parseString(req.body,(err,result)=>{
-        //json --> xml
-        let resString = JSON.stringify(result);
-        //string -->Json
-        // logger.info("wechatPaymentCallback1666 resString:" + resString);
-        let evalJson = eval('(' + resString + ')');
-        let sysType =  parseInt(evalJson.xml.out_trade_no.split("_")[2]);
-        logger.info("sysType:"+sysType);
-        let resultInfo = {
-            body: req.body,
-            result:result
-        }
-        if(sysType == sysConsts.SYSTEM_ORDER_TYPE.type.product){
-            productOrderPayment.productWechatPaymentCallback(resultInfo);
-            return next();
-        }else{
-            payment.wechatPaymentCallback(resultInfo);
-            return next();
-        }
-    });
-}
-module.exports ={ wechatPaymentRequest,wechatRequest,wechatPaymentCallback}
+module.exports ={ wechatPaymentRequest,wechatRequest}
