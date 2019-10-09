@@ -74,14 +74,14 @@ const wechatPayment =(req,res,next)=>{
             //微信请求
             wechatUtil.wechatPaymentRequest(val,(error,result)=> {
                 if (error) {
-                    logger.error('updateRefundStatus httpReques ' + error.message);
+                    logger.error('wechatPayment httpReques ' + error.message);
                     reject({err: error});
                 } else {
-                    logger.info('updateRefundStatus httpReques ' + 'success');
+                    logger.info('wechatPayment httpReques ' + 'success');
                     let myDate = new Date();
                     let myDateStr = myDate.getTime() / 1000;
                     let parseIntDate = parseInt(myDateStr);
-                    let paySignMD5 = encrypt.encryptByMd5NoKey('appId=' + sysConfig.wechatConfig.mpAppId + '&nonceStr=' + evalJson.xml.nonce_str + '&package=prepay_id=' + evalJson.xml.prepay_id + '&signType=MD5&timeStamp=' + parseIntDate + '&key=a7c5c6cd22d89a3eea6c739a1a3c74d1');
+                    let paySignMD5 = encrypt.encryptByMd5NoKey('appId=' + sysConfig.wechatConfig.mpAppId + '&nonceStr=' + result.nonce_str + '&package=prepay_id=' + result.prepay_id + '&signType=MD5&timeStamp=' + parseIntDate + '&key=a7c5c6cd22d89a3eea6c739a1a3c74d1');
                     let paymentJson = [{
                         nonce_str: result.nonce_str,
                         prepay_id: result.prepay_id,
