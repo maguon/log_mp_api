@@ -407,12 +407,12 @@ const updateRefundStatus = (req,res,next)=>{
                     //成功添加退款信息
                     logger.info('updateRefundStatus addRefund ' + ' success');
                     params.refundId = result.insertId;//退款编号
-                    resolve(params);
+                    resolve();
                 }
             });
         });
     }
-    const wechatReq = (params)=>{
+    const wechatReq = ()=>{
         return new Promise((resolve, reject) => {
             params.totalFee = 0 - params.totalFee;//要退款的金额
             //微信请求
