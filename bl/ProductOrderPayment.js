@@ -63,13 +63,13 @@ const wechatPayment =(req,res,next)=>{
                         reject(error);
                     }else{
                         logger.info('wechatPayment addPamentInfo '+'success');
-                        resolve();
+                        resolve(params);
                     }
                 }
             });
         });
     }
-    const httpReques =()=>{
+    const httpReques =(val)=>{
         return  new Promise((resolve, reject) => {
             //微信请求
             wechatUtil.wechatPaymentRequest(val,(error,result)=> {
