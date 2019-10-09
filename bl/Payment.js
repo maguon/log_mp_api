@@ -257,36 +257,38 @@ const getRefundByPaymentId=(req,res,next) => {
         if(error){
             logger.error('getRefundByPaymentId getPayment ' + error.message);
             resUtil.resInternalError(error, res, next);
-        }else if(rows[0].type && rows[0].type==1){
-            paymentDAO.getRefundByPaymentId(params,(error,result)=>{
-                if(error){
-                    logger.error('getRefundByPaymentId ' + error.message);
-                    resUtil.resInternalError(error, res, next);
-                }else{
-                    logger.info('getRefundByPaymentId ' + 'success');
-                    resUtil.resetQueryRes(res,result,null);
-                    return next();
-                }
-            });
         }else{
-            paymentDAO.getPayment(params,(error,rows)=>{
-                if(error){
-                    logger.error('getRefundByPaymentId getPayment ' + error.message);
-                    resUtil.resInternalError(error, res, next);
-                }else{
-                    params.pId = rows[0].p_id;
-                    paymentDAO.getPaymentByRefundId(params,(error,result)=>{
-                        if(error){
-                            logger.error('getRefundByPaymentId getPaymentByRefundId ' + error.message);
-                            resUtil.resInternalError(error, res, next);
-                        }else{
-                            logger.info('getRefundByPaymentId getPaymentByRefundId ' + 'success');
-                            resUtil.resetQueryRes(res,result,null);
-                            return next();
-                        }
-                    })
-                }
-            })
+            if(rows[0].type && rows[0].type==1){
+                paymentDAO.getRefundByPaymentId(params,(error,result)=>{
+                    if(error){
+                        logger.error('getRefundByPaymentId ' + error.message);
+                        resUtil.resInternalError(error, res, next);
+                    }else{
+                        logger.info('getRefundByPaymentId ' + 'success');
+                        resUtil.resetQueryRes(res,result,null);
+                        return next();
+                    }
+                });
+            }else{
+                paymentDAO.getPayment(params,(error,rows)=>{
+                    if(error){
+                        logger.error('getRefundByPaymentId getPayment ' + error.message);
+                        resUtil.resInternalError(error, res, next);
+                    }else{
+                        params.pId = rows[0].p_id;
+                        paymentDAO.getPaymentByRefundId(params,(error,result)=>{
+                            if(error){
+                                logger.error('getRefundByPaymentId getPaymentByRefundId ' + error.message);
+                                resUtil.resInternalError(error, res, next);
+                            }else{
+                                logger.info('getRefundByPaymentId getPaymentByRefundId ' + 'success');
+                                resUtil.resetQueryRes(res,result,null);
+                                return next();
+                            }
+                        })
+                    }
+                })
+            }
         }
     })
 }
@@ -352,16 +354,18 @@ const addBankPaymentByadmin = (req,res,next) => {
             if(error){
                 logger.error('addBankPaymentByadmin getOrder ' + error.message);
                 reject(error);
-            }else if(rows && rows.length < 1){
-                logger.warn('addBankPaymentByadmin getOrder '+'No such order!');
-                resUtil.resetFailedRes(res,'查无此订单',null);
             }else{
-                logger.info('getOrder'+'success');
-                params.orderId = rows[0].id;
-                params.adminId = rows[0].admin_id;
-                params.paymentType = 2;
-                params.type = 1
-                resolve();
+                if(rows && rows.length < 1){
+                    logger.warn('addBankPaymentByadmin getOrder '+'No such order!');
+                    resUtil.resetFailedRes(res,'查无此订单',null);
+                }else{
+                    logger.info('getOrder'+'success');
+                    params.orderId = rows[0].id;
+                    params.adminId = rows[0].admin_id;
+                    params.paymentType = 2;
+                    params.type = 1
+                    resolve();
+                }
             }
         })
     }).then(()=>{
@@ -481,17 +485,19 @@ const addBankRefund = (req,res,next) => {
                 if(error){
                     logger.error('addBankRefund getAllRefund ' + error.message);
                     reject(error);
-                }else if(rows && rows.length < 1){
-                    logger.warn('addBankRefund getAllRefund '+'This information is not available!');
-                    resUtil.resetFailedRes(res,'查无此信息',null);
                 }else{
-                    logger.info('addBankRefund getAllRefund '+'success');
-                    params.allRefundFee = rows[0].refund_fee;
-                    if(params.allFee + params.allRefundFee <= 0 && params.allRefundFee){
-                        resUtil.resetFailedRes(res,'已经退款完成',null);
-                        return next();
+                    if(rows && rows.length < 1){
+                        logger.warn('addBankRefund getAllRefund '+'This information is not available!');
+                        resUtil.resetFailedRes(res,'查无此信息',null);
+                    }else{
+                        logger.info('addBankRefund getAllRefund '+'success');
+                        params.allRefundFee = rows[0].refund_fee;
+                        if(params.allFee + params.allRefundFee <= 0 && params.allRefundFee){
+                            resUtil.resetFailedRes(res,'已经退款完成',null);
+                            return next();
+                        }
+                        resolve();
                     }
-                    resolve();
                 }
             })
         }).then(()=>{
@@ -500,19 +506,21 @@ const addBankRefund = (req,res,next) => {
                     if(error){
                         logger.error('addBankRefund getPayment ' + error.message);
                         reject(error);
-                    }else if(rows && rows.length < 1){
-                        logger.warn('addBankRefund getPayment '+'This information is not available!');
-                        resUtil.resetFailedRes(res,'查无此信息',null);
                     }else{
-                        logger.info('addBankRefund getPayment '+'success');
-                        params.userId = rows[0].user_id;
-                        params.bank = rows[0].bank;
-                        params.bankCode = rows[0].bank_code;
-                        params.accountName = rows[0].account_name;
-                        params.paymentType = 2;
-                        params.type = 0;
-                        params.pId = rows[0].id;
-                        resolve();
+                        if(rows && rows.length < 1){
+                            logger.warn('addBankRefund getPayment '+'This information is not available!');
+                            resUtil.resetFailedRes(res,'查无此信息',null);
+                        }else{
+                            logger.info('addBankRefund getPayment '+'success');
+                            params.userId = rows[0].user_id;
+                            params.bank = rows[0].bank;
+                            params.bankCode = rows[0].bank_code;
+                            params.accountName = rows[0].account_name;
+                            params.paymentType = 2;
+                            params.type = 0;
+                            params.pId = rows[0].id;
+                            resolve();
+                        }
                     }
                 })
             }).then(()=>{
@@ -855,13 +863,15 @@ const wechatPaymentCallback=(req,res,next) => {
                 if(error){
                     logger.error('wechatPaymentCallback getPaymentByOrderId ' + error.message);
                     reject();
-                }else if(rows && rows.length < 1){
-                    logger.warn('wechatPaymentCallback getPaymentByOrderId ' + 'This payment information is not available!');
-                    resUtil.resetFailedRes(res,'没有此支付信息',null);
                 }else{
-                    prepayIdJson.paymentId = rows[0].id;
-                    prepayIdJson.paymentType = rows[0].type;
-                    resolve();
+                    if(rows && rows.length < 1){
+                        logger.warn('wechatPaymentCallback getPaymentByOrderId ' + 'This payment information is not available!');
+                        resUtil.resetFailedRes(res,'没有此支付信息',null);
+                    }else{
+                        prepayIdJson.paymentId = rows[0].id;
+                        prepayIdJson.paymentType = rows[0].type;
+                        resolve();
+                    }
                 }
             })
         }).then(()=>{

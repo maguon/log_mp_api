@@ -19,6 +19,8 @@ const commodityDAO = require('../dao/CommodityDAO.js');
 const wechatPayment =(req,res,next)=>{
     let params = req.params;
     let ourString = encrypt.randomString();
+    let requestIp = req.connection.remoteAddress.replace('::ffff:','');
+    params.requestIp = requestIp;
     let wx_productOrderId = params.productOrderId+"_"+encrypt.randomString(6)+"_" + sysConst.SYSTEM_ORDER_TYPE.type.product;
     params.nonceStr = ourString;
     params.dateId = moment().format('YYYYMMDD');
@@ -69,46 +71,27 @@ const wechatPayment =(req,res,next)=>{
     }
     const httpReques =()=>{
         return  new Promise((resolve, reject) => {
-            let xmlParser = new xml2js.Parser({explicitArray : false, ignoreAttrs : true});
-            let result = getParams(req,res,params);
-            let httpsReq = https.request(result.options,(result)=>{
-                let data = "";
-                result.on('data',(d)=>{
-                    data += d;
-                }).on('end',()=>{
-                    xmlParser.parseString(data,(err,result)=>{
-                        //将返回的结果再次格式化
-                        let resString = JSON.stringify(result);
-                        let evalJson = eval('(' + resString + ')');
-                        let myDate = new Date();
-                        let myDateStr = myDate.getTime()/1000;
-                        let parseIntDate = parseInt(myDateStr);
-                        let paySignMD5 = encrypt.encryptByMd5NoKey('appId='+sysConfig.wechatConfig.mpAppId+'&nonceStr='+evalJson.xml.nonce_str+'&package=prepay_id='+evalJson.xml.prepay_id+'&signType=MD5&timeStamp='+parseIntDate+'&key=a7c5c6cd22d89a3eea6c739a1a3c74d1');
-                        let paymentJson = [{
-                            nonce_str: evalJson.xml.nonce_str,
-                            prepay_id: evalJson.xml.prepay_id,
-                            sign:evalJson.xml.sign,
-                            timeStamp: parseIntDate,
-                            paySign: paySignMD5,
-                            resString:resString
-                        }];
-                        logger.info("wechatPayment httpReques "+resString);
-                        resUtil.resetQueryRes(res,paymentJson,null);
-                    });
-                    res.send(200,data);
-                    return next();
-                }).on('error', (e)=>{
-                    logger.info('wechatPayment httpReques result '+ e.message);
-                    res.send(500,e);
-                    return next();
-                });
-            });
-            httpsReq.write(result.reqBody,"utf-8");
-            httpsReq.end();
-            httpsReq.on('error',(e)=>{
-                logger.info('wechatPayment httpsReq '+ e.message);
-                res.send(500,e);
-                return next();
+            //微信请求
+            wechatUtil.wechatPaymentRequest(val,(error,result)=> {
+                if (error) {
+                    logger.error('updateRefundStatus httpReques ' + error.message);
+                    reject({err: error});
+                } else {
+                    logger.info('updateRefundStatus httpReques ' + 'success');
+                    let myDate = new Date();
+                    let myDateStr = myDate.getTime() / 1000;
+                    let parseIntDate = parseInt(myDateStr);
+                    let paySignMD5 = encrypt.encryptByMd5NoKey('appId=' + sysConfig.wechatConfig.mpAppId + '&nonceStr=' + evalJson.xml.nonce_str + '&package=prepay_id=' + evalJson.xml.prepay_id + '&signType=MD5&timeStamp=' + parseIntDate + '&key=a7c5c6cd22d89a3eea6c739a1a3c74d1');
+                    let paymentJson = [{
+                        nonce_str: result.nonce_str,
+                        prepay_id: result.prepay_id,
+                        sign: result.sign,
+                        timeStamp: parseIntDate,
+                        paySign: paySignMD5,
+                        resString: result.resString
+                    }];
+                    resUtil.resetQueryRes(res, paymentJson, null);
+                }
             });
         });
     }
