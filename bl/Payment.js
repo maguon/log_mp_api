@@ -787,7 +787,7 @@ const wechatPayment =(req,res,next)=>{
             });
         }).then(()=>{
             //微信请求
-            wechatUtil.wechatPaymentRequest(val,(error,result)=> {
+            wechatUtil.wechatPaymentRequest(params,(error,result)=> {
                 if (error) {
                     logger.error('wechatPayment wechatPaymentRequest ' + error.message);
                     res.send(500, error.message);
