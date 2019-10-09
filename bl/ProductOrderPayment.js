@@ -412,11 +412,11 @@ const updateRefundStatus = (req,res,next)=>{
             });
         });
     }
-    const wechatReq = (val)=>{
+    const wechatReq = (params)=>{
         return new Promise((resolve, reject) => {
             params.totalFee = 0 - params.totalFee;//要退款的金额
             //微信请求
-            wechatUtil.wechatRequest(val,(error,result)=>{
+            wechatUtil.wechatRequest(params,(error,result)=>{
                 if (error){
                     logger.error('updateRefundStatus wechatRequest ' + error.message);
                     reject({err:error});
