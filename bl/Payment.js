@@ -815,83 +815,80 @@ const wechatPayment =(req,res,next)=>{
     })
 }
 const wechatPaymentCallback=(req,res,next) => {
-    let xmlParser = new xml2js.Parser({explicitArray : false, ignoreAttrs : true});
-    // xml -> json
-    xmlParser.parseString(req.body,(err,result)=>{
-        //json --> xml
-        let resString = JSON.stringify(result);
-        //string -->Json
-        logger.info("wechatPaymentCallback1666 resString:" + resString);
-        let evalJson = eval('(' + resString + ')');
-        let sysType =  parseInt(evalJson.xml.out_trade_no.split("_")[2]);
-        logger.info("sysType:"+sysType);
-        if(sysType == sysConsts.SYSTEM_ORDER_TYPE.type.product){
-            let resultInfo = {
-                body: req.body,
-                result:result
-            }
-            productOrderPayment.productWechatPaymentCallback(resultInfo);
-            return next();
+    let result = req.result;
+    //json --> xml
+    let resString = JSON.stringify(result);
+    //string -->Json
+    logger.info("wechatPaymentCallback1666 resString:" + resString);
+    let evalJson = eval('(' + resString + ')');
+    let sysType =  parseInt(evalJson.xml.out_trade_no.split("_")[2]);
+    logger.info("sysType:"+sysType);
+    if(sysType == sysConsts.SYSTEM_ORDER_TYPE.type.product){
+        let resultInfo = {
+            body: req.body,
+            result:result
         }
-        let prepayIdJson = {
-            nonceStr: evalJson.xml.nonce_str,
-            openid: evalJson.xml.openid,
-            orderId: parseInt(evalJson.xml.out_trade_no.split("_")[0]),
-            transactionId: evalJson.xml.transaction_id,
-            timeEnd: evalJson.xml.time_end,
-            totalFee: evalJson.xml.total_fee / 100,
-            status: sysConsts.PAYMENT.status.paid,
-            type:sysConsts.PAYMENT.type.payment
-        };
-        new Promise((resolve,reject)=>{
-            paymentDAO.getPaymentByOrderId({orderId:prepayIdJson.orderId},(error,rows)=>{
-                if(error){
-                    logger.error('wechatPaymentCallback getPaymentByOrderId ' + error.message);
-                    reject();
+        productOrderPayment.productWechatPaymentCallback(resultInfo);
+        return next();
+    }
+    let prepayIdJson = {
+        nonceStr: evalJson.xml.nonce_str,
+        openid: evalJson.xml.openid,
+        orderId: parseInt(evalJson.xml.out_trade_no.split("_")[0]),
+        transactionId: evalJson.xml.transaction_id,
+        timeEnd: evalJson.xml.time_end,
+        totalFee: evalJson.xml.total_fee / 100,
+        status: sysConsts.PAYMENT.status.paid,
+        type:sysConsts.PAYMENT.type.payment
+    };
+    new Promise((resolve,reject)=>{
+        paymentDAO.getPaymentByOrderId({orderId:prepayIdJson.orderId},(error,rows)=>{
+            if(error){
+                logger.error('wechatPaymentCallback getPaymentByOrderId ' + error.message);
+                reject();
+            }else{
+                if(rows && rows.length < 1){
+                    logger.warn('wechatPaymentCallback getPaymentByOrderId ' + 'This payment information is not available!');
+                    resUtil.resetFailedRes(res,'没有此支付信息',null);
                 }else{
-                    if(rows && rows.length < 1){
-                        logger.warn('wechatPaymentCallback getPaymentByOrderId ' + 'This payment information is not available!');
-                        resUtil.resetFailedRes(res,'没有此支付信息',null);
-                    }else{
-                        prepayIdJson.paymentId = rows[0].id;
-                        prepayIdJson.paymentType = rows[0].type;
-                        resolve();
-                    }
+                    prepayIdJson.paymentId = rows[0].id;
+                    prepayIdJson.paymentType = rows[0].type;
+                    resolve();
                 }
-            })
-        }).then(()=>{
-            new Promise((resolve,reject)=>{
-                if (prepayIdJson.paymentType = sysConsts.PAYMENT.type.refund){
-                    prepayIdJson.totalFee = -prepayIdJson.totalFee;
-                }
-                paymentDAO.updateWechatPayment(prepayIdJson,(error,result)=>{
-                    if(error){
-                        logger.error('wechatPaymentCallback updateWechatPayment ' + error.message);
-                        reject(error);
-                    }else{
-                        logger.info('wechatPaymentCallback updateWechatPayment ' + 'success');
-                        resolve();
-                    }
-                });
-            }).then(()=>{
-                let params ={
-                    orderId: parseInt(evalJson.xml.out_trade_no.split("_")[0]),
-                }
-                updateOrderMsgByPrice(params,(error,result)=>{
-                    if (error){
-                        logger.error('wechatPaymentCallback updateOrderMsgByPrice ' + error.message);
-                        resUtil.resInternalError(error, res, next);
-                    } else {
-                        logger.info('wechatPaymentCallback updateOrderMsgByPrice ' + 'success');
-                        resUtil.resetUpdateRes(res,result,null);
-                        return next();
-                    }
-                })
-            })
-        }).catch((error)=>{
-            resUtil.resInternalError(error, res, next);
+            }
         })
-    });
+    }).then(()=>{
+        new Promise((resolve,reject)=>{
+            if (prepayIdJson.paymentType = sysConsts.PAYMENT.type.refund){
+                prepayIdJson.totalFee = -prepayIdJson.totalFee;
+            }
+            paymentDAO.updateWechatPayment(prepayIdJson,(error,result)=>{
+                if(error){
+                    logger.error('wechatPaymentCallback updateWechatPayment ' + error.message);
+                    reject(error);
+                }else{
+                    logger.info('wechatPaymentCallback updateWechatPayment ' + 'success');
+                    resolve();
+                }
+            });
+        }).then(()=>{
+            let params ={
+                orderId: parseInt(evalJson.xml.out_trade_no.split("_")[0]),
+            }
+            updateOrderMsgByPrice(params,(error,result)=>{
+                if (error){
+                    logger.error('wechatPaymentCallback updateOrderMsgByPrice ' + error.message);
+                    resUtil.resInternalError(error, res, next);
+                } else {
+                    logger.info('wechatPaymentCallback updateOrderMsgByPrice ' + 'success');
+                    resUtil.resetUpdateRes(res,result,null);
+                    return next();
+                }
+            })
+        })
+    }).catch((error)=>{
+        resUtil.resInternalError(error, res, next);
+    })
 }
 const paymentInMonth =(req,res,next)=>{
     let params = req.params;

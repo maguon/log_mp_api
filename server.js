@@ -5,7 +5,7 @@ const restify = require('restify');
 const sysConfig = require('./config/SystemConfig');
 const serverLogger = require('./util/ServerLogger');
 const logger = serverLogger.createLogger('Server');
-
+const wechatUtil = require('./util/WechatUtil.js');
 
 const wechatBl = require('./bl/WechatBl');
 const adminUser = require('./bl/AdminUser.js');
@@ -55,8 +55,6 @@ const app = require('./bl/App');
  */
 const createServer=()=>{
 
-
-
     // Create a server with our logger and custom formatter
     // Note that 'version' means all routes will default to
     // 1.0.0
@@ -74,9 +72,6 @@ const createServer=()=>{
         rate: 50,
         ip: true
     }));
-
-
-
 
 
     server.use(restify.plugins.bodyParser({uploadDir:__dirname+'/../uploads/'}));
@@ -305,7 +300,7 @@ const createServer=()=>{
     server.get('/api/admin/:adminId/payment' ,payment.getPayment);
     server.get('/api/admin/:adminId/paymentRefund' ,payment.getRefundByPaymentId);
     server.post({path:'/api/user/:userId/order/:orderId/wechatPayment',contentType: 'application/json'},payment.wechatPayment);
-    server.post({path:'/api/wechatPayment',contentType: 'text/xml'},payment.wechatPaymentCallback);
+    server.post({path:'/api/wechatPayment',contentType: 'text/xml'},wechatUtil.wechatPaymentCallback);
     // server.post({path:'/api/admin/:adminId/user/:userId/order/:orderId/wechatRefund',contentType: 'application/json'},payment.wechatRefund);
     // server.post({path:'/api/wechatRefund',contentType: 'text/xml'},payment.addWechatRefund);
     server.put({path:'/api/admin/:adminId/payment/:paymentId/paymentRemark',contentType: 'application/json'},payment.updateRemark);
