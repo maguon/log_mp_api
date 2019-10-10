@@ -17,6 +17,7 @@ const getUserIdByCode = (params,callback) => {
         callback(err,res);
     })
 }
+//统一下单
 const unifiedOrder = (params,callback) => {
     const url = 'https://api.mch.weixin.qq.com/pay/unifiedorder';
     const unifiedOrder = {
@@ -69,6 +70,7 @@ const createUnifiedOrder = (params,callback) => {
         callback(error,rows);
     })
 }
+//查询订单
 const orderQuery = (params,callback) => {
     const url = 'https://api.mch.weixin.qq.com/pay/orderquery';
     const orderQuery = {
@@ -85,6 +87,7 @@ const orderQuery = (params,callback) => {
         callback(err,res);
     })
 }
+//关闭订单
 const closeOrder = (params,callback) => {
     const url = 'https://api.mch.weixin.qq.com/pay/closeorder';
     const closeOrder = {
@@ -100,6 +103,7 @@ const closeOrder = (params,callback) => {
         callback(err,res);
     })
 }
+//申请退款
 const refund = (params,callback) => {
     const url = 'https://api.mch.weixin.qq.com/secapi/pay/refund';
     const refund = {
@@ -123,6 +127,7 @@ const refund = (params,callback) => {
         callback(err,res);
     })
 }
+//退款查询
 const refundQuery = (params,callback) => {
     const url = 'https://api.mch.weixin.qq.com/pay/refundquery';
     const refundQuery = {
