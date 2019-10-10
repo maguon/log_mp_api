@@ -422,7 +422,7 @@ const updateRefundStatus = (req,res,next)=>{
                     logger.info('updateRefundStatus wechatRequest ' + 'success');
                     if('FAIL' == result.return_code ){
                         //请求失败
-                        productPaymentDAO.delRefundFail(params, (error, result) => {
+                        productPaymentDAO.delRefundFail(params, () => {
                             logger.info('updateRefundStatus wechatRequest delRefundFail ' + 'success');
                         });
                         logger.warn('updateRefundStatus wechatRequest Refund failure!');
