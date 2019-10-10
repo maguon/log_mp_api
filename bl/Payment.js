@@ -786,7 +786,6 @@ const wechatPayment =(req,res,next)=>{
                 }
             });
         }).then(()=>{
-
             //微信请求
             wechatUtil.wechatPaymentRequest(params,(error,result)=> {
                 if (error) {
@@ -893,51 +892,6 @@ const wechatPaymentCallback=(req,res,next) => {
             resUtil.resInternalError(error, res, next);
         })
     });
-}
-const getParams =(req,res,params)=>{
-    let result = {};
-    let body = 'test';
-    let jsa = 'JSAPI';
-    let requestIp = req.connection.remoteAddress.replace('::ffff:','');
-    let signStr =
-        "appid="+sysConfig.wechatConfig.mpAppId
-        + "&body="+body
-        + "&mch_id="+sysConfig.wechatConfig.mchId
-        + "&nonce_str="+params.nonceStr
-        + "&notify_url="+sysConfig.wechatConfig.notifyUrl//回调路径
-        + "&openid="+params.openid
-        + "&out_trade_no="+params.wxOrderId
-        + "&spbill_create_ip="+requestIp
-        + "&total_fee=" +params.totalFee * 100
-        + "&trade_type="+jsa
-        + "&key="+sysConfig.wechatConfig.paymentKey;
-    let signByMd = encrypt.encryptByMd5NoKey(signStr);
-    let reqBody =
-        '<xml><appid>'+sysConfig.wechatConfig.mpAppId+'</appid>' +
-        '<body>'+body+'</body>' +
-        '<mch_id>'+sysConfig.wechatConfig.mchId+'</mch_id>' +
-        '<nonce_str>'+params.nonceStr+'</nonce_str>' +
-        '<notify_url>'+sysConfig.wechatConfig.notifyUrl+'</notify_url>' +
-        '<openid>'+params.openid+'</openid>' +
-        '<out_trade_no>'+params.wxOrderId+'</out_trade_no>' +
-        '<spbill_create_ip>'+requestIp+'</spbill_create_ip>' +
-        '<total_fee>'+params.totalFee * 100 + '</total_fee>' +
-        '<trade_type>'+jsa+'</trade_type>' +
-        '<sign>'+signByMd+'</sign></xml>';
-    let url="/pay/unifiedorder";
-    let options = {
-        host: 'api.mch.weixin.qq.com',
-        port: 443,
-        path: url,
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Content-Length' : Buffer.byteLength(reqBody, 'utf8')
-        }
-    }
-    result.reqBody = reqBody;
-    result.options = options;
-    return result;
 }
 const paymentInMonth =(req,res,next)=>{
     let params = req.params;
