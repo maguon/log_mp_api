@@ -4,10 +4,8 @@ const serverLogger = require('../util/ServerLogger.js');
 const resUtil = require('../util/ResponseUtil.js');
 const wechatUtil = require('../util/WechatUtil.js');
 const sysMsg = require('../util/SystemMsg.js');
-const xml2js = require('xml2js');
 const encrypt = require('../util/Encrypt.js');
 const moment = require('moment/moment.js');
-const https = require('https');
 const sysConst = require("../util/SystemConst");
 const sysConfig = require("../config/SystemConfig");
 const logger = serverLogger.createLogger('ProductOrderPayment.js');
@@ -424,7 +422,9 @@ const updateRefundStatus = (req,res,next)=>{
                     logger.info('updateRefundStatus wechatRequest ' + 'success');
                     if('FAIL' == result.return_code ){
                         //请求失败
-                        productPaymentDAO.delRefundFail(params, (error, result) => {});
+                        productPaymentDAO.delRefundFail(params, (error, result) => {
+                            logger.info('updateRefundStatus wechatRequest delRefundFail ' + 'success');
+                        });
                         logger.warn('updateRefundStatus wechatRequest Refund failure!');
                         resUtil.resetFailedRes(res, result, null);
                     }else{
